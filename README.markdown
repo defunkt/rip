@@ -68,52 +68,102 @@ the following steps would occur:
 * Each dependency would be unpacked into the current virutalenv at the revision or tag specified
 * Each dependency's `deps.txt` would be fetched and unpacked into the ripenv, etc
 
-As this process unfolds, a mapping of libraries and versions is kept in memory. When a library is
-declared multiple times at different versions the process is halted and the error reported.
+As this process unfolds, a mapping of libraries and versions is kept 
+in memory. When a library is declared multiple times at different 
+versions the process is halted and the error reported.
 
-If you've cloned `ambition` on your own you can still install the dependencies using `rip install deps.txt`
+If you've cloned `ambition` on your own you can still install the 
+dependencies using `rip install deps.txt`
 
 Uninstalling Packages
 ---------------------
 
-The easiest way to mass uninstall packages is to delete your ripenv and create a new one. Otherwise, `rip uninstall package` will do the trick.
+The easiest way to mass uninstall packages is to delete your ripenv 
+and create a new one. Otherwise, `rip uninstall package` will do the trick.
+
+Extensions
+----------
+
+Rip will attempt to run `rake rip:install` in your library if a 
+Rakefile is found. If you need to compile your C extension or do
+any other work, this is the place.
+
+The installation process actually makes two passes: first to grab 
+all dependencies and ensure the integrity of the graph, then a 
+second time to run any installation hooks. This allows your installation
+hooks to depend on libraries which will exist when the hooks are run.
+
+As a result, the outer most dependency's installation hook is run first. 
 
 Rip Directory Structure
 -----------------------
 
 Rip is by default user-specific but can be configured to work system wide, 
-though it is discouraged.
+though it is discouraged for development.
 
-Here is a typical directory structure:
+Here is a typical directory structure for Rip:
 
-    ~/.rip
-      - base
-        - bin
-        - lib
-      - cheat
-        - bin
-        - lib
-      - thunderhorse
-        - bin
-        - lib
+    rip/
+      - base/
+        - bin/
+        - lib/
+        - docs/
+        - base.ripenv    
+      - cheat/
+        - bin/
+        - lib/
+        - docs/
+        - cheat.ripenv     
+      - thunderhorse/
+        - bin/
+        - lib/
+        - docs/
+        - thunderhorse.ripenv
 
-The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. `base` 
-        
+The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. Each ripenv
+contains directories for executable binaries, Ruby source files, and RDoc documentation.
+They also include a generated `.ripenv` file containing metadata about the ripenev and its
+packages.
 
-Extensions
-----------
+This individual may use `base` for general tomfoolery (it's the default), `cheat` for 
+developing their Cheat application, and `thunderhorse` for working on their new 
+Thunderhose project.
 
-Rip will attempt to run `rake rip:install` in your library if a Rakefile is found. If you need to
-compile your C extension or do any other work, this is the place.
+Let us focus on the `cheat` ripenv:
 
-The installation process actually makes two passes: first to grab all dependencies and ensure the
-integrity of the graph, then a second time to run any installation hooks. This allows your installation
-hooks to depend on libraries that you know will be accessible.
+    rip/
+      - cheat/
+        - bin/
+          - camping
+        - lib/
+          - markaby/
+            - builder.rb
+            - cssproxy.rb
+            - metaid.rb
+            - rails.rb
+            - tags.rb
+            - template.rb
+          - markaby.rb
+          - camping/
+            - db.rb
+            - fastcgi.rb
+            - reloader.rb
+            - session.rb
+            - webrick.rb
+          - camping-unabridged.rb
+          - camping.rb
+        - docs/
+        - cheat.ripenv
 
-As a result, the outer most dependency's installation hook is run first. 
+When using the `cheat` ripenv, a `camping` binary will be in our `PATH`.
 
-Deployment
-----------
+When running Ruby scripts, or even executing the `camping` binary, 
+`rip/cheat/lib` will be in our $LOAD_PATH. Therefor we may, for instance, 
+`require "markaby"` in a Ruby script and it will succeed.
+
+In any other ripenv, the `cheat` ripenv's binaries and libraries are as
+good as non-existant. 
+
 
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
