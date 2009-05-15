@@ -66,7 +66,7 @@ the following steps would occur:
 * The source would be fetched and unpacked as `ambition` in the cwd
 * The source of each dependency in `deps.txt` would be fetched
 * Each dependency would be unpacked into the current virutalenv at the revision or tag specified
-* Each dependency's `deps.txt` would be fetched and unpacked into the virutalenv, etc
+* Each dependency's `deps.txt` would be fetched and unpacked into the ripenv, etc
 
 As this process unfolds, a mapping of libraries and versions is kept in memory. When a library is
 declared multiple times at different versions the process is halted and the error reported.
@@ -76,7 +76,44 @@ If you've cloned `ambition` on your own you can still install the dependencies u
 Uninstalling Packages
 ---------------------
 
-The easiest way to uninstall packages is to delete your ripenv and create a new one.
+The easiest way to mass uninstall packages is to delete your ripenv and create a new one. Otherwise, `rip uninstall package` will do the trick.
+
+Rip Directory Structure
+-----------------------
+
+Rip is by default user-specific but can be configured to work system wide, 
+though it is discouraged.
+
+Here is a typical directory structure:
+
+    ~/.rip
+      - base
+        - bin
+        - lib
+      - cheat
+        - bin
+        - lib
+      - thunderhorse
+        - bin
+        - lib
+
+The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. `base` 
+        
+
+Extensions
+----------
+
+Rip will attempt to run `rake rip:install` in your library if a Rakefile is found. If you need to
+compile your C extension or do any other work, this is the place.
+
+The installation process actually makes two passes: first to grab all dependencies and ensure the
+integrity of the graph, then a second time to run any installation hooks. This allows your installation
+hooks to depend on libraries that you know will be accessible.
+
+As a result, the outer most dependency's installation hook is run first. 
+
+Deployment
+----------
 
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
