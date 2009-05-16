@@ -42,8 +42,8 @@ module Rip
     def uninstall(verbose = false)
       FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
       FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
+      FileUtils.rm_rf RIPDIR, :verbose => verbose
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
-      FileUtils.rm RIPDIR, :verbose => verbose
       abort "rip uninstalled" if verbose
     rescue Errno::EACCES
       abort "rip: uninstall failed. please try again with `sudo`" if verbose
@@ -73,8 +73,7 @@ module Rip
     def setup_ripenv
       transaction "setting up ripenv" do
         FileUtils.mkdir_p File.join(RIPDIR, 'rip-packages')
-        FileUtils.mkdir_p File.join(RIPDIR, 'active', 'bin')
-        FileUtils.mkdir_p File.join(RIPDIR, 'active', 'lib')
+        Rip::Env.new(RIPDIR).create 'base'
         FileUtils.chown_R USER, nil, RIPDIR, :verbose => true
       end
     end

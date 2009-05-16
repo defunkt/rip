@@ -9,6 +9,10 @@ module Rip
       commands
     end
 
+    def initialize(rip_dir = nil)
+      @rip_dir = rip_dir
+    end
+
     def create(env)
       dir = File.join(rip_dir, env)
 
@@ -28,7 +32,7 @@ module Rip
         abort "#{env} doesn't exist"
       end
 
-      FileUtils.rm active_dir
+      FileUtils.rm active_dir rescue Errno::ENOENT
       FileUtils.ln_s(target, active_dir)
 
       puts "using #{env}"
@@ -97,6 +101,8 @@ module Rip
 
   private
     def rip_dir
+      return @rip_dir if @rip_dir
+
       dir = ENV['RIPDIR'].to_s
 
       if dir.empty?
@@ -105,7 +111,7 @@ module Rip
 
       dir = File.expand_path(dir)
       FileUtils.mkdir_p dir unless File.exists? dir
-      dir
+      @rip_dir = dir
     end
 
     def active_dir
