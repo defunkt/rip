@@ -2,7 +2,7 @@ require 'fileutils'
 
 module Rip
   class Env
-    Dir = "~/.rip"
+    BaseDir = "~/.rip"
 
     # for being lazy about what we have vs what we want.
     # enables javascript-style method calling where
@@ -46,6 +46,10 @@ module Rip
     end
 
     def delete(env)
+      if active_env == env
+        puts "ripenv: can't remove active environment"
+      end
+
       if File.exists?(target = File.join(rip_dir, env))
         FileUtils.rm_rf target
         puts "ripenv: removing #{env}"
@@ -53,7 +57,7 @@ module Rip
     end
 
     def list(env = nil)
-      envs = ::Dir.glob(File.join(rip_dir, '*')).map do |env|
+      envs = Dir.glob(File.join(rip_dir, '*')).map do |env|
         env.split('/').last
       end
       envs -= %w( active rip-packages )
@@ -61,10 +65,7 @@ module Rip
     end
 
     def active
-      active = File.join(rip_dir, 'active')
-      active = File.readlink(active)
-      active = active.split('/').last
-      puts "ripenv: #{active}"
+      puts "ripenv: #{active_env}"
     end
 
     def copy(env, new)
@@ -88,11 +89,17 @@ module Rip
 
   private
     def rip_dir
-      File.expand_path(Dir)
+      File.expand_path(BaseDir)
     end
 
     def active_dir
       File.join(rip_dir, 'active')
+    end
+
+    def active_env
+      active = File.join(rip_dir, 'active')
+      active = File.readlink(active)
+      active.split('/').last
     end
   end
 end
