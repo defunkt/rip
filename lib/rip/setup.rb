@@ -16,6 +16,7 @@ module Rip
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
     HOME = File.expand_path('~')
+    USER = HOME.split('/')[-1]
     LIBDIR = RbConfig::CONFIG['sitelibdir']
     RIPDIR = File.join(HOME, '.rip')
     RIPROOT = File.expand_path(File.join(__DIR__, '..', '..'))
@@ -33,6 +34,7 @@ module Rip
     def install
       install_libs
       install_binary
+      setup_ripenv
       setup_startup_script
       finish_setup
     end
@@ -41,6 +43,7 @@ module Rip
       FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
       FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
+      FileUtils.rm RIPDIR, :verbose => verbose
       abort "rip uninstalled" if verbose
     rescue Errno::EACCES
       abort "rip: uninstall failed. please try again with `sudo`" if verbose
@@ -64,6 +67,15 @@ module Rip
         src = File.join(RIPROOT, 'bin', 'rip.rb')
         dst = File.join(BINDIR, 'rip')
         FileUtils.cp src, dst, :verbose => true
+      end
+    end
+
+    def setup_ripenv
+      transaction "setting up ripenv" do
+        FileUtils.mkdir_p File.join(RIPDIR, 'rip-packages')
+        FileUtils.mkdir_p File.join(RIPDIR, 'active', 'bin')
+        FileUtils.mkdir_p File.join(RIPDIR, 'active', 'lib')
+        FileUtils.chown_R USER, nil, RIPDIR, :verbose => true
       end
     end
 
