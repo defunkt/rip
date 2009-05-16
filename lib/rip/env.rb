@@ -84,7 +84,8 @@ module Rip
 
   private
     def rip_dir
-      if File.exists? dir = ENV['RIPDIR']
+      dir = ENV['RIPDIR']
+      if File.exists?(dir.to_s)
         File.expand_path(dir)
       else
         abort "RIPDIR env variable not found or invalid. did you run setup.rb?"
