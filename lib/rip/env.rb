@@ -2,19 +2,11 @@ require 'fileutils'
 
 module Rip
   class Env
-    # for being lazy about what we have vs what we want.
-    # enables javascript-style method calling where
-    # the number of arguments doesn't need to match
-    # the arity
-    def call(meth, *args)
-      arity = method(meth).arity.abs
-      if arity == args.size
-        send(meth, *args)
-      elsif arity == 0
-        send(meth)
-      else
-        send(meth, args[0, arity])
-      end
+    def self.commands
+      commands  = public_instance_methods
+      commands -= superclass.public_instance_methods
+      commands -= %w( call )
+      commands
     end
 
     def create(env)
@@ -57,8 +49,14 @@ module Rip
       envs = Dir.glob(File.join(rip_dir, '*')).map do |env|
         env.split('/').last
       end
+
       envs -= %w( active rip-packages )
-      puts "#{envs.join(' ')}"
+
+      if envs.empty?
+        puts "none. make one with `rip env create <env>`"
+      else
+        puts "#{envs.join(' ')}"
+      end
     end
 
     def active
@@ -82,13 +80,32 @@ module Rip
       use name
     end
 
+    # for being lazy about what we have vs what we want.
+    # enables javascript-style method calling where
+    # the number of arguments doesn't need to match
+    # the arity
+    def call(meth, *args)
+      arity = method(meth).arity.abs
+      if arity == args.size
+        send(meth, *args)
+      elsif arity == 0
+        send(meth)
+      else
+        send(meth, args[0, arity])
+      end
+    end
+
   private
     def rip_dir
-      if dir = ENV['RIPDIR']
-        File.expand_path(dir)
-      else
+      dir = ENV['RIPDIR'].to_s
+
+      if dir.empty?
         abort "RIPDIR env variable not found. did you run setup.rb?"
       end
+
+      dir = File.expand_path(dir)
+      FileUtils.mkdir_p dir unless File.exists? dir
+      dir
     end
 
     def active_dir
