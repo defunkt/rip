@@ -12,9 +12,12 @@ __DIR__ = File.expand_path(File.dirname(__FILE__))
 
 HOME = File.expand_path('~')
 LIBDIR = RbConfig::CONFIG['sitelibdir']
-BINDIR = RbConfig::CONFIG['bindir']
 RIPDIR = File.join(HOME, '.rip')
 RIPLIBDIR = File.join(LIBDIR, 'rip')
+
+# caution: RbConfig::CONFIG['bindir'] does NOT work for me
+# on OS X
+BINDIR = File.join('/', 'usr', 'local', 'bin')
 
 def transaction(message, &block)
   begin
@@ -31,7 +34,7 @@ def transaction(message, &block)
     end
 
     if e.class == Errno::EACCES
-      puts "rip: access denied. please try running again with `sudo`"
+      abort "rip: access denied. please try running again with `sudo`"
     else
       raise e
     end
@@ -92,5 +95,7 @@ end
 #
 
 transaction "installing rip binary" do
-  FileUtils.cp File.join(__DIR__, 'bin', 'rip.rb'), BINDIR, :verbose => true
+  src = File.join(__DIR__, 'bin', 'rip.rb')
+  dst = File.join(BINDIR, 'rip')
+  FileUtils.cp src, dst, :verbose => true
 end
