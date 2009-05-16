@@ -19,6 +19,12 @@ RIPLIBDIR = File.join(LIBDIR, 'rip')
 # on OS X
 BINDIR = File.join('/', 'usr', 'local', 'bin')
 
+
+#
+# -- step 0.5 --
+# helper functions
+#
+
 def transaction(message, &block)
   puts "rip: #{message}"
   block.call
@@ -31,18 +37,33 @@ rescue => e
   raise e
 end
 
-def uninstall
-  FileUtils.rm_rf RIPLIBDIR
-  FileUtils.rm_rf File.join(RIPLIBDIR, 'rip.rb')
-  FileUtils.rm File.join(BINDIR, 'rip')
-rescue
+def uninstall(verbose = false)
+  FileUtils.rm_rf RIPLIBDIR, :verbose => verbose
+  FileUtils.rm_rf File.join(RIPLIBDIR, 'rip.rb'), :verbose => verbose
+  FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
+rescue Errno::EACCES
+  abort "rip: uninstall failed. please try again with `sudo`" if verbose
+rescue Errno::ENOENT
   nil
+rescue => e
+  raise e if verbose
 end
 
 
 #
-# -- step 1 --
-# add rip libraries to siteLIBDIR
+# -- step 1a --
+# uninstall
+#
+
+if ARGV.include? 'uninstall'
+  uninstall :verbose
+  abort "rip uninstalled"
+end
+
+
+#
+# -- step 1b --
+# add rip libraries to sitelibdir
 #
 
 transaction "installing library files" do
@@ -53,7 +74,7 @@ end
 
 #
 # -- step 2 --
-# add rip binary to BINDIR
+# add rip binary to bindir
 #
 
 transaction "installing rip binary" do
@@ -102,3 +123,13 @@ else
     f.puts startup_script_template
   end
 end
+
+
+#
+# -- step 4 --
+# victory
+#
+
+puts ''
+puts "rip has been successfully installed"
+puts "validate the installation process by running `rip check`"
