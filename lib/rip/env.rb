@@ -56,6 +56,13 @@ module Rip
       puts "ripenv: #{envs.join(' ')}"
     end
 
+    def active
+      active = File.join(rip_dir, 'active')
+      active = File.readlink(active)
+      active = active.split('/').last
+      puts "ripenv: #{active}"
+    end
+
     def copy(env, new)
       dest = File.join(rip_dir, new)
       src  = File.join(rip_dir, env)
