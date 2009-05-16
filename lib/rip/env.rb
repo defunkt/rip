@@ -35,8 +35,7 @@ module Rip
 
     def use(env)
       if !File.exists?(target = File.join(rip_dir, env))
-        ui.puts "#{env} doesn't exist"
-        return
+        ui.error "#{env} doesn't exist"
       end
 
       FileUtils.rm active_dir
@@ -73,13 +72,11 @@ module Rip
       src  = File.join(rip_dir, env)
 
       if File.exists?(dest)
-        ui.puts "#{new} exists"
-        return
+        ui.error "#{new} exists"
       end
 
       if !File.exists?(src)
-        ui.puts "#{env} doesn't exist"
-        return
+        ui.error "#{env} doesn't exist"
       end
 
       FileUtils.cp_r src, dest
