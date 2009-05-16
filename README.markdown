@@ -47,6 +47,42 @@ guiding principles:
 Rip itself should work without anything but the Ruby standard 
 library, for maximum portability.
 
+Rip vs RubyGems
+---------------
+
+### No building
+
+Rip packages are just repositories. Dependencies are listed as separate lines in a plaintext file.
+
+This means projects unaware of Rip can be installed by Rip and managed by
+ripenvs. Adding the dependencies yourself is easy.
+
+### Multiple Environments
+
+Rip makes it easy to have multiple environments with different versions of libraries.
+
+You could even clone a ripenv then upgrade a single library to test its impact
+on the environment as a whole. Installation not go smoothly? Delete the new 
+ripenev then continue using the stable one.
+
+### Dependency Conflict Resolution
+
+With Rip, version conflicts in dependencies are simpler to resolve: you
+know exactly what version of which libraries are requesting which versions
+of the same library at installation time. As a result conflicts are resolved
+when you're thinking about installing your code, not later on when you're
+thinking about running it.
+
+### Hands off
+
+Rip requires no changes to your code, only an option `deps.txt` file added
+to the root of your project. As a result you do not force Rip on anyone else
+and individuals are free to re-package your code using other systems.
+
+### Distributed
+
+There is no canonical server for Rip packages, which may be good or bad.
+
 Installing Packages
 -------------------
 
@@ -104,6 +140,7 @@ though it is discouraged for development.
 Here is a typical directory structure for Rip:
 
     rip/
+      - rip-packages/
       - base/
         - bin/
         - lib/
@@ -128,6 +165,8 @@ packages.
 This individual may use `base` for general tomfoolery (it's the default), `cheat` for 
 developing their Cheat application, and `thunderhorse` for working on their new 
 Thunderhose project.
+
+We also see a `rip-packages` directory. This is where Rip stores the raw repositories.
 
 Let us focus on the `cheat` ripenv:
 
@@ -172,38 +211,6 @@ upload and install your `.ripenv` file.
 
 Installing a `.ripenv` multiple times won't create unnecessary work and will
 upgrade any packages that change.
-
-Rip vs RubyGems
----------------
-
-### No building
-
-Rip packages are just repositories. Dependencies are listed as separate lines in a plaintext file.
-
-This means projects unaware of Rip can be installed by Rip and managed by
-ripenvs. Adding the dependencies yourself is easy.
-
-### Multiple Environments
-
-Rip makes it easy to have multiple environments with different versions of libraries.
-
-You could even clone a ripenv then upgrade a single library to test its impact
-on the environment as a whole. Installation not go smoothly? Delete the new 
-ripenev then continue using the stable one.
-
-### Dependency Conflict Resolution
-
-With Rip, version conflicts in dependencies are simpler to resolve: you
-know exactly what version of which libraries are requesting which versions
-of the same library at installation time. As a result conflicts are resolved
-when you're thinking about installing your code, not later on when you're
-thinking about running it.
-
-### Hands off
-
-Rip requires no changes to your code, only an option `deps.txt` file added
-to the root of your project. As a result you do not force Rip on anyone else
-and individuals are free to re-package your code using other systems.
 
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
