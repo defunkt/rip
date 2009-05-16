@@ -225,6 +225,15 @@ upload and install your `.ripenv` file.
 Installing a `.ripenv` multiple times won't create unnecessary work and will
 upgrade any packages that change.
 
+Shortcomings
+------------
+
+Currently it's UNIX-only. This is because Rip needs to manipulate the RUBYLIB 
+and PATH environment variables so that Ruby knows where to find installed Rip
+packages.
+
+As a result, the setup script expects you to be running bash or zshell.
+
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
 [3]: http://github.com/defunkt/ambition
