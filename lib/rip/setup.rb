@@ -30,6 +30,27 @@ module Rip
     # setup steps
     #
 
+    def install
+      install_libs
+      install_binary
+      setup_startup_script
+      finish_setup
+    end
+
+    def uninstall(verbose = false)
+      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
+      FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
+      FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
+      abort "rip uninstalled" if verbose
+    rescue Errno::EACCES
+      abort "rip: uninstall failed. please try again with `sudo`" if verbose
+    rescue Errno::ENOENT
+      nil
+    rescue => e
+      raise e if verbose
+    end
+
+
     def install_libs
       transaction "installing library files" do
         riprb = File.join(RIPROOT, 'lib', 'rip.rb')
@@ -89,19 +110,6 @@ module Rip
       puts "rip: something failed, rolling back..."
       uninstall
       raise e
-    end
-
-    def uninstall(verbose = false)
-      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
-      FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
-      FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
-      abort "rip uninstalled" if verbose
-    rescue Errno::EACCES
-      abort "rip: uninstall failed. please try again with `sudo`" if verbose
-    rescue Errno::ENOENT
-      nil
-    rescue => e
-      raise e if verbose
     end
 
     def startup_script_template
