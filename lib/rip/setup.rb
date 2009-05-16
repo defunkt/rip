@@ -27,35 +27,6 @@ module Rip
 
 
     #
-    # setup methods
-    #
-
-    def transaction(message, &block)
-      puts "rip: #{message}"
-      block.call
-    rescue Errno::EACCES
-      uninstall
-      abort "rip: access denied. please try running again with `sudo`"
-    rescue => e
-      puts "rip: something failed, rolling back..."
-      uninstall
-      raise e
-    end
-
-    def uninstall(verbose = false)
-      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
-      FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
-      FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
-      abort "rip uninstalled" if verbose
-    rescue Errno::EACCES
-      abort "rip: uninstall failed. please try again with `sudo`" if verbose
-    rescue Errno::ENOENT
-      nil
-    rescue => e
-      raise e if verbose
-    end
-
-    #
     # setup steps
     #
 
@@ -108,6 +79,31 @@ module Rip
     # helper methods
     #
 
+    def transaction(message, &block)
+      puts "rip: #{message}"
+      block.call
+    rescue Errno::EACCES
+      uninstall
+      abort "rip: access denied. please try running again with `sudo`"
+    rescue => e
+      puts "rip: something failed, rolling back..."
+      uninstall
+      raise e
+    end
+
+    def uninstall(verbose = false)
+      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
+      FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
+      FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
+      abort "rip uninstalled" if verbose
+    rescue Errno::EACCES
+      abort "rip: uninstall failed. please try again with `sudo`" if verbose
+    rescue Errno::ENOENT
+      nil
+    rescue => e
+      raise e if verbose
+    end
+
     def startup_script_template
       DATA.read % RIPDIR
     end
@@ -120,19 +116,37 @@ module Rip
       script ? File.join(HOME, script) : ''
     end
 
-    def check_installation
+    def installed?
+      check_if_installed
+      true
+    rescue
+      false
+    end
+
+    def check_if_installed
       script = startup_script
 
       if !File.read(script).include? 'RIPDIR='
-        abort "rip: installation failed. no env variables in startup script"
+        raise "no env variables in startup script"
       end
 
-      if !File.exists?(File.expand_path(ENV['RIPDIR'].to_s))
-        puts "rip: installation failed. no $RIPDIR"
-        abort "(try restarting your shell or running `source #{script}`)"
+      if !File.exists? File.expand_path(ENV['RIPDIR'].to_s)
+        raise "no $RIPDIR"
       end
 
-      puts "rip: installation successful"
+      if !File.exists? File.join(BINDIR, 'rip')
+        raise "no rip in #{BINDIR}"
+      end
+
+      if !File.exists? File.join(LIBDIR, 'rip')
+        raise "no rip in #{LIBDIR}"
+      end
+
+      if !File.exists? File.join(LIBDIR, 'rip')
+        raise "no rip.rb in #{LIBDIR}"
+      end
+
+      true
     end
   end
 end

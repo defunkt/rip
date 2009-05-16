@@ -17,6 +17,8 @@ include Rip::Setup
 
 if ARGV.include? 'uninstall'
   uninstall :verbose
+elsif installed?
+  puts "rip: already installed"
 else
   install_libs
   install_binary
