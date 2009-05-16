@@ -40,7 +40,7 @@ module Rip
 
     def delete(env)
       if active_env == env
-        puts "can't remove active environment"
+        abort "can't remove active environment"
       end
 
       if File.exists?(target = File.join(rip_dir, env))
