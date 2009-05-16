@@ -81,7 +81,7 @@ module Rip
 
       FileUtils.cp_r src, dest
       puts "cloned #{env} to #{new}"
-      use name
+      use new
     end
 
     # for being lazy about what we have vs what we want.
