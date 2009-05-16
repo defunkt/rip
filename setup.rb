@@ -1,4 +1,12 @@
-# installs rip
+#
+# installs rip like so:
+#   ruby setup.rb
+#
+# also uninstalls rip like so:
+#   ruby setup.rb uninstall
+#
+# probably requires sudo.
+#
 
 #
 # -- step 0 --
@@ -7,6 +15,8 @@
 
 require 'fileutils'
 require 'rbconfig'
+
+WEBSITE = "http://defunkt.github.com/rip"
 
 __DIR__ = File.expand_path(File.dirname(__FILE__))
 
@@ -133,3 +143,5 @@ end
 puts ''
 puts "rip has been successfully installed"
 puts "validate the installation process by running `rip check`"
+puts ''
+puts "get started: see `rip -h` or #{WEBSITE}"
