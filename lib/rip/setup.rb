@@ -50,7 +50,6 @@ module Rip
       raise e if verbose
     end
 
-
     def install_libs
       transaction "installing library files" do
         riprb = File.join(RIPROOT, 'lib', 'rip.rb')
@@ -138,7 +137,7 @@ module Rip
         raise "no env variables in startup script"
       end
 
-      if !File.exists? File.expand_path(ENV['RIPDIR'].to_s)
+      if ENV['RIPDIR'].to_s.empty?
         raise "no $RIPDIR"
       end
 
