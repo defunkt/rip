@@ -20,29 +20,51 @@ RIPLIBDIR = File.join(LIBDIR, 'rip')
 BINDIR = File.join('/', 'usr', 'local', 'bin')
 
 def transaction(message, &block)
-  begin
-    puts "rip: #{message}"
-    block.call
-  rescue => e
-    puts "rip: something failed, rolling back..."
-
-    begin
-      FileUtils.rm_rf RIPLIBDIR
-      FileUtils.rm_rf File.join(RIPLIBDIR, 'rip.rb')
-      FileUtils.rm File.join(BINDIR, 'rip')
-    rescue
-    end
-
-    if e.class == Errno::EACCES
-      abort "rip: access denied. please try running again with `sudo`"
-    else
-      raise e
-    end
-  end
+  puts "rip: #{message}"
+  block.call
+rescue Errno::EACCES
+  uninstall
+  abort "rip: access denied. please try running again with `sudo`"
+rescue => e
+  puts "rip: something failed, rolling back..."
+  uninstall
+  raise e
 end
+
+def uninstall
+  FileUtils.rm_rf RIPLIBDIR
+  FileUtils.rm_rf File.join(RIPLIBDIR, 'rip.rb')
+  FileUtils.rm File.join(BINDIR, 'rip')
+rescue
+  nil
+end
+
 
 #
 # -- step 1 --
+# add rip libraries to siteLIBDIR
+#
+
+transaction "installing library files" do
+  FileUtils.cp_r File.join(__DIR__, 'lib', 'rip.rb'), LIBDIR, :verbose => true
+  FileUtils.cp_r File.join(__DIR__, 'lib', 'rip'), LIBDIR, :verbose => true
+end
+
+
+#
+# -- step 2 --
+# add rip binary to BINDIR
+#
+
+transaction "installing rip binary" do
+  src = File.join(__DIR__, 'bin', 'rip.rb')
+  dst = File.join(BINDIR, 'rip')
+  FileUtils.cp src, dst, :verbose => true
+end
+
+
+#
+# -- step 3 --
 # append to the startup script
 #
 
@@ -67,35 +89,16 @@ end
 if startup_script
   startup_script = File.join(HOME, startup_script)
 else
-  puts "rip: please create one of these startup scripts in ~:"
+  puts "rip: please create one of these startup scripts in $HOME:"
   puts startup_scripts.map { |s| '  ' + s }
   exit
 end
 
-puts "rip: adding env variables to #{startup_script}"
-# File.open(startup_script, 'a+') do |f|
-#   f.puts startup_script_template
-# end
-
-
-#
-# -- step 2 --
-# add rip libraries to siteLIBDIR
-#
-
-transaction "installing library files" do
-  FileUtils.cp_r File.join(__DIR__, 'lib', 'rip.rb'), LIBDIR, :verbose => true
-  FileUtils.cp_r File.join(__DIR__, 'lib', 'rip'), LIBDIR, :verbose => true
-end
-
-
-#
-# -- step 3 --
-# add rip binary to BINDIR
-#
-
-transaction "installing rip binary" do
-  src = File.join(__DIR__, 'bin', 'rip.rb')
-  dst = File.join(BINDIR, 'rip')
-  FileUtils.cp src, dst, :verbose => true
+if File.read(startup_script).include? 'RIPDIR='
+  puts "rip: env variables already present in startup script"
+else
+  puts "rip: adding env variables to #{startup_script}"
+  File.open(startup_script, 'a+') do |f|
+    f.puts startup_script_template
+  end
 end
