@@ -4,6 +4,10 @@ module Rip
   class Env
     Dir = "~/.rip"
 
+    # for being lazy about what we have vs what we want.
+    # enables javascript-style method calling where
+    # the number of arguments doesn't need to match
+    # the arity
     def call(meth, *args)
       arity = method(meth).arity.abs
       if arity == args.size
