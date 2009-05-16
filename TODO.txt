@@ -1,8 +1,9 @@
  *  ripenv
-[ ] rip env create <env>
-[ ] rip env use <env>
-[ ] rip env delete <env>
-[ ] rip env clone <env>
+[x] rip env create <env>
+[x] rip env use <env>
+[x] rip env delete <env>
+[x] rip env copy <env>
+[x] rip env list
  * rip install
 [ ] rip install git://github.com/defunkt/zippy.git (no deps)
 [ ] rip install git://github.com/defunkt/zippy.git (deps)

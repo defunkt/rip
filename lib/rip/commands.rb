@@ -12,17 +12,13 @@ module Rip
     end
 
     def install(options = {}, *args)
-      puts :woot
-      puts options.inspect
-      puts args.inspect
     end
 
     def uninstall(options = {}, *args)
-      puts :toow
     end
 
-    def env(options, command, name = nil)
-      puts command
+    def env(options, command, *args)
+      Rip::Env.new.call(command, *args)
     end
   end
 end
