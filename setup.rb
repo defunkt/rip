@@ -92,5 +92,5 @@ end
 #
 
 transaction "installing rip binary" do
-  FileUtils.cp File.join(__DIR__, 'bin', 'rip'), BINDIR, :verbose => true
+  FileUtils.cp File.join(__DIR__, 'bin', 'rip.rb'), BINDIR, :verbose => true
 end
