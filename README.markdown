@@ -162,8 +162,48 @@ When running Ruby scripts, or even executing the `camping` binary,
 `require "markaby"` in a Ruby script and it will succeed.
 
 In any other ripenv, the `cheat` ripenv's binaries and libraries are as
-good as non-existant. 
+good as non-existant.
 
+Deployment
+----------
+
+Want to get a copy of your local environment on your deployment server? Just
+upload and install your `.ripenv` file.
+
+Installing a `.ripenv` multiple times won't create unnecessary work and will
+upgrade any packages that change.
+
+Rip vs RubyGems
+---------------
+
+### No building
+
+Rip packages are just repositories. Dependencies are listed as separate lines in a plaintext file.
+
+This means projects unaware of Rip can be installed by Rip and managed by
+ripenvs. Adding the dependencies yourself is easy.
+
+### Multiple Environments
+
+Rip makes it easy to have multiple environments with different versions of libraries.
+
+You could even clone a ripenv then upgrade a single library to test its impact
+on the environment as a whole. Installation not go smoothly? Delete the new 
+ripenev then continue using the stable one.
+
+### Dependency Conflict Resolution
+
+With Rip, version conflicts in dependencies are simpler to resolve: you
+know exactly what version of which libraries are requesting which versions
+of the same library at installation time. As a result conflicts are resolved
+when you're thinking about installing your code, not later on when you're
+thinking about running it.
+
+### Hands off
+
+Rip requires no changes to your code, only an option `deps.txt` file added
+to the root of your project. As a result you do not force Rip on anyone else
+and individuals are free to re-package your code using other systems.
 
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
