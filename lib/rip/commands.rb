@@ -25,10 +25,10 @@ module Rip
     end
 
     def env(options = {}, command = nil, *args)
-      if command.nil?
-        help nil, :env
-      else
+      if command
         Rip::Env.new.call(command, *args)
+      else
+        help nil, :env
       end
     end
 
