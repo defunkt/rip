@@ -50,7 +50,7 @@ RIPDIR=#{RIPDIR}
 export RIPDIR
 RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
 export RUBYLIB
-PATH="$PATH:$RIPDIR/active/lib"
+PATH="$PATH:$RIPDIR/active/bin"
 export PATH
 # -- end rip config -- #
 
