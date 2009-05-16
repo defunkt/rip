@@ -1,0 +1,149 @@
+require 'rbconfig'
+require 'fileutils'
+
+module Rip
+  module Setup
+    extend self
+
+
+    #
+    # config
+    #
+
+    WEBSITE = "http://defunkt.github.com/rip"
+    STARTUP_SCRIPTS = %w( .profile .bash_profile .bashrc .zshrc )
+
+    __DIR__ = File.expand_path(File.dirname(__FILE__))
+
+    HOME = File.expand_path('~')
+    LIBDIR = RbConfig::CONFIG['sitelibdir']
+    RIPDIR = File.join(HOME, '.rip')
+    RIPROOT = File.expand_path(File.join(__DIR__, '..', '..'))
+    RIPINSTALLDIR = File.join(LIBDIR, 'rip')
+
+    # caution: RbConfig::CONFIG['bindir'] does NOT work for me
+    # on OS X
+    BINDIR = File.join('/', 'usr', 'local', 'bin')
+
+
+    #
+    # setup methods
+    #
+
+    def transaction(message, &block)
+      puts "rip: #{message}"
+      block.call
+    rescue Errno::EACCES
+      uninstall
+      abort "rip: access denied. please try running again with `sudo`"
+    rescue => e
+      puts "rip: something failed, rolling back..."
+      uninstall
+      raise e
+    end
+
+    def uninstall(verbose = false)
+      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
+      FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
+      FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
+      abort "rip uninstalled" if verbose
+    rescue Errno::EACCES
+      abort "rip: uninstall failed. please try again with `sudo`" if verbose
+    rescue Errno::ENOENT
+      nil
+    rescue => e
+      raise e if verbose
+    end
+
+    #
+    # setup steps
+    #
+
+    def install_libs
+      transaction "installing library files" do
+        riprb = File.join(RIPROOT, 'lib', 'rip.rb')
+        ripdr = File.join(RIPROOT, 'lib', 'rip')
+        FileUtils.cp_r riprb, LIBDIR, :verbose => true
+        FileUtils.cp_r ripdr, LIBDIR, :verbose => true
+      end
+    end
+
+    def install_binary
+      transaction "installing rip binary" do
+        src = File.join(RIPROOT, 'bin', 'rip.rb')
+        dst = File.join(BINDIR, 'rip')
+        FileUtils.cp src, dst, :verbose => true
+      end
+    end
+
+    def setup_startup_script
+      script = startup_script
+
+      if script.empty?
+        puts "rip: please create one of these startup scripts in $HOME:"
+        puts startup_scripts.map { |s| '  ' + s }
+        exit
+      end
+
+      if File.read(script).include? 'RIPDIR='
+        puts "rip: env variables already present in startup script"
+      else
+        puts "rip: adding env variables to #{script}"
+        File.open(script, 'a+') do |f|
+          f.puts startup_script_template
+        end
+      end
+    end
+
+    def finish_setup
+      puts ''
+      puts "rip has been successfully installed"
+      puts "validate the installation process by running `rip check`"
+      puts ''
+      puts "get started: see `rip -h` or #{WEBSITE}"
+    end
+
+
+    #
+    # helper methods
+    #
+
+    def startup_script_template
+      DATA.read % RIPDIR
+    end
+
+    def startup_script
+      script = STARTUP_SCRIPTS.detect do |script|
+        File.exists? file = File.join(HOME, script)
+      end
+
+      script ? File.join(HOME, script) : ''
+    end
+
+    def check_installation
+      script = startup_script
+
+      if !File.read(script).include? 'RIPDIR='
+        abort "rip: installation failed. no env variables in startup script"
+      end
+
+      if !File.exists?(File.expand_path(ENV['RIPDIR'].to_s))
+        puts "rip: installation failed. no $RIPDIR"
+        abort "(try restarting your shell or running `source #{script}`)"
+      end
+
+      puts "rip: installation successful"
+    end
+  end
+end
+
+__END__
+
+# -- start rip config -- #
+RIPDIR=%s
+export RIPDIR
+RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
+export RUBYLIB
+PATH="$PATH:$RIPDIR/active/bin"
+export PATH
+# -- end rip config -- #
