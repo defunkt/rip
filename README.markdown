@@ -83,6 +83,15 @@ and individuals are free to re-package your code using other systems.
 
 There is no canonical server for Rip packages, which may be good or bad.
 
+### Version Control
+
+Much of the work put into classic package management systems is to create
+the packages, configure a package's metadata, read that data, fetch
+packages, and store them locally in a convenient fashion. Rip offloads
+all this functionality onto tools like Subversion and Git - instead of 
+writing code to accomplish these tasks, we just write code to ask the
+SCMs to do it for us.
+
 Installing Packages
 -------------------
 
