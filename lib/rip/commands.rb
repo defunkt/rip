@@ -12,7 +12,7 @@ module Rip
     end
 
     def check(*args)
-      Setup.check_if_installed
+      Setup.check_installation
       puts "rip: all systems go"
     rescue => e
       abort "rip: installation failed. #{e.message}"

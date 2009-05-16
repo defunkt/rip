@@ -117,13 +117,13 @@ module Rip
     end
 
     def installed?
-      check_if_installed
+      check_installation
       true
     rescue
       false
     end
 
-    def check_if_installed
+    def check_installation
       script = startup_script
 
       if !File.read(script).include? 'RIPDIR='
