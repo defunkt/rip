@@ -141,6 +141,9 @@ Here is a typical directory structure for Rip:
 
     rip/
       - rip-packages/
+      - active/
+        - bin/
+        - lib/  
       - base/
         - bin/
         - lib/
@@ -166,7 +169,8 @@ This individual may use `base` for general tomfoolery (it's the default), `cheat
 developing their Cheat application, and `thunderhorse` for working on their new 
 Thunderhose project.
 
-We also see a `rip-packages` directory. This is where Rip stores the raw repositories.
+`active` is a symlink to the current, active ripenv. We also see a `rip-packages` directory. 
+This is where Rip stores the raw repositories.
 
 Let us focus on the `cheat` ripenv:
 
