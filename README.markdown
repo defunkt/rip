@@ -75,7 +75,7 @@ thinking about running it.
 
 ### Hands off
 
-Rip requires no changes to your code, only an option `deps.txt` file added
+Rip requires no changes to your code, only an optional `deps.txt` file added
 to the root of your project. As a result you do not force Rip on anyone else
 and individuals are free to re-package your code using other systems.
 
@@ -102,8 +102,8 @@ Let's take the [ambition][3] project as an example. This is its
 `deps.txt` in full:
 
     git://github.com/drnic/rubigen.git REL-1.3.0
-    git://github.com/seattlerb/ruby2ruby.git e3cf5755910e65546ddfc7cb33a696964060b4e7 # 1.1.8
-    git://github.com/seattlerb/parsetree.git 480ede9d94168c16ac6ca6da36319ead5e352e6b # 2.1.1
+    git://github.com/seattlerb/ruby2ruby.git e3cf57559 # 1.1.8
+    git://github.com/seattlerb/parsetree.git 480ede9d9 # 2.1.1
 
 If you were to run `rip install git://github.com/defunkt/ambition.git` 
 the following steps would occur:
@@ -143,8 +143,7 @@ As a result, the outer most dependency's installation hook is run first.
 Rip Directory Structure
 -----------------------
 
-Rip is by default user-specific but can be configured to work system wide, 
-though it is discouraged for development.
+Rip is currently user-specific.
 
 Here is a typical directory structure for Rip:
 
