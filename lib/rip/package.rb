@@ -29,6 +29,7 @@ module Rip
         fetch
         unpack(version)
         install_dependencies(graph)
+        run_install_hook
         copy_files(graph)
       end
 
@@ -66,6 +67,14 @@ module Rip
         File.readlines(deps).map { |line| line.split(' ') }
       else
         []
+      end
+    end
+
+    def run_install_hook
+      return unless File.exists? File.join(path, 'Rakefile')
+      Dir.chdir path do
+        puts "running install hook for #{name}"
+        system "rake -s rip:install"
       end
     end
 
