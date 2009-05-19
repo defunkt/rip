@@ -97,5 +97,9 @@ module Rip
         []
       end
     end
+
+    def puts(msg)
+      super "rip: #{msg}"
+    end
   end
 end
