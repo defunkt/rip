@@ -81,7 +81,6 @@ module Rip
     end
 
     def save
-      puts "saved #{path}"
       File.open(path, 'w') do |f|
         f.puts marshal_payload
         f.flush
