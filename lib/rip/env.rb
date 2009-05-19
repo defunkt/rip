@@ -90,6 +90,7 @@ module Rip
     # the arity
     def call(meth, *args)
       arity = method(meth).arity.abs
+
       if arity == args.size
         send(meth, *args)
       elsif arity == 0

@@ -25,7 +25,8 @@ module Rip
     end
 
     def env(options = {}, command = nil, *args)
-      if command
+      env = Rip::Env.new
+      if command && env.respond_to?(command)
         Rip::Env.new.call(command, *args)
       else
         help nil, :env
