@@ -20,14 +20,19 @@ module Rip
 
     def install(version = nil, graph = nil)
       graph ||= DependencyGraph.new(Rip::Env.active)
-      graph.add_package(name, version)
+
+      # check if already installed
+      installed = graph.add_package(name, version)
+      return if !installed
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         fetch
         unpack(version)
         install_dependencies(graph)
-        copy_files
+        copy_files(graph)
       end
+
+      graph.save
     end
 
     def fetch
@@ -51,9 +56,8 @@ module Rip
     def install_dependencies(graph)
       dependencies.each do |target, version, _|
         dependency = Package.new(target)
-        if graph.add_dependency(name, dependency.name, version)
-          dependency.install(version, graph)
-        end
+        graph.add_dependency(name, dependency.name, version)
+        dependency.install(version, graph)
       end
     end
 
@@ -65,41 +69,29 @@ module Rip
       end
     end
 
-    def copy_files
+    def copy_files(graph)
       puts "installing #{name}..."
-      package_rb = File.join(path, 'lib', "#{name}.rb")
-      package_lib = File.join(path, 'lib', name)
-      package_bin = File.join(path, 'bin', name)
+
+      package_lib = File.join(path, 'lib')
+      package_bin = File.join(path, 'bin')
 
       dest = File.join(Rip.dir, Rip::Env.active)
       dest_lib = File.join(dest, 'lib')
       dest_bin = File.join(dest, 'bin')
 
-      if File.exists? package_rb
-        FileUtils.cp package_rb, File.join(dest_lib, "#{name}.rb")
-      end
-
       if File.exists? package_lib
-        FileUtils.cp_r package_lib, File.join(dest_lib, name)
+        FileUtils.cp_r package_lib + '/.', dest_lib
+        graph.add_files(name, Dir.glob(package_lib + '/*'))
       end
 
       if File.exists? package_bin
-        FileUtils.cp package_bin, dest_bin
+        FileUtils.cp_r package_bin + '/.', dest_bin
+        graph.add_files(name, Dir.glob(package_bin + '/*'))
       end
     end
 
     def uninstall
-      puts "uninstalling..."
-
-      dest = File.join(Rip.dir, Rip::Env.active)
-      dest_lib = File.join(dest, 'lib')
-      dest_bin = File.join(dest, 'bin')
-
-      FileUtils.rm_rf File.join(dest_lib, "#{name}.rb") rescue nil
-      FileUtils.rm_rf File.join(dest_lib, name) rescue nil
-      FileUtils.rm_rf File.join(dest_bin, name) rescue nil
-
-      puts "uninstalled #{name}"
+      puts "can't uninstall yet"
     end
 
     def puts(msg)
