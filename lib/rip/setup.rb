@@ -1,4 +1,5 @@
 require 'rbconfig'
+require 'fileutils'
 
 module Rip
   module Setup
@@ -40,7 +41,7 @@ module Rip
 
     def uninstall(verbose = false)
       FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
-      FileUtils.rm_rf File.join(RIPINSTALLDIR, 'rip.rb'), :verbose => verbose
+      FileUtils.rm_rf File.join(LIBDIR, 'rip.rb'), :verbose => verbose
       FileUtils.rm_rf RIPDIR, :verbose => verbose
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
       abort "rip uninstalled" if verbose
