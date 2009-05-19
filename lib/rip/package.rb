@@ -19,7 +19,7 @@ module Rip
     end
 
     def install(version = nil, graph = nil)
-      graph ||= DependencyGraph.new(Rip::Env.active)
+      graph ||= DependencyGraph.new
 
       # check if already installed
       installed = graph.add_package(name, version)
@@ -81,17 +81,56 @@ module Rip
 
       if File.exists? package_lib
         FileUtils.cp_r package_lib + '/.', dest_lib
-        graph.add_files(name, Dir.glob(package_lib + '/*'))
+
+        files_added = Dir.glob(package_lib + '/*').map do |file|
+          File.join(dest_lib, File.basename(file))
+        end
+
+        graph.add_files(name, files_added)
       end
 
       if File.exists? package_bin
         FileUtils.cp_r package_bin + '/.', dest_bin
-        graph.add_files(name, Dir.glob(package_bin + '/*'))
+
+        files_added = Dir.glob(package_bin + '/*').map do |file|
+          File.join(dest_bin, File.basename(file))
+        end
+
+        graph.add_files(name, files_added)
+
       end
     end
 
-    def uninstall
-      puts "can't uninstall yet"
+    def uninstall(force = false)
+      graph ||= DependencyGraph.new
+
+      if !graph.installed? name
+        abort "#{name} isn't installed"
+      end
+
+      puts "uninstalling #{name}..."
+
+      dependents = graph.packages_that_depend_on(name)
+
+      if dependents.any? && !force
+        puts "the following packages depend on #{name}:"
+
+        dependents.each do |dependent|
+          puts dependent
+        end
+
+        puts "pass -y if you really want to remove #{name}"
+      end
+
+      if force || dependents.empty?
+        graph.files(name).each do |file|
+          FileUtils.rm_rf file
+        end
+
+        graph.remove(name)
+        graph.save
+        puts "uninstalled #{name}"
+      end
     end
 
     def puts(msg)

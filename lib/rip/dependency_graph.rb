@@ -8,12 +8,15 @@ module Rip
 
       @packages ||= {}
       @heritage ||= {}
+      @lineage ||= {}
       @files ||= {}
     end
 
     def add_dependency(parent, name, version = nil)
       @heritage[name] ||= []
       @heritage[name].push(parent)
+      @lineage[parent] ||= []
+      @lineage[parent].push(name)
     end
 
     def add_package(name, version = nil)
@@ -32,6 +35,18 @@ module Rip
         @packages[name] = version
         true
       end
+    end
+
+    def installed?(name)
+      @packages.has_key? name
+    end
+
+    def remove(name)
+      @packages.delete(name)
+    end
+
+    def packages_that_depend_on(name)
+      @lineage[name] || []
     end
 
     def add_files(name, file_list = [])
@@ -59,11 +74,11 @@ module Rip
     end
 
     def marshal_payload
-      Marshal.dump [ @packages, @heritage, @files ]
+      Marshal.dump [ @packages, @heritage, @lineage, @files ]
     end
 
     def marshal_read(data)
-      @packages, @heritage, @files = Marshal.load(data)
+      @packages, @heritage, @lineage, @files = Marshal.load(data)
     end
   end
 end

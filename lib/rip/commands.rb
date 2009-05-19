@@ -38,7 +38,7 @@ module Rip
         abort "rip: please tell me what to uninstall"
       end
 
-      Rip::Package.new(target).uninstall
+      Rip::Package.new(target).uninstall(options['y'])
     end
 
     def env(options = {}, command = nil, *args)
