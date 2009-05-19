@@ -20,28 +20,14 @@ module Rip
 
     def install(version = nil)
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        fetch_package
-        unpack_package(version)
-        copy_files
+        fetch
+        unpack(version)
         install_dependencies
+        copy_files
       end
     end
 
-    def uninstall
-      puts "uninstalling..."
-
-      dest = File.join(Rip.dir, Rip::Env.active)
-      dest_lib = File.join(dest, 'lib')
-      dest_bin = File.join(dest, 'bin')
-
-      FileUtils.rm_rf File.join(dest_lib, "#{name}.rb") rescue nil
-      FileUtils.rm_rf File.join(dest_lib, name) rescue nil
-      FileUtils.rm_rf File.join(dest_bin, name) rescue nil
-
-      puts "uninstalled #{name}"
-    end
-
-    def fetch_package
+    def fetch
       puts "fetching #{@target} as #{package}..."
       if File.exists? package
         Dir.chdir File.join(Dir.pwd, package) do
@@ -52,15 +38,30 @@ module Rip
       end
     end
 
-    def unpack_package(version = nil)
-      puts "unpacking#{version ? ' ' + version : nil}..."
+    def unpack(version = nil)
+      puts "unpacking #{name}#{version ? ' ' + version : nil}..."
       Dir.chdir File.join(Dir.pwd, package) do
         `git reset --hard #{version || 'origin/master'}`
       end
     end
 
+    def install_dependencies
+      dependencies.each do |target, version, name|
+        dependency = Package.new(target)
+        dependency.install(version)
+      end
+    end
+
+    def dependencies
+      if File.exists? deps = File.join(path, 'deps.txt')
+        File.readlines(deps).map { |line| line.split(' ') }
+      else
+        []
+      end
+    end
+
     def copy_files
-      puts "installing..."
+      puts "installing #{name}..."
       package_rb = File.join(path, 'lib', "#{name}.rb")
       package_lib = File.join(path, 'lib', name)
       package_bin = File.join(path, 'bin', name)
@@ -82,20 +83,18 @@ module Rip
       end
     end
 
-    def install_dependencies
-      dependencies.each do |target, version, name|
-        dependency = Package.new(target)
-        dependency.install(version)
-      end
-    end
+    def uninstall
+      puts "uninstalling..."
 
-    def dependencies
-      deps = File.join(path, 'deps.txt')
-      if File.exists? deps
-        File.readlines(deps).map { |line| line.split(' ') }
-      else
-        []
-      end
+      dest = File.join(Rip.dir, Rip::Env.active)
+      dest_lib = File.join(dest, 'lib')
+      dest_bin = File.join(dest, 'bin')
+
+      FileUtils.rm_rf File.join(dest_lib, "#{name}.rb") rescue nil
+      FileUtils.rm_rf File.join(dest_lib, name) rescue nil
+      FileUtils.rm_rf File.join(dest_bin, name) rescue nil
+
+      puts "uninstalled #{name}"
     end
 
     def puts(msg)
