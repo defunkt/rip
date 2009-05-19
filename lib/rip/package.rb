@@ -18,17 +18,20 @@ module Rip
       File.join(Rip.dir, 'rip-packages', package)
     end
 
-    def install(version = nil)
+    def install(version = nil, graph = nil)
+      graph ||= DependencyGraph.new(Rip::Env.active)
+      graph.add_package(name, version)
+
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         fetch
         unpack(version)
-        install_dependencies
+        install_dependencies(graph)
         copy_files
       end
     end
 
     def fetch
-      puts "fetching #{@target} as #{package}..."
+      puts "fetching #{name}..."
       if File.exists? package
         Dir.chdir File.join(Dir.pwd, package) do
           `git fetch origin`
@@ -45,10 +48,12 @@ module Rip
       end
     end
 
-    def install_dependencies
-      dependencies.each do |target, version, name|
+    def install_dependencies(graph)
+      dependencies.each do |target, version, _|
         dependency = Package.new(target)
-        dependency.install(version)
+        if graph.add_dependency(name, dependency.name, version)
+          dependency.install(version, graph)
+        end
       end
     end
 

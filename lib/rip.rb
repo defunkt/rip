@@ -1,10 +1,11 @@
 require 'fileutils'
 
 module Rip
-  autoload :Commands, "rip/commands"
-  autoload :Env,      "rip/env"
-  autoload :Setup,    "rip/setup"
-  autoload :Package,  "rip/package"
+  autoload :Commands,        "rip/commands"
+  autoload :Env,             "rip/env"
+  autoload :Setup,           "rip/setup"
+  autoload :Package,         "rip/package"
+  autoload :DependencyGraph, "rip/dependency_graph"
 
   def self.dir
     return @dir if @dir
