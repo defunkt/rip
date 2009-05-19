@@ -97,7 +97,6 @@ module Rip
         end
 
         graph.add_files(name, files_added)
-
       end
     end
 
@@ -116,7 +115,7 @@ module Rip
           FileUtils.rm_rf file
         end
 
-        graph.remove(package)
+        graph.remove_package(package)
       end
     end
 

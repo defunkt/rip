@@ -6,10 +6,33 @@ module Rip
       @env = env || Rip::Env.active
       load
 
+      # key is the package name, value is the current
+      # installed version
       @packages ||= {}
+
+      # key is the package name, value is an array of
+      # libraries it depend on
       @heritage ||= {}
+
+      # key is the package name, value is an array of
+      # libraries that depend on it
       @lineage ||= {}
+
+      # key is the package name, value is an array of
+      # files it installed
       @files ||= {}
+    end
+
+    def packages_that_depend_on(name)
+      @lineage[name] || []
+    end
+
+    def files(name)
+      @files[name]
+    end
+
+    def installed?(name)
+      @packages.has_key? name
     end
 
     def add_dependency(parent, name, version = nil)
@@ -37,11 +60,12 @@ module Rip
       end
     end
 
-    def installed?(name)
-      @packages.has_key? name
+    def add_files(name, file_list = [])
+      @files[name] ||= []
+      @files[name].concat file_list
     end
 
-    def remove(name)
+    def remove_package(name)
       Array(@heritage[name]).each do |dep|
         @lineage[dep].delete(name) if @lineage[dep].respond_to? :delete
       end
@@ -52,20 +76,12 @@ module Rip
       save
     end
 
-    def packages_that_depend_on(name)
-      @lineage[name] || []
-    end
-
-    def add_files(name, file_list = [])
-      @files[name] ||= []
-      @files[name].concat file_list
-    end
-
-    def files(name)
-      @files[name]
+    def path
+      File.join(Rip.dir, @env, "#{@env}.ripenv")
     end
 
     def save
+      puts "saved #{path}"
       File.open(path, 'w') do |f|
         f.puts marshal_payload
         f.flush
@@ -74,10 +90,6 @@ module Rip
 
     def load
       marshal_read File.read(path) if File.exists? path
-    end
-
-    def path
-      File.join(Rip.dir, @env, "#{@env}.ripenv")
     end
 
     def marshal_payload
