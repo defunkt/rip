@@ -18,12 +18,12 @@ module Rip
       abort "rip: installation failed. #{e.message}"
     end
 
-    def install(options = {}, target = nil, *args)
+    def install(options = {}, target = nil, version = nil, *args)
       if target.to_s.empty?
         abort "rip: please tell me what to install"
       end
 
-      Rip::Package.new(target).install
+      Rip::Package.new(target).install(version)
     end
 
     def uninstall(options = {}, *args)
