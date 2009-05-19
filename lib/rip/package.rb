@@ -32,11 +32,11 @@ module Rip
 
       dest = File.join(Rip.dir, Rip::Env.active)
       dest_lib = File.join(dest, 'lib')
-      dest_bin = File.join(dest, 'bin', name)
+      dest_bin = File.join(dest, 'bin')
 
       FileUtils.rm_rf File.join(dest_lib, "#{name}.rb") rescue nil
       FileUtils.rm_rf File.join(dest_lib, name) rescue nil
-      FileUtils.rm_rf dest_bin rescue nil
+      FileUtils.rm_rf File.join(dest_bin, name) rescue nil
 
       puts "uninstalled #{name}"
     end
