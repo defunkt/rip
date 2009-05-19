@@ -17,35 +17,35 @@ module Rip
       dir = File.join(rip_dir, env)
 
       if File.exists? dir
-        puts "#{env} exists"
+        "#{env} exists"
       else
         FileUtils.mkdir_p File.join(dir, 'bin')
         FileUtils.mkdir_p File.join(dir, 'lib')
 
-        puts "created #{env}"
         use env
+        "created #{env}"
       end
     end
 
     def use(env)
       if !File.exists?(target = File.join(rip_dir, env))
-        abort "#{env} doesn't exist"
+        return "#{env} doesn't exist"
       end
 
       FileUtils.rm active_dir rescue Errno::ENOENT
       FileUtils.ln_s(target, active_dir)
 
-      puts "using #{env}"
+      "using #{env}"
     end
 
     def delete(env)
       if active_env == env
-        abort "can't remove active environment"
+        return "can't remove active environment"
       end
 
       if File.exists?(target = File.join(rip_dir, env))
         FileUtils.rm_rf target
-        puts "removing #{env}"
+        "removing #{env}"
       end
     end
 
@@ -57,14 +57,14 @@ module Rip
       envs -= %w( active rip-packages )
 
       if envs.empty?
-        puts "none. make one with `rip env create <env>`"
+        "none. make one with `rip env create <env>`"
       else
-        puts "#{envs.join(' ')}"
+        envs.join(' ')
       end
     end
 
     def active
-      puts "#{active_env}"
+      active_env
     end
 
     def copy(env, new)
@@ -72,16 +72,16 @@ module Rip
       src  = File.join(rip_dir, env)
 
       if File.exists?(dest)
-        abort "#{new} exists"
+        return "#{new} exists"
       end
 
       if !File.exists?(src)
-        abort "#{env} doesn't exist"
+        return "#{env} doesn't exist"
       end
 
       FileUtils.cp_r src, dest
-      puts "cloned #{env} to #{new}"
       use new
+      "cloned #{env} to #{new}"
     end
 
     # for being lazy about what we have vs what we want.
@@ -102,17 +102,7 @@ module Rip
 
   private
     def rip_dir
-      return @rip_dir if @rip_dir
-
-      dir = ENV['RIPDIR'].to_s
-
-      if dir.empty?
-        abort "RIPDIR env variable not found. did you run setup.rb?"
-      end
-
-      dir = File.expand_path(dir)
-      FileUtils.mkdir_p dir unless File.exists? dir
-      @rip_dir = dir
+      @rip_dir ||= Rip.dir
     end
 
     def active_dir
@@ -123,14 +113,6 @@ module Rip
       active = File.join(rip_dir, 'active')
       active = File.readlink(active)
       active.split('/').last
-    end
-
-    def abort(message)
-      super "ripenv: #{message}"
-    end
-
-    def puts(message)
-      super "ripenv: #{message}"
     end
   end
 end
