@@ -1,7 +1,9 @@
 module Rip
   class DependencyGraph
+    attr_reader :packages, :files
+
     def initialize(env = nil)
-      @env = env
+      @env = env || Rip::Env.active
       load
 
       @packages ||= {}

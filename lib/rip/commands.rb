@@ -26,6 +26,13 @@ module Rip
       Rip::Package.new(target).install(version)
     end
 
+    def list(*args)
+      graph = Rip::DependencyGraph.new
+      puts "ripenv: #{Rip::Env.active}", ''
+      puts graph.packages.map { |k,v| "#{k} (#{v})" }
+    end
+    alias_method :installed, :list
+
     def uninstall(options = {}, target = nil, *args)
       if target.to_s.empty?
         abort "rip: please tell me what to uninstall"
