@@ -26,6 +26,20 @@ module Rip
       end
     end
 
+    def uninstall
+      puts "uninstalling..."
+
+      dest = File.join(Rip.dir, Rip::Env.active)
+      dest_lib = File.join(dest, 'lib')
+      dest_bin = File.join(dest, 'bin')
+
+      FileUtils.rm_rf File.join(dest_lib, "#{name}.rb") rescue nil
+      FileUtils.rm_rf File.join(dest_lib, name) rescue nil
+      FileUtils.rm_rf dest_bin rescue nil
+
+      puts "uninstalled #{name}"
+    end
+
     def fetch_package
       puts "fetching..."
       if File.exists? package
@@ -51,8 +65,8 @@ module Rip
       package_bin = File.join(path, 'bin', name)
 
       dest = File.join(Rip.dir, Rip::Env.active)
-      dest_lib = File.join(Rip.dir, Rip::Env.active, 'lib')
-      dest_bin = File.join(Rip.dir, Rip::Env.active, 'bin')
+      dest_lib = File.join(dest, 'lib')
+      dest_bin = File.join(dest, 'bin')
 
       if File.exists? package_rb
         FileUtils.cp package_rb, File.join(dest_lib, "#{name}.rb")

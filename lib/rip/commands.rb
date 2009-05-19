@@ -26,7 +26,12 @@ module Rip
       Rip::Package.new(target).install(version)
     end
 
-    def uninstall(options = {}, *args)
+    def uninstall(options = {}, target = nil, *args)
+      if target.to_s.empty?
+        abort "rip: please tell me what to uninstall"
+      end
+
+      Rip::Package.new(target).uninstall(version)
     end
 
     def env(options = {}, command = nil, *args)
