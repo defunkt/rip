@@ -42,6 +42,12 @@ module Rip
     end
 
     def remove(name)
+      Array(@heritage[name]).each do |dep|
+        @lineage[dep].delete(name)
+      end
+
+      @heritage.delete(name)
+      @lineage.delete(name)
       @packages.delete(name)
     end
 
