@@ -43,12 +43,13 @@ module Rip
 
     def remove(name)
       Array(@heritage[name]).each do |dep|
-        @lineage[dep].delete(name)
+        @lineage[dep].delete(name) if @lineage[dep].respond_to? :delete
       end
 
       @heritage.delete(name)
       @lineage.delete(name)
       @packages.delete(name)
+      save
     end
 
     def packages_that_depend_on(name)

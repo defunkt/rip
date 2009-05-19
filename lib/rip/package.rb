@@ -101,35 +101,22 @@ module Rip
       end
     end
 
-    def uninstall(force = false)
-      graph ||= DependencyGraph.new
+    def uninstall(remove_dependencies = false)
+      graph = DependencyGraph.new
+      packages = [name]
 
-      if !graph.installed? name
-        abort "#{name} isn't installed"
+      if remove_dependencies
+        packages.concat graph.packages_that_depend_on(name)
       end
 
-      puts "uninstalling #{name}..."
+      packages.each do |package|
+        puts "uninstalling #{package}"
 
-      dependents = graph.packages_that_depend_on(name)
-
-      if dependents.any? && !force
-        puts "the following packages depend on #{name}:"
-
-        dependents.each do |dependent|
-          puts dependent
-        end
-
-        puts "pass -y if you really want to remove #{name}"
-      end
-
-      if force || dependents.empty?
-        graph.files(name).each do |file|
+        graph.files(package).each do |file|
           FileUtils.rm_rf file
         end
 
-        graph.remove(name)
-        graph.save
-        puts "uninstalled #{name}"
+        graph.remove(package)
       end
     end
 
