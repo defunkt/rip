@@ -53,7 +53,7 @@ module Rip
     end
 
     def unpack_package(version = nil)
-      puts "unpacking..."
+      puts "unpacking#{version ? ' ' + version : nil}..."
       Dir.chdir File.join(Dir.pwd, package) do
         `git reset --hard #{version || 'origin/master'}`
       end
@@ -92,7 +92,7 @@ module Rip
     def dependencies
       deps = File.join(path, 'deps.txt')
       if File.exists? deps
-        File.readlines(deps)
+        File.readlines(deps).map { |line| line.split(' ') }
       else
         []
       end
