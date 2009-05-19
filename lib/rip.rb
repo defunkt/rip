@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Rip
   autoload :Commands, "rip/commands"
   autoload :Env,      "rip/env"
@@ -6,7 +8,6 @@ module Rip
 
   def self.dir
     return @dir if @dir
-    require 'fileutils'
 
     dir = ENV['RIPDIR'].to_s
 

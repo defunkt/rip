@@ -1,5 +1,3 @@
-require 'fileutils'
-
 module Rip
   class Package
     def initialize(target)

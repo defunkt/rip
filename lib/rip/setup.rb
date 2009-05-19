@@ -1,5 +1,4 @@
 require 'rbconfig'
-require 'fileutils'
 
 module Rip
   module Setup

@@ -1,5 +1,3 @@
-require 'fileutils'
-
 module Rip
   module Env
     extend self
