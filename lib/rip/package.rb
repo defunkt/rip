@@ -3,7 +3,7 @@ require 'digest/md5'
 module Rip
   class Package
     def initialize(target)
-      @target = target
+      @target = target.strip.chomp
     end
 
     def name
@@ -23,6 +23,7 @@ module Rip
         fetch_package
         unpack_package(version)
         copy_files
+        install_dependencies
       end
     end
 
@@ -41,7 +42,7 @@ module Rip
     end
 
     def fetch_package
-      puts "fetching..."
+      puts "fetching #{@target} as #{package}..."
       if File.exists? package
         Dir.chdir File.join(Dir.pwd, package) do
           `git fetch origin`
@@ -78,6 +79,22 @@ module Rip
 
       if File.exists? package_bin
         FileUtils.cp package_bin, dest_bin
+      end
+    end
+
+    def install_dependencies
+      dependencies.each do |target, version, name|
+        dependency = Package.new(target)
+        dependency.install(version)
+      end
+    end
+
+    def dependencies
+      deps = File.join(path, 'deps.txt')
+      if File.exists? deps
+        File.readlines(deps)
+      else
+        []
       end
     end
   end
