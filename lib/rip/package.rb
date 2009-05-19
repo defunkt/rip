@@ -31,7 +31,7 @@ module Rip
 
       dest = File.join(Rip.dir, Rip::Env.active)
       dest_lib = File.join(dest, 'lib')
-      dest_bin = File.join(dest, 'bin')
+      dest_bin = File.join(dest, 'bin', name)
 
       FileUtils.rm_rf File.join(dest_lib, "#{name}.rb") rescue nil
       FileUtils.rm_rf File.join(dest_lib, name) rescue nil
