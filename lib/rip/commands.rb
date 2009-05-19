@@ -30,9 +30,8 @@ module Rip
     end
 
     def env(options = {}, command = nil, *args)
-      env = Rip::Env.new
-      if command && env.respond_to?(command)
-        puts "ripenv: " + Rip::Env.new.call(command, *args).to_s
+      if command && Rip::Env.respond_to?(command)
+        puts "ripenv: " + Rip::Env.call(command, *args).to_s
       else
         help nil, :env
       end

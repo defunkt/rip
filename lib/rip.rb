@@ -18,4 +18,8 @@ module Rip
     FileUtils.mkdir_p dir unless File.exists? dir
     @dir = dir
   end
+
+  def self.dir=(dir)
+    @dir = dir
+  end
 end

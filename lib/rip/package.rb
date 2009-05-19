@@ -8,7 +8,7 @@ module Rip
 
     def install
       Dir.chdir Rip.dir do
-        puts Dir.pwd
+        puts File.join(Dir.pwd, Rip::Env.active)
         puts "git clone #{@target}"
         puts "cp lib/package.rb ~/.rip/base/lib/package.rb"
         puts "cp lib/package ~/.rip/base/lib/package"

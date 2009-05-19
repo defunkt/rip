@@ -1,20 +1,15 @@
 require 'fileutils'
 
 module Rip
-  class Env
-    def self.commands
-      commands  = public_instance_methods
-      commands -= superclass.public_instance_methods
-      commands -= %w( call )
-      commands
-    end
+  module Env
+    extend self
 
-    def initialize(rip_dir = nil)
-      @rip_dir = rip_dir
+    def commands
+      instance_methods - %w( call )
     end
 
     def create(env)
-      dir = File.join(rip_dir, env)
+      dir = File.join(Rip.dir, env)
 
       if File.exists? dir
         "#{env} exists"
@@ -28,7 +23,7 @@ module Rip
     end
 
     def use(env)
-      if !File.exists?(target = File.join(rip_dir, env))
+      if !File.exists?(target = File.join(Rip.dir, env))
         return "#{env} doesn't exist"
       end
 
@@ -43,14 +38,14 @@ module Rip
         return "can't remove active environment"
       end
 
-      if File.exists?(target = File.join(rip_dir, env))
+      if File.exists?(target = File.join(Rip.dir, env))
         FileUtils.rm_rf target
         "removing #{env}"
       end
     end
 
     def list(env = nil)
-      envs = Dir.glob(File.join(rip_dir, '*')).map do |env|
+      envs = Dir.glob(File.join(Rip.dir, '*')).map do |env|
         env.split('/').last
       end
 
@@ -64,12 +59,14 @@ module Rip
     end
 
     def active
-      active_env
+      active = File.join(Rip.dir, 'active')
+      active = File.readlink(active)
+      active.split('/').last
     end
 
     def copy(env, new)
-      dest = File.join(rip_dir, new)
-      src  = File.join(rip_dir, env)
+      dest = File.join(Rip.dir, new)
+      src  = File.join(Rip.dir, env)
 
       if File.exists?(dest)
         return "#{new} exists"
@@ -101,18 +98,8 @@ module Rip
     end
 
   private
-    def rip_dir
-      @rip_dir ||= Rip.dir
-    end
-
     def active_dir
-      File.join(rip_dir, 'active')
-    end
-
-    def active_env
-      active = File.join(rip_dir, 'active')
-      active = File.readlink(active)
-      active.split('/').last
+      File.join(Rip.dir, 'active')
     end
   end
 end
