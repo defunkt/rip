@@ -7,15 +7,15 @@ module Rip
     end
 
     def name
-      @target.split('/').last.chomp('.git')
+      @name ||= @target.split('/').last.chomp('.git')
     end
 
     def package
-      name + '-' + Digest::MD5.hexdigest(@target)
+      @package ||= name + '-' + Digest::MD5.hexdigest(@target)
     end
 
     def path
-      File.join(Rip.dir, 'rip-packages', package)
+      @path ||= File.join(Rip.dir, 'rip-packages', package)
     end
 
     def install(version = nil, graph = nil)
