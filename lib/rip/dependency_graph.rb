@@ -28,7 +28,7 @@ module Rip
     end
 
     def files(name)
-      @files[name]
+      Array(@files[name])
     end
 
     def installed?(name)
@@ -44,6 +44,7 @@ module Rip
       @heritage[name].push(parent)
       @lineage[parent] ||= []
       @lineage[parent].push(name)
+      save
     end
 
     def add_package(name, version)
