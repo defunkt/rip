@@ -124,7 +124,7 @@ module Rip
     end
 
     def startup_script_template
-      DATA.read % RIPDIR
+      STARTUP_SCRIPT_TEMPLATE % RIPDIR
     end
 
     def startup_script
@@ -168,9 +168,8 @@ module Rip
       true
     end
   end
-end
 
-__END__
+  STARTUP_SCRIPT_TEMPLATE = <<-end_template
 
 # -- start rip config -- #
 RIPDIR=%s
@@ -180,3 +179,6 @@ export RUBYLIB
 PATH="$PATH:$RIPDIR/active/bin"
 export PATH
 # -- end rip config -- #
+end_template
+
+end
