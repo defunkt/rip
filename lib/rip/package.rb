@@ -53,7 +53,7 @@ module Rip
     end
 
     def installed?(version = nil)
-      graph = DependencyGraph.new
+      graph = DependencyManager.new
 
       if version
         graph.package_version(name) == version
@@ -63,7 +63,7 @@ module Rip
     end
 
     def install(version = nil, graph = nil)
-      graph ||= DependencyGraph.new
+      graph ||= DependencyManager.new
       fetched = false
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
@@ -141,7 +141,7 @@ module Rip
     end
 
     def uninstall(remove_dependencies = false)
-      graph = DependencyGraph.new
+      graph = DependencyManager.new
       packages = [name]
 
       if remove_dependencies

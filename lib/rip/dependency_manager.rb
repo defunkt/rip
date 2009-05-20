@@ -1,5 +1,5 @@
 module Rip
-  class DependencyGraph
+  class DependencyManager
     attr_reader :packages, :files
 
     def initialize(env = nil)

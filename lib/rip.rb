@@ -7,7 +7,7 @@ require "rip/package_api"
 require "rip/package"
 require "rip/git_package"
 require "rip/file_package"
-require "rip/dependency_graph"
+require "rip/dependency_manager"
 
 module Rip
   def self.dir
