@@ -23,7 +23,13 @@ module Rip
         abort "rip: please tell me what to install"
       end
 
-      Rip::Package.new(target).install(version)
+      package = Rip::Package.new(target)
+
+      if package.installed? version
+        puts "rip: #{package} already installed"
+      else
+        package.install(version)
+      end
     end
 
     def list(*args)

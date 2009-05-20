@@ -35,6 +35,10 @@ module Rip
       @packages.has_key? name
     end
 
+    def package_version(name)
+      @packages[name]
+    end
+
     def add_dependency(parent, name, version = nil)
       @heritage[name] ||= []
       @heritage[name].push(parent)

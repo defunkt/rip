@@ -9,6 +9,7 @@ module Rip
     def name
       @name ||= @target.split('/').last.chomp('.git')
     end
+    alias_method :to_s, :name
 
     def package
       @package ||= name + '-' + Digest::MD5.hexdigest(@target)
@@ -16,6 +17,16 @@ module Rip
 
     def path
       @path ||= File.join(Rip.dir, 'rip-packages', package)
+    end
+
+    def installed?(version = nil)
+      graph = DependencyGraph.new
+
+      if version
+        graph.package_version(name) == version
+      else
+        graph.installed?(name)
+      end
     end
 
     def install(version = nil, graph = nil)
