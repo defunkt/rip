@@ -49,8 +49,8 @@ module Rip
 
     def add_package(name, version)
       if @packages.has_key?(name) && @packages[name] != version
-        puts "#{name} requested at #{version} by SOMEONE"
-        puts "#{name} already #{@packages[name]} by #{@graph[name]}"
+        puts "#{name} requested at #{version} by #{@heritage[name][1]}"
+        puts "#{name} already #{@packages[name]} by #{@heritage[name][0]}"
         abort "sorry."
       end
 
