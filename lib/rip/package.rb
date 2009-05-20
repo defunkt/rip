@@ -52,10 +52,10 @@ module Rip
       end
     end
 
-    def unpack(version = nil)
-      puts "unpacking #{name}#{version ? ' ' + version : nil}..."
-      Dir.chdir File.join(Dir.pwd, package) do
-        `git reset --hard #{version || 'origin/master'}`
+    def unpack(version)
+      puts "unpacking #{name} #{version}..."
+      Dir.chdir path do
+        `git reset --hard #{version}`
       end
     end
 
