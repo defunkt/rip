@@ -11,7 +11,7 @@ module Rip
     #
 
     WEBSITE = "http://defunkt.github.com/rip"
-    STARTUP_SCRIPTS = %w( .profile .bash_profile .bashrc .zshrc )
+    STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile )
 
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
