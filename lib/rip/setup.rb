@@ -150,7 +150,11 @@ module Rip
       end
 
       if ENV['RIPDIR'].to_s.empty?
-        raise "no $RIPDIR"
+        if startup_script.empty?
+          raise "no $RIPDIR."
+        else
+          raise "no $RIPDIR. you may need to run `source #{startup_script}`"
+        end
       end
 
       if !File.exists? File.join(BINDIR, 'rip')
