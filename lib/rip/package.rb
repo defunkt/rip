@@ -20,13 +20,20 @@ module Rip
 
     def install(version = nil, graph = nil)
       graph ||= DependencyGraph.new
-
-      # check if already installed
-      installed = graph.add_package(name, version)
-      return if !installed
+      fetched = false
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        fetch
+        if !version
+          fetch
+          fetched = true
+          version = infer_version
+        end
+
+        installed = graph.add_package(name, version)
+        return if !installed
+
+        fetch if !fetched
+
         unpack(version)
         install_dependencies(graph)
         run_install_hook
@@ -123,6 +130,12 @@ module Rip
         end
 
         graph.remove_package(package)
+      end
+    end
+
+    def infer_version
+      Dir.chdir File.join(Dir.pwd, package) do
+        `git rev-parse master`[0,7]
       end
     end
 

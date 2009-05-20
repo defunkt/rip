@@ -42,9 +42,7 @@ module Rip
       @lineage[parent].push(name)
     end
 
-    def add_package(name, version = nil)
-      version ||= 'master'
-
+    def add_package(name, version)
       if @packages.has_key?(name) && @packages[name] != version
         puts "#{name} requested at #{version} by SOMEONE"
         puts "#{name} already #{@packages[name]} by #{@graph[name]}"
