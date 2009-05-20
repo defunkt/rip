@@ -21,6 +21,8 @@ module Rip
       puts "unpacking #{name} #{version}..."
       Dir.chdir cache_path do
         `git reset --hard #{version}`
+        `git submodule init`
+        `git submodule update`
       end
     end
 
