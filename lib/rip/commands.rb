@@ -39,15 +39,14 @@ module Rip
     end
     alias_method :installed, :list
 
-    def uninstall(options = {}, target = nil, *args)
-      if target.to_s.empty?
+    def uninstall(options = {}, name = nil, *args)
+      if name.to_s.empty?
         abort "rip: please tell me what to uninstall"
       end
 
       force = options['y'] || options['d']
       graph = DependencyGraph.new
-      package = Rip::Package.for(target)
-      name = package.name
+      package = Rip::Package.new(name)
 
       if !package.installed?
         abort "rip: #{name} isn't installed"

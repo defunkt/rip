@@ -39,7 +39,7 @@ module Rip
   module PackageAPI
     def name
       # The package's name
-      "unnamed"
+      source
     end
 
     def fetch
