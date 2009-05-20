@@ -5,6 +5,9 @@ module Rip
   autoload :Env,             "rip/env"
   autoload :Setup,           "rip/setup"
   autoload :Package,         "rip/package"
+  autoload :PackageAPI,      "rip/package_api"
+  autoload :GitPackage,      "rip/git_package"
+  autoload :FilePackage,     "rip/file_package"
   autoload :DependencyGraph, "rip/dependency_graph"
 
   def self.dir

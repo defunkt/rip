@@ -1,22 +1,55 @@
 require 'digest/md5'
 
+#
+# Want to write your own package?
+#
+# Check Rip::PackageAPI for the methods you need.
+#
+
 module Rip
   class Package
-    def initialize(target)
-      @target = target.strip.chomp
+    include PackageAPI
+
+    @@patterns = {}
+    @@blocks = {}
+
+    def self.handles(*patterns, &block)
+      patterns.each do |pattern|
+        @@patterns[pattern] = self
+      end
+
+      @@blocks[self] = block if block
     end
 
-    def name
-      @name ||= @target.split('/').last.chomp('.git')
+    def self.for(source)
+      source = source.strip.chomp
+
+      handler = @@blocks.detect do |klass, block|
+        block.call(source)
+      end
+
+      return handler[0].new(source) if handler
+
+      handler = @@patterns.detect do |pattern, klass|
+        source.match(pattern)
+      end
+
+      handler[1].new(source) if handler
     end
+
     alias_method :to_s, :name
+    attr_reader :source
 
-    def package
-      @package ||= name + '-' + Digest::MD5.hexdigest(@target)
+    def initialize(source)
+      @source = source.strip.chomp
     end
 
-    def path
-      @path ||= File.join(Rip.dir, 'rip-packages', package)
+    def cache_name
+      @cache_name ||= name + '-' + Digest::MD5.hexdigest(@source)
+    end
+
+    def cache_path
+      @cache_path ||= File.join(Rip.dir, 'rip-packages', cache_name)
     end
 
     def installed?(version = nil)
@@ -52,34 +85,16 @@ module Rip
       end
     end
 
-    def fetch
-      puts "fetching #{name}..."
-      if File.exists? package
-        Dir.chdir path do
-          `git fetch origin`
-        end
-      else
-        `git clone #{@target} #{package}`
-      end
-    end
-
-    def unpack(version)
-      puts "unpacking #{name} #{version}..."
-      Dir.chdir path do
-        `git reset --hard #{version}`
-      end
-    end
-
     def install_dependencies(graph)
-      dependencies.each do |target, version, _|
-        dependency = Package.new(target)
+      dependencies.each do |source, version, _|
+        dependency = Package.for(source)
         graph.add_dependency(name, dependency.name, version)
         dependency.install(version, graph)
       end
     end
 
     def dependencies
-      if File.exists? deps = File.join(path, 'deps.txt')
+      if File.exists? deps = File.join(cache_path, 'deps.txt')
         File.readlines(deps).map { |line| line.split(' ') }
       else
         []
@@ -87,8 +102,8 @@ module Rip
     end
 
     def run_install_hook
-      return unless File.exists? File.join(path, 'Rakefile')
-      Dir.chdir path do
+      return unless File.exists? File.join(cache_path, 'Rakefile')
+      Dir.chdir cache_path do
         puts "running install hook for #{name}"
         system "rake -s rip:install >& /dev/null"
       end
@@ -97,8 +112,8 @@ module Rip
     def copy_files(graph)
       puts "installing #{name}..."
 
-      package_lib = File.join(path, 'lib')
-      package_bin = File.join(path, 'bin')
+      package_lib = File.join(cache_path, 'lib')
+      package_bin = File.join(cache_path, 'bin')
 
       dest = File.join(Rip.dir, Rip::Env.active)
       dest_lib = File.join(dest, 'lib')
@@ -141,12 +156,6 @@ module Rip
         end
 
         graph.remove_package(package)
-      end
-    end
-
-    def infer_version
-      Dir.chdir path do
-        `git rev-parse master`[0,7]
       end
     end
 

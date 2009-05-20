@@ -18,12 +18,13 @@ module Rip
       abort "rip: installation failed. #{e.message}"
     end
 
-    def install(options = {}, target = nil, version = nil, *args)
-      if target.to_s.empty?
+    def install(options = {}, source = nil, version = nil, *args)
+      if source.to_s.empty?
         abort "rip: please tell me what to install"
       end
 
-      package = Rip::Package.new(target)
+      package = Rip::Package.for(source)
+      return
 
       if package.installed? version
         puts "rip: #{package} already installed"
@@ -46,10 +47,10 @@ module Rip
 
       force = options['y'] || options['d']
       graph = DependencyGraph.new
-      package = Rip::Package.new(target)
+      package = Rip::Package.for(target)
       name = package.name
 
-      if !graph.installed?(package.name)
+      if !package.installed?
         abort "rip: #{name} isn't installed"
       end
 
