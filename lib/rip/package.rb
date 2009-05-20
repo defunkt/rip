@@ -74,7 +74,7 @@ module Rip
       return unless File.exists? File.join(path, 'Rakefile')
       Dir.chdir path do
         puts "running install hook for #{name}"
-        system "rake -s rip:install"
+        system "rake -s rip:install >& /dev/null"
       end
     end
 
