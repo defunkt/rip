@@ -39,20 +39,20 @@ module Rip
       @packages[name]
     end
 
-    def add_dependency(parent, name, version = nil)
-      @heritage[name] ||= []
-      @heritage[name].push(parent)
-      @lineage[parent] ||= []
-      @lineage[parent].push(name)
-      save
-    end
-
-    def add_package(name, version)
+    def add_package(name, version, parent = nil)
       if @packages.has_key?(name) && @packages[name] != version
-        puts "#{name} requested at #{version} by #{@heritage[name][1]}"
+        puts "#{name} requested at #{version} by #{parent}"
         puts "#{name} already #{@packages[name]} by #{@heritage[name][0]}"
         abort "sorry."
       end
+
+      if parent
+        @heritage[name] ||= []
+        @heritage[name].push(parent)
+      end
+
+      @lineage[parent] ||= []
+      @lineage[parent].push(name)
 
       # already installed?
       if @packages.has_key? name

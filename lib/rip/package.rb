@@ -62,7 +62,7 @@ module Rip
       end
     end
 
-    def install(version = nil, graph = nil)
+    def install(version = nil, graph = nil, parent = nil)
       graph ||= DependencyManager.new
       fetched = false
 
@@ -73,7 +73,7 @@ module Rip
           version = infer_version
         end
 
-        installed = graph.add_package(name, version)
+        installed = graph.add_package(name, version, parent)
         return if !installed
 
         fetch if !fetched
@@ -88,8 +88,7 @@ module Rip
     def install_dependencies(graph)
       dependencies.each do |source, version, _|
         dependency = Package.for(source)
-        graph.add_dependency(name, dependency.name, version)
-        dependency.install(version, graph)
+        dependency.install(version, graph, name)
       end
     end
 
