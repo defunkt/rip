@@ -26,7 +26,7 @@ module Rip
 
     def infer_version
       Dir.chdir cache_path do
-        `git rev-parse master`[0,7]
+        `git rev-parse origin/master`[0,7]
       end
     end
   end
