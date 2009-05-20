@@ -56,6 +56,7 @@ module Rip
         false
       else
         @packages[name] = version
+        save
         true
       end
     end

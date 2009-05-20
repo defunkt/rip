@@ -32,8 +32,6 @@ module Rip
         run_install_hook
         copy_files(graph)
       end
-
-      graph.save
     end
 
     def fetch
