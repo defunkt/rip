@@ -44,7 +44,7 @@ module Rip
     def fetch
       puts "fetching #{name}..."
       if File.exists? package
-        Dir.chdir File.join(Dir.pwd, package) do
+        Dir.chdir path do
           `git fetch origin`
         end
       else
@@ -134,7 +134,7 @@ module Rip
     end
 
     def infer_version
-      Dir.chdir File.join(Dir.pwd, package) do
+      Dir.chdir path do
         `git rev-parse master`[0,7]
       end
     end
