@@ -1,15 +1,15 @@
 require 'fileutils'
 
-module Rip
-  autoload :Commands,        "rip/commands"
-  autoload :Env,             "rip/env"
-  autoload :Setup,           "rip/setup"
-  autoload :Package,         "rip/package"
-  autoload :PackageAPI,      "rip/package_api"
-  autoload :GitPackage,      "rip/git_package"
-  autoload :FilePackage,     "rip/file_package"
-  autoload :DependencyGraph, "rip/dependency_graph"
+require "rip/commands"
+require "rip/env"
+require "rip/setup"
+require "rip/package_api"
+require "rip/package"
+require "rip/git_package"
+require "rip/file_package"
+require "rip/dependency_graph"
 
+module Rip
   def self.dir
     return @dir if @dir
 
