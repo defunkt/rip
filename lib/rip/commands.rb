@@ -24,7 +24,6 @@ module Rip
       end
 
       package = Rip::Package.for(source)
-      return
 
       if package.installed? version
         puts "rip: #{package} already installed"
