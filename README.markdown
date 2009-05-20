@@ -4,6 +4,55 @@ Rip: Ruby's Intelligent Packaging
 Rip is an attempt to create an intelligent packaging system
 for Ruby.
 
+Introduction
+------------
+
+Let's get right to it then, shall we?
+
+First we install rip.
+
+    $ gem install rip
+
+Did that work? Yep. Let's see what libraries rip knows about.
+
+    $ rip list
+    ripenv: base
+
+None. Really? Let's try to require Grit.
+
+    $ ruby -r grit -e 'puts Grit'
+    ruby: no such file to load -- grit (LoadError)
+    
+Whoops. Not found. Let's install the latest using rip.
+
+    $ rip install git://github.com/mojombo/grit.git v1.1.1
+    Successfully installed grit v1.1.1
+    $ rip list
+    ripenv: base
+
+    diff-lcs (5621f02)
+    grit (v1.1.1)
+    mime-types (0fd8958)
+
+Great, now we have Grit and all its dependencies.    
+
+    $ ruby -r grit -e 'puts Grit'
+    Grit
+    $ ruby -r grit -e 'puts MIME::Types'
+    MIME::Types
+
+And we don't need any magical `require` statements to use them!
+
+If we'd like, we can now move between rip environments to mix
+and match libraries.    
+
+    $ rip env create my_fresh_env
+    ripenv: created my_fresh_env
+    $ ruby -r grit -e 'puts Grit'
+    ruby: no such file to load -- grit (LoadError)
+
+And so much more.
+
 Overview
 --------
 
