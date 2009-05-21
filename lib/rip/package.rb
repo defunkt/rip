@@ -21,20 +21,20 @@ module Rip
       @@blocks[self] = block if block
     end
 
-    def self.for(source, version = nil)
+    def self.for(source, *args)
       source = source.strip.chomp
 
       handler = @@patterns.detect do |pattern, klass|
         source.match(pattern)
       end
 
-      return handler[1].new(source, version) if handler
+      return handler[1].new(source, *args) if handler
 
       handler = @@blocks.detect do |klass, block|
         block.call(source)
       end
 
-      handler[0].new(source, version) if handler
+      handler[0].new(source, *args) if handler
     end
 
     alias_method :to_s, :name
