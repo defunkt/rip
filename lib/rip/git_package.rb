@@ -17,7 +17,7 @@ module Rip
       end
     end
 
-    def unpack(version)
+    def unpack
       puts "unpacking #{name} #{version}..."
       Dir.chdir cache_path do
         `git reset --hard #{version}`
@@ -26,9 +26,10 @@ module Rip
       end
     end
 
-    def infer_version
+    def version
+      return @version if @version
       Dir.chdir cache_path do
-        `git rev-parse origin/master`[0,7]
+        @version = `git rev-parse origin/master`[0,7]
       end
     end
   end

@@ -21,27 +21,28 @@ module Rip
       @@blocks[self] = block if block
     end
 
-    def self.for(source)
+    def self.for(source, version = nil)
       source = source.strip.chomp
 
       handler = @@patterns.detect do |pattern, klass|
         source.match(pattern)
       end
 
-      return handler[1].new(source) if handler
+      return handler[1].new(source, version) if handler
 
       handler = @@blocks.detect do |klass, block|
         block.call(source)
       end
 
-      handler[0].new(source) if handler
+      handler[0].new(source, version) if handler
     end
 
     alias_method :to_s, :name
     attr_reader :source
 
-    def initialize(source)
+    def initialize(source, version = nil)
       @source = source.strip.chomp
+      @version = nil
     end
 
     def cache_name
@@ -62,23 +63,15 @@ module Rip
       end
     end
 
-    def install(version = nil, graph = nil, parent = nil)
+    def install(graph = nil, parent = nil)
       graph ||= DependencyManager.new
-      fetched = false
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        if !version
-          fetch
-          fetched = true
-          version = infer_version
-        end
-
         installed = graph.add_package(name, version, parent)
         return if !installed
 
-        fetch if !fetched
-
-        unpack(version)
+        fetch
+        unpack
         install_dependencies(graph)
         run_install_hook
         copy_files(graph)
@@ -87,8 +80,8 @@ module Rip
 
     def install_dependencies(graph)
       dependencies.each do |source, version, _|
-        dependency = Package.for(source)
-        dependency.install(version, graph, name)
+        dependency = Package.for(source, version)
+        dependency.install(graph, name)
       end
     end
 

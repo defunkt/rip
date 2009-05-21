@@ -48,16 +48,15 @@ module Rip
       puts "fetching #{name}..."
     end
 
-    def unpack(version)
-      # Unpack the specific version of the package we
-      # want into the cache.
+    def unpack
+      # Unpack the package we want into the cache.
       puts "unpacking #{name}..."
     end
 
-    def infer_version
+    def version
       # We weren't given a specific version, so figure
       # out what the latest version is and return it
-      "0.0.1"
+      @version ||= "0.0.1"
     end
   end
 end

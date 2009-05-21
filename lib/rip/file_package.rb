@@ -14,12 +14,12 @@ module Rip
       FileUtils.cp_r "#{source}/.", cache_path
     end
 
-    def unpack(version)
+    def unpack
       super
     end
 
-    def infer_version
-      "unversioned"
+    def version
+      @version ||= "unversioned"
     end
   end
 end

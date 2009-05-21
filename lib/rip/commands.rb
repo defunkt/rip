@@ -23,12 +23,12 @@ module Rip
         abort "rip: please tell me what to install"
       end
 
-      package = Rip::Package.for(source)
+      package = Rip::Package.for(source, version)
 
       if package.installed? version
         puts "rip: #{package} already installed"
       else
-        package.install(version)
+        package.install
       end
     end
 
