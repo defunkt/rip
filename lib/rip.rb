@@ -9,7 +9,7 @@ require "rip/package_api"
 require "rip/package_manager"
 require "rip/package"
 
-Dir['rip/packages/*'].each do |file|
+Dir[File.dirname(__FILE__) + '/rip/packages/*'].each do |file|
   require file
 end
 
