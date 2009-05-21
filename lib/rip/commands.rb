@@ -33,9 +33,8 @@ module Rip
     end
 
     def list(*args)
-      graph = Rip::PackageManager.new
       puts "ripenv: #{Rip::Env.active}", ''
-      puts graph.packages.map { |package| "#{package.name} (#{package.version})" }
+      puts manager.packages.map { |package| "#{package} (#{package.version})" }
     end
     alias_method :installed, :list
 
@@ -45,14 +44,13 @@ module Rip
       end
 
       force = options['y'] || options['d']
-      graph = PackageManager.new
-      package = graph.package(name)
+      package = manager.package(name)
 
       if !package || !package.installed?
         abort "rip: #{name} isn't installed"
       end
 
-      dependents = graph.packages_that_depend_on(name)
+      dependents = manager.packages_that_depend_on(name)
 
       if dependents.any? && !force
         puts "rip: the following packages depend on #{name}:"
@@ -79,6 +77,10 @@ module Rip
     end
 
   private
+    def manager
+      @manager ||= PackageManager.new
+    end
+
     def show_help(command, commands)
       subcommand = command.to_s.empty? ? nil : "#{command} "
       puts "Usage: rip #{subcommand}COMMAND [options]", ""
