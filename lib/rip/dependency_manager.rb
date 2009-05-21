@@ -49,10 +49,9 @@ module Rip
       if parent
         @heritage[name] ||= []
         @heritage[name].push(parent)
+        @lineage[parent] ||= []
+        @lineage[parent].push(name)
       end
-
-      @lineage[parent] ||= []
-      @lineage[parent].push(name)
 
       # already installed?
       if @packages.has_key? name
