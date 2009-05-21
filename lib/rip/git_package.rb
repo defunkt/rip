@@ -7,11 +7,12 @@ module Rip
       source.split('/').last.chomp('.git')
     end
 
-    memoize :version
     def version
+      return @version if @version
+
       fetch
       Dir.chdir cache_path do
-        `git rev-parse origin/master`[0,7]
+        @version = `git rev-parse origin/master`[0,7]
       end
     end
 
