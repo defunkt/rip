@@ -7,6 +7,8 @@ module Rip
     end
 
     def fetch
+      return if @fetched
+
       puts "fetching #{name}..."
       if File.exists? cache_path
         Dir.chdir cache_path do
@@ -15,6 +17,8 @@ module Rip
       else
         `git clone #{source} #{cache_name}`
       end
+
+      @fetched = true
     end
 
     def unpack
@@ -28,6 +32,8 @@ module Rip
 
     def version
       return @version if @version
+
+      fetch
       Dir.chdir cache_path do
         @version = `git rev-parse origin/master`[0,7]
       end
