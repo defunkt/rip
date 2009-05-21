@@ -2,8 +2,17 @@ module Rip
   class GitPackage < Package
     handles "file://", "git://"
 
+    memoize :name
     def name
-      @name ||= source.split('/').last.chomp('.git')
+      source.split('/').last.chomp('.git')
+    end
+
+    memoize :version
+    def version
+      fetch
+      Dir.chdir cache_path do
+        `git rev-parse origin/master`[0,7]
+      end
     end
 
     def exists?
@@ -39,15 +48,6 @@ module Rip
         `git reset --hard #{version}`
         `git submodule init`
         `git submodule update`
-      end
-    end
-
-    def version
-      return @version if @version
-
-      fetch
-      Dir.chdir cache_path do
-        @version = `git rev-parse origin/master`[0,7]
       end
     end
   end

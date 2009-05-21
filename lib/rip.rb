@@ -1,5 +1,6 @@
 require 'fileutils'
 
+require "rip/memoize"
 require "rip/commands"
 require "rip/env"
 require "rip/setup"

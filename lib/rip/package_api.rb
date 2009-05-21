@@ -37,9 +37,19 @@
 
 module Rip
   module PackageAPI
+    include Memoize
+
+    memoize :name
     def name
       # The package's name
       source
+    end
+
+    memoize :version
+    def version
+      # We weren't given a specific version, so figure
+      # out what the latest version is and return it
+      "0.0.1"
     end
 
     def exists?
@@ -56,12 +66,6 @@ module Rip
     def unpack
       # Unpack the package we want into the cache.
       puts "unpacking #{name}..."
-    end
-
-    def version
-      # We weren't given a specific version, so figure
-      # out what the latest version is and return it
-      @version ||= "0.0.1"
     end
   end
 end

@@ -8,8 +8,14 @@ module Rip
       File.exists? source
     end
 
+    memoize :name
     def name
-      @name ||= source.split('/').last
+      source.split('/').last
+    end
+
+    memoize :version
+    def version
+      "unversioned"
     end
 
     def fetch
@@ -20,10 +26,6 @@ module Rip
 
     def unpack
       super
-    end
-
-    def version
-      @version ||= "unversioned"
     end
   end
 end

@@ -8,7 +8,7 @@ require 'digest/md5'
 
 module Rip
   class Package
-    include PackageAPI
+    include PackageAPI, Memoize
 
     @@patterns = {}
     @@blocks = {}
@@ -45,16 +45,19 @@ module Rip
       @version = version
     end
 
+    memoize :cache_name
     def cache_name
-      @cache_name ||= name + '-' + Digest::MD5.hexdigest(@source)
+      name + '-' + Digest::MD5.hexdigest(@source)
     end
 
+    memoize :cache_path
     def cache_path
-      @cache_path ||= File.join(packages_path, cache_name)
+      File.join(packages_path, cache_name)
     end
 
+    memoize :packages_path
     def packages_path
-      @packages_path ||= File.join(Rip.dir, 'rip-packages')
+      File.join(Rip.dir, 'rip-packages')
     end
 
     def installed?(version = nil)

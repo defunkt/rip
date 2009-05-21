@@ -33,6 +33,7 @@ module Rip
       system "gem unpack #{cache_file} --target=#{packages_path}"
     end
 
+    memoize :metadata
     def metadata
       parts = source.split('/').last.chomp('.gem').split('-')
       { :name => parts[0...-1].join('-'), :version => parts[-1] }
