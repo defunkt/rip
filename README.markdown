@@ -124,7 +124,7 @@ thinking about running it.
 
 ### Hands off
 
-Rip requires no changes to your code, only an optional `deps.txt` file added
+Rip requires no changes to your code, only an optional `deps.rip` file added
 to the root of your project. As a result you do not force Rip on anyone else
 and individuals are free to re-package your code using other systems.
 
@@ -144,11 +144,11 @@ SCMs to do it for us.
 Installing Packages
 -------------------
 
-Each Rip package contains at the root a `deps.txt` file identifying
+Each Rip package contains at the root a `deps.rip` file identifying
 it as a Rip package and listing its dependencies.
 
 Let's take the [ambition][3] project as an example. This is its
-`deps.txt` in full:
+`deps.rip` in full:
 
     git://github.com/drnic/rubigen.git REL-1.3.0
     git://github.com/seattlerb/ruby2ruby.git e3cf57559 # 1.1.8
@@ -158,16 +158,16 @@ If you were to run `rip install git://github.com/defunkt/ambition.git`
 the following steps would occur:
 
 * The source would be fetched and unpacked as `ambition` in the cwd
-* The source of each dependency in `deps.txt` would be fetched
+* The source of each dependency in `deps.rip` would be fetched
 * Each dependency would be unpacked into the current virutalenv at the revision or tag specified
-* Each dependency's `deps.txt` would be fetched and unpacked into the ripenv, etc
+* Each dependency's `deps.rip` would be fetched and unpacked into the ripenv, etc
 
 As this process unfolds, a mapping of libraries and versions is kept 
 in memory. When a library is declared multiple times at different 
 versions the process is halted and the error reported.
 
 If you've cloned `ambition` on your own you can still install the 
-dependencies using `rip install deps.txt`
+dependencies using `rip install deps.rip`
 
 Uninstalling Packages
 ---------------------

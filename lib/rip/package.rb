@@ -86,7 +86,7 @@ module Rip
     end
 
     def dependencies
-      if File.exists? deps = File.join(cache_path, 'deps.txt')
+      if File.exists? deps = File.join(cache_path, 'deps.rip')
         File.readlines(deps).map { |line| line.split(' ') }
       else
         []
