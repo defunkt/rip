@@ -37,15 +37,11 @@
 
 module Rip
   module PackageAPI
-    include Memoize
-
-    memoize :name
     def name
       # The package's name
       source
     end
 
-    memoize :version
     def version
       # We weren't given a specific version, so figure
       # out what the latest version is and return it
