@@ -8,13 +8,14 @@ module Rip
     end
 
     def install(package, parent = nil)
+      return if package.installed?
+
       if !package.exists?
         abort "#{package.name} not found at #{package.source}"
       end
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        installed = graph.add_package(package, parent)
-        return if !installed
+        graph.add_package(package, parent)
 
         begin
           package.fetch
