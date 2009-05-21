@@ -8,9 +8,10 @@ require "rip/setup"
 require "rip/package_api"
 require "rip/package_manager"
 require "rip/package"
-require "rip/git_package"
-require "rip/file_package"
-require "rip/gem_package"
+
+Dir['rip/packages/*'].each do |file|
+  require file
+end
 
 module Rip
   def self.dir
