@@ -1,3 +1,5 @@
+require 'zlib'
+
 module Rip
   class PackageManager
     def initialize(env = nil)
@@ -102,13 +104,21 @@ module Rip
 
     def save
       File.open(path, 'w') do |f|
-        f.puts marshal_payload
+        f.puts zip(marshal_payload)
         f.flush
       end
     end
 
     def load
-      marshal_read File.read(path) if File.exists? path
+      marshal_read unzip(File.read(path)) if File.exists? path
+    end
+
+    def zip(data)
+      Zlib::Deflate.deflate(data)
+    end
+
+    def unzip(data)
+      Zlib::Inflate.inflate(data)
     end
 
     def marshal_payload
