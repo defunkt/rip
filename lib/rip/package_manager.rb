@@ -1,4 +1,5 @@
 require 'zlib'
+require 'set'
 
 module Rip
   class VersionConflict < RuntimeError
@@ -30,6 +31,8 @@ module Rip
   end
 
   class PackageManager
+    attr_reader :lineage, :heritage, :sources, :versions
+
     def initialize(env = nil)
       @env = env || Rip::Env.active
       load
@@ -87,11 +90,11 @@ module Rip
         raise VersionConflict.new(name, version, parent, @versions[name], @heritage[name])
       end
 
-      if parent
-        @heritage[name] ||= []
-        @heritage[name].push(parent.name)
-        @lineage[parent.name] ||= []
-        @lineage[parent.name].push(name)
+      if parent && !parent.meta_package?
+        @heritage[name] ||= Set.new
+        @heritage[name].add(parent.name)
+        @lineage[parent.name] ||= Set.new
+        @lineage[parent.name].add(name)
       end
 
       # already installed?
