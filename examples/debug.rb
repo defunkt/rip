@@ -1,6 +1,7 @@
 #
 # This file would normally live in lib/rip/commands or ~/.rip/rip-commands
-# 
+#
+# See the `Plugins` section of the README for more information.
 
 module Rip::Commands
   def debug(options, *args)
