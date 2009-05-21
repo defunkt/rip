@@ -23,6 +23,7 @@ module Rip
     end
 
     def fetch!
+      FileUtils.rm_rf cache_path
       FileUtils.cp_r "#{source}/.", cache_path
     end
   end
