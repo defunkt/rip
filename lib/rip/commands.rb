@@ -95,3 +95,22 @@ module Rip
     end
   end
 end
+
+
+#
+# rip plugin commands
+#
+
+# load ~/.rip/rip-commands/*.rb
+if File.exists? dir = File.join(Rip.dir, 'rip-commands')
+  Dir[dir + '/*.rb'].each do |file|
+    require file
+  end
+end
+
+# load lib/rip/commands/*.rb from the active ripenv
+if File.exists? dir = File.join(Rip::Env.active_dir, 'lib', 'rip', 'commands')
+  Dir[dir + '/*.rb'].each do |file|
+    require file
+  end
+end

@@ -144,8 +144,8 @@ SCMs to do it for us.
 Installing Packages
 -------------------
 
-Each Rip package contains at the root a `deps.rip` file identifying
-it as a Rip package and listing its dependencies.
+Each Rip package optionally contains at the root a `deps.rip` file 
+identifying it as a Rip package and listing its dependencies.
 
 Let's take the [ambition][3] project as an example. This is its
 `deps.rip` in full:
@@ -159,7 +159,7 @@ the following steps would occur:
 
 * The source would be fetched and unpacked as `ambition` in the cwd
 * The source of each dependency in `deps.rip` would be fetched
-* Each dependency would be unpacked into the current virutalenv at the revision or tag specified
+* Each dependency would be unpacked into the current ripenv at the revision or tag specified
 * Each dependency's `deps.rip` would be fetched and unpacked into the ripenv, etc
 
 As this process unfolds, a mapping of libraries and versions is kept 
@@ -174,6 +174,10 @@ Uninstalling Packages
 
 The easiest way to mass uninstall packages is to delete your ripenv 
 and create a new one. Otherwise, `rip uninstall package` will do the trick.
+
+Rip will complain if you attempt to uninstall a package that others depend
+on. To remove the package anyway, use `-y`. To remove the package and the
+dependents, use `-d` (for dependents).
 
 Extensions
 ----------
@@ -217,10 +221,10 @@ Here is a typical directory structure for Rip:
         - docs/
         - thunderhorse.ripenv
 
-The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. Each ripenv
-contains directories for executable binaries, Ruby source files, and RDoc documentation.
-They also include a generated `.ripenv` file containing metadata about the ripenev and its
-packages.
+The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. Each 
+ripenv contains directories for executable binaries, Ruby source files, and 
+RDoc documentation. They also include a generated `.ripenv` file containing 
+metadata about the ripenev and its packages.
 
 This individual may use `base` for general tomfoolery (it's the default), `cheat` for 
 developing their Cheat application, and `thunderhorse` for working on their new 
@@ -281,6 +285,112 @@ and PATH environment variables so that Ruby knows where to find installed Rip
 packages.
 
 As a result, the setup script expects you to be running bash or zshell.
+
+Plugins
+-------
+
+Rip allows you to easily add your own first class commands. On launch, Rip 
+will load any Ruby files in either ~/.rip/rip-commands or 
+lib/rip/commands within the current ripenv.
+
+Let's say we wanted to create a `rip reverse` command, which reverses
+all the installed package names. First let's make the following directory
+structure:
+
+    reverse/
+      README.markdown
+      lib/
+        rip/ 
+          commands/
+            reverse.rb
+            
+Our `reverse.rb` might look something like this:
+
+    module Rip
+      module Commands
+        def reverse(*args)
+          puts "ripenv: #{Rip::Env.active}", ''
+          manager.packages.each do |package|
+            puts package.to_s.reverse
+          end
+        end
+      end
+    end
+
+Great. Now let's make a temporary ripenv to test this out on:
+
+    $ rip env create test_reverse
+
+And finally, install this new command:
+  
+    $ rip install reverse
+    
+Now:
+
+    $ rip reverse
+    ripenv: test_reverse
+
+    esrever
+    
+Victory! But let's say we want to reverse any word passed in
+to `rip reverse`. No problem. We'll modify our reverse.rb to look
+like this:
+
+    module Rip
+      module Commands
+        def reverse(options = {}, package = nil, *args)
+          puts "ripenv: #{Rip::Env.active}", ''        
+          if package
+            puts package.reverse
+          else
+            manager.packages.each do |package|
+              puts package.to_s.reverse
+            end
+          end
+        end
+      end
+    end
+
+We can reinstall our reverse project like so:
+
+    $ rip install reverse -f
+
+And try it out:
+
+    $ rip reverse chris
+    ripenv: base
+    sirhc
+
+Wonderful. As you can see, commands are just instance methods on 
+Rip::Commands that take an options hash as a first parameter then a
+splat of the args passed to the command line.
+
+Here's a simple debug, for exploring:
+
+    module Rip::Commands
+      def debug(options, *args)
+        puts "options: #{options.inspect}"
+        puts "args: #{args.inspect}"
+      end
+    end
+
+Install that then have at:
+
+    $ rip debug
+    options: {}
+    args: []
+    $ rip debug -f chris
+    options: {:f=>true}
+    args: ["chris"]
+    $ rip debug -f=chris
+    options: {:f=>"chris"}
+    args: []
+    $ rip debug --name=chris more args
+    options: {:name=>"chris"}
+    args: ["more", "args"]
+
+You get the idea.
+
 
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
