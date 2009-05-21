@@ -20,7 +20,11 @@ module Rip
     end
 
     def exists?
-      File.exists? source
+      if `which gem`.strip.empty?
+        abort "you don't have rubygems installed"
+      end
+
+      File.exists?(source)
     end
 
     def fetch
@@ -30,7 +34,7 @@ module Rip
 
     def unpack
       super
-      system "gem unpack #{cache_file} --target=#{packages_path}"
+      system "gem unpack #{cache_file} --target=#{packages_path} > /dev/null"
     end
 
     memoize :metadata
