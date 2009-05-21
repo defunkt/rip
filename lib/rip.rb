@@ -6,11 +6,11 @@ require "rip/installer"
 require "rip/env"
 require "rip/setup"
 require "rip/package_api"
+require "rip/package_manager"
 require "rip/package"
 require "rip/git_package"
 require "rip/file_package"
 require "rip/gem_package"
-require "rip/dependency_manager"
 
 module Rip
   def self.dir

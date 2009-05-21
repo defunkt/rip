@@ -4,7 +4,7 @@ module Rip
 
     memoize :graph
     def graph
-      DependencyManager.new
+      PackageManager.new
     end
 
     def install(package, parent = nil)

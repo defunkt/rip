@@ -1,5 +1,5 @@
 module Rip
-  class DependencyManager
+  class PackageManager
     def initialize(env = nil)
       @env = env || Rip::Env.active
       load
@@ -99,6 +99,7 @@ module Rip
     end
 
     def save
+      puts inspect
       File.open(path, 'w') do |f|
         f.puts marshal_payload
         f.flush

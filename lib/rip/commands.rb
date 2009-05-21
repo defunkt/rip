@@ -33,7 +33,7 @@ module Rip
     end
 
     def list(*args)
-      graph = Rip::DependencyManager.new
+      graph = Rip::PackageManager.new
       puts "ripenv: #{Rip::Env.active}", ''
       puts graph.packages.map { |package| "#{package.name} (#{package.version})" }
     end
@@ -45,7 +45,7 @@ module Rip
       end
 
       force = options['y'] || options['d']
-      graph = DependencyManager.new
+      graph = PackageManager.new
       package = graph.package(name)
 
       if !package.installed?

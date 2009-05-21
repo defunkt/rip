@@ -62,7 +62,7 @@ module Rip
     end
 
     def installed?(version = nil)
-      graph = DependencyManager.new
+      graph = PackageManager.new
 
       if version
         graph.package_version(name) == version
