@@ -15,9 +15,9 @@ module Rip
       end
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        graph.add_package(package, parent)
-
         begin
+          graph.add_package(package, parent)
+
           package.fetch
           package.unpack
           install_dependencies(package)
