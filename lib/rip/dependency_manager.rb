@@ -67,6 +67,7 @@ module Rip
     def add_files(name, file_list = [])
       @files[name] ||= []
       @files[name].concat file_list
+      save
     end
 
     def remove_package(name)
