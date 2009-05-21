@@ -35,7 +35,7 @@ module Rip
     def list(*args)
       graph = Rip::DependencyManager.new
       puts "ripenv: #{Rip::Env.active}", ''
-      puts graph.packages.map { |k,v| "#{k} (#{v})" }
+      puts graph.packages.map { |package| "#{package.name} (#{package.version})" }
     end
     alias_method :installed, :list
 

@@ -1,7 +1,5 @@
 module Rip
   class DependencyManager
-    attr_reader :packages, :files
-
     def initialize(env = nil)
       @env = env || Rip::Env.active
       load
@@ -22,12 +20,16 @@ module Rip
       @sources ||= {}
     end
 
+    def packages
+      @versions.keys.map { |name| package(name) }
+    end
+
     def package(name)
       Package.for(@sources[name], @versions[name])
     end
 
     def packages_that_depend_on(name)
-      @lineage[name.respond_to?(:name) ? name.name : name] || []
+      @lineage[name] || []
     end
 
     def files(name)
