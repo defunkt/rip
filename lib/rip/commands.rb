@@ -28,7 +28,7 @@ module Rip
       if package.installed? version
         puts "rip: #{package} already installed"
       else
-        package.install
+        Installer.new.install(package)
       end
     end
 
@@ -66,7 +66,7 @@ module Rip
       end
 
       if force || dependents.empty?
-        package.uninstall(options['d'])
+        Installer.new.uninstall(package, options['d'])
       end
     end
 

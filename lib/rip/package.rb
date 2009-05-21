@@ -70,101 +70,15 @@ module Rip
       end
     end
 
-    def install(graph = nil, parent = nil)
-      graph ||= DependencyManager.new
-
-      if !exists?
-        version_string = " at #{@version}" if @version
-        abort "#{name}#{version_string} not found at #{source}"
-      end
-
-      Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        installed = graph.add_package(self, parent)
-        return if !installed
-
-        begin
-          fetch
-          unpack
-          install_dependencies(graph)
-          run_install_hook
-          copy_files(graph)
-        rescue => e
-          uninstall(true)
-          raise e
-        end
-      end
-    end
-
-    def install_dependencies(graph)
-      dependencies.each do |source, version, _|
-        dependency = Package.for(source, version)
-        dependency.install(graph, name)
-      end
-    end
-
+    memoize :dependencies
     def dependencies
       if File.exists? deps = File.join(cache_path, 'deps.rip')
-        File.readlines(deps).map { |line| line.split(' ') }
+        File.readlines(deps).map do |line|
+          source, version, *extra = line.split(' ')
+          Package.for(source, version)
+        end
       else
         []
-      end
-    end
-
-    def run_install_hook
-      return unless File.exists? File.join(cache_path, 'Rakefile')
-      Dir.chdir cache_path do
-        puts "running install hook for #{name}"
-        system "rake -s rip:install >& /dev/null"
-      end
-    end
-
-    def copy_files(graph)
-      puts "installing #{name}..."
-
-      package_lib = File.join(cache_path, 'lib')
-      package_bin = File.join(cache_path, 'bin')
-
-      dest = File.join(Rip.dir, Rip::Env.active)
-      dest_lib = File.join(dest, 'lib')
-      dest_bin = File.join(dest, 'bin')
-
-      if File.exists? package_lib
-        FileUtils.cp_r package_lib + '/.', dest_lib
-
-        files_added = Dir.glob(package_lib + '/*').map do |file|
-          File.join(dest_lib, File.basename(file))
-        end
-
-        graph.add_files(name, files_added)
-      end
-
-      if File.exists? package_bin
-        FileUtils.cp_r package_bin + '/.', dest_bin
-
-        files_added = Dir.glob(package_bin + '/*').map do |file|
-          File.join(dest_bin, File.basename(file))
-        end
-
-        graph.add_files(name, files_added)
-      end
-    end
-
-    def uninstall(remove_dependencies = false)
-      graph = DependencyManager.new
-      packages = [name]
-
-      if remove_dependencies
-        packages.concat graph.packages_that_depend_on(name)
-      end
-
-      packages.each do |package|
-        puts "uninstalling #{package}"
-
-        graph.files(package).each do |file|
-          FileUtils.rm_rf file
-        end
-
-        graph.remove_package(package)
       end
     end
 

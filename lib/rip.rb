@@ -2,6 +2,7 @@ require 'fileutils'
 
 require "rip/memoize"
 require "rip/commands"
+require "rip/installer"
 require "rip/env"
 require "rip/setup"
 require "rip/package_api"
