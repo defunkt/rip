@@ -49,7 +49,7 @@ module Rip
         env.split('/').last
       end
 
-      envs -= %w( active rip-packages )
+      envs.reject! { |env| env =~ /^(rip-|active)/ }
 
       if envs.empty?
         "none. make one with `rip env create <env>`"
