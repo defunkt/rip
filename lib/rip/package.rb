@@ -24,17 +24,17 @@ module Rip
     def self.for(source)
       source = source.strip.chomp
 
-      handler = @@blocks.detect do |klass, block|
-        block.call(source)
-      end
-
-      return handler[0].new(source) if handler
-
       handler = @@patterns.detect do |pattern, klass|
         source.match(pattern)
       end
 
-      handler[1].new(source) if handler
+      return handler[1].new(source) if handler
+
+      handler = @@blocks.detect do |klass, block|
+        block.call(source)
+      end
+
+      handler[0].new(source) if handler
     end
 
     alias_method :to_s, :name
