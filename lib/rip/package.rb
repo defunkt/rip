@@ -42,7 +42,7 @@ module Rip
 
     def initialize(source, version = nil)
       @source = source.strip.chomp
-      @version = nil
+      @version = version
     end
 
     def cache_name
