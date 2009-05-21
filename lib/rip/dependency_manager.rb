@@ -21,6 +21,9 @@ module Rip
       # key is the package name, value is an array of
       # files it installed
       @files ||= {}
+
+      # key is the package name, value is the source
+      @sources ||= {}
     end
 
     def packages_that_depend_on(name)
@@ -39,7 +42,10 @@ module Rip
       @packages[name]
     end
 
-    def add_package(name, version, parent = nil)
+    def add_package(package, parent = nil)
+      name = package.name
+      version = package.version
+
       if @packages.has_key?(name) && @packages[name] != version
         puts "#{name} requested at #{version} by #{parent}"
         puts "#{name} already #{@packages[name]} by #{@heritage[name][0]}"
@@ -58,6 +64,7 @@ module Rip
         false
       else
         @packages[name] = version
+        @sources[name] = package.source
         save
         true
       end
@@ -96,11 +103,11 @@ module Rip
     end
 
     def marshal_payload
-      Marshal.dump [ @packages, @heritage, @lineage, @files ]
+      Marshal.dump [ @packages, @heritage, @lineage, @files, @sources ]
     end
 
     def marshal_read(data)
-      @packages, @heritage, @lineage, @files = Marshal.load(data)
+      @packages, @heritage, @lineage, @files, @sources = Marshal.load(data)
     end
   end
 end

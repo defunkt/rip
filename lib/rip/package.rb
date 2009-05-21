@@ -79,7 +79,7 @@ module Rip
       end
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
-        installed = graph.add_package(name, version, parent)
+        installed = graph.add_package(self, parent)
         return if !installed
 
         begin
