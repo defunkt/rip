@@ -18,16 +18,16 @@ module Rip
       # libraries that depend on it
       @lineage ||= {}
 
-      # key is the package name, value is an array of
-      # files it installed
-      @files ||= {}
-
       # key is the package name, value is the source
       @sources ||= {}
     end
 
+    def package(name)
+      Package.for(@sources[name], @versions[name])
+    end
+
     def packages_that_depend_on(name)
-      @lineage[name] || []
+      @lineage[name.respond_to?(:name) ? name.name : name] || []
     end
 
     def files(name)

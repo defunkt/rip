@@ -46,7 +46,7 @@ module Rip
 
       force = options['y'] || options['d']
       graph = DependencyManager.new
-      package = Rip::Package.new(name)
+      package = graph.package(name)
 
       if !package.installed?
         abort "rip: #{name} isn't installed"
