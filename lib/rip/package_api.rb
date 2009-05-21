@@ -63,5 +63,11 @@ module Rip
       # Unpack the package we want into the cache.
       puts "unpacking #{name} #{version}..."
     end
+
+    def meta_package?
+      # Does this package simply install other packages?
+      # Usually not.
+      false
+    end
   end
 end

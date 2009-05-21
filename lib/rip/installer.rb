@@ -16,13 +16,13 @@ module Rip
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         begin
-          graph.add_package(package, parent)
-
+          graph.add_package(package, parent) unless package.meta_package?
           package.fetch
           package.unpack
           install_dependencies(package)
           run_install_hook(package)
           copy_files(package)
+          cleanup(package)
         rescue => e
           uninstall(package, true)
           raise e
@@ -62,6 +62,10 @@ module Rip
       if File.exists? package_bin
         FileUtils.cp_r package_bin + '/.', dest_bin
       end
+    end
+
+    def cleanup(package)
+      FileUtils.rm_rf package.cache_path if package.meta_package?
     end
 
     def uninstall(package, remove_dependencies = false)
