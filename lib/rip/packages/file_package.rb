@@ -4,6 +4,11 @@ module Rip
       File.exists? source
     end
 
+    def initialize(source, *args)
+      super
+      @source = File.expand_path(source)
+    end
+
     def exists?
       File.exists? source
     end
@@ -13,7 +18,6 @@ module Rip
       source.split('/').last
     end
 
-    memoize :version
     def version
       "unversioned"
     end
