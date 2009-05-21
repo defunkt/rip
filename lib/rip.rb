@@ -7,6 +7,7 @@ require "rip/package_api"
 require "rip/package"
 require "rip/git_package"
 require "rip/file_package"
+require "rip/gem_package"
 require "rip/dependency_manager"
 
 module Rip

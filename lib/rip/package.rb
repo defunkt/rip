@@ -50,7 +50,11 @@ module Rip
     end
 
     def cache_path
-      @cache_path ||= File.join(Rip.dir, 'rip-packages', cache_name)
+      @cache_path ||= File.join(packages_path, cache_name)
+    end
+
+    def packages_path
+      @packages_path ||= File.join(Rip.dir, 'rip-packages')
     end
 
     def installed?(version = nil)
