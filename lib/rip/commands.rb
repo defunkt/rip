@@ -25,7 +25,10 @@ module Rip
 
       package = Rip::Package.for(source, version)
 
-      if package.installed? version
+      if options['f']
+        Installer.new.uninstall(package) if package.installed?(version)
+        Installer.new.install(package)
+      elsif package.installed? version
         puts "rip: #{package} already installed"
       else
         Installer.new.install(package)
