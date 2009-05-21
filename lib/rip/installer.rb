@@ -56,40 +56,30 @@ module Rip
 
       if File.exists? package_lib
         FileUtils.cp_r package_lib + '/.', dest_lib
-
-        files_added = Dir.glob(package_lib + '/*').map do |file|
-          File.join(dest_lib, File.basename(file))
-        end
-
-        graph.add_files(package.name, files_added)
       end
 
       if File.exists? package_bin
         FileUtils.cp_r package_bin + '/.', dest_bin
-
-        files_added = Dir.glob(package_bin + '/*').map do |file|
-          File.join(dest_bin, File.basename(file))
-        end
-
-        graph.add_files(package.name, files_added)
       end
     end
 
     def uninstall(package, remove_dependencies = false)
-      packages = [package.name]
+      packages = [package]
 
       if remove_dependencies
-        packages.concat graph.packages_that_depend_on(package.name)
+        packages.concat graph.packages_that_depend_on(package)
       end
 
-      packages.each do |package|
-        puts "uninstalling #{package}"
+      Dir.chdir File.join(Rip.dir, Rip::Env.active) do
+        packages.each do |package|
+          puts "uninstalling #{package}"
 
-        graph.files(package).each do |file|
-          FileUtils.rm_rf file
+          package.files.each do |file|
+            FileUtils.rm_rf file
+          end
+
+          graph.remove_package(package)
         end
-
-        graph.remove_package(package)
       end
     end
 

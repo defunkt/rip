@@ -70,7 +70,13 @@ module Rip
       end
     end
 
-    memoize :dependencies
+    def files
+      fetch
+      unpack
+
+      Dir[File.join(cache_path, 'lib/*')] + Dir[File.join(cache_path, 'bin/*')]
+    end
+
     def dependencies
       if File.exists? deps = File.join(cache_path, 'deps.rip')
         File.readlines(deps).map do |line|

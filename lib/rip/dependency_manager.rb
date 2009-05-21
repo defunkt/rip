@@ -8,7 +8,7 @@ module Rip
 
       # key is the package name, value is the current
       # installed version
-      @packages ||= {}
+      @versions ||= {}
 
       # key is the package name, value is an array of
       # libraries it depend on
@@ -35,35 +35,35 @@ module Rip
     end
 
     def installed?(name)
-      @packages.has_key? name
+      @versions.has_key? name
     end
 
     def package_version(name)
-      @packages[name]
+      @versions[name]
     end
 
     def add_package(package, parent = nil)
       name = package.name
       version = package.version
 
-      if @packages.has_key?(name) && @packages[name] != version
+      if @versions.has_key?(name) && @versions[name] != version
         puts "#{name} requested at #{version} by #{parent}"
-        puts "#{name} already #{@packages[name]} by #{@heritage[name][0]}"
+        puts "#{name} already #{@versions[name]} by #{@heritage[name][0]}"
         abort "sorry."
       end
 
       if parent
         @heritage[name] ||= []
-        @heritage[name].push(parent)
-        @lineage[parent] ||= []
-        @lineage[parent].push(name)
+        @heritage[name].push(parent.name)
+        @lineage[parent.name] ||= []
+        @lineage[parent.name].push(name)
       end
 
       # already installed?
-      if @packages.has_key? name
+      if @versions.has_key? name
         false
       else
-        @packages[name] = version
+        @versions[name] = version
         @sources[name] = package.source
         save
         true
@@ -83,7 +83,7 @@ module Rip
 
       @heritage.delete(name)
       @lineage.delete(name)
-      @packages.delete(name)
+      @versions.delete(name)
       save
     end
 
@@ -103,11 +103,11 @@ module Rip
     end
 
     def marshal_payload
-      Marshal.dump [ @packages, @heritage, @lineage, @files, @sources ]
+      Marshal.dump [ @versions, @heritage, @lineage, @sources ]
     end
 
     def marshal_read(data)
-      @packages, @heritage, @lineage, @files, @sources = Marshal.load(data)
+      @versions, @heritage, @lineage, @sources = Marshal.load(data)
     end
   end
 end
