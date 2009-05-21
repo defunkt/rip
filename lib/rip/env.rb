@@ -97,7 +97,6 @@ module Rip
       end
     end
 
-  private
     def active_dir
       File.join(Rip.dir, 'active')
     end

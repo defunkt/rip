@@ -51,7 +51,7 @@ module Rip
       package_lib = File.join(package.cache_path, 'lib')
       package_bin = File.join(package.cache_path, 'bin')
 
-      dest = File.join(Rip.dir, Rip::Env.active)
+      dest = Rip::Env.active_dir
       dest_lib = File.join(dest, 'lib')
       dest_bin = File.join(dest, 'bin')
 
@@ -73,7 +73,7 @@ module Rip
         packages.concat graph.packages_that_depend_on(package.name)
       end
 
-      Dir.chdir File.join(Rip.dir, Rip::Env.active) do
+      Dir.chdir Rip::Env.active_dir do
         packages.each do |package|
           begin
             next if @uninstalled[package.name]
