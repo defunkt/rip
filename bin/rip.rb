@@ -23,7 +23,7 @@ def parse_args(args)
   args   -= options
   options = options.inject({}) do |hash, flag|
     key, value = flag.split('=')
-    hash[key.sub('-','')] = value.nil? ? true : value
+    hash[key.sub(/^--?/,'').intern] = value.nil? ? true : value
     hash
   end
 
