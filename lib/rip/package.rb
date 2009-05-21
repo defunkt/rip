@@ -11,7 +11,6 @@ module Rip
     include PackageAPI, Memoize
 
     attr_reader :source
-
     def initialize(source, version = nil, files = nil)
       @source = source.strip.chomp
       @version = version
@@ -64,14 +63,9 @@ module Rip
       File.join(Rip.dir, 'rip-packages')
     end
 
-    def installed?(version = nil)
+    def installed?
       graph = PackageManager.new
-
-      if version
-        graph.package_version(name) == version
-      else
-        graph.installed?(name)
-      end
+      graph.installed?(name) && graph.package_version(name) == version
     end
 
     def fetch
