@@ -10,6 +10,14 @@ module Rip
   class Package
     include PackageAPI, Memoize
 
+    attr_reader :source
+
+    def initialize(source, version = nil, files = nil)
+      @source = source.strip.chomp
+      @version = version
+      @files = nil
+    end
+
     @@patterns = {}
     @@blocks = {}
 
@@ -37,13 +45,8 @@ module Rip
       handler[0].new(source, *args) if handler
     end
 
-    alias_method :to_s, :name
-    attr_reader :source
-
-    def initialize(source, version = nil, files = nil)
-      @source = source.strip.chomp
-      @version = version
-      @files = nil
+    def to_s
+      name
     end
 
     memoize :cache_name
