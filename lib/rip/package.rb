@@ -82,11 +82,16 @@ module Rip
         installed = graph.add_package(name, version, parent)
         return if !installed
 
-        fetch
-        unpack
-        install_dependencies(graph)
-        run_install_hook
-        copy_files(graph)
+        begin
+          fetch
+          unpack
+          install_dependencies(graph)
+          run_install_hook
+          copy_files(graph)
+        rescue => e
+          uninstall(true)
+          raise e
+        end
       end
     end
 
