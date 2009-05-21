@@ -1,19 +1,15 @@
 require 'fileutils'
 
-require "rip/memoize"
-require "rip/commands"
-require "rip/installer"
-require "rip/env"
-require "rip/setup"
-require "rip/package_api"
-require "rip/package_manager"
-require "rip/package"
-
-Dir[File.dirname(__FILE__) + '/rip/packages/*_package.rb'].each do |file|
-  require file
-end
-
 module Rip
+  autoload :Commands,       'rip/commands'
+  autoload :Env,            'rip/env'
+  autoload :Installer,      'rip/installer'
+  autoload :Memoize,        'rip/memoize'
+  autoload :Package,        'rip/package'
+  autoload :PackageAPI,     'rip/package_api'
+  autoload :PackageManager, 'rip/package_manager'
+  autoload :Setup,          'rip/setup'
+
   def self.dir
     return @dir if @dir
 
@@ -31,4 +27,10 @@ module Rip
   def self.dir=(dir)
     @dir = dir
   end
+end
+
+# load package types, (git, gem, etc)
+
+Dir[File.dirname(__FILE__) + '/rip/packages/*_package.rb'].each do |file|
+  require file
 end
