@@ -72,9 +72,10 @@ module Rip
         @versions[name] = version
         @sources[name] = package.source
         @files[name] = package.files
-        save
         true
       end
+    ensure
+      save
     end
 
     def add_files(name, file_list = [])
@@ -99,7 +100,6 @@ module Rip
     end
 
     def save
-      puts inspect
       File.open(path, 'w') do |f|
         f.puts marshal_payload
         f.flush

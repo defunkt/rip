@@ -58,7 +58,7 @@ module Rip
         puts "rip: the following packages depend on #{name}:"
 
         dependents.each do |dependent|
-          puts dependent
+          puts "#{dependent} (#{dependent.version})"
         end
 
         puts "rip: pass -y if you really want to remove #{name}"
