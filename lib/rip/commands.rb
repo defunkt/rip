@@ -49,7 +49,7 @@ module Rip
       force = options[:y] || options[:d]
       package = manager.package(name)
 
-      if !package || !package.installed?
+      if !package
         abort "rip: #{name} isn't installed"
       end
 
