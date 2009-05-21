@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-autoload :Rip, 'rip'
+require 'rip'
 
 ##
 # doctest: Simplest parsing of args.
