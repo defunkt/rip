@@ -25,7 +25,7 @@ module Rip
 
       package = Rip::Package.for(source, version)
 
-      if options['f']
+      if options[:f]
         Installer.new.uninstall(package) if package.installed?(version)
         Installer.new.install(package)
       elsif package.installed? version
@@ -46,7 +46,7 @@ module Rip
         abort "rip: please tell me what to uninstall"
       end
 
-      force = options['y'] || options['d']
+      force = options[:y] || options[:d]
       package = manager.package(name)
 
       if !package || !package.installed?
@@ -67,7 +67,7 @@ module Rip
       end
 
       if force || dependents.empty?
-        Installer.new.uninstall(package, options['d'])
+        Installer.new.uninstall(package, options[:d])
       end
     end
 

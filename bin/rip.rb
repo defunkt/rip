@@ -6,13 +6,13 @@ autoload :Rip, 'rip'
 # doctest: Simplest parsing of args.
 #
 # >> parse_args %w( install -f )
-# => ["install", { "f" => true }, []]
+# => ["install", { :f => true }, []]
 #
 # >> parse_args %w( install -f=force )
-# => ["install", { "f" => "force" }, []]
+# => ["install", { :f => "force" }, []]
 #
 # >> parse_args %w( install -f force name )
-# => ["install", { "f" => true }, [ "force", "name" ]]
+# => ["install", { :f => true }, [ "force", "name" ]]
 #
 # >> parse_args %w( install something )
 # => ["install", {}, [ "something" ]]
