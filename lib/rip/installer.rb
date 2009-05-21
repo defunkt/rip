@@ -3,7 +3,8 @@ module Rip
     include Memoize
 
     def initialize
-      @installed = []
+      @installed = {}
+      @uninstalled = {}
     end
 
     memoize :graph
@@ -12,27 +13,29 @@ module Rip
     end
 
     def install(package, parent = nil)
-      return if package.installed?
-
       if !package.exists?
         abort "#{package.name} #{package.version} not found at #{package.source}"
       end
 
-      @installed.push(package)
-
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         begin
           graph.add_package(package, parent) unless package.meta_package?
+
+          return if @installed[package.name]
+          @installed[package.name] = package
+
           package.fetch
           package.unpack
           install_dependencies(package)
           run_install_hook(package)
           copy_files(package)
           cleanup(package)
+
         rescue VersionConflict => e
           puts e.message
           rollback
           abort "installation failed"
+
         rescue => e
           rollback
           raise e
@@ -79,14 +82,13 @@ module Rip
     end
 
     def rollback
-      @installed.each do |package|
+      @installed.values.each do |package|
         uninstall(package)
+        cleanup(package)
       end
     end
 
     def uninstall(package, remove_dependencies = false)
-      @uninstalled ||= {}
-
       packages = [package]
 
       if remove_dependencies
