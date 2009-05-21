@@ -57,8 +57,16 @@ module Rip
       @files ||= {}
     end
 
+    def inspect
+      "(#{self.class} lineage=#{lineage.inspect} heritage=#{heritage.inspect} sources=#{sources.inspect} versions=#{versions.inspect})"
+    end
+
     def packages
       @versions.keys.map { |name| package(name) }
+    end
+
+    def package_names
+      @versions.keys
     end
 
     def package(name)
