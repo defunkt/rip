@@ -40,9 +40,10 @@ module Rip
     alias_method :to_s, :name
     attr_reader :source
 
-    def initialize(source, version = nil)
+    def initialize(source, version = nil, files = nil)
       @source = source.strip.chomp
       @version = version
+      @files = nil
     end
 
     memoize :cache_name
@@ -71,11 +72,17 @@ module Rip
     end
 
     def files
-      fetch
-      unpack
+      return @files if @files
 
-      Dir[File.join(cache_path, 'lib/*')] + Dir[File.join(cache_path, 'bin/*')]
+      @files = Dir[File.join(cache_path, 'lib/*')].map do |file|
+        File.join('lib', File.basename(file))
+      end
+
+      @files += Dir[File.join(cache_path, 'bin/*')].map do |file|
+        File.join('bin', File.basename(file))
+      end
     end
+    attr_writer :files
 
     def dependencies
       if File.exists? deps = File.join(cache_path, 'deps.rip')

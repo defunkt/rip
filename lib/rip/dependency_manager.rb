@@ -18,6 +18,10 @@ module Rip
 
       # key is the package name, value is the source
       @sources ||= {}
+
+      # key is the package name, value is the installed
+      # files
+      @files ||= {}
     end
 
     def packages
@@ -25,11 +29,11 @@ module Rip
     end
 
     def package(name)
-      Package.for(@sources[name], @versions[name])
+      Package.for(@sources[name], @versions[name], @files[name])
     end
 
     def packages_that_depend_on(name)
-      @lineage[name] || []
+      (@lineage[name] || []).map { |name| package(name) }
     end
 
     def files(name)
@@ -67,6 +71,7 @@ module Rip
       else
         @versions[name] = version
         @sources[name] = package.source
+        @files[name] = package.files
         save
         true
       end
@@ -105,11 +110,11 @@ module Rip
     end
 
     def marshal_payload
-      Marshal.dump [ @versions, @heritage, @lineage, @sources ]
+      Marshal.dump [ @versions, @heritage, @lineage, @sources, @files ]
     end
 
     def marshal_read(data)
-      @versions, @heritage, @lineage, @sources = Marshal.load(data)
+      @versions, @heritage, @lineage, @sources, @files = Marshal.load(data)
     end
   end
 end

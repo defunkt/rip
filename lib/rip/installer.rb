@@ -67,12 +67,12 @@ module Rip
       packages = [package]
 
       if remove_dependencies
-        packages.concat graph.packages_that_depend_on(package)
+        packages.concat graph.packages_that_depend_on(package.name)
       end
 
       Dir.chdir File.join(Rip.dir, Rip::Env.active) do
         packages.each do |package|
-          puts "uninstalling #{package}"
+          puts "uninstalling #{package.name}"
 
           package.files.each do |file|
             FileUtils.rm_rf file
