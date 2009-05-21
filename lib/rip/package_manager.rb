@@ -87,7 +87,8 @@ module Rip
       save
     end
 
-    def remove_package(name)
+    def remove_package(package)
+      name = package.name
       Array(@heritage[name]).each do |dep|
         @lineage[dep].delete(name) if @lineage[dep].respond_to? :delete
       end
