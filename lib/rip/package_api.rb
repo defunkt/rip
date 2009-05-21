@@ -53,15 +53,15 @@ module Rip
       true
     end
 
-    def fetch
+    def fetch!
       # Grab the package and stick it in our local cache,
       # if it's not already there.
       puts "fetching #{name}..."
     end
 
-    def unpack
+    def unpack!
       # Unpack the package we want into the cache.
-      puts "unpacking #{name}..."
+      puts "unpacking #{name} #{version}..."
     end
   end
 end

@@ -28,10 +28,7 @@ module Rip
       end
     end
 
-    def fetch
-      return if @fetched
-
-      puts "fetching #{name}..."
+    def fetch!
       if File.exists? cache_path
         Dir.chdir cache_path do
           `git fetch origin`
@@ -39,12 +36,9 @@ module Rip
       else
         `git clone #{source} #{cache_name}`
       end
-
-      @fetched = true
     end
 
-    def unpack
-      puts "unpacking #{name} #{version}..."
+    def unpack!
       Dir.chdir cache_path do
         `git reset --hard #{version}`
         `git submodule init`

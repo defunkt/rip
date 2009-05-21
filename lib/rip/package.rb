@@ -74,15 +74,26 @@ module Rip
       end
     end
 
+    def fetch
+      return if @fetched
+      fetch!
+      @fetched = true
+    end
+
+    def unpack
+      return if @unpacked
+      unpack!
+      @unpacked = true
+    end
+
     def files
       return @files if @files
 
-      @files = Dir[File.join(cache_path, 'lib/*')].map do |file|
-        File.join('lib', File.basename(file))
-      end
+      fetch
+      unpack
 
-      @files += Dir[File.join(cache_path, 'bin/*')].map do |file|
-        File.join('bin', File.basename(file))
+      Dir.chdir cache_path do
+        @files = Dir['lib/**/*'] + Dir['bin/**/*']
       end
     end
     attr_writer :files

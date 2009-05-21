@@ -18,14 +18,8 @@ module Rip
       "unversioned"
     end
 
-    def fetch
-      return if File.exists? cache_path
-      super
+    def fetch!
       FileUtils.cp_r "#{source}/.", cache_path
-    end
-
-    def unpack
-      super
     end
   end
 end

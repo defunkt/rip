@@ -27,13 +27,11 @@ module Rip
       File.exists?(source)
     end
 
-    def fetch
-      super
+    def fetch!
       FileUtils.cp File.expand_path(source), cache_file
     end
 
-    def unpack
-      super
+    def unpack!
       system "gem unpack #{cache_file} --target=#{packages_path} > /dev/null"
     end
 
