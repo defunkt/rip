@@ -2,6 +2,10 @@ module Rip
   class Installer
     include Memoize
 
+    def initialize
+      @installed = []
+    end
+
     memoize :graph
     def graph
       PackageManager.new
@@ -11,8 +15,10 @@ module Rip
       return if package.installed?
 
       if !package.exists?
-        abort "#{package.name} not found at #{package.source}"
+        abort "#{package.name} #{package.version} not found at #{package.source}"
       end
+
+      @installed.push(package)
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         begin
@@ -23,8 +29,12 @@ module Rip
           run_install_hook(package)
           copy_files(package)
           cleanup(package)
+        rescue VersionConflict => e
+          puts e.message
+          rollback
+          abort "installation failed"
         rescue => e
-          uninstall(package, true)
+          rollback
           raise e
         end
       end
@@ -68,6 +78,12 @@ module Rip
       FileUtils.rm_rf package.cache_path if package.meta_package?
     end
 
+    def rollback
+      @installed.each do |package|
+        uninstall(package)
+      end
+    end
+
     def uninstall(package, remove_dependencies = false)
       @uninstalled ||= {}
 
@@ -82,8 +98,6 @@ module Rip
           begin
             next if @uninstalled[package.name]
             @uninstalled[package.name] = true
-
-            puts "uninstalling #{package.name}"
 
             package.files.each do |file|
               FileUtils.rm_rf file

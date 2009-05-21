@@ -1,6 +1,34 @@
 require 'zlib'
 
 module Rip
+  class VersionConflict < RuntimeError
+    def initialize(name, bad_version, requester, real_version, owners)
+      @name = name
+      @bad_version = bad_version
+      @requester = requester
+      @real_version = real_version
+      @owners = owners
+    end
+
+    def message
+      message = []
+      message << "version conflict!"
+      message << "#{@name} requested at #{@bad_version} by #{@requester}"
+
+      if @owners.size == 1
+        owners = @owners[0]
+      elsif @owners.size == 2
+        owners = "#{@owners[0]} and #{@owners[1]}"
+      else
+        owners = [ @owners[0...-1], "and #{@owners[-1]}" ].join(', ')
+      end
+
+      message << "#{@name} previously requested at #{@real_version} by #{owners}"
+      message.join("\n")
+    end
+    alias_method :to_s, :message
+  end
+
   class PackageManager
     def initialize(env = nil)
       @env = env || Rip::Env.active
@@ -56,9 +84,7 @@ module Rip
       version = package.version
 
       if @versions.has_key?(name) && @versions[name] != version
-        puts "#{name} requested at #{version} by #{parent}"
-        puts "#{name} already #{@versions[name]} by #{@heritage[name][0]}"
-        abort "sorry."
+        raise VersionConflict.new(name, version, parent, @versions[name], @heritage[name])
       end
 
       if parent
