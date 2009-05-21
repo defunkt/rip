@@ -1,7 +1,11 @@
 module Rip
   class FilePackage < Package
     handles do |source|
-      File.exists? File.expand_path(source)
+      File.exists? source
+    end
+
+    def exists?
+      File.exists? source
     end
 
     def name

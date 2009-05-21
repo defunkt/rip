@@ -66,6 +66,11 @@ module Rip
     def install(graph = nil, parent = nil)
       graph ||= DependencyManager.new
 
+      if !exists?
+        version_string = " at #{@version}" if @version
+        abort "#{name}#{version_string} not found at #{source}"
+      end
+
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         installed = graph.add_package(name, version, parent)
         return if !installed

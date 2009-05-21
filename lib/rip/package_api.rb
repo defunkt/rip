@@ -42,6 +42,11 @@ module Rip
       source
     end
 
+    def exists?
+      # Does this package's source exist?
+      true
+    end
+
     def fetch
       # Grab the package and stick it in our local cache,
       # if it's not already there.

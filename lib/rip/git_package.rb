@@ -1,9 +1,21 @@
 module Rip
   class GitPackage < Package
-    handles "file://", "git://", "git+ssh://"
+    handles "file://", "git://"
 
     def name
       @name ||= source.split('/').last.chomp('.git')
+    end
+
+    def exists?
+      case source
+      when /^file:/
+        File.exists? File.join(source.sub('file://', ''), '.git')
+      when /^git:/
+        out = `git ls-remote #{source} #{@version} 2> /dev/null`
+        out.include? @version || 'HEAD'
+      else
+        false
+      end
     end
 
     def fetch
