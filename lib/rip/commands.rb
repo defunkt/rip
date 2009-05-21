@@ -48,7 +48,7 @@ module Rip
       graph = PackageManager.new
       package = graph.package(name)
 
-      if !package.installed?
+      if !package || !package.installed?
         abort "rip: #{name} isn't installed"
       end
 

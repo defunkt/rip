@@ -29,6 +29,7 @@ module Rip
     end
 
     def package(name)
+      return unless @sources[name]
       Package.for(@sources[name], @versions[name], @files[name])
     end
 
