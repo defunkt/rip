@@ -171,5 +171,9 @@ module Rip
     def puts(msg)
       super "rip: #{msg}"
     end
+
+    def abort(msg)
+      super "rip: #{msg}"
+    end
   end
 end
