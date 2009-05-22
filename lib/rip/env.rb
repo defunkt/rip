@@ -64,19 +64,17 @@ module Rip
       active.split('/').last
     end
 
-    def copy(env, new)
+    def copy(new)
       dest = File.join(Rip.dir, new)
-      src  = File.join(Rip.dir, env)
+      src  = Rip::Env.active_dir
+      env  = Rip::Env.active
 
       if File.exists?(dest)
         return "#{new} exists"
       end
 
-      if !File.exists?(src)
-        return "#{env} doesn't exist"
-      end
-
       FileUtils.cp_r src, dest
+      FileUtils.mv File.join(dest, "#{env}.ripenv"), File.join(dest, "#{new}.ripenv")
       use new
       "cloned #{env} to #{new}"
     end
