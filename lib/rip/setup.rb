@@ -99,7 +99,7 @@ module Rip
     end
 
     def finish_setup
-      instructions = (<<-EOI).gsub(/^ +/, "")
+      puts (<<-EOI).gsub(/^ +/, "")
       ****************************************************
       So far so good...
 
@@ -111,7 +111,6 @@ module Rip
 
       ****************************************************
       EOI
-      puts instructions
     end
 
 
