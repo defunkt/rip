@@ -95,7 +95,7 @@ module Rip
       version = package.version
 
       if @versions.has_key?(name) && @versions[name] != version
-        raise VersionConflict.new(name, version, parent, @versions[name], @heritage[name])
+        raise VersionConflict.new(name, version, parent, @versions[name], @heritage[name].to_a)
       end
 
       if parent && !parent.meta_package?
