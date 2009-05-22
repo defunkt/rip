@@ -81,13 +81,15 @@ module Rip
     end
 
     def files
-      return @files if @files
+      @files ||= files!
+    end
 
+    def files!
       fetch
       unpack
 
       Dir.chdir cache_path do
-        @files = Dir['lib/**/*'] + Dir['bin/**/*']
+        Dir['lib/**/*'] + Dir['bin/**/*']
       end
     end
     attr_writer :files
