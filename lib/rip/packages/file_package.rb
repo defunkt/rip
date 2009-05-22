@@ -1,3 +1,5 @@
+require 'date'
+
 module Rip
   class FilePackage < Package
     handles do |source|
@@ -19,7 +21,7 @@ module Rip
     end
 
     def version
-      "unversioned"
+      Date.today.to_s
     end
 
     def fetch!
