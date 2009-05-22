@@ -22,9 +22,11 @@ module Rip
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
         begin
+          installed = @installed[package.name] || package.installed?
+
           graph.add_package(package, parent) unless package.meta_package?
 
-          return if @installed[package.name]
+          return if installed
           @installed[package.name] = package
 
           package.fetch
