@@ -31,7 +31,7 @@ module Rip
   end
 
   class PackageManager
-    attr_reader :lineage, :heritage, :sources, :versions
+    attr_reader :lineage, :heritage, :sources, :versions, :env
 
     def initialize(env = nil)
       @env = env || Rip::Env.active
@@ -137,7 +137,11 @@ module Rip
     end
 
     def path
-      File.join(Rip.dir, @env, "#{@env}.ripenv")
+      File.join(dir, "#{@env}.ripenv")
+    end
+
+    def dir
+      File.join(Rip.dir, @env)
     end
 
     def save
