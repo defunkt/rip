@@ -397,6 +397,7 @@ Contributors
 * Chris Wanstrath (that's me!)
 * Tom Preston-Werner
 * John Barnette
+* Blake Mizerany
 
 Special Thanks
 --------------
@@ -404,8 +405,6 @@ Special Thanks
 * Coda Hale for the phrase "leaf-node transitive dependency issues"
 * GitHub for sponsoring development
 * Ryan Tomayko for spiritual guidance
-
-Thanks to
 
 [1]: http://pypi.python.org/pypi/virtualenv
 [2]: http://pypi.python.org/pypi/pip
