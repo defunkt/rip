@@ -1,7 +1,7 @@
 module Rip
   class FilePackage < Package
     handles do |source|
-      File.exists? source
+      File.directory? source
     end
 
     def initialize(source, *args)
@@ -10,7 +10,7 @@ module Rip
     end
 
     def exists?
-      File.exists? source
+      File.directory? source
     end
 
     memoize :name
