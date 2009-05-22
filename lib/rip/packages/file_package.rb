@@ -32,7 +32,11 @@ module Rip
       fetch
 
       Dir.chdir cache_path do
-        if File.readlines(source)[0] =~ /^# ?file:(.+)/
+        file = File.readlines(source)[0...5].detect do |line|
+          line =~ /^# ?file:(.+)/
+        end
+
+        if file
           dir = $1.split('/')[0...-1].join('/')
           [ File.join(Rip::Env.active_dir, dir, name) ]
         else
