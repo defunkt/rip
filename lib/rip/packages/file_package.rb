@@ -1,0 +1,53 @@
+module Rip
+  class FilePackage < Package
+    handles do |source|
+      File.file?(source)
+    end
+
+    def initialize(source, *args)
+      super
+      @source = File.expand_path(source)
+    end
+
+    def exists?
+      File.file? source
+    end
+
+    memoize :name
+    def name
+      source.split('/').last
+    end
+
+    def version
+      "unversioned"
+    end
+
+    def fetch!
+      FileUtils.rm_rf cache_path
+      FileUtils.mkdir_p cache_path
+      FileUtils.cp source, cache_path
+    end
+
+    def files!
+      fetch
+
+      Dir.chdir cache_path do
+        if File.readlines(source)[0] =~ /^# ?file:(.+)/
+          dir = $1.split('/')[0...-1].join('/')
+          [ File.join(Rip::Env.active_dir, dir, name) ]
+        else
+          [ File.join(Rip::Env.active_dir, 'lib', name) ]
+        end
+      end
+    end
+
+    def unpack!
+      Dir.chdir cache_path do
+        files.each do |file|
+          FileUtils.mkdir_p File.dirname(file)
+          FileUtils.cp File.join(cache_path, name), file
+        end
+      end
+    end
+  end
+end
