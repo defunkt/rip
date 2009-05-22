@@ -99,11 +99,19 @@ module Rip
     end
 
     def finish_setup
-      puts ''
-      puts "rip has been successfully installed"
-      puts "validate the installation process by running `rip check`"
-      puts ''
-      puts "get started: see `rip -h` or #{WEBSITE}"
+      instructions = (<<-EOI).gsub(/^ +/, "")
+      ****************************************************
+      So far so good...
+
+      Run `rip check` to be sure rip installed successfully
+
+      NOTE: You may need to source your #{startup_script}
+
+      To get started: see `rip -h` or #{WEBSITE}
+
+      ****************************************************
+      EOI
+      puts instructions
     end
 
 
