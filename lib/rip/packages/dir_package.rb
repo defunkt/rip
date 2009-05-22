@@ -1,5 +1,5 @@
 module Rip
-  class FilePackage < Package
+  class DirPackage < Package
     handles do |source|
       File.directory? source
     end
