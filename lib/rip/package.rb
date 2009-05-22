@@ -32,7 +32,12 @@ module Rip
       source = source.strip.chomp
 
       handler = @@patterns.detect do |pattern, klass|
-        source.match(pattern)
+        case pattern
+        when String
+          source.include? pattern
+        else
+          source.match(pattern)
+        end
       end
 
       return handler[1].new(source, *args) if handler
