@@ -1,3 +1,4 @@
+# file:lib/rip/commands/reverse.rb
 #
 # This file would normally live in lib/rip/commands or ~/.rip/rip-commands
 #
