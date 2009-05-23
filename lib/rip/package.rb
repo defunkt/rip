@@ -34,7 +34,12 @@ module Rip
       handler = @@patterns.detect do |pattern, klass|
         case pattern
         when String
-          source.include? pattern
+          if pattern[0,1] == '.'
+            pattern = Regexp.escape(pattern)
+            source.match Regexp.new("#{pattern}^")
+          else
+            source.include? pattern
+          end
         else
           source.match(pattern)
         end
