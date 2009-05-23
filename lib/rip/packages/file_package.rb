@@ -39,8 +39,9 @@ module Rip
         end
 
         if file
-          dir = $1.split('/')[0...-1].join('/')
-          [ File.join(Rip::Env.active_dir, dir, name) ]
+          dir = File.dirname($1)
+          file = File.basename($1)
+          [ File.join(Rip::Env.active_dir, dir, file) ]
         else
           [ File.join(Rip::Env.active_dir, 'lib', name) ]
         end
