@@ -25,7 +25,10 @@ module Rip
         return "#{env} doesn't exist"
       end
 
-      FileUtils.rm active_dir rescue Errno::ENOENT
+      begin
+        FileUtils.rm active_dir
+      rescue Errno::ENOENT
+      end
       FileUtils.ln_s(target, active_dir)
 
       "using #{env}"

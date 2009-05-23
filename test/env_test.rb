@@ -1,9 +1,15 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 require 'test_helper'
 
+def setup_fs
+  Rip::FileSystem.clear
+  Rip::Env.create('other')
+  Rip::Env.create('base')
+end
+
 context "Creating a ripenv" do
   setup do
-    stub_fileutils!
+    setup_fs
 
     @active_dir = File.join(Rip.dir, 'active')
     @name = 'new_env'
@@ -12,11 +18,9 @@ context "Creating a ripenv" do
   end
 
   test "creates the directories on disk" do
-    mock_fileutils!
-
-    FileUtils.expects(:mkdir_p).with(File.join(@ripenv, 'bin'))
-    FileUtils.expects(:mkdir_p).with(File.join(@ripenv, 'lib'))
     Rip::Env.create(@name)
+    assert File.exists?(File.join(@ripenv, 'bin'))
+    assert File.exists?(File.join(@ripenv, 'lib'))
   end
 
   test "confirms creation" do
@@ -28,33 +32,28 @@ context "Creating a ripenv" do
   end
 
   test "switches to the new ripenv" do
-    Rip::Env.expects(:use).with(@name)
     Rip::Env.create(@name)
+    assert_equal @name, Rip::Env.active
   end
 end
 
 context "Using a ripenv" do
   setup do
-    stub_fileutils!
+    setup_fs
 
     @active_dir = File.join(Rip.dir, 'active')
-    @name = 'new_env'
+    @name = 'other'
     @ripenv = File.join(Rip.dir, @name)
     @base = 'base'
     @old_ripenv = File.join(Rip.dir, @base)
   end
 
   test "switches the active symlink" do
-    mock_fileutils!
-    File.expects(:exists?).with(@ripenv).returns(true)
-
-    FileUtils.expects(:ln_s).with(@ripenv, @active_dir)
     Rip::Env.use(@name)
+    assert_equal @name, Rip::Env.active
   end
 
   test "confirms the change" do
-    File.expects(:exists?).with(@ripenv).returns(true)
-
     assert_equal "using #{@name}", Rip::Env.use(@name)
   end
 
@@ -65,22 +64,19 @@ end
 
 context "Deleting a ripenv" do
   setup do
-    stub_fileutils!
+    setup_fs
 
-    @name = "some_env"
+    @name = "other"
     @ripenv = File.join(Rip.dir, @name)
   end
 
   test "removes the ripenv" do
-    mock_fileutils!
-    File.stubs(:exists?).with(@ripenv).returns(true)
-
-    FileUtils.expects(:rm_rf).with(@ripenv)
+    assert File.exists?(@ripenv)
     Rip::Env.delete(@name)
+    assert !File.exists?(@ripenv)
   end
 
   test "confirms removal" do
-    File.stubs(:exists?).with(@ripenv).returns(true)
     assert_equal "deleted #{@name}", Rip::Env.delete(@name)
   end
 
@@ -89,13 +85,15 @@ context "Deleting a ripenv" do
   end
 
   test "fails if it doesn't exist" do
-    File.expects(:exists?).with(@ripenv).returns(false)
-    assert_equal "can't find #{@name}", Rip::Env.delete(@name)
+    name = 'fake_env'
+    assert_equal "can't find #{name}", Rip::Env.delete(name)
   end
 end
 
 context "Listing ripenvs" do
   setup do
+    setup_fs
+
     @ripenvs = Rip::Env.list
   end
 
@@ -114,6 +112,10 @@ context "Listing ripenvs" do
 end
 
 context "Displaying the active ripenv" do
+  setup do
+    setup_fs
+  end
+
   test "works" do
     assert_equal 'base', Rip::Env.active
   end
@@ -121,6 +123,5 @@ context "Displaying the active ripenv" do
   test "works across env changes" do
     Rip::Env.use('other')
     assert_equal 'other', Rip::Env.active
-    Rip::Env.use('base')
   end
 end
