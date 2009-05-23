@@ -92,3 +92,22 @@ context "Deleting a ripenv" do
     assert_equal "can't find #{@name}", Rip::Env.delete(@name)
   end
 end
+
+context "Listing ripenvs" do
+  setup do
+    @ripenvs = Rip::Env.list
+  end
+
+  test "prints ripenvs" do
+    assert_equal 2, @ripenvs.split(' ').size
+    assert @ripenvs.include?('base')
+  end
+
+  test "ignores the active symlink" do
+    assert !@ripenvs.include?('active')
+  end
+
+  test "ignores rip-* directories" do
+    assert !@ripenvs.include?('rip-packages')
+  end
+end
