@@ -111,3 +111,30 @@ context "Displaying the active ripenv" do
     assert_equal 'other', Rip::Env.active
   end
 end
+
+context "Copying the current ripenv" do
+  setup_with_fs do
+    @name = 'new_env'
+    @ripenv = File.join(Rip.dir, @name)
+  end
+
+  test "creates a new env" do
+    Rip::Env.copy(@name)
+    assert File.exists?(@ripenv)
+  end
+
+  test "switches to the new env" do
+    Rip::Env.copy(@name)
+    assert_equal @name, Rip::Env.active
+  end
+
+  test "makes the new env a copy of the active env"
+
+  test "fails if the new env exists" do
+    assert_equal "other exists", Rip::Env.copy('other')
+  end
+
+  test "confirms the creation" do
+    assert_equal "cloned base to #{@name}", Rip::Env.copy(@name)
+  end
+end
