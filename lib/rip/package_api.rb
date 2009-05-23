@@ -37,37 +37,58 @@
 
 module Rip
   module PackageAPI
+    # The package's name
     def name
-      # The package's name
       source
     end
 
+    # We weren't given a specific version, so figure
+    # out what the latest version is and return it
     def version
-      # We weren't given a specific version, so figure
-      # out what the latest version is and return it
       "0.0.1"
     end
 
+    # Does this package's source exist?
     def exists?
-      # Does this package's source exist?
       true
     end
 
+    # Grab the package and stick it in our local cache,
+    # if it's not already there.
     def fetch!
-      # Grab the package and stick it in our local cache,
-      # if it's not already there.
       puts "fetching #{name}..."
     end
 
+    # Unpack the package we want into the cache.
     def unpack!
-      # Unpack the package we want into the cache.
       puts "unpacking #{name} #{version}..."
     end
 
+    #
+    # The following are more obscure hooks, not usually needed
+    # for authoring a package.
+    #
+
+    # Does this package simply install other packages?
+    # Usually not.
     def meta_package?
-      # Does this package simply install other packages?
-      # Usually not.
       false
+    end
+
+    # Should this package be cached in rip-packages?
+    # Usually so.
+    def cached?
+      true
+    end
+
+    # A list of installed files. Usually handled by Package
+    def files!
+      []
+    end
+
+    # Packages we depend on. Usually handled by Package.
+    def dependencies!
+      []
     end
   end
 end
