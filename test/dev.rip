@@ -1,0 +1,3 @@
+git://github.com/floehopper/mocha.git rel-0_9_1
+git://github.com/thoughtbot/shoulda.git v2.10.1
+http://gist.github.com/raw/25455/8f592eaeaa3b1563df16fbaf5f56378c4cbda146/test-spec-mini.rb
