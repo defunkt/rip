@@ -33,12 +33,12 @@ module Rip
 
     def delete(env)
       if active == env
-        return "can't remove active environment"
+        return "can't delete active environment"
       end
 
       if File.exists?(target = File.join(Rip.dir, env))
         FileUtils.rm_rf target
-        "removing #{env}"
+        "deleted #{env}"
       else
         "can't find #{env}"
       end

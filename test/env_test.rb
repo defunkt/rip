@@ -67,5 +67,28 @@ context "Deleting a ripenv" do
   setup do
     stub_fileutils!
 
+    @name = "some_env"
+    @ripenv = File.join(Rip.dir, @name)
+
+    File.stubs(:exists?).with(@ripenv).returns(true)
+  end
+
+  test "removes the ripenv" do
+    mock_fileutils!
+    FileUtils.expects(:rm_rf).with(@ripenv)
+    Rip::Env.delete(@name)
+  end
+
+  test "confirms removal" do
+    assert_equal "deleted #{@name}", Rip::Env.delete(@name)
+  end
+
+  test "fails if it's the active ripenv" do
+    assert_equal "can't delete active environment", Rip::Env.delete('base')
+  end
+
+  test "fails if it doesn't exist" do
+    File.expects(:exists?).with(@ripenv).returns(false)
+    assert_equal "can't find #{@name}", Rip::Env.delete(@name)
   end
 end
