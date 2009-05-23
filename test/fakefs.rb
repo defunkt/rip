@@ -23,7 +23,7 @@ module Rip
 
     def mv(src, dest)
       if target = FileSystem.find(src)
-        FileSystem.add(dest, target)
+        FileSystem.add(dest, target.entry)
         FileSystem.delete(src)
       end
     end
@@ -52,7 +52,7 @@ module Rip
 
   class Dir
     def self.glob(pattern)
-      FileSystem.find(pattern)
+      FileSystem.find(pattern).map { |entry| entry.to_s}
     end
 
     def self.[](pattern)
@@ -80,7 +80,7 @@ module Rip
 
       case parts.last
       when '*'
-        target.values.map { |dir| dir.to_s }
+        target.values
       else
         target[parts.last]
       end
