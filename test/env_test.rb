@@ -69,17 +69,18 @@ context "Deleting a ripenv" do
 
     @name = "some_env"
     @ripenv = File.join(Rip.dir, @name)
-
-    File.stubs(:exists?).with(@ripenv).returns(true)
   end
 
   test "removes the ripenv" do
     mock_fileutils!
+    File.stubs(:exists?).with(@ripenv).returns(true)
+
     FileUtils.expects(:rm_rf).with(@ripenv)
     Rip::Env.delete(@name)
   end
 
   test "confirms removal" do
+    File.stubs(:exists?).with(@ripenv).returns(true)
     assert_equal "deleted #{@name}", Rip::Env.delete(@name)
   end
 
@@ -109,5 +110,17 @@ context "Listing ripenvs" do
 
   test "ignores rip-* directories" do
     assert !@ripenvs.include?('rip-packages')
+  end
+end
+
+context "Displaying the active ripenv" do
+  test "works" do
+    assert_equal 'base', Rip::Env.active
+  end
+
+  test "works across env changes" do
+    Rip::Env.use('other')
+    assert_equal 'other', Rip::Env.active
+    Rip::Env.use('base')
   end
 end

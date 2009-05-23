@@ -59,8 +59,7 @@ module Rip
     end
 
     def active
-      active = File.join(Rip.dir, 'active')
-      active = File.readlink(active)
+      active = File.readlink(active_dir)
       active.split('/').last
     end
 
