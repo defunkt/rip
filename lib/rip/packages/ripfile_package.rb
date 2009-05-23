@@ -19,6 +19,10 @@ module Rip
       true
     end
 
+    def cached?
+      false
+    end
+
     def fetch!
     end
 
