@@ -100,6 +100,10 @@ module Rip
     attr_writer :files
 
     def dependencies
+      @dependencies ||= dependencies!
+    end
+
+    def dependencies!
       if File.exists? deps = File.join(cache_path, 'deps.rip')
         File.readlines(deps).map do |line|
           source, version, *extra = line.split(' ')
