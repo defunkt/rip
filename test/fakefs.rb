@@ -7,14 +7,25 @@ module Rip
     end
 
     def rm(path)
-      if dir = FileSystem.find(path)
-        dir.parent.delete(dir.name)
-      end
+      FileSystem.delete(path)
     end
     alias_method :rm_rf, :rm
 
     def ln_s(target, path)
       FileSystem.add(path, MockSymlink.new(target))
+    end
+
+    def cp_r(src, dest)
+      if dir = FileSystem.find(src)
+        FileSystem.add(dest, dir.entry)
+      end
+    end
+
+    def mv(src, dest)
+      if target = FileSystem.find(src)
+        FileSystem.add(dest, target)
+        FileSystem.delete(src)
+      end
     end
   end
 
@@ -87,6 +98,12 @@ module Rip
       d[parts.last] = object
     end
 
+    def delete(path)
+      if dir = FileSystem.find(path)
+        dir.parent.delete(dir.name)
+      end
+    end
+
     def path_parts(path)
       path.split(File::PATH_SEPARATOR)
     end
@@ -94,9 +111,14 @@ module Rip
 
   class MockDir < Hash
     attr_accessor :name, :parent
+
     def initialize(name = nil, parent = nil)
       @name = name
       @parent = parent
+    end
+
+    def entry
+      self
     end
 
     def to_s
@@ -110,6 +132,8 @@ module Rip
 
   class MockSymlink
     attr_accessor :name, :target
+    alias_method  :to_s, :name
+
     def initialize(target)
       @target = target
     end
@@ -118,12 +142,12 @@ module Rip
       "symlink(#{target.split('/').last})"
     end
 
-    def to_s
-      name
+    def entry
+      FileSystem.find(target)
     end
 
     def method_missing(*args, &block)
-      FileSystem.find(target).send(*args, &block)
+      entry.send(*args, &block)
     end
   end
 end
