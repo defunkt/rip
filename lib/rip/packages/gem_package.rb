@@ -2,9 +2,9 @@ module Rip
   class GemPackage < Package
     handles '.gem'
 
-    def initialize(source, version = nil)
+    def initialize(source, *args)
+      super
       @source = File.expand_path(source.strip.chomp)
-      @version = version
     end
 
     def name
