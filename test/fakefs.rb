@@ -40,6 +40,13 @@ module Rip
   end
 
   class Dir
+    def self.glob(pattern)
+      FileSystem.find(pattern)
+    end
+
+    def self.[](pattern)
+      glob(pattern)
+    end
   end
 
   module FileSystem
@@ -60,7 +67,12 @@ module Rip
         dir[part] || {}
       end
 
-      target[parts.last]
+      case parts.last
+      when '*'
+        target.values.map { |dir| dir.to_s }
+      else
+        target[parts.last]
+      end
     end
 
     def add(path, object)
@@ -104,6 +116,10 @@ module Rip
 
     def inspect
       "symlink(#{target.split('/').last})"
+    end
+
+    def to_s
+      name
     end
 
     def method_missing(*args, &block)
