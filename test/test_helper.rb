@@ -10,3 +10,16 @@ begin
   require 'redgreen'
 rescue LoadError
 end
+
+class Test::Unit::TestCase
+  def self.setup_with_fs(&block)
+    define_method :setup do
+      Rip::FileSystem.clear
+      Rip::Env.create('other')
+      Rip::Env.create('base')
+      setup_block
+    end
+
+    define_method(:setup_block, &block)
+  end
+end

@@ -1,16 +1,8 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 require 'test_helper'
 
-def setup_fs
-  Rip::FileSystem.clear
-  Rip::Env.create('other')
-  Rip::Env.create('base')
-end
-
 context "Creating a ripenv" do
-  setup do
-    setup_fs
-
+  setup_with_fs do
     @active_dir = File.join(Rip.dir, 'active')
     @name = 'new_env'
     @ripenv = File.join(Rip.dir, @name)
@@ -38,9 +30,7 @@ context "Creating a ripenv" do
 end
 
 context "Using a ripenv" do
-  setup do
-    setup_fs
-
+  setup_with_fs do
     @active_dir = File.join(Rip.dir, 'active')
     @name = 'other'
     @ripenv = File.join(Rip.dir, @name)
@@ -63,9 +53,7 @@ context "Using a ripenv" do
 end
 
 context "Deleting a ripenv" do
-  setup do
-    setup_fs
-
+  setup_with_fs do
     @name = "other"
     @ripenv = File.join(Rip.dir, @name)
   end
@@ -91,9 +79,7 @@ context "Deleting a ripenv" do
 end
 
 context "Listing ripenvs" do
-  setup do
-    setup_fs
-
+  setup_with_fs do
     @ripenvs = Rip::Env.list
   end
 
@@ -112,8 +98,8 @@ context "Listing ripenvs" do
 end
 
 context "Displaying the active ripenv" do
-  setup do
-    setup_fs
+  setup_with_fs do
+    # no setup
   end
 
   test "works" do
