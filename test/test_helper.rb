@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift '../lib'
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 require 'rip'
 require 'mocha'
