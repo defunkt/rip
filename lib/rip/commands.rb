@@ -25,6 +25,10 @@ module Rip
 
       package = Rip::Package.for(source, version)
 
+      if !package
+        abort "rip: don't know how to install #{source}"
+      end
+
       if options[:f]
         Installer.new.uninstall(package) if package.installed?
         Installer.new.install(package)
