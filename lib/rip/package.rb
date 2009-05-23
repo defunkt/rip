@@ -36,7 +36,7 @@ module Rip
         when String
           if pattern[0,1] == '.'
             pattern = Regexp.escape(pattern)
-            source.match Regexp.new("#{pattern}^")
+            source.match Regexp.new("#{pattern}$")
           else
             source.include? pattern
           end
