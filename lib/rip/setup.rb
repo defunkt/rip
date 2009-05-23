@@ -184,11 +184,9 @@ module Rip
 
 # -- start rip config -- #
 RIPDIR=%s
-export RIPDIR
 RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
-export RUBYLIB
 PATH="$PATH:$RIPDIR/active/bin"
-export PATH
+export RIPDIR RUBYLIB PATH
 # -- end rip config -- #
 end_template
 
