@@ -18,7 +18,7 @@ module Rip
     HOME = File.expand_path('~')
     USER = HOME.split('/')[-1]
     LIBDIR = RbConfig::CONFIG['sitelibdir']
-    RIPDIR = File.join(HOME, '.rip')
+    RIPDIR = File.expand_path(ENV['RIPDIR'] || File.join(HOME, '.rip'))
     RIPROOT = File.expand_path(File.join(__DIR__, '..', '..'))
     RIPINSTALLDIR = File.join(LIBDIR, 'rip')
 
