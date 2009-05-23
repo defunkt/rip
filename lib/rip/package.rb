@@ -40,12 +40,14 @@ module Rip
         end
       end
 
+      puts "handler: #{handler[1]}" if handler
       return handler[1].new(source, *args) if handler
 
       handler = @@blocks.detect do |klass, block|
         block.call(source)
       end
 
+      puts "handler: #{handler[0]}" if handler
       handler[0].new(source, *args) if handler
     end
 
