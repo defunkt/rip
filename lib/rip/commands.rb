@@ -84,6 +84,27 @@ module Rip
       end
     end
 
+    def invoke(command, options, *args)
+      if command.nil? || command == '' || !respond_to?(command)
+        command = :help
+      end
+
+      begin
+        send(command, options, *args)
+      rescue => e
+        if options[:error]
+          raise e
+        else
+          puts "rip: #{command} failed"
+          puts "-> #{e.message}"
+        end
+      end
+    end
+
+    def public_instance_methods
+      super - %w( invoke public_instance_methods )
+    end
+
   private
     def manager
       @manager ||= PackageManager.new

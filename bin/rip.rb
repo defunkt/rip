@@ -33,9 +33,5 @@ end
 if $0 == __FILE__
   command, options, args = parse_args(ARGV)
 
-  if command.nil? || command == '' || !Rip::Commands.respond_to?(command)
-    command = :help
-  end
-
-  Rip::Commands.send(command, options, *args)
+  Rip::Commands.invoke(command, options, *args)
 end
