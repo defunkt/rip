@@ -43,7 +43,6 @@ module Rip
       puts "ripenv: #{Rip::Env.active}", ''
       puts manager.packages.map { |package| "#{package} (#{package.version})" }
     end
-    alias_method :installed, :list
 
     def uninstall(options = {}, name = nil, *args)
       if name.to_s.empty?
