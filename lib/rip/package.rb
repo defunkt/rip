@@ -14,7 +14,7 @@ module Rip
     def initialize(source, version = nil, files = nil)
       @source = source.strip.chomp
       @version = version
-      @files = nil
+      @files = files
     end
 
     @@patterns = {}
