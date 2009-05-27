@@ -4,6 +4,7 @@ require 'rip'
 Rip.dir = File.expand_path(File.join(File.dirname(__FILE__), 'ripdir'))
 
 require 'fakefs'
+require 'test/unit'
 require 'test/spec/mini'
 
 begin
@@ -14,7 +15,7 @@ end
 class Test::Unit::TestCase
   def self.setup_with_fs(&block)
     define_method :setup do
-      Rip::FileSystem.clear
+      FakeFS::FileSystem.clear
       Rip::Env.create('other')
       Rip::Env.create('base')
       setup_block

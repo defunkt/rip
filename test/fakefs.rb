@@ -1,4 +1,4 @@
-module Rip
+module FakeFS
   module FileUtils
     extend self
 
@@ -158,6 +158,6 @@ Object.class_eval do
   remove_const(:FileUtils)
 end
 
-File = Rip::File
-FileUtils = Rip::FileUtils
-Dir = Rip::Dir
+File = FakeFS::File
+FileUtils = FakeFS::FileUtils
+Dir = FakeFS::Dir
