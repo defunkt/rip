@@ -84,7 +84,9 @@ module Rip
     end
 
     def invoke(command, options, *args)
-      if command.nil? || command == '' || !respond_to?(command)
+      command = find_command(command)
+
+      if command.nil? || command == ''
         command = :help
       end
 
@@ -107,6 +109,20 @@ module Rip
   private
     def manager
       @manager ||= PackageManager.new
+    end
+
+    def find_command(command)
+      matches = public_instance_methods.select do |method|
+        method =~ /^#{command}/
+      end
+
+      if matches.size == 0
+        nil
+      elsif matches.size == 1
+        matches.first
+      else
+        abort "rip: which command did you mean? #{matches.join(' or ')}"
+      end
     end
 
     def show_help(command, commands)
