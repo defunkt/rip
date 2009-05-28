@@ -3,11 +3,11 @@ module Rip
     extend self
 
     def invoke(command, options, *args)
-      command = find_command(command)
-
       if command.nil? || command == ''
         command = :help
       end
+
+      command = find_command(command)
 
       begin
         send(command, options, *args)
