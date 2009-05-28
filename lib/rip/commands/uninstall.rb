@@ -16,12 +16,12 @@ module Rip
 
       if dependents.any? && !force
         puts "You have requested to uninstall the package:"
-        puts "  #{name} (#{package.version})"
+        puts "  #{package}"
         puts
         puts "The following packages depend on #{name}:"
 
         dependents.each do |dependent|
-          puts "  #{dependent} (#{dependent.version})"
+          puts "  #{dependent}"
         end
 
         puts
@@ -32,7 +32,7 @@ module Rip
 
       if force || dependents.empty?
         Installer.new.uninstall(package, options[:d])
-        puts "Successfully uninstalled #{package} (#{package.version})"
+        puts "Successfully uninstalled #{package}"
       end
     end
   end

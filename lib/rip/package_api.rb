@@ -61,7 +61,7 @@ module Rip
 
     # Unpack the package we want into the cache.
     def unpack!
-      puts "unpacking #{name} #{version}..."
+      puts "unpacking #{self}..."
     end
 
     #

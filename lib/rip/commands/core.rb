@@ -2,7 +2,7 @@ module Rip
   module Commands
     def list(*args)
       puts "ripenv: #{Rip::Env.active}", ''
-      puts manager.packages.map { |package| "#{package} (#{package.version})" }
+      puts manager.packages
     end
 
     def help(options = {}, command = nil, *args)

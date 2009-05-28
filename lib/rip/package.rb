@@ -55,7 +55,7 @@ module Rip
     end
 
     def to_s
-      name
+      "#{name} (#{version})"
     end
 
     memoize :cache_name
