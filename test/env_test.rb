@@ -27,6 +27,11 @@ context "Creating a ripenv" do
     Rip::Env.create(@name)
     assert_equal @name, Rip::Env.active
   end
+
+  test 'fails if no ripenv is given' do
+    assert_equal 'must give a ripenv to create', Rip::Env.create('')
+    assert_not_equal '', Rip::Env.active
+  end
 end
 
 context "Using a ripenv" do
@@ -49,6 +54,11 @@ context "Using a ripenv" do
 
   test "fails if the new env doesn't exist" do
     assert_equal "fake doesn't exist", Rip::Env.use("fake")
+  end
+
+  test 'fails if no ripenv is given' do
+    assert_equal "must give a ripenv to use", Rip::Env.use('')
+    assert_not_equal '', Rip::Env.active
   end
 end
 
@@ -142,5 +152,9 @@ context "Copying the current ripenv" do
 
   test "confirms the creation" do
     assert_equal "cloned base to #{@name}", Rip::Env.copy(@name)
+  end
+
+  test 'fails if no new ripenv is given' do
+    assert_equal 'must give a ripenv to copy to', Rip::Env.copy('')
   end
 end

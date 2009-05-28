@@ -9,6 +9,10 @@ module Rip
     def create(env)
       dir = File.join(Rip.dir, env)
 
+      if env == ''
+        return "must give a ripenv to create"
+      end
+
       if File.exists? dir
         "#{env} exists"
       else
@@ -23,6 +27,10 @@ module Rip
     def use(env)
       if !File.exists?(target = File.join(Rip.dir, env))
         return "#{env} doesn't exist"
+      end
+
+      if env == ''
+        return "must give a ripenv to use"
       end
 
       begin
@@ -71,6 +79,10 @@ module Rip
     end
 
     def copy(new)
+      if new == ''
+        return "must give a ripenv to copy to"
+      end
+
       dest = File.join(Rip.dir, new)
       src  = Rip::Env.active_dir
       env  = Rip::Env.active
@@ -104,5 +116,6 @@ module Rip
     def active_dir
       File.join(Rip.dir, 'active')
     end
+
   end
 end
