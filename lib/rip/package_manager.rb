@@ -31,7 +31,7 @@ module Rip
   end
 
   class PackageManager
-    attr_reader :lineage, :heritage, :sources, :versions, :env
+    attr_reader :dependencies, :dependents, :sources, :versions, :env
 
     def initialize(env = nil)
       @env = env || Rip::Env.active
@@ -43,11 +43,11 @@ module Rip
 
       # key is the package name, value is an array of
       # libraries it depend on
-      @heritage ||= {}
+      @dependents ||= {}
 
       # key is the package name, value is an array of
       # libraries that depend on it
-      @lineage ||= {}
+      @dependencies ||= {}
 
       # key is the package name, value is the source
       @sources ||= {}
@@ -58,7 +58,7 @@ module Rip
     end
 
     def inspect
-      "(#{self.class} lineage=#{lineage.inspect} heritage=#{heritage.inspect} sources=#{sources.inspect} versions=#{versions.inspect})"
+      "(#{self.class} dependencies=#{dependencies.inspect} dependents=#{dependents.inspect} sources=#{sources.inspect} versions=#{versions.inspect})"
     end
 
     def packages
@@ -75,7 +75,7 @@ module Rip
     end
 
     def packages_that_depend_on(name)
-      (@lineage[name] || []).map { |name| package(name) }
+      (@dependents[name] || []).map { |name| package(name) }
     end
 
     def files(name)
@@ -95,14 +95,14 @@ module Rip
       version = package.version
 
       if @versions.has_key?(name) && @versions[name] != version
-        raise VersionConflict.new(name, version, parent, @versions[name], @heritage[name].to_a)
+        raise VersionConflict.new(name, version, parent, @versions[name], @dependents[name].to_a)
       end
 
       if parent && !parent.meta_package?
-        @heritage[name] ||= Set.new
-        @heritage[name].add(parent.name)
-        @lineage[parent.name] ||= Set.new
-        @lineage[parent.name].add(name)
+        @dependents[name] ||= Set.new
+        @dependents[name].add(parent.name)
+        @dependencies[parent.name] ||= Set.new
+        @dependencies[parent.name].add(name)
       end
 
       # already installed?
@@ -126,12 +126,12 @@ module Rip
 
     def remove_package(package)
       name = package.name
-      Array(@heritage[name]).each do |dep|
-        @lineage[dep].delete(name) if @lineage[dep].respond_to? :delete
+      Array(@dependents[name]).each do |dep|
+        @dependencies[dep].delete(name) if @dependencies[dep].respond_to? :delete
       end
 
-      @heritage.delete(name)
-      @lineage.delete(name)
+      @dependents.delete(name)
+      @dependencies.delete(name)
       @versions.delete(name)
       save
     end
@@ -164,11 +164,11 @@ module Rip
     end
 
     def marshal_payload
-      Marshal.dump [ @versions, @heritage, @lineage, @sources, @files ]
+      Marshal.dump [ @versions, @dependents, @dependencies, @sources, @files ]
     end
 
     def marshal_read(data)
-      @versions, @heritage, @lineage, @sources, @files = Marshal.load(data)
+      @versions, @dependents, @dependencies, @sources, @files = Marshal.load(data)
     end
   end
 end
