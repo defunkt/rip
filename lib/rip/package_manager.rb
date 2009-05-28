@@ -126,8 +126,9 @@ module Rip
 
     def remove_package(package)
       name = package.name
-      Array(@dependents[name]).each do |dep|
-        @dependencies[dep].delete(name) if @dependencies[dep].respond_to? :delete
+
+      Array(@dependencies[name]).each do |dep|
+        @dependents[dep].delete(name) if @dependents[dep].respond_to? :delete
       end
 
       @dependents.delete(name)
