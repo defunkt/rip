@@ -75,6 +75,12 @@ context "Deleting a ripenv" do
   test "fails if it doesn't exist" do
     name = 'fake_env'
     assert_equal "can't find #{name}", Rip::Env.delete(name)
+    assert File.exists?(Rip.dir)
+  end
+
+  test "fails if no name is provided" do
+    assert_equal "must give a ripenv to delete", Rip::Env.delete('')
+    assert File.exists?(Rip.dir)
   end
 end
 
