@@ -15,14 +15,19 @@ module Rip
       dependents = manager.packages_that_depend_on(name)
 
       if dependents.any? && !force
-        puts "rip: the following packages depend on #{name}:"
+        puts "You have requested to uninstall the package:"
+        puts "  #{name} (#{package.version})"
+        puts
+        puts "The following packages depend on #{name}:"
 
         dependents.each do |dependent|
-          puts "#{dependent} (#{dependent.version})"
+          puts "  #{dependent} (#{dependent.version})"
         end
 
-        puts "rip: pass -y if you really want to remove #{name}"
-        abort "rip: pass -d if you want to remove #{name} and these dependents"
+        puts
+        puts "If you remove this package one or more dependencies will not be met."
+        puts "Pass -y if you really want to remove #{name}"
+        abort "Pass -d if you want to remove #{name} and its dependents."
       end
 
       if force || dependents.empty?
