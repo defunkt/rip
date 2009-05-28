@@ -31,8 +31,8 @@ module Rip
       end
 
       if force || dependents.empty?
-        puts "rip: uninstalling #{package}"
         Installer.new.uninstall(package, options[:d])
+        puts "Successfully uninstalled #{package} (#{package.version})"
       end
     end
   end
