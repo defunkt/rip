@@ -1,6 +1,6 @@
 module Rip
   class GitPackage < Package
-    handles "file://", "git://", /\.git$/
+    handles "file://", "git://", '.git'
 
     memoize :name
     def name
