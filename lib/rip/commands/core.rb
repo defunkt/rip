@@ -22,6 +22,12 @@ module Rip
       end
     end
 
+    def freeze(options = {}, *args)
+      manager.packages.each do |package|
+        puts "#{package.source} #{package.version}"
+      end
+    end
+
   private
     def show_help(command, commands)
       subcommand = command.to_s.empty? ? nil : "#{command} "
