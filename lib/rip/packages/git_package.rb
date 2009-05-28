@@ -15,7 +15,7 @@ module Rip
         @version = `git rev-parse origin/master`[0,7]
       end
     end
-    
+
     def exists?
       case source
       when /^file:/
@@ -47,7 +47,7 @@ module Rip
       end
     end
 
-    private
+  private
     def file_exists?
       File.exists? File.join(source.sub('file://', ''), '.git')
     end
