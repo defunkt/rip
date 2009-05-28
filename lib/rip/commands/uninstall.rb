@@ -2,14 +2,14 @@ module Rip
   module Commands
     def uninstall(options = {}, name = nil, *args)
       if name.to_s.empty?
-        abort "rip: please tell me what to uninstall"
+        abort "Please tell me what to uninstall."
       end
 
       force = options[:y] || options[:d]
       package = manager.package(name)
 
       if !package
-        abort "rip: #{name} isn't installed"
+        abort "#{name} isn't installed."
       end
 
       dependents = manager.packages_that_depend_on(name)
