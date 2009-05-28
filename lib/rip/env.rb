@@ -9,7 +9,7 @@ module Rip
     def create(env)
       dir = File.join(Rip.dir, env)
 
-      if env == ''
+      if env.strip.empty?
         return "must give a ripenv to create"
       end
 
@@ -25,12 +25,12 @@ module Rip
     end
 
     def use(env)
-      if !File.exists?(target = File.join(Rip.dir, env))
-        return "#{env} doesn't exist"
+      if env.strip.empty?
+        return "must give a ripenv to use"
       end
 
-      if env == ''
-        return "must give a ripenv to use"
+      if !File.exists?(target = File.join(Rip.dir, env))
+        return "#{env} doesn't exist"
       end
 
       begin
@@ -47,7 +47,7 @@ module Rip
         return "can't delete active environment"
       end
 
-      if env == ''
+      if env.strip.empty?
         return "must give a ripenv to delete"
       end
 
@@ -79,7 +79,7 @@ module Rip
     end
 
     def copy(new)
-      if new == ''
+      if new.strip.empty?
         return "must give a ripenv to copy to"
       end
 
