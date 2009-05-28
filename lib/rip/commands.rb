@@ -36,7 +36,7 @@ module Rip
       end
 
       if matches.size == 0
-        nil
+        :help
       elsif matches.size == 1
         matches.first
       else
