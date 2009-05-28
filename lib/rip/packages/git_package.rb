@@ -1,6 +1,6 @@
 module Rip
   class GitPackage < Package
-    handles "file://", "git://"
+    handles "file://", "git://", /\.git$/
 
     memoize :name
     def name
@@ -15,14 +15,15 @@ module Rip
         @version = `git rev-parse origin/master`[0,7]
       end
     end
-
+    
     def exists?
       case source
       when /^file:/
-        File.exists? File.join(source.sub('file://', ''), '.git')
+        file_exists?
       when /^git:/
-        out = `git ls-remote #{source} #{@version} 2> /dev/null`
-        out.include? @version || 'HEAD'
+        remote_exists?
+      when /\.git$/
+        file_exists? || remote_exists?
       else
         false
       end
@@ -44,6 +45,16 @@ module Rip
         `git submodule init`
         `git submodule update`
       end
+    end
+
+    private
+    def file_exists?
+      File.exists? File.join(source.sub('file://', ''), '.git')
+    end
+
+    def remote_exists?
+      out = `git ls-remote #{source} #{@version} 2> /dev/null`
+      out.include? @version || 'HEAD'
     end
   end
 end
