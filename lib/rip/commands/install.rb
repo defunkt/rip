@@ -24,8 +24,9 @@ module Rip
       elsif package.installed?
         puts "#{package} already installed"
       else
-        Installer.new.install(package)
-        puts "Successfully installed #{package}"
+        installer = Installer.new
+        installer.install(package)
+        puts "#{installer.installed.size.to_i} packages installed"
       end
     end
   end

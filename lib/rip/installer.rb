@@ -2,6 +2,7 @@ module Rip
   class Installer
     include Memoize
 
+    attr_reader :installed
     def initialize
       @installed = {}
       @uninstalled = {}
@@ -35,6 +36,7 @@ module Rip
           run_install_hook(package)
           copy_files(package)
           cleanup(package)
+          puts "Successfully installed #{package}"
 
         rescue VersionConflict => e
           puts e.message
@@ -64,8 +66,6 @@ module Rip
     end
 
     def copy_files(package)
-      puts "installing #{package.name}..."
-
       package_lib = File.join(package.cache_path, 'lib')
       package_bin = File.join(package.cache_path, 'bin')
 
@@ -117,10 +117,6 @@ module Rip
           end
         end
       end
-    end
-
-    def puts(msg)
-      super "rip: #{msg}"
     end
 
     def abort(msg)
