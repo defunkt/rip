@@ -28,9 +28,19 @@ module Rip
     end
 
     def unpack!
-      puts cache_path
-      puts name
-      Installer.new.install Package.for(File.join(cache_path, name))
+      installer = Installer.new
+      installer.install actual_package
+      installer.manager.sources[actual_package.name] = source
+      installer.manager.save
+    end
+
+    def version
+      actual_package ? actual_package.version : super
+    end
+
+    memoize :actual_package
+    def actual_package
+      Package.for(File.join(cache_path, name))
     end
   end
 end

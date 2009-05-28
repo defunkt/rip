@@ -7,8 +7,8 @@ module Rip
       @uninstalled = {}
     end
 
-    memoize :graph
-    def graph
+    memoize :manager
+    def manager
       PackageManager.new
     end
 
@@ -24,7 +24,7 @@ module Rip
         begin
           installed = @installed[package.name] || package.installed?
 
-          graph.add_package(package, parent) unless package.meta_package?
+          manager.add_package(package, parent) unless package.meta_package?
 
           return if installed
           @installed[package.name] = package
@@ -97,7 +97,7 @@ module Rip
       packages = [package]
 
       if remove_dependencies
-        packages.concat graph.packages_that_depend_on(package.name)
+        packages.concat manager.packages_that_depend_on(package.name)
       end
 
       Dir.chdir Rip::Env.active_dir do
@@ -110,7 +110,7 @@ module Rip
               FileUtils.rm_rf file
             end
 
-            graph.remove_package(package)
+            manager.remove_package(package)
           rescue => e
             puts e.message
             next
