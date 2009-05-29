@@ -36,7 +36,7 @@ module Rip
           run_install_hook(package)
           copy_files(package)
           cleanup(package)
-          puts "Successfully installed #{package}"
+          puts "Successfully installed #{package}" unless package.meta_package?
 
         rescue VersionConflict => e
           puts e.message
