@@ -26,7 +26,7 @@ module Rip
       else
         installer = Installer.new
         installer.install(package)
-        puts "#{installer.installed.size.to_i} packages installed"
+#         puts "#{installer.installed.size.to_i} packages installed"
       end
     end
   end
