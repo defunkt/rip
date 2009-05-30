@@ -2,7 +2,8 @@ require 'fileutils'
 
 module Rip
   def self.rip_autoload(class_symbol, path)
-    autoload class_symbol, File.dirname(__FILE__) + '/rip/' + path
+    full = File.expand_path(File.dirname(__FILE__) + '/rip/' + path)
+    autoload class_symbol, full
   end
   rip_autoload :Commands,       'commands'
   rip_autoload :Env,            'env'
