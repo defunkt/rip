@@ -1,14 +1,17 @@
 require 'fileutils'
 
 module Rip
-  autoload :Commands,       'rip/commands'
-  autoload :Env,            'rip/env'
-  autoload :Installer,      'rip/installer'
-  autoload :Memoize,        'rip/memoize'
-  autoload :Package,        'rip/package'
-  autoload :PackageAPI,     'rip/package_api'
-  autoload :PackageManager, 'rip/package_manager'
-  autoload :Setup,          'rip/setup'
+  def self.rip_autoload(class_symbol, path)
+    autoload class_symbol, File.dirname(__FILE__) + '/rip/' + path
+  end
+  rip_autoload :Commands,       'commands'
+  rip_autoload :Env,            'env'
+  rip_autoload :Installer,      'installer'
+  rip_autoload :Memoize,        'memoize'
+  rip_autoload :Package,        'package'
+  rip_autoload :PackageAPI,     'package_api'
+  rip_autoload :PackageManager, 'package_manager'
+  rip_autoload :Setup,          'setup'
 
   def self.dir
     return @dir if @dir
