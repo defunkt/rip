@@ -70,12 +70,12 @@ module Rip
       end
     end
 
-    def setup_ripenv
+    def setup_ripenv(ripdir=RIPDIR)
       transaction "setting up ripenv" do
-        FileUtils.mkdir_p File.join(RIPDIR, 'rip-packages')
-        Rip.dir = RIPDIR
+        FileUtils.mkdir_p File.join(ripdir, 'rip-packages')
+        Rip.dir = ripdir
         Rip::Env.create 'base'
-        FileUtils.chown_R USER, nil, RIPDIR, :verbose => true
+        FileUtils.chown_R USER, nil, ripdir, :verbose => true
       end
     end
 

@@ -26,6 +26,7 @@ class Test::Unit::TestCase
     define_method :setup do
       FakeFS::FileSystem.clear
       Rip::Env.create('other')
+      Rip::Setup.setup_ripenv(Rip.dir)
       Rip::Env.create('base')
       setup_block
     end
