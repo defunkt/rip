@@ -1,5 +1,7 @@
 module Rip
   class GitPackage < Package
+    include Sh::Git
+
     handles "file://", "git://", '.git'
 
     memoize :name
@@ -10,9 +12,9 @@ module Rip
     def version
       return @version if @version
 
-      fetch
+      fetch!
       Dir.chdir cache_path do
-        @version = `git rev-parse origin/master`[0,7]
+        @version = git_revparse('origin/master')[0,7]
       end
     end
 
@@ -32,18 +34,18 @@ module Rip
     def fetch!
       if File.exists? cache_path
         Dir.chdir cache_path do
-          `git fetch origin`
+          git_fetch('origin')
         end
       else
-        `git clone #{source} #{cache_name}`
+        git_clone(source, cache_name)
       end
     end
 
     def unpack!
       Dir.chdir cache_path do
-        `git reset --hard #{version}`
-        `git submodule init`
-        `git submodule update`
+        git_reset_hard(version)
+        git_submodule_init
+        git_submodule_update
       end
     end
 
@@ -53,7 +55,7 @@ module Rip
     end
 
     def remote_exists?
-      out = `git ls-remote #{source} #{@version} 2> /dev/null`
+      out = git_ls_remote(source, @version)
       out.include? @version || 'HEAD'
     end
   end
