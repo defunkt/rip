@@ -395,6 +395,7 @@ Contributors
 ------------
 
 * Chris Wanstrath (that's me!)
+* Jeff Hodges
 * Tom Preston-Werner
 * John Barnette
 * Blake Mizerany
