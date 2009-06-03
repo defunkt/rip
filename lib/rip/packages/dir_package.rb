@@ -15,7 +15,7 @@ module Rip
 
     memoize :name
     def name
-      source.split('/').last
+      File.basename(source)
     end
 
     def version
