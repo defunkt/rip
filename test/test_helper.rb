@@ -1,19 +1,11 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
+
 require 'rip'
+
 Rip.dir = File.expand_path(File.join(File.dirname(__FILE__), 'ripdir'))
 
-
-def autoload_all(namespace)
-  namespace.constants.each do |c|
-    const = namespace.module_eval c
-    autoload_all(const) if const.is_a? Module
-  end
-end
-
-autoload_all Rip
-
-require File.expand_path(File.join(File.dirname(__FILE__), 'mock_git'))
-
+require 'mock_git'
 require 'fakefs'
 require 'test/unit'
 require 'test/spec/mini'
@@ -53,7 +45,7 @@ end
 module Rip
   class GitPackage
     # Since we don't have any mocking code, we monkey patch.
-   
+
     def self.mock_remote_git(repo_name)
       real_source = "git://localhost/#{repo_name}"
       include_mock_git(repo_name, real_source)
@@ -73,7 +65,7 @@ module Rip
       include Sh::MockGit
       real_source
     end
-    
+
     def self.unmock_git
       include Sh::Git
     end

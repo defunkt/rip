@@ -1,29 +1,6 @@
 require 'fileutils'
 
 module Rip
-
-  module Autoloader
-    def rip_autoload(class_symbol, path)
-      full = File.expand_path(File.dirname(__FILE__) + '/rip/' + path)
-      autoload class_symbol, full
-    end
-  end
-  extend Autoloader
-
-  rip_autoload :Commands,       'commands'
-  rip_autoload :Env,            'env'
-  rip_autoload :Installer,      'installer'
-  rip_autoload :Memoize,        'memoize'
-  rip_autoload :Package,        'package'
-  rip_autoload :PackageAPI,     'package_api'
-  rip_autoload :PackageManager, 'package_manager'
-  rip_autoload :Setup,          'setup'
-
-  module Sh
-    extend Autoloader
-    rip_autoload :Git, 'sh/git'
-  end
-
   def self.dir
     return @dir if @dir
 
@@ -42,6 +19,18 @@ module Rip
     @dir = dir
   end
 end
+
+# load rip files
+
+require 'rip/env'
+require 'rip/memoize'
+require 'rip/installer'
+require 'rip/package_api'
+require 'rip/package'
+require 'rip/package_manager'
+require 'rip/setup'
+require 'rip/sh/git'
+require 'rip/commands'
 
 # load package types, (git, gem, etc)
 
