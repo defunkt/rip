@@ -39,6 +39,11 @@ class Test::Unit::TestCase
   def fresh_local_git(repo_name)
     Rip::GitPackage.mock_local_git(repo_name)
   end
+  
+  def fresh_local_dir(repo_name)
+    FakeFS::FileSystem.clone(repo_path(repo_name))
+    Rip::DirPackage.new(repo_path(repo_name))
+  end
 
 end
 
