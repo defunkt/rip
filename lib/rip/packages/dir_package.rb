@@ -19,7 +19,11 @@ module Rip
     end
 
     def version
-      "unversioned"
+      if name.match(/(\d+.\d+.\d+)$/)
+        $1
+      else
+        "unversioned"
+      end
     end
 
     def fetch!

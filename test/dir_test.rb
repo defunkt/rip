@@ -22,4 +22,12 @@ context 'Installing from a directory' do
     libpath = Rip.dir + '/active/lib/simple_d.rb'
     assert File.exists?(libpath), 'simple_d.rb should be installed'
   end
+
+  test "finds version from name suffix" do
+    assert_equal '1.2.3', fresh_local_dir('simple_d-1.2.3').version
+  end
+
+  test "defaults to unversioned if not named properly" do
+    assert_equal 'unversioned', fresh_local_dir('simple_d').version
+  end
 end
