@@ -1,16 +1,6 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 require 'test_helper'
 
-# temporary monkey patching before we stop using abort to make this
-# testable
-module Rip
-  class Installer
-    def abort(msg)
-      raise msg
-    end
-  end
-end
-
 context 'Installing from a remote git repo' do
   setup_with_fs do
     @source = fresh_remote_git('simple_c')
