@@ -99,7 +99,7 @@ module Rip
     end
 
     def finish_setup
-      ui.puts(<<-EOI).gsub(/^ +/, "")
+      puts (<<-EOI).gsub(/^ +/, "")
       ****************************************************
       So far so good...
 
@@ -180,7 +180,7 @@ module Rip
     end
 
     def ui
-      Rip.ui
+      @ui ||= Rip::UI.new(STDOUT)
     end
   end
 
