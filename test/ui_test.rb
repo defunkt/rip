@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 require 'test_helper'
+require 'stringio'
 
 context "Rip::UI" do
   setup do
