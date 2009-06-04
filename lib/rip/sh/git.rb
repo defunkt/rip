@@ -16,7 +16,6 @@ module Rip
       end
 
       def git_reset_hard(version)
-        raise "FUCK"
         `git reset --hard #{version}`
       end
 
