@@ -19,7 +19,7 @@ module Rip
     end
 
     def version
-      if name.match(/(\d+.\d+.\d+)$/)
+      if name.match(/-((?:\d+\.?)+\d+)$/)
         $1
       else
         "unversioned"

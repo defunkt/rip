@@ -14,7 +14,9 @@ context 'Installing from a directory' do
   end
 
   test "finds version from name suffix" do
+    assert_equal '1.2', fresh_local_dir('simple_d-1.2').version
     assert_equal '1.2.3', fresh_local_dir('simple_d-1.2.3').version
+    assert_equal '1.2.3.4', fresh_local_dir('simple_d-1.2.3.4').version
   end
 
   test "defaults to unversioned if not named properly" do
