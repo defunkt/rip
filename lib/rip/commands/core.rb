@@ -1,8 +1,8 @@
 module Rip
   module Commands
     def list(*args)
-      puts "ripenv: #{Rip::Env.active}", ''
-      puts manager.packages
+      ui.puts 'ripenv: ' + Rip::Env.active, ''
+      ui.puts manager.packages
     end
 
     def help(options = {}, command = nil, *args)
@@ -16,7 +16,7 @@ module Rip
 
     def env(options = {}, command = nil, *args)
       if command && Rip::Env.respond_to?(command)
-        puts "ripenv: " + Rip::Env.call(command, *args).to_s
+        ui.puts 'ripenv: ' + Rip::Env.call(command, *args).to_s
       else
         help nil, :env
       end
@@ -24,18 +24,18 @@ module Rip
 
     def freeze(options = {}, *args)
       manager.packages.each do |package|
-        puts "#{package.source} #{package.version}"
+        ui.puts "#{package.source} #{package.version}"
       end
     end
 
   private
     def show_help(command, commands)
       subcommand = command.to_s.empty? ? nil : "#{command} "
-      puts "Usage: rip #{subcommand}COMMAND [options]", ""
-      puts "Commands available:"
+      ui.puts "Usage: rip #{subcommand}COMMAND [options]", ""
+      ui.puts "Commands available:"
 
       commands.each do |method|
-        puts "  #{method}"
+        ui.puts "  #{method}"
       end
     end
   end

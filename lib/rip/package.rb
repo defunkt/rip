@@ -119,12 +119,8 @@ module Rip
       end
     end
 
-    def puts(msg)
-      super "rip: #{msg}"
-    end
-
-    def abort(msg)
-      super "rip: #{msg}"
+    def ui
+      Rip.ui
     end
   end
 end

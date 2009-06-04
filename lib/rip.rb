@@ -18,10 +18,19 @@ module Rip
   def self.dir=(dir)
     @dir = dir
   end
+
+  def self.ui
+    @ui ||= Rip::UI.new
+  end
+
+  def self.ui=(io)
+    @ui = Rip::UI.new(io)
+  end
 end
 
 # load rip files
 
+require 'rip/ui'
 require 'rip/env'
 require 'rip/memoize'
 require 'rip/installer'

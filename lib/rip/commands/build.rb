@@ -7,7 +7,7 @@ module Rip
   module Commands
     def build(options={}, *packages)
       packages.each do |package_name|
-        puts "building package: #{package_name}"
+        ui.puts "rip: building package: #{package_name}"
         package = manager.package(package_name)
 
         Dir["#{package.cache_path}/**/extconf.rb"].each do |build_file|

@@ -2,37 +2,37 @@ module Rip
   module Commands
     def uninstall(options = {}, name = nil, *args)
       if name.to_s.empty?
-        abort "Please tell me what to uninstall."
+        ui.abort "Please tell me what to uninstall."
       end
 
       force = options[:y] || options[:d]
       package = manager.package(name)
 
       if !package
-        abort "#{name} isn't installed."
+        ui.abort "#{name} isn't installed."
       end
 
       dependents = manager.packages_that_depend_on(name)
 
       if dependents.any? && !force
-        puts "You have requested to uninstall the package:"
-        puts "  #{package}"
-        puts
-        puts "The following packages depend on #{name}:"
+        ui.puts "You have requested to uninstall the package:"
+        ui.puts "  #{package}"
+        ui.puts
+        ui.puts "The following packages depend on #{name}:"
 
         dependents.each do |dependent|
-          puts "  #{dependent}"
+          ui.puts "  #{dependent}"
         end
 
-        puts
-        puts "If you remove this package one or more dependencies will not be met."
-        puts "Pass -y if you really want to remove #{name}"
-        abort "Pass -d if you want to remove #{name} and its dependents."
+        ui.puts
+        ui.puts "If you remove this package one or more dependencies will not be met."
+        ui.puts "Pass -y if you really want to remove #{name}"
+        ui.abort "Pass -d if you want to remove #{name} and its dependents."
       end
 
       if force || dependents.empty?
         Installer.new.uninstall(package, options[:d])
-        puts "Successfully uninstalled #{package}"
+        ui.puts "Successfully uninstalled #{package}"
       end
     end
   end

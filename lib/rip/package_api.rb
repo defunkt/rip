@@ -56,12 +56,12 @@ module Rip
     # Grab the package and stick it in our local cache,
     # if it's not already there.
     def fetch!
-      puts "fetching #{name}..."
+      ui.puts "fetching #{name}..."
     end
 
     # Unpack the package we want into the cache.
     def unpack!
-      puts "unpacking #{self}..."
+      ui.puts "unpacking #{self}..."
     end
 
     #

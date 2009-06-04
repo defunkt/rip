@@ -15,8 +15,8 @@ module Rip
         if options[:error]
           raise e
         else
-          puts "rip: #{command} failed"
-          puts "-> #{e.message}"
+          ui.puts "rip: #{command} failed"
+          ui.puts "-> #{e.message}"
         end
       end
     end
@@ -26,6 +26,10 @@ module Rip
     end
 
   private
+    def ui
+      Rip.ui
+    end
+
     def manager
       @manager ||= PackageManager.new
     end
@@ -40,7 +44,7 @@ module Rip
       elsif matches.size == 1
         matches.first
       else
-        abort "rip: which command did you mean? #{matches.join(' or ')}"
+        ui.abort "rip: which command did you mean? #{matches.join(' or ')}"
       end
     end
   end

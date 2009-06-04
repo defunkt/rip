@@ -21,7 +21,7 @@ module Rip
 
     def exists?
       if `which gem`.strip.empty?
-        abort "you don't have rubygems installed"
+        ui.abort "you don't have rubygems installed"
       end
 
       File.exists?(source)

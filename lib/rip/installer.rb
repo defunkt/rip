@@ -18,7 +18,7 @@ module Rip
         error = package.name
         error += " requested by #{parent} but" if parent
         error += " not found at #{package.source}"
-        abort error
+        ui.abort error
       end
 
       Dir.chdir File.join(Rip.dir, 'rip-packages') do
@@ -36,12 +36,12 @@ module Rip
           run_install_hook(package)
           copy_files(package)
           cleanup(package)
-          puts "Successfully installed #{package}" unless package.meta_package?
+          ui.puts "Successfully installed #{package}" unless package.meta_package?
 
         rescue VersionConflict => e
-          puts e.message
+          ui.puts e.message
           rollback
-          abort "installation failed"
+          ui.abort "installation failed"
 
         rescue => e
           rollback
@@ -60,7 +60,7 @@ module Rip
       return unless File.exists? File.join(package.cache_path, 'Rakefile')
 
       Dir.chdir package.cache_path do
-        puts "running install hook for #{package.name}"
+        ui.puts "running install hook for #{package.name}"
         system "rake -s rip:install >& /dev/null"
       end
     end
@@ -112,15 +112,15 @@ module Rip
 
             manager.remove_package(package)
           rescue => e
-            puts e.message
+            ui.puts e.message
             next
           end
         end
       end
     end
 
-    def abort(msg)
-      super "rip: #{msg}"
+    def ui
+      Rip.ui
     end
   end
 end

@@ -44,9 +44,9 @@ module Rip
       FileUtils.rm_rf File.join(LIBDIR, 'rip.rb'), :verbose => verbose
       FileUtils.rm_rf RIPDIR, :verbose => verbose
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
-      abort "rip uninstalled" if verbose
+      ui.abort "rip uninstalled" if verbose
     rescue Errno::EACCES
-      abort "rip: uninstall failed. please try again with `sudo`" if verbose
+      ui.abort "rip: uninstall failed. please try again with `sudo`" if verbose
     rescue Errno::ENOENT
       nil
     rescue => e
@@ -83,15 +83,15 @@ module Rip
       script = startup_script
 
       if script.empty?
-        puts "rip: please create one of these startup scripts in $HOME:"
-        puts startup_scripts.map { |s| '  ' + s }
+        ui.puts "rip: please create one of these startup scripts in $HOME:"
+        ui.puts startup_scripts.map { |s| '  ' + s }
         exit
       end
 
       if File.read(script).include? 'RIPDIR='
-        puts "rip: env variables already present in startup script"
+        ui.puts "rip: env variables already present in startup script"
       else
-        puts "rip: adding env variables to #{script}"
+        ui.puts "rip: adding env variables to #{script}"
         File.open(script, 'a+') do |f|
           f.puts startup_script_template
         end
@@ -99,7 +99,7 @@ module Rip
     end
 
     def finish_setup
-      puts (<<-EOI).gsub(/^ +/, "")
+      ui.puts(<<-EOI).gsub(/^ +/, "")
       ****************************************************
       So far so good...
 
@@ -119,13 +119,13 @@ module Rip
     #
 
     def transaction(message, &block)
-      puts "rip: #{message}"
+      ui.puts 'rip: ' + message
       block.call
     rescue Errno::EACCES
       uninstall
-      abort "rip: access denied. please try running again with `sudo`"
+      ui.abort "access denied. please try running again with `sudo`"
     rescue => e
-      puts "rip: something failed, rolling back..."
+      ui.puts "puts: something failed, rolling back..."
       uninstall
       raise e
     end
@@ -177,6 +177,10 @@ module Rip
       end
 
       true
+    end
+
+    def ui
+      Rip.ui
     end
   end
 

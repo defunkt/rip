@@ -121,5 +121,8 @@ module Rip
       File.join(Rip.dir, 'active')
     end
 
+    def ui
+      Rip.ui
+    end
   end
 end
