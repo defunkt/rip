@@ -22,6 +22,7 @@ end
 
 # load rip files
 
+require 'rip/version'
 require 'rip/env'
 require 'rip/memoize'
 require 'rip/installer'
