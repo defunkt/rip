@@ -32,8 +32,6 @@ def parse_args(args)
 end
 
 if $0 == __FILE__
-  Rip.ui = STDOUT
-
   command, options, args = parse_args(ARGV)
 
   Rip::Commands.invoke(command, options, *args)

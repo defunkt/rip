@@ -5,6 +5,7 @@ require 'rip'
 require 'rip/commands'
 
 Rip.dir = File.expand_path(File.join(File.dirname(__FILE__), 'ripdir'))
+Rip.ui = StringIO.new($UI_OUTPUT='')
 
 require 'mock_git'
 require 'fakefs'

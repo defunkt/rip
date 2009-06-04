@@ -20,7 +20,7 @@ module Rip
   end
 
   def self.ui
-    @ui ||= Rip::UI.new
+    @ui ||= Rip::UI.new(STDOUT)
   end
 
   def self.ui=(io)

@@ -180,7 +180,7 @@ module Rip
     end
 
     def ui
-      @ui ||= Rip::UI.new(STDOUT)
+      Rip.ui
     end
   end
 
