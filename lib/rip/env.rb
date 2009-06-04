@@ -92,7 +92,11 @@ module Rip
       end
 
       FileUtils.cp_r src, dest
-      FileUtils.mv File.join(dest, "#{env}.ripenv"), File.join(dest, "#{new}.ripenv")
+
+      if File.exists? ripfile = File.join(dest, "#{env}.ripenv")
+        FileUtils.cp ripfile, File.join(dest, "#{new}.ripenv")
+      end
+
       use new
       "cloned #{env} to #{new}"
     end

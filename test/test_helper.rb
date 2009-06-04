@@ -44,7 +44,6 @@ class Test::Unit::TestCase
     FakeFS::FileSystem.clone(repo_path(repo_name))
     Rip::DirPackage.new(repo_path(repo_name))
   end
-
 end
 
 module Rip
