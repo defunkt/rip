@@ -30,7 +30,7 @@ require 'rip/package'
 require 'rip/package_manager'
 require 'rip/setup'
 require 'rip/sh/git'
-require 'rip/commands'
+
 
 # load package types, (git, gem, etc)
 

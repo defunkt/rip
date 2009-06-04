@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rip'
+require 'rip/commands'
 
 ##
 # doctest: Simplest parsing of args.
