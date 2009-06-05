@@ -99,7 +99,7 @@ module Rip
     end
 
     def finish_setup
-      puts (<<-EOI).gsub(/^ +/, "")
+      ui.puts (<<-EOI).gsub(/^ +/, "")
       ****************************************************
       So far so good...
 
@@ -125,7 +125,7 @@ module Rip
       uninstall
       ui.abort "access denied. please try running again with `sudo`"
     rescue => e
-      ui.puts "puts: something failed, rolling back..."
+      ui.puts "rip: something failed, rolling back..."
       uninstall
       raise e
     end
