@@ -31,6 +31,7 @@ end
 # load rip files
 
 require 'rip/ui'
+require 'rip/version'
 require 'rip/env'
 require 'rip/memoize'
 require 'rip/installer'
