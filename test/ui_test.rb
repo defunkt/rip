@@ -7,10 +7,15 @@ context "Rip::UI" do
     @output = ''
     @ui = Rip::UI.new(StringIO.new(@output))
   end
-  
+
   test 'puts message' do
     @ui.puts 'hello'
     assert_equal 'hello', @output.chomp
+  end
+
+  test 'empty puts' do
+    @ui.puts
+    assert_equal "\n", @output
   end
 
   test 'prepends "rip: " to abort message' do

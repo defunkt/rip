@@ -5,7 +5,13 @@ module Rip
     end
 
     def puts(*args)
-      @io && args.each { |msg| @io.puts(msg) }
+      return unless @io
+
+      if args.empty?
+        @io.puts ""
+      else
+        args.each { |msg| @io.puts(msg) }
+      end
     end
 
     def abort(msg)
