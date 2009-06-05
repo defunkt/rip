@@ -1,13 +1,18 @@
 module Rip
   module Commands
+    x 'Display libraries installed in the current env.'
     def list(*args)
       ui.puts 'ripenv: ' + Rip::Env.active, ''
-      ui.puts manager.packages
+      if manager.packages.any?
+        ui.puts manager.packages
+      else
+        ui.puts "nothing installed"
+      end
     end
 
     def help(options = {}, command = nil, *args)
       command = command.to_s
-      if help = @help[command.downcase]
+      if !command && respond_to?(command)
         ui.puts "Usage: %s" % (@usage[command] || "rip #{command.downcase}")
         ui.puts
         ui.puts(*help)
@@ -16,6 +21,8 @@ module Rip
       end
     end
 
+    o 'rip env COMMAND'
+    x 'Commands for managing your ripenvs.'
     def env(options = {}, command = nil, *args)
       if command && Rip::Env.respond_to?(command)
         ui.puts 'ripenv: ' + Rip::Env.call(command, *args).to_s
@@ -24,9 +31,9 @@ module Rip
       end
     end
 
-    o 'rip freeze [env]'
-    x 'Outputs all the installed libraries and their version.'
-    x 'Accepts a ripenv. If none is given, uses the active env.'
+    x 'Outputs all installed libraries (and their versions) for the active env.'
+    x 'Can be saved as a .rip and installed by other rip users with:'
+    x '  rip install file.rip'
     def freeze(options = {}, env = nil, *args)
       manager(env).packages.each do |package|
         ui.puts "#{package.source} #{package.version}"

@@ -40,10 +40,9 @@ module Rip
     end
 
     def method_added(method)
-      return super unless @next_help
-      @help[method.to_s] = @next_help
-      @next_help = []
-      @usage[method.to_s] = @next_usage
+      @help[method.to_s] = @next_help if @next_help
+      @usage[method.to_s] = @next_usage if @next_usage
+      @next_help = nil
       @next_usage = nil
     end
 
