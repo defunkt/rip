@@ -6,9 +6,11 @@ module Rip
     end
 
     def help(options = {}, command = nil, *args)
-      case command.to_s
-      when 'env'
-        show_help 'env', Rip::Env.commands
+      command = command.to_s
+      if help = @help[command.downcase]
+        ui.puts "Usage: %s" % (@usage[command] || "rip #{command.downcase}")
+        ui.puts
+        ui.puts(*help)
       else
         show_general_help
       end
@@ -22,12 +24,16 @@ module Rip
       end
     end
 
+    o 'rip freeze [env]'
+    x 'Outputs all the installed libraries and their version.'
+    x 'Accepts a ripenv. If none is given, uses the active env.'
     def freeze(options = {}, env = nil, *args)
       manager(env).packages.each do |package|
         ui.puts "#{package.source} #{package.version}"
       end
     end
 
+    x 'Prints the current version and exits.'
     def version(options = {}, *args)
       puts Rip::Version
     end

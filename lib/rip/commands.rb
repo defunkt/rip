@@ -26,6 +26,27 @@ module Rip
     end
 
   private
+    # tasty dsl for adding help text
+
+    def o(usage)
+      @usage ||= {}
+      @next_usage = usage
+    end
+
+    def x(help)
+      @help ||= {}
+      @next_help ||= []
+      @next_help.push help
+    end
+
+    def method_added(method)
+      return super unless @next_help
+      @help[method.to_s] = @next_help
+      @next_help = []
+      @usage[method.to_s] = @next_usage
+      @next_usage = nil
+    end
+
     def ui
       Rip.ui
     end
