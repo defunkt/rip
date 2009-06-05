@@ -30,8 +30,8 @@ module Rip
       Rip.ui
     end
 
-    def manager
-      @manager ||= PackageManager.new
+    def manager(env = nil)
+      @manager ||= PackageManager.new(env)
     end
 
     def find_command(command)

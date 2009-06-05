@@ -22,8 +22,8 @@ module Rip
       end
     end
 
-    def freeze(options = {}, *args)
-      manager.packages.each do |package|
+    def freeze(options = {}, env = nil, *args)
+      manager(env).packages.each do |package|
         ui.puts "#{package.source} #{package.version}"
       end
     end
