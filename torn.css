@@ -82,7 +82,11 @@ div#main.four-oh-four a {
     margin-left: 10px;    
     padding: .7em;
     border: 1px solid #ccc;
-    background: #eee;n
+    background: #eee;
+}
+
+#main code {
+    background: #eee;
 }
 
 
