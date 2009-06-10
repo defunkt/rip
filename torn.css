@@ -15,7 +15,7 @@ body {
  */
 
 #index h1 {
-    font-family: Helvetica;    
+    font-family: Helvetica;
     font-size: 12em;
     margin-bottom: -12px;
     border-bottom: none;
@@ -52,8 +52,14 @@ div#index.four-oh-four a {
 
 #main h1 {
     font-family: Helvetica;
+    color: #2B332E;
     border-bottom: 1px solid #FF0066;
-    color: #2B332E;    
+}
+
+#main h1 span {
+  display: block;
+  margin-top: -6px;
+  border-bottom: 1px solid #FF0066;
 }
 
 #main a {
@@ -61,12 +67,12 @@ div#index.four-oh-four a {
 }
 
 #main a:hover {
-    color: #FF0066;        
+    color: #FF0066;
     text-decoration: none;
 }
 
 #main h2 {
-    border-bottom: 1px dashed #666;    
+    border-bottom: 1px dashed #666;
     color: #2B332E;
 }
 
@@ -79,7 +85,7 @@ div#index.four-oh-four a {
 }
 
 #main pre {
-    margin-left: 10px;    
+    margin-left: 10px;
     padding: .7em;
     border: 1px solid #ccc;
     background: #eee;
