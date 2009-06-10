@@ -31,7 +31,7 @@ Development
 
 Development of Rip happens at
 [GitHub](http://github.com/defunkt/rip). You can follow along by
-watching or forking the repository, or by simply cloning defunkt's repo:
+watching or cloning the repository:
 
     $ git clone git://github.com/defunkt/rip
     $ cd rip
