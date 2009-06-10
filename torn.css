@@ -11,17 +11,27 @@ h1 {
     color: #2B332E;    
 }
 
+#main a {
+    color: #000;
+}
+
+#main a:hover {
+    color: #FF0066;        
+    text-decoration: none;
+}
+
 .index h1 {
     font-family: Helvetica;    
     font-size: 12em;
     margin-bottom: -12px;
     border-bottom: none;
+    color: #000;
 }
 
 .index a {
     font-family: Courier;
     font-size: 2em;
-    color: #FF0066;
+    color: #FF0066 !important;
     text-decoration: none;
     margin-left: 12em;
 }
@@ -39,15 +49,6 @@ h2 {
 
 h3 {
     color: #2B332E;
-}
-
-#main a {
-    color: #000;
-}
-
-#main a:hover {
-    color: #FF0066;        
-    text-decoration: none;
 }
 
 div#main.four-oh-four a {
