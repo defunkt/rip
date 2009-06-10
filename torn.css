@@ -14,7 +14,7 @@ body {
  * index.html
  */
 
-.index h1 {
+#index h1 {
     font-family: Helvetica;    
     font-size: 12em;
     margin-bottom: -12px;
@@ -22,7 +22,7 @@ body {
     color: #000;
 }
 
-.index a {
+#index a {
     font-family: Courier;
     font-size: 2em;
     color: #FF0066 !important;
@@ -35,7 +35,7 @@ body {
  * 404.html
  */
 
-div#main.four-oh-four a {
+div#index.four-oh-four a {
     margin-left: 1em;
 }
 
@@ -43,6 +43,12 @@ div#main.four-oh-four a {
 /*
  * content pages
  */
+
+#main, #index {
+    float: left;
+    margin-left: 1em;
+    width: 80%;
+}
 
 #main h1 {
     font-family: Helvetica;
@@ -57,12 +63,6 @@ div#main.four-oh-four a {
 #main a:hover {
     color: #FF0066;        
     text-decoration: none;
-}
-
-#main {
-    float: left;
-    margin-left: 1em;
-    width: 80%;
 }
 
 #main h2 {
