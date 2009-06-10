@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    margin-right: 6px;
+    background: url(bg.png) repeat-y;
+    background-position: top right;
+}
+
+h1 {
+    font-family: Helvetica;    
+    font-size: 12em;
+    margin-bottom: -12px;
+}
+
+#main {
+    float: left;
+}
+
+#main a {
+    font-family: Courier;
+    font-size: 2em;
+    color: #FF0066;
+    text-decoration: none;
+    margin-left: 12em;
+}
+
+#sidebar {
+    font-family: Verdana;
+    float: right;
+    list-style: none;
+}
+
+#sidebar a {
+    text-decoration: none;
+    color: white;
+    background: black;
+    display: block;
+    padding: 5px;
+    margin: .8em 0;
+    font-size: 1.2em;
+    letter-spacing: -1px;
+}
+
+#sidebar a:hover {
+    background: #FF0066;
+}
