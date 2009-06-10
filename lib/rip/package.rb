@@ -51,7 +51,7 @@ module Rip
         block.call(source)
       end
 
-      handler[0].new(source, *args) if handler
+      return handler[0].new(source, *args) if handler
     end
 
     def to_s
