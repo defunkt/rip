@@ -42,8 +42,12 @@ require 'rip/setup'
 require 'rip/sh/git'
 
 
-# load package types, (git, gem, etc)
+# load rip packages - order is important
 
-Dir[File.dirname(__FILE__) + '/rip/packages/*_package.rb'].each do |file|
-  require file
-end
+require 'rip/packages/ripfile_package'
+require 'rip/packages/git_package'
+require 'rip/packages/http_package'
+require 'rip/packages/gem_package'
+require 'rip/packages/dir_package'
+require 'rip/packages/file_package'
+require 'rip/packages/remote_gem_package'
