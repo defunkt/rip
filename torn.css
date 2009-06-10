@@ -43,3 +43,7 @@ h1 {
 #sidebar a:hover {
     background: #FF0066;
 }
+
+#sidebar a sup {
+    font-size: .5em;
+}
