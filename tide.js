@@ -1,22 +1,28 @@
-$(function() {
-  var apiURL = "http://github.com/api/v2/json/",
-   issuesURL = apiURL + "issues/list/schacon/hg-git/open",
-      issues = 0
+(function($) {
+  var apiURL = "http://github.com/api/v2/json/"
 
-  // cute little issues count in the nav
-  $.getJSON(issuesURL + '?callback=?', function(data) {
-    if (data.issues)
-      $('#issues-link').html('issues <sup>(' + data.issues.length + ')</sup>')
-  })
+  function fetchIssues() {
+    var issuesURL = apiURL + "issues/list/schacon/hg-git/open",
+           issues = 0
 
-  // back to top. you know... for kids
-  $('#top').click(function() {
+    $.getJSON(issuesURL + '?callback=?', function(data) {
+      if (data.issues)
+        $('#issues-link').html('issues <sup>(' + data.issues.length + ')</sup>')
+    })
+  }
+
+  function scrollToTop() {
     $('html,body').animate({scrollTop: 0}, 0)
     return false
-  })
+  }
 
-  // our changelog is sweet
-  if ($('.changelog').length > 0) {
+  function spanifyHeaders() {
+    $('h1').css({ borderBottom: 'none' }).append($('<span></span>'))
+  }
+
+  function buildChangelog() {
+    if ($('.changelog').length == 0) return
+
     var commitsURL = apiURL + "commits/list/schacon/hg-git/master"
 
     $.getJSON(commitsURL + '?callback=?', function(data) {
@@ -28,6 +34,15 @@ $(function() {
       })
 
       $('h1').after(ul)
+      $('#main img').remove()
     })
   }
-})
+
+  $(function() {
+    fetchIssues()
+    spanifyHeaders()
+    buildChangelog()
+    $('#top').click(scrollToTop)
+  })
+})(jQuery)
+
