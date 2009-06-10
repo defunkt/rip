@@ -23,6 +23,10 @@ h1 {
     margin-left: 12em;
 }
 
+div#main.four-oh-four a {
+    margin-left: 1em;
+}
+
 #sidebar {
     font-family: Verdana;
     float: right;
