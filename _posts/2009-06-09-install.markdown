@@ -1,6 +1,38 @@
 ---
 layout: default
-title: About Rip
+title: Installing Rip 
 ---
 
-Hi.
+Installing Rip
+==============
+
+Installing Rip is as simple as
+
+    $ gem install rip
+
+Verify it worked with the `check` command.
+
+    $ rip check
+    All systems go.
+
+Without Rubygems
+----------------
+
+Don't have Rubygems installed? Never fear! You can install Rip from a
+zip quite simply.
+
+    $ wget http://github.com/defunkt/rip/zipball/v0.0.1
+    $ unzip defunkt-rip<TAB>
+    $ cd defunkt-rip<TAB>
+    $ sudo ruby setup.rb
+
+Development
+-----------
+
+Development of Rip happens at
+[GitHub](http://github.com/defunkt/rip). You can follow along by
+watching or forking the repository, or by simply cloning defunkt's repo:
+
+    $ git clone git://github.com/defunkt/rip
+    $ cd rip
+    $ sudo ruby setup.rb
