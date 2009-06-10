@@ -30,6 +30,10 @@ module Rip
           return if installed
           @installed[package.name] = package
 
+          if !package.version
+            ui.abort "can't install #{package} - it has no version"
+          end
+
           package.fetch
           package.unpack
           install_dependencies(package)
