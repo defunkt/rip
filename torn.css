@@ -1,3 +1,7 @@
+/*
+ * global
+ */
+
 body {
     margin: 0;
     margin-right: 6px;
@@ -5,20 +9,10 @@ body {
     background-position: top right;
 }
 
-h1 {
-    font-family: Helvetica;
-    border-bottom: 1px solid #FF0066;
-    color: #2B332E;    
-}
 
-#main a {
-    color: #000;
-}
-
-#main a:hover {
-    color: #FF0066;        
-    text-decoration: none;
-}
+/*
+ * index.html
+ */
 
 .index h1 {
     font-family: Helvetica;    
@@ -36,24 +30,65 @@ h1 {
     margin-left: 12em;
 }
 
+
+/*
+ * 404.html
+ */
+
+div#main.four-oh-four a {
+    margin-left: 1em;
+}
+
+
+/*
+ * content pages
+ */
+
+#main h1 {
+    font-family: Helvetica;
+    border-bottom: 1px solid #FF0066;
+    color: #2B332E;    
+}
+
+#main a {
+    color: #000;
+}
+
+#main a:hover {
+    color: #FF0066;        
+    text-decoration: none;
+}
+
 #main {
     float: left;
     margin-left: 1em;
     width: 80%;
 }
 
-h2 {
+#main h2 {
     border-bottom: 1px dashed #666;    
     color: #2B332E;
 }
 
-h3 {
+#main h3 {
     color: #2B332E;
 }
 
-div#main.four-oh-four a {
-    margin-left: 1em;
+#main p {
+    margin-left: 10px;
 }
+
+#main pre {
+    margin-left: 10px;    
+    padding: .7em;
+    border: 1px solid #ccc;
+    background: #eee;n
+}
+
+
+/*
+ * sidebar
+ */
 
 #sidebar {
     font-family: Verdana;
@@ -80,13 +115,11 @@ div#main.four-oh-four a {
     font-size: .5em;
 }
 
-p {
-    margin-left: 10px;
-}
 
-pre {
-    margin-left: 10px;    
-    padding: .7em;
-    border: 1px solid #ccc;
-    background: #eee;n
+/*
+ * footer
+ */
+
+#footer {
+    
 }
