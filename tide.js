@@ -6,4 +6,9 @@ $(function() {
     if (data.issues)
       $('#issues-link').html('issues <sup>(' + data.issues.length + ')</sup>')
   })
+
+  $('#top').click(function() {
+    $('html,body').animate({scrollTop: 0}, 0)
+    return false
+  })
 })

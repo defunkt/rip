@@ -125,5 +125,12 @@ div#index.four-oh-four a {
  */
 
 #footer {
-    
+    padding: .5em;
+    text-align: center;
+    margin-top: 10px;
+    border-top: 1px solid #666;
+}
+
+#footer a {
+    color: #FF0066;
 }

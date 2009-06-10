@@ -12,17 +12,25 @@
 </head>
 
 <body>
-  <div id="main">
-    {{ content }}
+  <div id="wrap">
+    <div id="main">
+      {{ content }}
+    </div>
+    <ul id="sidebar">
+      <li><a href="/about.html">about</a></li>
+      <li><a href="/install.html">install</a></li>
+      <li><a href="http://groups.google.com/group/rip-rb">mailing list</a></li>
+      <li><a id="issues-link" href="http://github.com/defunkt/rip/issues">issues</a></li>
+      <li><a href="/changelog.html">changelog</a></li>    
+      <li><a href="/internals.html">internals</a></li>
+      <li><a href="http://github.com/defunkt/rip">source</a></li>        
+    </ul>
+    <br style="clear:both;"/>
   </div>
-  <ul id="sidebar">
-    <li><a href="/about.html">about</a></li>
-    <li><a href="/install.html">install</a></li>
-    <li><a href="http://groups.google.com/group/rip-rb">mailing list</a></li>
-    <li><a id="issues-link" href="http://github.com/defunkt/rip/issues">issues</a></li>
-    <li><a href="/changelog.html">changelog</a></li>    
-    <li><a href="/internals.html">internals</a></li>
-    <li><a href="http://github.com/defunkt/rip">source</a></li>        
-  </ul>
+  <div id="footer">
+    <a href="#" id="top">top</a> |
+    <a href="http://github.com/defunkt/rip/tree/gh-pages">site source</a> |
+    sponsored by <a href="http://github.com">GitHub</a>     
+  </div>
 </body>
 </html>
