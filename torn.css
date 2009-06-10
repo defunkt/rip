@@ -6,22 +6,33 @@ body {
 }
 
 h1 {
+    font-family: Helvetica;
+    border-bottom: 1px solid #FF0066;
+}
+
+.index h1 {
     font-family: Helvetica;    
     font-size: 12em;
     margin-bottom: -12px;
+    border-bottom: none;
 }
 
-#main {
-    float: left;
-}
-
-#main a {
+.index a {
     font-family: Courier;
     font-size: 2em;
     color: #FF0066;
     text-decoration: none;
     margin-left: 12em;
 }
+
+#main {
+    float: left;
+    margin-left: 1em;
+    width: 80%;
+}
+
+#main a {
+} 
 
 div#main.four-oh-four a {
     margin-left: 1em;
@@ -50,4 +61,10 @@ div#main.four-oh-four a {
 
 #sidebar a sup {
     font-size: .5em;
+}
+
+pre {
+    padding: .7em;
+    border: 1px solid #ccc;
+    background: #eee;n
 }
