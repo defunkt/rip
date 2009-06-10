@@ -1,6 +1,9 @@
 ---
 layout: default
-title: About Rip
+title: Recent Changes to Rip
+class: changelog
 ---
 
-Hi.
+Changelog
+=========
+
