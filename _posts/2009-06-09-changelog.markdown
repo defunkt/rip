@@ -7,3 +7,4 @@ class: changelog
 Changelog
 =========
 
+![Loading...](spinner.gif)
