@@ -4,6 +4,10 @@ Rip: Ruby's Intelligent Packaging
 Rip is an attempt to create an intelligent packaging system
 for Ruby.
 
+For more thorough documentation please see the Rip site:
+
+[http://hellorip.com/](http://hellorip.com/)
+
 Introduction
 ------------
 
@@ -13,10 +17,17 @@ First we install rip.
 
     $ gem install rip
 
-Did that work? Yep. Let's see what libraries rip knows about.
+Did that work? 
+
+    $ rip check
+    All systems go.
+
+Yep. Let's see what libraries rip knows about.
 
     $ rip list
     ripenv: base
+    
+    nothing installed
 
 None. Really? Let's try to require Grit.
 
@@ -59,19 +70,20 @@ Overview
 Inspired by Python's [virtualenv][1] and [pip][2], Rip aims to be a
 simple and powerful way to install and manage Ruby packages.
 
-### SCM-Based Installation
+### Multiple Package Support
 
-All packages are installed from source. Versioning is done by locking
-to a specific revision or tag in the package's source repository.
+Rip can install from a variety of sources: directories, single files,
+git repositories - even Rubygems.
 
-As a result, each package's source is explicit rather than implicit.
+Adding a new package is [easy](/packages.html) and we expect Rip to
+support more formats in the future.
 
 ### Virtual Environments
 
 Virtual environments ("ripenvs") can be created so multiple versions of 
 a package may be installed and used by different applications concurrently.
 
-ripenvs are easy to create, clone, delete, and share. Recipes for creating
+ripenvs are easy to create, copy, delete, and share. Recipes for creating
 ripenvs are trivial to generate and publish.
 
 ### Install-time Dependency Resolution
@@ -84,12 +96,8 @@ making it easy to debug leaf-node transitive dependency issues.
 
 ### Clear Error Messages
 
-Installation and dependency errors should be clear and follow these
-guiding principles:
-
-* Explain what was expected
-* Explain what occurred
-* Offer a solution suggestion
+Installation and dependency errors should be clear and give as much
+information as possible in order to help you fix the problem.
 
 ### Few Dependencies
 
@@ -101,14 +109,23 @@ Rip vs RubyGems
 
 ### No building
 
-Rip packages are just repositories. Dependencies are listed as separate lines in a plaintext file.
+Rip's support for a variety of package types means there is nothing to
+build and distribute.
+
+Tag your Git repository and publicize the latest version, or just pass
+around Gists. Rip does not care.
+
+Rip dependencies are listed as separate lines in a plaintext file and
+can reference any package type. As a result, Rip packages can depend
+on existing Rubygems that aren't available from any other source.
 
 This means projects unaware of Rip can be installed by Rip and managed by
 ripenvs. Adding the dependencies yourself is easy.
 
 ### Multiple Environments
 
-Rip makes it easy to have multiple environments with different versions of libraries.
+Rip makes it easy to have multiple environments with different
+versions of libraries.
 
 You could even clone a ripenv then upgrade a single library to test its impact
 on the environment as a whole. Installation not go smoothly? Delete the new 
@@ -132,15 +149,6 @@ and individuals are free to re-package your code using other systems.
 
 There is no canonical server for Rip packages, which may be good or bad.
 
-### Version Control
-
-Much of the work put into classic package management systems is to create
-the packages, configure a package's metadata, read that data, fetch
-packages, and store them locally in a convenient fashion. Rip offloads
-all this functionality onto tools like Subversion and Git - instead of 
-writing code to accomplish these tasks, we just write code to ask the
-SCMs to do it for us.
-
 Installing Packages
 -------------------
 
@@ -154,7 +162,7 @@ Let's take the [ambition][3] project as an example. This is its
     git://github.com/seattlerb/ruby2ruby.git e3cf57559 # 1.1.8
     git://github.com/seattlerb/parsetree.git 480ede9d9 # 2.1.1
 
-If you were to run `rip install git://github.com/defunkt/ambition.git` 
+If you were to run `rip install git://github.com/defunkt/ambition` 
 the following steps would occur:
 
 * The source would be fetched and unpacked as `ambition` in the cwd
@@ -182,16 +190,12 @@ dependents, use `-d` (for dependents).
 Extensions
 ----------
 
+Installing a package that is not Rip aware but needs an extension
+built? Use `rip build`.
+
 Rip will attempt to run `rake rip:install` in your library if a 
 Rakefile is found. If you need to compile your C extension or do
 any other work, this is the place.
-
-The installation process actually makes two passes: first to grab 
-all dependencies and ensure the integrity of the graph, then a 
-second time to run any installation hooks. This allows your installation
-hooks to depend on libraries which will exist when the hooks are run.
-
-As a result, the outer most dependency's installation hook is run first. 
 
 Rip Directory Structure
 -----------------------
@@ -208,30 +212,27 @@ Here is a typical directory structure for Rip:
       - base/
         - bin/
         - lib/
-        - docs/
         - base.ripenv    
       - cheat/
         - bin/
         - lib/
-        - docs/
         - cheat.ripenv     
       - thunderhorse/
         - bin/
         - lib/
-        - docs/
         - thunderhorse.ripenv
 
 The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. Each 
-ripenv contains directories for executable binaries, Ruby source files, and 
-RDoc documentation. They also include a generated `.ripenv` file containing 
-metadata about the ripenev and its packages.
+ripenv contains directories for executable binaries and Ruby source files.
+They also include a generated `.ripenv` file containing metadata about
+the ripenev and its packages.
 
-This individual may use `base` for general tomfoolery (it's the default), `cheat` for 
-developing their Cheat application, and `thunderhorse` for working on their new 
-Thunderhose project.
+This individual may use `base` for general tomfoolery (it's the
+default), `cheat` for developing their Cheat application, and
+`thunderhorse` for working on their new Thunderhose project.
 
-`active` is a symlink to the current, active ripenv. We also see a `rip-packages` directory. 
-This is where Rip stores the raw repositories.
+`active` is a symlink to the current, active ripenv. We also see a 
+`rip-packages` directory. This is where Rip stores the raw repositories.
 
 Let us focus on the `cheat` ripenv:
 
@@ -256,7 +257,6 @@ Let us focus on the `cheat` ripenv:
             - webrick.rb
           - camping-unabridged.rb
           - camping.rb
-        - docs/
         - cheat.ripenv
 
 When using the `cheat` ripenv, a `camping` binary will be in our `PATH`.
@@ -271,11 +271,9 @@ good as non-existant.
 Deployment
 ----------
 
-Want to get a copy of your local environment on your deployment server? Just
-upload and install your `.ripenv` file.
-
-Installing a `.ripenv` multiple times won't create unnecessary work and will
-upgrade any packages that change.
+Want to get a copy of your local environment on your deployment
+server? Generate a `.rip` file with `rip freeze` then upload and
+install it.
 
 Shortcomings
 ------------
@@ -286,111 +284,6 @@ packages.
 
 As a result, the setup script expects you to be running bash or zshell.
 
-Plugins
--------
-
-Rip allows you to easily add your own first class commands. On launch, Rip 
-will load any Ruby files in either ~/.rip/rip-commands or 
-lib/rip/commands within the current ripenv.
-
-Let's say we wanted to create a `rip reverse` command, which reverses
-all the installed package names. First let's make the following directory
-structure:
-
-    reverse/
-      README.markdown
-      lib/
-        rip/ 
-          commands/
-            reverse.rb
-            
-Our `reverse.rb` might look something like this:
-
-    module Rip
-      module Commands
-        def reverse(*args)
-          puts "ripenv: #{Rip::Env.active}", ''
-          manager.packages.each do |package|
-            puts package.to_s.reverse
-          end
-        end
-      end
-    end
-
-Great. Now let's make a temporary ripenv to test this out on:
-
-    $ rip env create test_reverse
-
-And finally, install this new command:
-  
-    $ rip install reverse
-    
-Now:
-
-    $ rip reverse
-    ripenv: test_reverse
-
-    esrever
-    
-Victory! But let's say we want to reverse any word passed in
-to `rip reverse`. No problem. We'll modify our reverse.rb to look
-like this:
-
-    module Rip
-      module Commands
-        def reverse(options = {}, package = nil, *args)
-          puts "ripenv: #{Rip::Env.active}", ''        
-          if package
-            puts package.reverse
-          else
-            manager.packages.each do |package|
-              puts package.to_s.reverse
-            end
-          end
-        end
-      end
-    end
-
-We can reinstall our reverse project like so:
-
-    $ rip install reverse -f
-
-And try it out:
-
-    $ rip reverse chris
-    ripenv: base
-    sirhc
-
-Wonderful. As you can see, commands are just instance methods on 
-Rip::Commands that take an options hash as a first parameter then a
-splat of the args passed to the command line.
-
-Here's a simple debug, for exploring:
-
-    module Rip::Commands
-      def debug(options, *args)
-        puts "options: #{options.inspect}"
-        puts "args: #{args.inspect}"
-      end
-    end
-
-Install that then have at:
-
-    $ rip debug
-    options: {}
-    args: []
-    $ rip debug -f chris
-    options: {:f=>true}
-    args: ["chris"]
-    $ rip debug -f=chris
-    options: {:f=>"chris"}
-    args: []
-    $ rip debug --name=chris more args
-    options: {:name=>"chris"}
-    args: ["more", "args"]
-
-You get the idea.
-
 Contributors
 ------------
 
@@ -400,6 +293,7 @@ Contributors
 * John Barnette
 * Blake Mizerany
 * Ryan Tomayko
+* Pat Nakajima
 
 Special Thanks
 --------------
