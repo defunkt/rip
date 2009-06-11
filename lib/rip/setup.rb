@@ -53,29 +53,29 @@ module Rip
       raise e if verbose
     end
 
-    def install_libs
+    def install_libs(verbose = false)
       transaction "installing library files" do
         riprb = File.join(RIPROOT, 'lib', 'rip.rb')
         ripdr = File.join(RIPROOT, 'lib', 'rip')
-        FileUtils.cp_r riprb, LIBDIR, :verbose => true
-        FileUtils.cp_r ripdr, LIBDIR, :verbose => true
+        FileUtils.cp_r riprb, LIBDIR, :verbose => verbose
+        FileUtils.cp_r ripdr, LIBDIR, :verbose => verbose
       end
     end
 
-    def install_binary
+    def install_binary(verbose = false)
       transaction "installing rip binary" do
         src = File.join(RIPROOT, 'bin', 'rip')
         dst = File.join(BINDIR, 'rip')
-        FileUtils.cp src, dst, :verbose => true
+        FileUtils.cp src, dst, :verbose => verbose
       end
     end
 
-    def setup_ripenv(ripdir=RIPDIR)
+    def setup_ripenv(ripdir=RIPDIR, verbose = false)
       transaction "setting up ripenv" do
         FileUtils.mkdir_p File.join(ripdir, 'rip-packages')
         Rip.dir = ripdir
         Rip::Env.create 'base'
-        FileUtils.chown_R USER, nil, ripdir, :verbose => true
+        FileUtils.chown_R USER, nil, ripdir, :verbose => verbose
       end
     end
 
