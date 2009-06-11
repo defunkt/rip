@@ -38,11 +38,20 @@
     })
   }
 
+  function slideNavLink(size) {
+    return function(event) {
+      var elem = $(event.target);
+      if (elem.parents().hasClass(elem.text())) { return; }
+      elem.animate({ paddingRight: size + 'px' }, 100);
+    }
+  }
+
   $(function() {
     fetchIssues()
     spanifyHeaders()
     buildChangelog()
     $('#top').click(scrollToTop)
+    $('#sidebar a').mouseenter(slideNavLink(paddingRight=20));
+    $('#sidebar a').mouseleave(slideNavLink(paddingRight=5));
   })
 })(jQuery)
-

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Installing Rip 
+class: install
 ---
 
 Installing Rip
