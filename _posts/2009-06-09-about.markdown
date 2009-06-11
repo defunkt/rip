@@ -224,14 +224,14 @@ Here is a typical directory structure for Rip:
         - lib/
         - thunderhorse.ripenv
 
-The above contains three ripenvs: `base`, `cheat`, and `thunderhose`. Each 
+The above contains three ripenvs: `base`, `cheat`, and `thunderhorse`. Each 
 ripenv contains directories for executable binaries and Ruby source files.
 They also include a generated `.ripenv` file containing metadata about
 the ripenev and its packages.
 
 This individual may use `base` for general tomfoolery (it's the
 default), `cheat` for developing their Cheat application, and
-`thunderhorse` for working on their new Thunderhose project.
+`thunderhorse` for working on their new Thunderhorse project.
 
 `active` is a symlink to the current, active ripenv. We also see a 
 `rip-packages` directory. This is where Rip stores the raw repositories.
