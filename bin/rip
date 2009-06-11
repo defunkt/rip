@@ -3,21 +3,4 @@
 require 'rip'
 require 'rip/commands'
 
-def parse_args(args)
-  command = args.shift
-  options = args.select { |piece| piece =~ /^-/ }
-  args   -= options
-  options = options.inject({}) do |hash, flag|
-    key, value = flag.split('=')
-    hash[key.sub(/^--?/,'').intern] = value.nil? ? true : value
-    hash
-  end
-
-  [command, options, args]
-end
-
-if $0 == __FILE__
-  command, options, args = parse_args(ARGV)
-
-  Rip::Commands.invoke(command, options, *args)
-end
+Rip::Commands.invoke(ARGV)

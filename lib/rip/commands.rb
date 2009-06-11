@@ -2,7 +2,9 @@ module Rip
   module Commands
     extend self
 
-    def invoke(command, options, *args)
+    def invoke(args)
+      command, options, args = parse_args(args)
+
       if command.nil? || command == ''
         command = :help
       end
@@ -66,6 +68,19 @@ module Rip
       else
         ui.abort "rip: which command did you mean? #{matches.join(' or ')}"
       end
+    end
+
+    def parse_args(args)
+      command = args.shift
+      options = args.select { |piece| piece =~ /^-/ }
+      args   -= options
+      options = options.inject({}) do |hash, flag|
+        key, value = flag.split('=')
+        hash[key.sub(/^--?/,'').intern] = value.nil? ? true : value
+        hash
+      end
+
+      [command, options, args]
     end
   end
 end
