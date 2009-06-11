@@ -12,6 +12,9 @@ module Rip
       else
         args.each { |msg| @io.puts(msg) }
       end
+
+      @io.flush
+      nil
     end
 
     def abort(msg)
