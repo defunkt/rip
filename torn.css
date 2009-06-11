@@ -23,8 +23,9 @@ body {
 }
 
 #index a {
-    font-family: Courier;
+    font-family: Bitstream Vera Sans Mono, Monaco, Courier;
     font-size: 2em;
+    letter-spacing: -0.04em;
     color: #FF0066 !important;
     text-decoration: none;
     margin-left: 9em;
