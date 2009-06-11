@@ -12,6 +12,7 @@ module Rip
 
     WEBSITE = "http://hellorip.com/"
     STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile .zshenv )
+    FISH_STARTUP_SCRIPT = ".config/fish/config.fish"
 
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
@@ -139,15 +140,24 @@ module Rip
     end
 
     def startup_script_template
-      STARTUP_SCRIPT_TEMPLATE % RIPDIR
+      (fish? ? FISH_CONFIG_TEMPLATE : STARTUP_SCRIPT_TEMPLATE) % RIPDIR
     end
 
     def startup_script
-      script = STARTUP_SCRIPTS.detect do |script|
+      script = fish || STARTUP_SCRIPTS.detect do |script|
         File.exists? file = File.join(HOME, script)
       end
-
+      
       script ? File.join(HOME, script) : ''
+    end
+    
+    def fish
+      @fish = true
+      File.exists?(File.join(HOME, FISH_STARTUP_SCRIPT)) && FISH_STARTUP_SCRIPT
+    end
+    
+    def fish?
+      @fish == true
     end
 
     def installed?
@@ -158,9 +168,9 @@ module Rip
     end
 
     def check_installation
-      script = startup_script
-
-      if !File.read(script).include? 'RIPDIR='
+      script = File.read(startup_script)
+      
+      if (fish? ? !script.include?("set -x RIPDIR") : !script.include?('RIPDIR='))
         raise "no env variables in startup script"
       end
 
@@ -199,6 +209,14 @@ RIPDIR=%s
 RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
 PATH="$PATH:$RIPDIR/active/bin"
 export RIPDIR RUBYLIB PATH
+# -- end rip config -- #
+end_template
+
+  FISH_CONFIG_TEMPLATE = <<-end_template
+# -- start rip config -- #
+set -x RIPDIR %s
+set -x RUBYLIB "$RUBYLIB:$RIPDIR/active/lib"
+set PATH $RIPDIR/active/bin $PATH
 # -- end rip config -- #
 end_template
 
