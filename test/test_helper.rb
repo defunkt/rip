@@ -12,8 +12,31 @@ require 'fakefs'
 require 'test/unit'
 require 'test/spec/mini'
 
+# For super rudimentary mocking...
+def fake(object, method_name, options={})
+  method = object.method(method_name)
+  metaclass = class << object; self end
+  return_value = options[:with]
+
+  metaclass.class_eval do
+    define_method(method_name) { |*args| return_value }
+  end
+
+  begin
+    yield
+  ensure
+    metaclass.class_eval do
+      define_method(method_name, method)
+    end
+  end
+end
+
 def repo_path(repo_name)
   RealFile.expand_path(RealFile.dirname(__FILE__) + '/repos/' + repo_name)
+end
+
+def fixture(name='')
+  RealFile.expand_path(RealFile.dirname(__FILE__) + '/fixtures/' + name)
 end
 
 begin
@@ -45,6 +68,11 @@ class Test::Unit::TestCase
   def fresh_local_dir(repo_name)
     FakeFS::FileSystem.clone(repo_path(repo_name))
     Rip::DirPackage.new(repo_path(repo_name))
+  end
+
+  def fresh_local_file(repo_name)
+    FakeFS::FileSystem.clone(repo_path(repo_name))
+    Rip::FilePackage.new(repo_path(repo_name))
   end
 end
 
