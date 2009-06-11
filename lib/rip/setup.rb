@@ -10,7 +10,7 @@ module Rip
     # config
     #
 
-    WEBSITE = "http://defunkt.github.com/rip"
+    WEBSITE = "http://hellorip.com/"
     STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile )
 
     __DIR__ = File.expand_path(File.dirname(__FILE__))
