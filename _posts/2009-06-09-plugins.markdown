@@ -7,11 +7,11 @@ Writing Rip Plugins
 ===================
 
 Rip allows you to easily add your own first class commands. On launch, Rip 
-will load any Ruby files in either ~/.rip/rip-commands or 
-lib/rip/commands within the current ripenv.
+will load any Ruby files in either `~/.rip/rip-commands` or 
+`lib/rip/commands` within the current ripenv.
 
 Let's say we wanted to create a `rip reverse` command, which reverses
-all the installed package names. First let's make the following directory
+all the installed package names. First we'll make the following directory
 structure:
 
     reverse/

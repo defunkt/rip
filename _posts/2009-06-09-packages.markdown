@@ -7,21 +7,29 @@ Rip Packages
 ============
 
 One of Rip's distinguishing features is its support for multiple
-package types. You may be interested in adding your own.
+package types. Currently Rip can install:
 
-Rip has two classes of packages: plain jane packages and meta
-packages. Plain jane packages such as [DirPackage][1] or
-[GitPackage][2] are responsible for installing packages from local
-directories or git repositories, respectively.
+* directories
+* single files
+* rubygems
+* git repositories
+* ripfiles
 
-Meta packages such as [HTTPPackage][3] are resposible for installing
-other packages.
+Rip also has a concept of meta packages - packages which install other
+packages. Rip can install any of the above packages over HTTP 
+(with the `HTTPPackage`) and has the power to fetch remote Rubygems.
 
-Start with the [PackageAPI][4] module. This module is included in
-the [Package][5] class, which all packages should inherit from.
+Authoring Packages
+------------------
 
-The API has been broken out into its own module so you can easily see
-which methods you should override in your own package.
+Start with the [PackageAPI][1] module. It's included in the
+[Package][2] class, from which all packages must inherit. The API has 
+been broken out into its own module so you can easily see which 
+methods you should override in your own package.
+
+To see exactly which methods gets called during installation (and
+uninstallation), check the
+[Installer](https://github.com/defunkt/rip/blob/master/lib/rip/installer.rb) class.
 
 Throughout Rip, bang methods are generally called by corresponding
 non-bang methods. For instance, `fetch!` may only need to be called
@@ -29,8 +37,5 @@ once but multiple methods may want to ensure the package has been
 fetched before going about their business. These methods will call
 `fetch` who decides when `fetch!` is or isn't actually needed.
 
-[1]: http://github.com/defunkt/rip/blob/master/lib/rip/packages/dir_package.rb
-[2]: http://github.com/defunkt/rip/blob/master/lib/rip/packages/git_package.rb
-[3]: http://github.com/defunkt/rip/blob/master/lib/rip/packages/http_package.rb
-[4]: http://github.com/defunkt/rip/blob/master/lib/rip/package_api.rb
-[5]: http://github.com/defunkt/rip/blob/master/lib/rip/package.rb)
+[1]: http://github.com/defunkt/rip/blob/master/lib/rip/package_api.rb
+[2]: http://github.com/defunkt/rip/blob/master/lib/rip/package.rb)

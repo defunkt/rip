@@ -36,3 +36,16 @@ watching or cloning the repository:
     $ git clone git://github.com/defunkt/rip
     $ cd rip
     $ sudo ruby setup.rb
+
+You'll also want the development dependencies. They can be found
+in
+[test/dev.rip](https://github.com/defunkt/rip/blob/master/test/dev.rip). 
+Install them with `rip`:
+
+    $ rip install test/dev.rip
+
+Now run the tests to make sure we're all on the same page:
+
+    $ rake test
+
+Great! Looking for something to do? Hit the [issue tracker](http://github.com/defunkt/rip/issues).
