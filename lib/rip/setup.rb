@@ -35,7 +35,6 @@ module Rip
       install_libs
       install_binary
       setup_ripenv
-      setup_startup_script
       finish_setup
     end
 
@@ -83,22 +82,28 @@ module Rip
       end
     end
 
+    # Not called by default, but runnable with `rip setup`
+    #
+    # TODO: Requires the startup script, but probably acceptable for most? --rue
+    #
     def setup_startup_script
       script = startup_script
 
       if script.empty?
-        ui.puts "rip: please create one of these startup scripts in $HOME:"
+        ui.puts "rip: please create one of these startup scripts in $HOME and re-run:"
         ui.puts STARTUP_SCRIPTS.map { |s| '  ' + s }
         exit
       end
 
       if File.read(script).include? 'RIPDIR='
         ui.puts "rip: env variables already present in startup script"
+        return false
       else
         ui.puts "rip: adding env variables to #{script}"
         File.open(script, 'a+') do |f|
           f.puts startup_script_template
         end
+        return true
       end
     end
 
@@ -111,10 +116,14 @@ module Rip
       ****************************************************
       So far so good...
 
-      Run `rip check` to be sure Rip installed successfully
+      You should define some environment variables. You can
+      run `rip setup` to automatically insert them into your
+      startup script (#{script}). You need:
 
-      NOTE: You may need to source your #{script}
-            or start a new shell session.
+      #{startup_script_template}
+
+      Run `rip check` after setting up to verify that Rip
+      installed successfully
 
       Get started: `rip -h` or #{WEBSITE}
 
@@ -158,17 +167,11 @@ module Rip
     end
 
     def check_installation
-      script = startup_script
-
-      if !File.read(script).include? 'RIPDIR='
-        raise "no env variables in startup script"
-      end
-
       if ENV['RIPDIR'].to_s.empty?
         if startup_script.empty?
           raise "no $RIPDIR."
         else
-          raise "no $RIPDIR. you may need to run `source #{startup_script}`"
+          raise "no $RIPDIR. you may need to run `rip setup` and/or `source #{startup_script}`"
         end
       end
 

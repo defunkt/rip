@@ -7,7 +7,8 @@ module Rip
     dir = ENV['RIPDIR'].to_s
 
     if dir.empty?
-      abort "RIPDIR env variable not found. did you run setup.rb?"
+      ui.puts "rip: RIPDIR env variable not found. Did you run `rip setup` after installation?"
+      ui.puts "rip: Continuing..."
     end
 
     dir = File.expand_path(dir)
