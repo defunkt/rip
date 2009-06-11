@@ -1,8 +1,8 @@
 Rip: Ruby's Intelligent Packaging
 =================================
 
-Rip is an attempt to create an intelligent packaging system
-for Ruby.
+Rip is an attempt to create a next generation packaging 
+system for Ruby.
 
 For more thorough documentation please see the Rip site:
 
@@ -36,14 +36,14 @@ None. Really? Let's try to require Grit.
     
 Whoops. Not found. Let's install the latest using rip.
 
-    $ rip install git://github.com/mojombo/grit.git v1.1.1
+    $ rip install git://github.com/defunkt/grit.git v1.1.1b
     Successfully installed grit v1.1.1
     $ rip list
     ripenv: base
 
-    diff-lcs (5621f02)
+    diff-lcs (491fbc0)
+    mime-types (v1.16)
     grit (v1.1.1)
-    mime-types (0fd8958)
 
 Great, now we have Grit and all its dependencies.    
 
