@@ -1,8 +1,8 @@
 module Rip
   module Commands
-    o 'cmd ENV COMMAND'
-    x 'Runs a Ruby command in a particular environment.'
-    def cmd(options={}, *args)
+    o 'ruby ENV ARGS'
+    x 'Runs a Ruby instance in a particular environment.'
+    def ruby(options={}, *args)
       selected_env = File.join(Rip.dir, ARGV.shift, "lib")
       path = (ENV["RUBYLIB"] || "").split(":")
       active_env = File.join(Rip.dir, "active", "lib")
