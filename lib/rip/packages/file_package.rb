@@ -17,7 +17,7 @@ module Rip
 
     memoize :name
     def name
-      source.split('/').last
+      File.basename(source)
     end
 
     def version
@@ -31,7 +31,7 @@ module Rip
     def fetch!
       FileUtils.rm_rf cache_path
       FileUtils.mkdir_p cache_path
-      FileUtils.cp_r source, cache_path
+      FileUtils.cp source, File.join(cache_path, name)
     end
 
     def files!
