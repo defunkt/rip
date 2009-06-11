@@ -1,5 +1,6 @@
 module Rip
   module Commands
+    x 'Checks that your rip installation is valid.'
     def check(*args)
       Setup.check_installation
       ui.puts "All systems go."
@@ -7,6 +8,9 @@ module Rip
       ui.abort "Installation failed: #{e.message}"
     end
 
+    o 'rip install SOURCE [options]'
+    x 'Installs a package from SOURCE.'
+    x '-f forces installation (overwrites existing)'
     def install(options = {}, source = nil, version = nil, *args)
       if source.to_s.empty?
         ui.abort "Please tell me what to install."

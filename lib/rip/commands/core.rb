@@ -1,6 +1,6 @@
 module Rip
   module Commands
-    x 'Display libraries installed in the current env.'
+    x 'Display libraries installed in the current ripenv.'
     def list(*args)
       ui.puts 'ripenv: ' + Rip::Env.active, ''
       if manager.packages.any?
@@ -12,10 +12,12 @@ module Rip
 
     def help(options = {}, command = nil, *args)
       command = command.to_s
-      if !command && respond_to?(command)
+      if !command.empty? && respond_to?(command)
         ui.puts "Usage: %s" % (@usage[command] || "rip #{command.downcase}")
-        ui.puts
-        ui.puts(*help)
+        if @help[command]
+          ui.puts
+          ui.puts(*@help[command])
+        end
       else
         show_general_help
       end
@@ -42,7 +44,7 @@ module Rip
 
     x 'Prints the current version and exits.'
     def version(options = {}, *args)
-      puts Rip::Version
+      ui.puts "Rip #{Rip::Version}"
     end
     alias_method        "-v", :version
     alias_method "--version", :version

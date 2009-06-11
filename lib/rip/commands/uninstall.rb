@@ -1,5 +1,9 @@
 module Rip
   module Commands
+    o 'rip uninstall PACKAGE [options]'
+    x 'Uninstalls a single Rip package.'
+    x '-y removes the package no matter what.'
+    x '-d removes the package and its dependents.'
     def uninstall(options = {}, name = nil, *args)
       if name.to_s.empty?
         ui.abort "Please tell me what to uninstall."
