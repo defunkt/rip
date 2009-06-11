@@ -11,7 +11,7 @@ module Rip
     #
 
     WEBSITE = "http://hellorip.com/"
-    STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile )
+    STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile .zshenv )
 
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
@@ -88,7 +88,7 @@ module Rip
 
       if script.empty?
         ui.puts "rip: please create one of these startup scripts in $HOME:"
-        ui.puts startup_scripts.map { |s| '  ' + s }
+        ui.puts STARTUP_SCRIPTS.map { |s| '  ' + s }
         exit
       end
 
