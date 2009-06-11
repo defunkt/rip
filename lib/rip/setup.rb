@@ -11,7 +11,7 @@ module Rip
     #
 
     WEBSITE = "http://hellorip.com/"
-    STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile )
+    STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile .zshenv )
 
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
