@@ -30,6 +30,20 @@ body {
     margin-left: 12em;
 }
 
+/*
+ * warning
+ */
+
+#warning {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: url(tape.gif) repeat-x bottom;
+    padding: 20px;
+    font-size: 1.2em;
+    width: 700px;
+}
+
 
 /*
  * 404.html
