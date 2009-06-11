@@ -35,10 +35,6 @@ def repo_path(repo_name)
   RealFile.expand_path(RealFile.dirname(__FILE__) + '/repos/' + repo_name)
 end
 
-def fixture(name='')
-  RealFile.expand_path(RealFile.dirname(__FILE__) + '/fixtures/' + name)
-end
-
 begin
   require 'redgreen'
 rescue LoadError
