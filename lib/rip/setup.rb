@@ -103,20 +103,24 @@ module Rip
     end
 
     def finish_setup
-      ui.puts(<<-EOI.gsub(/^ +/, ""))
+      ui.puts finish_setup_banner(startup_script)
+    end
+
+    def finish_setup_banner(script = "~/.bashrc")
+      <<-EOI.gsub(/^ +/, "")
       ****************************************************
       So far so good...
 
-      Run `rip check` to be sure rip installed successfully
+      Run `rip check` to be sure Rip installed successfully
 
-      NOTE: You may need to source your #{startup_script}
+      NOTE: You may need to source your #{script}
+            or start a new shell session.
 
-      To get started: see `rip -h` or #{WEBSITE}
+      Get started: `rip -h` or #{WEBSITE}
 
       ****************************************************
       EOI
     end
-
 
     #
     # helper methods

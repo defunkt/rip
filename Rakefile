@@ -15,6 +15,7 @@ begin
   # so we have to help Jeweler find our version.
   $LOAD_PATH.unshift File.dirname(__FILE__) + '/lib'
   require 'rip/version'
+  require 'rip/setup'
 
   Rip::Version.instance_eval do
     def refresh
@@ -42,6 +43,7 @@ begin
     gemspec.executables = ['']
     gemspec.has_rdoc = false
     gemspec.extra_rdoc_files = ['']
+    gemspec.post_install_message = Rip::Setup.finish_setup_banner
   end
 rescue LoadError
   puts "Jeweler not available."
