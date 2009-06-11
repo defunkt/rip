@@ -41,7 +41,7 @@
   function slideNavLink(size) {
     return function(event) {
       var elem = $(event.target);
-      if (elem.parents().hasClass(elem.text())) { return; }
+      if ($('#sidebar').hasClass(elem.attr('id'))) { return; }
       elem.animate({ paddingRight: size + 'px' }, 100);
     }
   }
