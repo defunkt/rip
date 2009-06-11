@@ -118,27 +118,40 @@ div#index.four-oh-four a {
     font-family: Verdana;
     float: right;
     list-style: none;
+    padding-left: 10px;
+    text-align: right;
+}
+
+#sidebar li {
+  text-align: left;
+  float: right;
+  clear: both;
 }
 
 #sidebar a {
+    width: 100px;
     text-decoration: none;
     color: white;
     background: black;
     display: block;
     padding: 5px;
-    margin: .8em 0;
+    margin: .8em 0 0;
     font-size: 1.2em;
     letter-spacing: -1px;
-}
-
-#sidebar a:hover {
-    background: #FF0066;
 }
 
 #sidebar a sup {
     font-size: .5em;
 }
 
+.about #about,
+.install #install,
+.plugins #plugins,
+.packages #packages,
+.changelog #changelog {
+  background: #FF0066;
+  padding-right: 20px;
+}
 
 /*
  * footer
@@ -156,8 +169,8 @@ div#index.four-oh-four a {
 }
 
 
-/* 
- * pygments 
+/*
+ * pygments
  */
 
 pre  { background: #ffffff; }
