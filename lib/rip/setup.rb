@@ -106,7 +106,7 @@ module Rip
       ui.puts finish_setup_banner(startup_script)
     end
 
-    def finish_setup_banner(script = "~/.bashrc")
+    def finish_setup_banner(script = "~/.bash_profile")
       <<-EOI.gsub(/^ +/, "")
       ****************************************************
       So far so good...
