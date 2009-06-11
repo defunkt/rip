@@ -7,8 +7,8 @@ class: about
 Rip: Ruby's Intelligent Packaging
 =================================
 
-Rip is an attempt to create an intelligent packaging system
-for Ruby.
+Rip is an attempt to create a next generation packaging 
+system for Ruby.
 
 Introduction
 ------------
