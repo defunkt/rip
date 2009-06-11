@@ -3,7 +3,8 @@ require 'test_helper'
 
 context 'Installing from a FilePackage' do
   setup_with_fs do
-    @source = fresh_local_file('simple-file-3.2.1.rb').source
+    @package = fresh_local_file('simple-file-3.2.1.rb')
+    @source  = @package.source
   end
 
   test "installs the lib files" do
@@ -11,6 +12,11 @@ context 'Installing from a FilePackage' do
 
     libpath = Rip.dir + '/active/lib/simple-file-3.2.1.rb'
     assert File.exists?(libpath), 'simple-file-3.2.1.rb should be installed'
+  end
+
+  test "fetching into cache_path" do
+    @package.fetch!
+    assert File.exists?(File.join(@package.cache_path, @package.name)), 'should fetch package and put in local cache'
   end
 
   test "finds version from name suffix" do
