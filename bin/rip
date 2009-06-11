@@ -3,21 +3,6 @@
 require 'rip'
 require 'rip/commands'
 
-##
-# doctest: Simplest parsing of args.
-#
-# >> parse_args %w( install -f )
-# => ["install", { :f => true }, []]
-#
-# >> parse_args %w( install -f=force )
-# => ["install", { :f => "force" }, []]
-#
-# >> parse_args %w( install -f force name )
-# => ["install", { :f => true }, [ "force", "name" ]]
-#
-# >> parse_args %w( install something )
-# => ["install", {}, [ "something" ]]
-
 def parse_args(args)
   command = args.shift
   options = args.select { |piece| piece =~ /^-/ }
