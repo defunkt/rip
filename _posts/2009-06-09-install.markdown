@@ -8,7 +8,7 @@ Installing Rip
 
 Installing Rip is as simple as
 
-    $ gem install rip
+    $ sudo gem install rip
 
 Verify it worked with the `check` command.
 

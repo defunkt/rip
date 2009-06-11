@@ -16,7 +16,7 @@ Let's get right to it then, shall we?
 
 First we install rip.
 
-    $ gem install rip
+    $ sudo gem install rip
 
 Did that work? 
 
