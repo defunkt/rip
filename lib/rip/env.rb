@@ -3,7 +3,7 @@ module Rip
     extend self
 
     def commands
-      instance_methods - %w( call active_dir commands )
+      instance_methods - %w( call active_dir commands ui )
     end
 
     def create(env)
