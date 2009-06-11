@@ -2,7 +2,7 @@
   var apiURL = "http://github.com/api/v2/json/"
 
   function fetchIssues() {
-    var issuesURL = apiURL + "issues/list/schacon/hg-git/open",
+    var issuesURL = apiURL + "issues/list/defunkt/rip/open",
            issues = 0
 
     $.getJSON(issuesURL + '?callback=?', function(data) {
@@ -23,7 +23,7 @@
   function buildChangelog() {
     if ($('.changelog').length == 0) return
 
-    var commitsURL = apiURL + "commits/list/schacon/hg-git/master"
+    var commitsURL = apiURL + "commits/list/defunkt/rip/master"
 
     $.getJSON(commitsURL + '?callback=?', function(data) {
       var ul = $('<ul id="commits"></ul>')
