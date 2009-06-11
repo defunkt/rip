@@ -40,6 +40,8 @@ begin
     gemspec.authors = ["Chris Wanstrath"]
     gemspec.extensions = ["ext/extconf.rb"]
     gemspec.executables = ['']
+    gemspec.has_rdoc = false
+    gemspec.extra_rdoc_files = ['']
   end
 rescue LoadError
   puts "Jeweler not available."
