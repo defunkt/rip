@@ -88,7 +88,7 @@ module Rip
 
       if script.empty?
         ui.puts "rip: please create one of these startup scripts in $HOME:"
-        ui.puts startup_scripts.map { |s| '  ' + s }
+        ui.puts STARTUP_SCRIPTS.map { |s| '  ' + s }
         exit
       end
 
