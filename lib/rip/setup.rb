@@ -44,6 +44,10 @@ module Rip
       FileUtils.rm_rf File.join(LIBDIR, 'rip.rb'), :verbose => verbose
       FileUtils.rm_rf RIPDIR, :verbose => verbose
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
+
+      # just in case...
+      `gem uninstall rip 2&> /dev/null`
+
       ui.abort "rip uninstalled" if verbose
     rescue Errno::EACCES
       ui.abort "rip: uninstall failed. please try again with `sudo`" if verbose
