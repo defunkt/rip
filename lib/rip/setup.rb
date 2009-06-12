@@ -25,6 +25,14 @@ module Rip
     # caution: RbConfig::CONFIG['bindir'] does NOT work for me
     # on OS X
     BINDIR = File.join('/', 'usr', 'local', 'bin')
+    
+    # Indicates that Rip isn't properly installed.
+    class InstallationError < StandardError; end
+    # Indicates that Rip is properly installed, but the current shell
+    # hasn't picked up the installed Rip environment variables yet. The
+    # shell must be restarted for the changes to become effective, or
+    # the shell startup files must be re-sourced.
+    class StaleEnvironmentError < StandardError; end
 
 
     #
@@ -158,6 +166,11 @@ module Rip
 
       script ? File.join(HOME, script) : ''
     end
+    
+    def startup_script_contains_rip_configuration?
+      filename = startup_script
+      !filename.empty? && File.read(filename).include?(startup_script_template)
+    end
 
     def installed?
       check_installation
@@ -168,23 +181,28 @@ module Rip
 
     def check_installation
       if ENV['RIPDIR'].to_s.empty?
-        if startup_script.empty?
-          raise "no $RIPDIR."
+        if startup_script_contains_rip_configuration?
+          raise StaleEnvironmentError,
+                "No $RIPDIR. Rip has already been integrated into your shell startup scripts, " +
+                "but your shell hasn't picked up the changes yet. Please restart your shell for " +
+                "the integration to become effective, or type `source #{startup_script}`."
         else
-          raise "no $RIPDIR. you may need to run `rip setup` and/or `source #{startup_script}`"
+          raise InstallationError,
+                "No $RIPDIR. Rip hasn't been integrated into your shell startup scripts yet; " +
+                "please run `rip setup` to do so."
         end
       end
 
       if !File.exists? File.join(BINDIR, 'rip')
-        raise "no rip in #{BINDIR}"
+        raise InstallationError, "no rip in #{BINDIR}"
       end
 
       if !File.exists? File.join(LIBDIR, 'rip')
-        raise "no rip in #{LIBDIR}"
+        raise InstallationError, "no rip in #{LIBDIR}"
       end
 
       if !File.exists? File.join(LIBDIR, 'rip')
-        raise "no rip.rb in #{LIBDIR}"
+        raise InstallationError, "no rip.rb in #{LIBDIR}"
       end
 
       true
