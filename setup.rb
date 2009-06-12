@@ -11,9 +11,17 @@
 __DIR__ = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH.unshift File.join(__DIR__, 'lib')
 
-require 'rip'
+require "rip"
 
 include Rip::Setup
+
+# TODO: Use, like, real option parsing. --rue
+
+%w[ bindir libdir ripdir ].each {|opt|
+  if given = ARGV.grep(/--#{opt}=\S+/).last
+    Rip::Setup.const_set opt.upcase, File.expand_path(given.split("=").last)
+  end
+}
 
 if ARGV.include? 'uninstall'
   uninstall :verbose
@@ -25,3 +33,4 @@ elsif installed?
 else
   install
 end
+

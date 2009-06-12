@@ -16,22 +16,22 @@ module Rip
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
     HOME = File.expand_path('~')
-    USER = HOME.split('/')[-1]
+
+    USER = HOME.split('/')[-1]    # TODO: *cough*
+
+    BINDIR = RbConfig::CONFIG["bindir"]
     LIBDIR = RbConfig::CONFIG['sitelibdir']
+
     RIPDIR = File.expand_path(ENV['RIPDIR'] || File.join(HOME, '.rip'))
     RIPROOT = File.expand_path(File.join(__DIR__, '..', '..'))
     RIPINSTALLDIR = File.join(LIBDIR, 'rip')
-
-    # caution: RbConfig::CONFIG['bindir'] does NOT work for me
-    # on OS X
-    BINDIR = File.join('/', 'usr', 'local', 'bin')
 
 
     #
     # setup steps
     #
 
-    def install
+    def install()
       install_libs
       install_binary
       setup_ripenv
