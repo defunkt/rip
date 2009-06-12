@@ -62,6 +62,8 @@ module Rip
       end
 
       if matches.size == 0
+        ui.puts "Could not find the command: #{command.inspect}"
+        ui.puts
         :help
       elsif matches.size == 1
         matches.first

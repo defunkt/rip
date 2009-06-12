@@ -17,17 +17,21 @@ module Rip
 
     memoize :name
     def name
-      source.split('/').last
+      File.basename(source)
     end
 
     def version
-      Date.today.to_s
+      if name.match(/-((?:\d+\.?)+\d+)\.rb$/)
+        $1
+      else
+        Date.today.to_s
+      end
     end
 
     def fetch!
       FileUtils.rm_rf cache_path
       FileUtils.mkdir_p cache_path
-      FileUtils.cp source, cache_path
+      FileUtils.cp source, File.join(cache_path, name)
     end
 
     def files!

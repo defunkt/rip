@@ -113,7 +113,7 @@ module Rip
       elsif arity == 0
         send(meth)
       else
-        send(meth, args[0, arity])
+        send(meth, *args[0, arity])
       end
     end
 
