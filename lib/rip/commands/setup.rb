@@ -10,9 +10,7 @@ module Rip
 
       if Setup.setup_startup_script
         ui.puts "rip: Your #{Setup.startup_script} script has been modified."
-        ui.puts "rip: You may need to source it or start a new shell session."
-      else
-        ui.puts "rip: Setup not completed, see above."
+        ui.puts "rip: Please restart your shell or type `source #{Rip::Setup.startup_script}` for the changes to become effective."
       end
     end
 

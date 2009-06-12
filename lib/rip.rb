@@ -1,17 +1,18 @@
 require 'fileutils'
 
 module Rip
+  # Returns the Rip data directory. That is, the directory which contains
+  # all the Rip environment directories.
   def self.dir
     return @dir if @dir
 
-    dir = ENV['RIPDIR'].to_s
-
-    if dir.empty?
-      ui.puts "rip: RIPDIR env variable not found. Did you run `rip setup` after installation?"
-      ui.puts "rip: Continuing..."
+    env = ENV['RIPDIR'].to_s
+    if env.empty?
+      dir = File.join(user_home, ".rip")
+    else
+      dir = File.expand_path(env)
     end
-
-    dir = File.expand_path(dir)
+    
     FileUtils.mkdir_p dir unless File.exists? dir
     @dir = dir
   end
@@ -26,6 +27,10 @@ module Rip
 
   def self.ui=(io)
     @ui = Rip::UI.new(io)
+  end
+  
+  def self.user_home
+    @home ||= ENV['HOME']
   end
 end
 

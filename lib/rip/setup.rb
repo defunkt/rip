@@ -90,7 +90,16 @@ module Rip
       end
     end
 
-    # Not called by default, but runnable with `rip setup`
+    # Modifies the shell startup script(s) and inserts the Rip
+    # configuration statements.
+    #
+    # This is not called by default by 'setup.rb' in the top-level
+    # Rip sources; instead, the user is supposed to run 'rip setup'.
+    #
+    # Returns wheter a startup script has been modified. If one of
+    # the startup scripts already contain the Rip configuration
+    # statements, then nothing will be modified and false will be
+    # returned.
     #
     # TODO: Requires the startup script, but probably acceptable for most? --rue
     #
@@ -105,13 +114,13 @@ module Rip
 
       if File.read(script).include? 'RIPDIR='
         ui.puts "rip: env variables already present in startup script"
-        return false
+        false
       else
         ui.puts "rip: adding env variables to #{script}"
         File.open(script, 'a+') do |f|
           f.puts startup_script_template
         end
-        return true
+        true
       end
     end
 
