@@ -138,6 +138,10 @@ div#index.four-oh-four a {
   clear: both;
 }
 
+#sidebar .spacer {
+  margin-top: 30px;
+}
+
 #sidebar a {
     width: 100px;
     text-decoration: none;
