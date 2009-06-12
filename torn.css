@@ -104,10 +104,19 @@ div#index.four-oh-four a {
     padding: .7em;
     border: 1px solid #ccc;
     background: #eee;
+    font-family: Bitstream Vera Sans Mono, Monaco, Courier;
+    font-size: 13px;
 }
 
 #main code {
     background: #eee;
+    font-family: Bitstream Vera Sans Mono, Monaco, Courier;
+    font-size: 13px;
+    padding: 2px 3px;
+}
+
+#main pre code {
+  padding: 0;
 }
 
 
