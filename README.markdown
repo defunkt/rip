@@ -287,13 +287,13 @@ As a result, the setup script expects you to be running bash or zshell.
 Contributors
 ------------
 
-* Chris Wanstrath (that's me!)
-* Jeff Hodges
-* Tom Preston-Werner
-* John Barnette
-* Blake Mizerany
-* Ryan Tomayko
-* Pat Nakajima
+* [Chris Wanstrath](http://github.com/defunkt) (that's me!)
+* [Jeff Hodges](http://github.com/jmhodges/)
+* [Tom Preston-Werner](http://github.com/mojombo/)
+* [John Barnette](http://github.com/jbarnette)
+* [Blake Mizerany](http://github.com/bmizerany)
+* [Ryan Tomayko](http://github.com/rtomayko)
+* [Pat Nakajima](http://github.com/nakajima)
 
 Special Thanks
 --------------
