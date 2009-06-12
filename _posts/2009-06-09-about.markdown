@@ -4,7 +4,7 @@ title: About Rip
 class: about
 ---
 
-Rip: Ruby's Intelligent Packaging
+Rip: Ruby&rsquo;s Intelligent Packaging
 =================================
 
 Rip is an attempt to create a next generation packaging 
