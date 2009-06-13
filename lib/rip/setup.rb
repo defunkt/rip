@@ -12,6 +12,7 @@ module Rip
 
     WEBSITE = "http://hellorip.com/"
     STARTUP_SCRIPTS = %w( .bash_profile .bash_login .bashrc .zshrc .profile .zshenv )
+    FISH_STARTUP_SCRIPT = ".config/fish/config.fish"
 
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
@@ -25,9 +26,10 @@ module Rip
     # caution: RbConfig::CONFIG['bindir'] does NOT work for me
     # on OS X
     BINDIR = File.join('/', 'usr', 'local', 'bin')
-    
+
     # Indicates that Rip isn't properly installed.
     class InstallationError < StandardError; end
+
     # Indicates that Rip is properly installed, but the current shell
     # hasn't picked up the installed Rip environment variables yet. The
     # shell must be restarted for the changes to become effective, or
@@ -165,20 +167,28 @@ module Rip
     end
 
     def startup_script_template
-      STARTUP_SCRIPT_TEMPLATE % RIPDIR
+      (fish? ? FISH_CONFIG_TEMPLATE : STARTUP_SCRIPT_TEMPLATE) % RIPDIR
     end
 
     def startup_script
-      script = STARTUP_SCRIPTS.detect do |script|
+      script = fish_startup_script || STARTUP_SCRIPTS.detect do |script|
         File.exists? file = File.join(HOME, script)
       end
 
       script ? File.join(HOME, script) : ''
     end
-    
+
     def startup_script_contains_rip_configuration?
       filename = startup_script
       !filename.empty? && File.read(filename).include?(startup_script_template)
+    end
+
+    def fish_startup_script
+      FISH_STARTUP_SCRIPT if fish?
+    end
+
+    def fish?
+      File.exists?(File.join(HOME, FISH_STARTUP_SCRIPT))
     end
 
     def installed?
@@ -229,6 +239,14 @@ RIPDIR=%s
 RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
 PATH="$PATH:$RIPDIR/active/bin"
 export RIPDIR RUBYLIB PATH
+# -- end rip config -- #
+end_template
+
+  FISH_CONFIG_TEMPLATE = <<-end_template
+# -- start rip config -- #
+set -x RIPDIR %s
+set -x RUBYLIB "$RUBYLIB:$RIPDIR/active/lib"
+set PATH $RIPDIR/active/bin $PATH
 # -- end rip config -- #
 end_template
 
