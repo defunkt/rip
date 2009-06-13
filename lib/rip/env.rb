@@ -12,6 +12,10 @@ module Rip
       if env.strip.empty?
         return "must give a ripenv to create"
       end
+      
+      if env.strip =~ /^active$/i
+        return "invalid environment name"
+      end
 
       if File.exists? dir
         "#{env} exists"

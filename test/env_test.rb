@@ -35,6 +35,10 @@ context "Creating a ripenv" do
     assert_equal 'must give a ripenv to create', Rip::Env.create("\t")
     assert_equal 'must give a ripenv to create', Rip::Env.create("\t ")
   end
+  
+  test 'fails if attempt to name env active' do
+    assert_equal 'invalid environment name', Rip::Env.create('active')
+  end
 end
 
 context "Using a ripenv" do
