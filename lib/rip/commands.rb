@@ -5,7 +5,7 @@ module Rip
     def invoke(args)
       command, options, args = parse_args(args)
 
-      if command.nil? || command == ''
+      if [nil, '', '--help', '-h'].include?(command)
         command = :help
       end
 
