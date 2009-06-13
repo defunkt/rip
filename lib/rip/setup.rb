@@ -19,7 +19,14 @@ module Rip
 
     USER = HOME.split('/')[-1]    # TODO: *cough*
 
-    BINDIR = RbConfig::CONFIG["bindir"]
+    # Work around Apple's Ruby.
+    #
+    BINDIR  = if defined? RUBY_FRAMEWORK_VERSION
+                File.join "/", "usr", "local", "bin"
+              else
+                RbConfig::CONFIG["bindir"]
+              end
+
     LIBDIR = RbConfig::CONFIG['sitelibdir']
 
     RIPDIR = File.expand_path(ENV['RIPDIR'] || File.join(HOME, '.rip'))
