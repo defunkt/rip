@@ -7,9 +7,9 @@ module Rip
       path = (ENV["RUBYLIB"] || "").split(":")
       active_env = File.join(Rip.dir, "active", "lib")
       path -= [active_env]
-      path += [selected_env]      
+      path += [selected_env]
       ENV["RUBYLIB"] = path.join(":")
-      exec("ruby", *ARGV)
+      exec(ENV['RUBYBIN'] || "ruby", *ARGV)
     end
   end
 end
