@@ -120,16 +120,19 @@ module Rip
     #
     # TODO: Requires the startup script, but probably acceptable for most? --rue
     #
-    def setup_startup_script
-      script = startup_script
-
-      if script.empty?
-        ui.puts "rip: please create one of these startup scripts in $HOME and re-run:"
-        ui.puts STARTUP_SCRIPTS.map { |s| '  ' + s }
-        exit
+    def setup_startup_script(script = nil)
+      if script
+        script = File.expand_path(script)
+      else
+        script = startup_scripts
       end
 
-      if File.read(script).include? 'RIPDIR='
+      if script.empty? || !File.exists?(script)
+        ui.puts "rip: please create one of these startup scripts in $HOME and re-run:"
+        ui.abort STARTUP_SCRIPTS.map { |s| '  ' + s }
+      end
+
+      if File.read(script).include? 'RIPDIR'
         ui.puts "rip: env variables already present in startup script"
         false
       else
