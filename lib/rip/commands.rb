@@ -35,7 +35,7 @@ module Rip
       @next_usage = usage
     end
 
-    def x(help)
+    def x(help = '')
       @help ||= {}
       @next_help ||= []
       @next_help.push help
