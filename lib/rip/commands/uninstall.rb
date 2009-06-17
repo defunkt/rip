@@ -1,12 +1,19 @@
 module Rip
   module Commands
     o 'rip uninstall PACKAGE [options]'
-    x 'Uninstalls a single Rip package.'
+    x 'Uninstalls a single Rip package (or rip itself).'
     x '-y removes the package no matter what.'
     x '-d removes the package and its dependents.'
     def uninstall(options = {}, name = nil, *args)
       if name.to_s.empty?
         ui.abort "Please tell me what to uninstall."
+      end
+
+      if name == 'rip' && !options[:y]
+        ui.abort "Are you sure you want to uninstall rip? Pass -y if so."
+      elsif name == 'rip' && options[:y]
+        require 'rip/setup'
+        return Rip::Setup.uninstall(true)
       end
 
       force = options[:y] || options[:d]
