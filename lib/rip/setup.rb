@@ -214,14 +214,18 @@ module Rip
     def check_installation
       if ENV['RIPDIR'].to_s.empty?
         if startup_script_contains_rip_configuration?
-          raise StaleEnvironmentError,
-                "No $RIPDIR. Rip has already been integrated into your shell startup scripts, " +
-                "but your shell hasn't picked up the changes yet. Please restart your shell for " +
-                "the integration to become effective, or type `source #{startup_script}`."
+          raise StaleEnvironmentError, <<-end_error
+No $RIPDIR. Rip has been integrated into your shell startup scripts but your
+shell hasn't yet picked up the changes.
+
+To complete the installation process please restart your shell or run:
+  source #{startup_script}
+end_error
         else
-          raise InstallationError,
-                "No $RIPDIR. Rip hasn't been integrated into your shell startup scripts yet; " +
-                "please run `rip setup` to do so."
+          raise InstallationError, <<-end_error
+No $RIPDIR. Rip hasn't been integrated into your shell startup scripts yet.
+Please run `rip setup` to do so.
+end_error
         end
       end
 

@@ -4,10 +4,10 @@ module Rip
     def check(*args)
       Setup.check_installation
       ui.puts "All systems go."
-    rescue Rip::Setup::StaleEnvironmentError => e
-      ui.abort e.message
+    rescue Setup::StaleEnvironmentError, Setup::InstallationError => e
+      ui.puts e.message
     rescue => e
-      ui.abort "Installation failed: #{e.message}"
+      ui.puts "Installation failed: #{e.message}"
     end
 
     o 'rip install SOURCE [options]'
