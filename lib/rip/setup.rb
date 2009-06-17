@@ -53,6 +53,7 @@ module Rip
       install_libs
       install_binary
       setup_ripenv
+      setup_startup_script
       finish_setup
     end
 
@@ -110,10 +111,7 @@ module Rip
     # Modifies the shell startup script(s) and inserts the Rip
     # configuration statements.
     #
-    # This is not called by default by 'setup.rb' in the top-level
-    # Rip sources; instead, the user is supposed to run 'rip setup'.
-    #
-    # Returns wheter a startup script has been modified. If one of
+    # Returns whether a startup script has been modified. If one of
     # the startup scripts already contain the Rip configuration
     # statements, then nothing will be modified and false will be
     # returned.
@@ -155,12 +153,13 @@ module Rip
 
       You should define some environment variables. You can
       run `rip setup` to automatically insert them into your
-      startup script (#{script}). You need:
+      startup script (#{script}).
 
-      #{startup_script_template}
+      You can also run `rip setup SCRIPT` to install the
+      environment variables into a script of your choosing.
 
       Run `rip check` after setting up to verify that Rip
-      installed successfully
+      installed successfully.
 
       Get started: `rip -h` or #{WEBSITE}
 
