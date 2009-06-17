@@ -14,17 +14,23 @@ module Rip
     def message
       message = []
       message << "version conflict!"
-      message << "#{@name} requested at #{@bad_version} by #{@requester}"
+
+      requested  = "#{@name} requested at #{@bad_version}"
+      requested += " by #{@requester}" if @requester
+      message << requested
 
       if @owners.size == 1
         owners = @owners[0]
       elsif @owners.size == 2
         owners = "#{@owners[0]} and #{@owners[1]}"
-      else
+      elsif @owners.size > 2
         owners = [ @owners[0...-1], "and #{@owners[-1]}" ].join(', ')
       end
 
-      message << "#{@name} previously requested at #{@real_version} by #{owners}"
+      previously_requested  = "#{@name} previously requested at #{@real_version}"
+      previously_requested += " by #{owners}" if owners
+      message << previously_requested
+
       message.join("\n")
     end
     alias_method :to_s, :message
