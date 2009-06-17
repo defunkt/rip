@@ -3,7 +3,7 @@ module Rip
 
     # Generate necessary envs etc. in ~/.{bash,zsh,...}rc.
     #
-    o "rip setup"
+    o "rip setup [script to modify]"
     x "Inserts required environment variables into your startup script."
     x
     x "Pass it the startup script you want to modify, otherwise it will"
