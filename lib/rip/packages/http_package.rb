@@ -38,7 +38,6 @@ module Rip
       actual_package ? actual_package.version : super
     end
 
-    memoize :actual_package
     def actual_package
       Package.for(File.join(cache_path, name))
     end
