@@ -151,15 +151,11 @@ module Rip
       ****************************************************
       So far so good...
 
-      You should define some environment variables. You can
-      run `rip setup` to automatically insert them into your
-      startup script (#{script}).
+      Rip needs certain env variables to run. We've tried
+      to install them automatically but may have failed.
 
-      You can also run `rip setup SCRIPT` to install the
-      environment variables into a script of your choosing.
-
-      Run `rip check` after setting up to verify that Rip
-      installed successfully.
+      Run `rip check` to check the status of your
+      installation.
 
       Get started: `rip -h` or #{WEBSITE}
 
