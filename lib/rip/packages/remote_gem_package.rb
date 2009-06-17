@@ -32,7 +32,8 @@ module Rip
 
     def rgem(command)
       Timeout.timeout(5) do
-        `gem #{command}`
+        gembin = ENV[ 'GEMBIN' ] || 'gem'
+        `#{gembin} #{command}`
       end
     rescue Timeout::Error
       ''

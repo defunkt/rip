@@ -20,8 +20,9 @@ module Rip
     end
 
     def exists?
-      if `which gem`.strip.empty?
-        ui.abort "you don't have rubygems installed"
+      gembin = ENV[ 'GEMBIN' ] || 'gem'
+      if `which #{gembin}`.strip.empty?
+        ui.abort "you don't have #{gembin} installed"
       end
 
       File.exists?(source)
@@ -32,7 +33,8 @@ module Rip
     end
 
     def unpack!
-      system "gem unpack #{cache_file} --target=#{packages_path} > /dev/null"
+      gembin = ENV[ 'GEMBIN' ] || 'gem'
+      system "#{gembin} unpack #{cache_file} --target=#{packages_path} > /dev/null"
     end
 
     memoize :metadata
