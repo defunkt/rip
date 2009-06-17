@@ -23,7 +23,7 @@ module Rip
     # Work around Apple's Ruby.
     #
     BINDIR = if defined? RUBY_FRAMEWORK_VERSION
-               File.join("/", "usr", "local", "bin")
+               File.join("/", "usr", "bin")
              else
                RbConfig::CONFIG["bindir"]
              end
