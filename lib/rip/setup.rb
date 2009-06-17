@@ -17,15 +17,23 @@ module Rip
     __DIR__ = File.expand_path(File.dirname(__FILE__))
 
     HOME = File.expand_path('~')
-    USER = HOME.split('/')[-1]
+
+    USER = HOME.split('/')[-1]    # TODO: *cough*
+
+    # Work around Apple's Ruby.
+    #
+    BINDIR = if defined? RUBY_FRAMEWORK_VERSION
+               File.join("/", "usr", "local", "bin")
+             else
+               RbConfig::CONFIG["bindir"]
+             end
+
     LIBDIR = RbConfig::CONFIG['sitelibdir']
+
     RIPDIR = File.expand_path(ENV['RIPDIR'] || File.join(HOME, '.rip'))
     RIPROOT = File.expand_path(File.join(__DIR__, '..', '..'))
     RIPINSTALLDIR = File.join(LIBDIR, 'rip')
 
-    # caution: RbConfig::CONFIG['bindir'] does NOT work for me
-    # on OS X
-    BINDIR = File.join('/', 'usr', 'local', 'bin')
 
     # Indicates that Rip isn't properly installed.
     class InstallationError < StandardError; end
