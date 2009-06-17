@@ -83,11 +83,29 @@ module Rip
       end
     end
 
+    def rewrite_bang_line( file, first_line )
+      lines = File.readlines( file )[ 1..-1 ]
+      File.open( file, 'w' ) do |f|
+        f.puts first_line
+        f.puts lines.join( "\n" )
+      end
+    end
+
     def install_binary(verbose = false)
       transaction "installing rip binary" do
         src = File.join(RIPROOT, 'bin', 'rip')
         dst = File.join(BINDIR, 'rip')
         FileUtils.cp src, dst, :verbose => verbose, :preserve => true
+        ruby_bin = File.expand_path(
+          File.join(
+            RbConfig::CONFIG[ 'bindir' ],
+            RbConfig::CONFIG[ 'ruby_install_name' ]
+          )
+        )
+        puts "Using Ruby bin: #{ruby_bin}"
+        if File.exist?( ruby_bin )
+          rewrite_bang_line dst, "#!#{ruby_bin}"
+        end
       end
     end
 
