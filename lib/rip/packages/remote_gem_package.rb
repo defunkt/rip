@@ -32,7 +32,6 @@ module Rip
 
     def rgem(command)
       Timeout.timeout(5) do
-        gembin = ENV[ 'GEMBIN' ] || 'gem'
         `#{gembin} #{command}`
       end
     rescue Timeout::Error
@@ -60,6 +59,10 @@ module Rip
     memoize :actual_package
     def actual_package
       Package.for(Dir[cache_path + '/*'].first)
+    end
+
+    def gembin
+      ENV['GEMBIN'] || 'gem'
     end
   end
 end

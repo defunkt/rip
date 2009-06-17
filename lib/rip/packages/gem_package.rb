@@ -20,7 +20,6 @@ module Rip
     end
 
     def exists?
-      gembin = ENV[ 'GEMBIN' ] || 'gem'
       if `which #{gembin}`.strip.empty?
         ui.abort "you don't have #{gembin} installed"
       end
@@ -33,7 +32,6 @@ module Rip
     end
 
     def unpack!
-      gembin = ENV[ 'GEMBIN' ] || 'gem'
       system "#{gembin} unpack #{cache_file} --target=#{packages_path} > /dev/null"
     end
 
@@ -41,6 +39,10 @@ module Rip
     def metadata
       parts = source.split('/').last.chomp('.gem').split('-')
       { :name => parts[0...-1].join('-'), :version => parts[-1] }
+    end
+
+    def gembin
+      ENV['GEMBIN'] || 'gem'
     end
   end
 end

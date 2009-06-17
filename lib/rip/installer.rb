@@ -65,7 +65,6 @@ module Rip
 
       Dir.chdir package.cache_path do
         ui.puts "running install hook for #{package.name}"
-        rakebin = gembin = ENV[ 'RAKEBIN' ] || 'rake'
         system "#{rakebin} -s rip:install >& /dev/null"
       end
     end
@@ -122,6 +121,10 @@ module Rip
           end
         end
       end
+    end
+
+    def rakebin
+      ENV['RAKEBIN'] || 'rake'
     end
 
     def ui

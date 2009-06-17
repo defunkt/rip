@@ -63,7 +63,7 @@ module Rip
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
 
       # just in case...
-      gembin = ENV[ 'GEMBIN' ] || 'gem'
+      gembin = ENV['GEMBIN'] || 'gem'
       `#{gembin} uninstall rip 2&> /dev/null`
 
       ui.abort "rip uninstalled" if verbose
