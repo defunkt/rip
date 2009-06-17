@@ -124,7 +124,7 @@ module Rip
       if script
         script = File.expand_path(script)
       else
-        script = startup_scripts
+        script = startup_script
       end
 
       if script.empty? || !File.exists?(script)
