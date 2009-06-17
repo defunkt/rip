@@ -87,7 +87,7 @@ module Rip
       transaction "installing rip binary" do
         src = File.join(RIPROOT, 'bin', 'rip')
         dst = File.join(BINDIR, 'rip')
-        FileUtils.cp src, dst, :verbose => verbose
+        FileUtils.cp src, dst, :verbose => verbose, :preserve => true
       end
     end
 
