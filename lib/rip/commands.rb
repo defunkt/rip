@@ -23,8 +23,17 @@ module Rip
       end
     end
 
+    def load_plugin(file)
+      begin
+        require file
+      rescue Exception => e
+        ui.puts "rip: plugin not loaded (#{file})"
+        ui.puts "-> #{e.message}", ''
+      end
+    end
+
     def public_instance_methods
-      super - %w( invoke public_instance_methods )
+      super - %w( invoke load_plugin public_instance_methods )
     end
 
   private
@@ -95,14 +104,14 @@ end
 # load ~/.rip/rip-commands/*.rb
 if File.exists? dir = File.join(Rip.dir, 'rip-commands')
   Dir[dir + '/*.rb'].each do |file|
-    require file
+    Rip::Commands.load_plugin(file)
   end
 end
 
 # load lib/rip/commands/*.rb from the active ripenv
 if File.exists? dir = File.join(Rip::Env.active_dir, 'lib', 'rip', 'commands')
   Dir[dir + '/*.rb'].each do |file|
-    require file
+    Rip::Commands.load_plugin(file)
   end
 end
 
@@ -110,6 +119,6 @@ end
 # load lib/rip/commands/*.rb from rip itself
 if File.exists? dir = File.join(File.dirname(__FILE__), 'commands')
   Dir[dir + '/*.rb'].each do |file|
-    require file
+    Rip::Commands.load_plugin(file)
   end
 end
