@@ -24,19 +24,27 @@ module Rip
     end
 
     def fetch!
+      FileUtils.rm_rf cache_path
+      FileUtils.mkdir_p cache_path
+      FileUtils.cp source, File.join(cache_path, name)
     end
 
     def unpack!
-      FileUtils.rm_rf cache_path
-      FileUtils.mkdir_p cache_path
-      FileUtils.cp source, cache_path
+      fetch
     end
 
     def dependencies!
       if File.exists? deps = File.join(cache_path, name)
         File.readlines(deps).map do |line|
-          source, version, *extra = line.split(' ')
-          Package.for(source, version)
+          package_source, version, *extra = line.split(' ')
+          if package = Package.for(package_source, version)
+            package
+          else
+            # Allows .rip file and dir packages to be listed as
+            # relative paths.
+            path = File.join(File.dirname(@source), package_source)
+            Package.for(path, version)
+          end
         end
       else
         []

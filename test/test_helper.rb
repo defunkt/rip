@@ -70,6 +70,11 @@ class Test::Unit::TestCase
     FakeFS::FileSystem.clone(repo_path(repo_name))
     Rip::FilePackage.new(repo_path(repo_name))
   end
+
+  def fresh_ripfile(repo_name)
+    FakeFS::FileSystem.clone(repo_path(''))
+    Rip::RipfilePackage.new(repo_path(repo_name))
+  end
 end
 
 module Rip
