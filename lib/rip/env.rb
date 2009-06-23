@@ -1,6 +1,7 @@
 module Rip
   module Env
     extend self
+    PRIVATE_ENV =  /^(rip-|active)/i
 
     def commands
       instance_methods - %w( call active_dir commands ui )
@@ -13,7 +14,7 @@ module Rip
         return "must give a ripenv to create"
       end
       
-      if env.strip =~ /^active$/i
+      if env.strip =~ PRIVATE_ENV
         return "invalid environment name"
       end
 
@@ -55,6 +56,10 @@ module Rip
         return "must give a ripenv to delete"
       end
 
+      if env.strip =~ PRIVATE_ENV
+        return "invalid environment name"
+      end
+
       if File.exists?(target = File.join(Rip.dir, env))
         FileUtils.rm_rf target
         "deleted #{env}"
@@ -68,7 +73,7 @@ module Rip
         env.split('/').last
       end
 
-      envs.reject! { |env| env =~ /^(rip-|active)/ }
+      envs.reject! { |env| env =~ PRIVATE_ENV }
 
       if envs.empty?
         "none. make one with `rip env create <env>`"

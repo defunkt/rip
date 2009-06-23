@@ -93,6 +93,10 @@ context "Deleting a ripenv" do
     assert_equal "can't delete active environment", Rip::Env.delete('base')
   end
 
+  test "fails if the ripenv is named active" do
+    assert_equal "invalid environment name", Rip::Env.delete('active')
+  end
+
   test "fails if it doesn't exist" do
     name = 'fake_env'
     assert_equal "can't find #{name}", Rip::Env.delete(name)
