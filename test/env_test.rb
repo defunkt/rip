@@ -34,6 +34,7 @@ context "Creating a ripenv" do
     assert_equal 'must give a ripenv to create', Rip::Env.create(' ')
     assert_equal 'must give a ripenv to create', Rip::Env.create("\t")
     assert_equal 'must give a ripenv to create', Rip::Env.create("\t ")
+    assert_equal "must give a ripenv to create", Rip::Env.call(:create)
   end
   
   test 'fails if attempt to name env active' do
@@ -73,7 +74,7 @@ context "Using a ripenv" do
     assert_equal 'must give a ripenv to use', Rip::Env.use(' ')
     assert_equal 'must give a ripenv to use', Rip::Env.use("\t")
     assert_equal 'must give a ripenv to use', Rip::Env.use("\t ")
-
+    assert_equal "must give a ripenv to use", Rip::Env.call(:use)
   end
 end
 
@@ -112,6 +113,7 @@ context "Deleting a ripenv" do
     assert_equal 'must give a ripenv to delete', Rip::Env.delete(' ')
     assert_equal 'must give a ripenv to delete', Rip::Env.delete("\t")
     assert_equal 'must give a ripenv to delete', Rip::Env.delete("\t ")
+    assert_equal "must give a ripenv to delete", Rip::Env.call(:delete)
     assert File.exists?(Rip.dir)
   end
 end
@@ -181,5 +183,6 @@ context "Copying the current ripenv" do
     assert_equal 'must give a ripenv to copy to', Rip::Env.copy(' ')
     assert_equal 'must give a ripenv to copy to', Rip::Env.copy("\t")
     assert_equal 'must give a ripenv to copy to', Rip::Env.copy("\t ")
+    assert_equal "must give a ripenv to copy to", Rip::Env.call(:copy)
   end
 end

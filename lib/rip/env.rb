@@ -125,6 +125,8 @@ module Rip
         send(meth, *args)
       elsif arity == 0
         send(meth)
+      elsif args.empty?
+        send(meth, '')
       else
         send(meth, *args[0, arity])
       end
