@@ -34,6 +34,10 @@ module Rip
         return "must give a ripenv to use"
       end
 
+      if env.strip =~ PRIVATE_ENV
+        return "invalid environment name"
+      end
+
       if !File.exists?(target = File.join(Rip.dir, env))
         return "#{env} doesn't exist"
       end

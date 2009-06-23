@@ -63,6 +63,10 @@ context "Using a ripenv" do
     assert_equal "fake doesn't exist", Rip::Env.use("fake")
   end
 
+  test "fails if the new env is named active " do
+    assert_equal "invalid environment name", Rip::Env.use("active")
+  end
+
   test 'fails if no ripenv is given' do
     assert_equal "must give a ripenv to use", Rip::Env.use('')
     assert_not_equal '', Rip::Env.active
