@@ -65,7 +65,7 @@ module Rip
 
       Dir.chdir package.cache_path do
         ui.puts "running install hook for #{package.name}"
-        system "#{rakebin} -s rip:install >& /dev/null"
+        system "'#{rakebin}' -s rip:install >& /dev/null"
       end
     end
 

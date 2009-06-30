@@ -32,7 +32,7 @@ module Rip
     end
 
     def unpack!
-      system "#{gembin} unpack #{cache_file} --target=#{packages_path} > /dev/null"
+      system "'#{gembin}' unpack '#{cache_file}' --target='#{packages_path}' > /dev/null"
     end
 
     memoize :metadata
