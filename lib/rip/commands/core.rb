@@ -27,7 +27,7 @@ module Rip
     x 'Commands for managing your ripenvs.'
     x 'Type rip env to see valid options.'
     def env(options = {}, command = nil, *args)
-      if command && Rip::Env.respond_to?(command)
+      if command && Rip::Env.commands.include?(command)
         ui.puts 'ripenv: ' + Rip::Env.call(command, *args).to_s
       else
         show_help :env, Rip::Env.commands
