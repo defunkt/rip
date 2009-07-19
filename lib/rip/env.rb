@@ -13,7 +13,7 @@ module Rip
       if env.strip.empty?
         return "must give a ripenv to create"
       end
-      
+
       if env.strip =~ PRIVATE_ENV
         return "invalid environment name"
       end
@@ -108,6 +108,7 @@ module Rip
 
       if File.exists? ripfile = File.join(dest, "#{env}.ripenv")
         FileUtils.cp ripfile, File.join(dest, "#{new}.ripenv")
+        FileUtils.rm ripfile
       end
 
       use new

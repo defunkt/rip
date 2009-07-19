@@ -36,7 +36,7 @@ context "Creating a ripenv" do
     assert_equal 'must give a ripenv to create', Rip::Env.create("\t ")
     assert_equal "must give a ripenv to create", Rip::Env.call(:create)
   end
-  
+
   test 'fails if attempt to name env active' do
     assert_equal 'invalid environment name', Rip::Env.create('active')
   end
@@ -166,6 +166,13 @@ context "Copying the current ripenv" do
   test "switches to the new env" do
     Rip::Env.copy(@name)
     assert_equal @name, Rip::Env.active
+  end
+
+  test "properly renames the ripenv file" do
+    Rip::Env.copy(@name)
+
+    assert File.exists?(File.join(@ripenv, "#{@name}.ripenv"))
+    assert !File.exists?(File.join(@ripenv, "base.ripenv"))
   end
 
   test "makes the new env a copy of the active env"

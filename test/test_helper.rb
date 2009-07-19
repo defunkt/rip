@@ -47,6 +47,8 @@ class Test::Unit::TestCase
       Rip::Env.create('other')
       Rip::Setup.setup_ripenv(Rip.dir)
       Rip::Env.create('base')
+      FileUtils.touch(File.join(Rip.dir, 'other', 'other.ripenv'))
+      FileUtils.touch(File.join(Rip.dir, 'base', 'base.ripenv'))
       setup_block
     end
 
