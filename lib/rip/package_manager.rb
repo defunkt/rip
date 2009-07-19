@@ -2,6 +2,9 @@ require 'zlib'
 require 'set'
 
 module Rip
+  class CorruptedRipenv < RuntimeError
+  end
+
   class VersionConflict < RuntimeError
     def initialize(name, bad_version, requester, real_version, owners)
       @name = name
@@ -168,6 +171,8 @@ module Rip
 
     def unzip(data)
       Zlib::Inflate.inflate(data)
+    rescue Zlib::BufError
+      raise CorruptedRipenv.new("#{path} possibly corrupted")
     end
 
     def marshal_payload
