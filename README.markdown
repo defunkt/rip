@@ -293,6 +293,17 @@ Contributors
 * [Blake Mizerany](http://github.com/bmizerany)
 * [Ryan Tomayko](http://github.com/rtomayko)
 * [Pat Nakajima](http://github.com/nakajima)
+* Eero Saynatkari
+* Coda Hale
+* Simon Rozet
+* Gabriel Horner
+* Pistos
+* Mark Turner
+* Hongli Lai
+* Tim Carey-Smith
+* August Lilleaas
+* Andre Arko
+* Rick Olson
 
 Special Thanks
 --------------
