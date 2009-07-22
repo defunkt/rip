@@ -55,13 +55,12 @@ module Rip
     end
 
     def remote_exists?
-      if git_ls_remote(source).size > 0
-        if @version
-          fetch
-          git_cat_file(@version).size > 0
-        else
-          true
-        end
+      return false if git_ls_remote(source).size == 0
+      return true if !@version
+
+      fetch
+      Dir.chdir(cache_path) do
+        git_cat_file(@version).size > 0
       end
     end
   end
