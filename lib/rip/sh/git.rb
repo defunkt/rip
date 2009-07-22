@@ -32,7 +32,7 @@ module Rip
       end
 
       def git_cat_file(object)
-        `git cat-file -p #{object}`
+        `git cat-file -p #{object} 2> /dev/null`
       end
     end
   end
