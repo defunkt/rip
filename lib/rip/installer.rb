@@ -37,7 +37,7 @@ module Rip
           package.fetch
           package.unpack
           install_dependencies(package)
-          run_install_hook(package)
+          build_extensions(package)
           copy_files(package)
           cleanup(package)
           ui.puts "Successfully installed #{package}" unless package.meta_package?
@@ -60,13 +60,8 @@ module Rip
       end
     end
 
-    def run_install_hook(package)
-      return unless File.exists? File.join(package.cache_path, 'Rakefile')
-
-      Dir.chdir package.cache_path do
-        ui.puts "running install hook for #{package.name}"
-        system "'#{rakebin}' -s rip:install >& /dev/null"
-      end
+    def build_extensions(package)
+      Rip::Commands.build({}, package)
     end
 
     def copy_files(package)

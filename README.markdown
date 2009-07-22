@@ -190,12 +190,11 @@ dependents, use `-d` (for dependents).
 Extensions
 ----------
 
-Installing a package that is not Rip aware but needs an extension
-built? Use `rip build`.
+Rip will attempt to build extensions during installation through the 
+`rip build` command.
 
-Rip will attempt to run `rake rip:install` in your library if a 
-Rakefile is found. If you need to compile your C extension or do
-any other work, this is the place.
+You can also run `rip build PACKAGE` to try and build a package
+manually.
 
 Rip Directory Structure
 -----------------------
