@@ -5,6 +5,10 @@ module Rip
     def invoke(args)
       command, options, args = parse_args(args)
 
+      if command.nil? && (options[:v] || options[:version])
+        command = :version
+      end
+
       if command.nil? || command == '' || options[:h] || options[:help]
         command = :help
       end
@@ -91,7 +95,7 @@ module Rip
         hash
       end
 
-      [command, options, args]
+      [ command, options, args ]
     end
   end
 end

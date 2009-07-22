@@ -48,8 +48,6 @@ module Rip
     def version(options = {}, *args)
       ui.puts "Rip #{Rip::Version}"
     end
-    alias_method        "-v", :version
-    alias_method "--version", :version
 
   private
     def show_help(command, commands)
