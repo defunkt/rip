@@ -57,6 +57,7 @@ module Rip
     def install_dependencies(package)
       package.dependencies.each do |dependency|
         install(dependency, package)
+        package.run_hook(:dependency_installed, dependency)
       end
     end
 
