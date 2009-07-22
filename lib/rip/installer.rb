@@ -61,7 +61,7 @@ module Rip
     end
 
     def build_extensions(package)
-      Rip::Commands.build({}, package)
+      Rip::Commands.build({:quiet => true}, package)
     end
 
     def copy_files(package)

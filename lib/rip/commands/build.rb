@@ -23,7 +23,7 @@ module Rip
           end
         end
 
-        if !alerted
+        if !alerted && !options[:quiet]
           ui.puts "rip: don't know how to build #{package_name}"
         end
       end
