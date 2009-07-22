@@ -27,6 +27,12 @@ module Rip
       false
     end
 
+    def dependency_installed(dependency, success = true)
+      if !success
+        ui.puts "rip: already installed #{dependency}"
+      end
+    end
+
     def fetch!
       FileUtils.rm_rf cache_path
       FileUtils.mkdir_p cache_path
