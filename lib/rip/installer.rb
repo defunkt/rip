@@ -41,6 +41,7 @@ module Rip
           copy_files(package)
           cleanup(package)
           ui.puts "Successfully installed #{package}" unless package.meta_package?
+          true
 
         rescue VersionConflict => e
           ui.puts e.message
@@ -56,8 +57,8 @@ module Rip
 
     def install_dependencies(package)
       package.dependencies.each do |dependency|
-        install(dependency, package)
-        package.run_hook(:dependency_installed, dependency)
+        success = install(dependency, package)
+        package.run_hook(:dependency_installed, dependency, success)
       end
     end
 
