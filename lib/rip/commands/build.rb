@@ -12,10 +12,10 @@ module Rip
 
         Dir["#{package.cache_path}/**/extconf.rb"].each do |build_file|
           build_dir = File.dirname(build_file)
-          Dir.chdir(build_dir) {
+          Dir.chdir(build_dir) do
             system "ruby extconf.rb"
             system "make install RUBYARCHDIR=#{manager.dir}/lib"
-          }
+          end
         end
       end
     end
