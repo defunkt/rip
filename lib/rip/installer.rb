@@ -15,7 +15,7 @@ module Rip
 
     def install(package, parent = nil)
       if !package.exists?
-        error = package.name
+        error = package.to_s
         error += " requested by #{parent} but" if parent
         error += " not found at #{package.source}"
         ui.abort error
