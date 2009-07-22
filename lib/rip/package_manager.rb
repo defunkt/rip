@@ -78,9 +78,14 @@ module Rip
       @versions.keys
     end
 
+    # If given a package name, finds and returns the package.
+    # If given a package, returns it.
     def package(name)
-      return unless @versions[name]
-      Package.for(@sources[name], @versions[name], @files[name])
+      if name.respond_to? :cache_path
+        name
+      elsif @versions[name]
+        Package.for(@sources[name], @versions[name], @files[name])
+      end
     end
 
     def packages_that_depend_on(name)
