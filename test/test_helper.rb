@@ -12,6 +12,8 @@ require 'fakefs'
 require 'test/unit'
 require 'test/spec/mini'
 
+begin; require 'redgreen'; rescue LoadError; end
+
 # For super rudimentary mocking...
 def fake(object, method_name, options={})
   method = object.method(method_name)
