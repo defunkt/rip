@@ -55,7 +55,14 @@ module Rip
     end
 
     def remote_exists?
-      git_ls_remote(source).size > 0
+      if git_ls_remote(source).size > 0
+        if @version
+          fetch
+          git_cat_file(@version).size > 0
+        else
+          true
+        end
+      end
     end
   end
 end

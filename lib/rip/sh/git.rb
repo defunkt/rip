@@ -30,6 +30,10 @@ module Rip
       def git_revparse(repothing)
         `git rev-parse #{repothing}`
       end
+
+      def git_cat_file(object)
+        `git cat-file -p #{object}`
+      end
     end
   end
 end
