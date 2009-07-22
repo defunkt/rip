@@ -55,8 +55,7 @@ module Rip
     end
 
     def remote_exists?
-      out = git_ls_remote(source, @version)
-      out.include? @version || 'HEAD'
+      git_ls_remote(source).size > 0
     end
   end
 end

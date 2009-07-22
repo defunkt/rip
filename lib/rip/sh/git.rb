@@ -3,7 +3,7 @@ module Rip
     module Git
       extend self
 
-      def git_ls_remote(source, version)
+      def git_ls_remote(source, version = nil)
         `git ls-remote #{source} #{version} 2> /dev/null`
       end
 

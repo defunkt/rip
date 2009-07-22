@@ -1,7 +1,7 @@
 module Rip
   module Sh
     module MockGit
-      def git_ls_remote(source, version)
+      def git_ls_remote(source, version=nil)
         match_errors = []
         if source != real_source
           match_errors << "source was #{source} instead of #{real_source}"
@@ -13,9 +13,9 @@ module Rip
 
         "67be542ddad55c502daf12fde4f784d88a248617\tHEAD\n67be542ddad55c502daf12fde4f784d88a248617\trefs/heads/master"
       end
-      
+
       def git_fetch(repothing)
-      end 
+      end
 
       def git_clone(source, cache_name)
         match_errors = []
