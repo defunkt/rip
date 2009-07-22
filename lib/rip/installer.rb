@@ -30,7 +30,7 @@ module Rip
           return if installed
           @installed[package.name] = package
 
-          if !package.version
+          if !package.meta_package? && !package.version
             ui.abort "can't install #{package} - it has no version"
           end
 

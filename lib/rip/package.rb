@@ -55,7 +55,7 @@ module Rip
     end
 
     def to_s
-      "#{name} (#{version})"
+      version ? "#{name} (#{version})" : name.to_s
     end
 
     memoize :cache_name

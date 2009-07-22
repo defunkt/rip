@@ -15,6 +15,10 @@ module Rip
       source.split('/').last
     end
 
+    def version
+      nil
+    end
+
     def meta_package?
       true
     end
