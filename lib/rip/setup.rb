@@ -57,10 +57,15 @@ module Rip
       finish_setup
     end
 
+    def upgrade
+      remove_libs
+      install_libs
+      ui.puts "rip upgraded"
+    end
+
     def uninstall(verbose = false)
       FileUtils.rm File.join(BINDIR, 'rip'), :verbose => verbose
-      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
-      FileUtils.rm_rf File.join(LIBDIR, 'rip.rb'), :verbose => verbose
+      remove_libs verbose
       FileUtils.rm_rf RIPDIR, :verbose => verbose
 
       # just in case...
@@ -74,6 +79,11 @@ module Rip
       nil
     rescue => e
       raise e if verbose
+    end
+
+    def remove_libs(verbose = false)
+      FileUtils.rm_rf RIPINSTALLDIR, :verbose => verbose
+      FileUtils.rm_rf File.join(LIBDIR, 'rip.rb'), :verbose => verbose
     end
 
     def install_libs(verbose = false)

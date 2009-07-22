@@ -2,6 +2,9 @@
 # installs rip like so:
 #   ruby setup.rb
 #
+# upgrades rip like so:
+#   ruby setup.rb upgrade
+#
 # also uninstalls rip like so:
 #   ruby setup.rb uninstall
 #
@@ -28,6 +31,8 @@ if ARGV.include? 'uninstall'
 elsif ARGV.include? 'reinstall'
   uninstall
   install
+elsif ARGV.include? 'upgrade'
+  upgrade
 elsif installed?
   puts "rip: already installed"
 else
