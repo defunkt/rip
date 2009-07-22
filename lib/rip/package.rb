@@ -119,6 +119,10 @@ module Rip
       end
     end
 
+    def run_hook(hook, *args, &block)
+      send(hook, *args, &block) if respond_to? hook
+    end
+
     def ui
       Rip.ui
     end
