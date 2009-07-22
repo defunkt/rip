@@ -39,6 +39,10 @@ module Rip
       def git_reset_hard(version)
       end
 
+      def git_cat_file(object)
+        ''
+      end
+
       def real_repo_name
         raise NotImplementedError
       end
