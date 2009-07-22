@@ -14,7 +14,7 @@ module Rip
 
       fetch!
       Dir.chdir cache_path do
-        @version = git_revparse('origin/master')[0,7]
+        @version = git_rev_parse('origin/master')[0,7]
       end
     end
 

@@ -27,7 +27,7 @@ module Rip
         `git submodule update`
       end
 
-      def git_revparse(repothing)
+      def git_rev_parse(repothing)
         `git rev-parse #{repothing}`
       end
 
