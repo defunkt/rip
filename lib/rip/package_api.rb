@@ -34,6 +34,14 @@
 #     end
 #   end
 #
+# Hooks are provided to give your package access to the installation
+# process. If your package implements a method with the same name as
+# a hook, it'll be called and passed relevant information.
+#
+# The following hooks currently exist:
+#
+#   dependency_installed(dependency<Package>, success<Boolean>)
+#
 
 module Rip
   module PackageAPI
