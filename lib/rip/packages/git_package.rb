@@ -37,7 +37,7 @@ module Rip
           git_fetch('origin')
         end
       else
-        git_clone(source, cache_name)
+        git_clone(source, cache_path)
       end
     end
 
