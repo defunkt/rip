@@ -55,8 +55,19 @@ module Rip
       ui.puts "Usage: rip #{subcommand}COMMAND [options]", ""
       ui.puts "Commands available:"
 
-      commands.each do |method|
-        ui.puts "  #{method}"
+      show_command_table begin
+        commands.zip begin
+          commands.map { |c| @help[c].first unless @help[c].nil? }
+        end
+      end
+    end
+
+    def show_command_table(table)
+      offset = table.map {|a| a.first.size }.max + 2
+      offset += 1 unless offset % 2 == 0
+
+      table.each do |(command, help)|
+        ui.puts "  #{command}" << ' ' * (offset - command.size) << help.to_s
       end
     end
 
