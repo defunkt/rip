@@ -30,7 +30,7 @@ module Rip
       if command && Rip::Env.commands.include?(command)
         ui.puts 'ripenv: ' + Rip::Env.call(command, *args).to_s
       else
-        show_help :env, Rip::Env.commands
+        Rip::Env.show_help :env
         ui.puts '', "current ripenv: #{Rip::Env.active}"
       end
     end

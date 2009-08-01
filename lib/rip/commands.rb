@@ -1,6 +1,7 @@
 module Rip
   module Commands
     extend self
+    extend Help
 
     def invoke(args)
       command, options, args = parse_args(args)

@@ -1,6 +1,7 @@
 module Rip
   module Env
     extend self
+    extend Help
     PRIVATE_ENV =  /^(rip-|active)/i
 
     def commands
