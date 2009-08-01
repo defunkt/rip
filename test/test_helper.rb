@@ -8,9 +8,16 @@ Rip.dir = File.expand_path(File.join(File.dirname(__FILE__), 'ripdir'))
 Rip.ui = nil
 
 require 'mock_git'
-require 'fakefs'
 require 'test/unit'
-require 'test/spec/mini'
+
+%w( fakefs test/spec/mini ).each do |dep|
+  begin
+    require dep
+  rescue LoadError => e
+    warn "*** run 'rip install test/dev.rip' before testing ***"
+    raise e
+  end
+end
 
 begin; require 'redgreen'; rescue LoadError; end
 
