@@ -50,27 +50,6 @@ module Rip
     end
 
   private
-    def show_help(command, commands)
-      subcommand = command.to_s.empty? ? nil : "#{command} "
-      ui.puts "Usage: rip #{subcommand}COMMAND [options]", ""
-      ui.puts "Commands available:"
-
-      show_command_table begin
-        commands.zip begin
-          commands.map { |c| @help[c].first unless @help[c].nil? }
-        end
-      end
-    end
-
-    def show_command_table(table)
-      offset = table.map {|a| a.first.size }.max + 2
-      offset += 1 unless offset % 2 == 0
-
-      table.each do |(command, help)|
-        ui.puts "  #{command}" << ' ' * (offset - command.size) << help.to_s
-      end
-    end
-
     def show_general_help
       commands = public_instance_methods.reject do |method|
         method =~ /-/ || %w( help version ).include?(method)

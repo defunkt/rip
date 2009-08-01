@@ -38,6 +38,7 @@ end
 
 require 'rip/ui'
 require 'rip/version'
+require 'rip/help'
 require 'rip/env'
 require 'rip/memoize'
 require 'rip/installer'

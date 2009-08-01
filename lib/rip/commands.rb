@@ -41,30 +41,6 @@ module Rip
     end
 
   private
-    # tasty dsl for adding help text
-
-    def o(usage)
-      @usage ||= {}
-      @next_usage = usage
-    end
-
-    def x(help = '')
-      @help ||= {}
-      @next_help ||= []
-      @next_help.push help
-    end
-
-    def method_added(method)
-      @help[method.to_s] = @next_help if @next_help
-      @usage[method.to_s] = @next_usage if @next_usage
-      @next_help = nil
-      @next_usage = nil
-    end
-
-    def ui
-      Rip.ui
-    end
-
     def manager(env = nil)
       @manager ||= PackageManager.new(env)
     end
