@@ -8,6 +8,7 @@ module Rip
       instance_methods - %w( call active_dir commands ui )
     end
 
+    x 'Create the SOURCE environment.'
     def create(env)
       dir = File.join(Rip.dir, env)
 
@@ -30,6 +31,7 @@ module Rip
       end
     end
 
+    x 'Activate the SOURCE environment.'
     def use(env)
       if env.strip.empty?
         return "must give a ripenv to use"
@@ -52,6 +54,7 @@ module Rip
       "using #{env}"
     end
 
+    x 'Remove the SOURCE environment.'
     def delete(env)
       if active == env
         return "can't delete active environment"
@@ -73,6 +76,7 @@ module Rip
       end
     end
 
+    x 'Display all rip environments.'
     def list(env = nil)
       envs = Dir.glob(File.join(Rip.dir, '*')).map do |env|
         env.split('/').last
@@ -87,11 +91,13 @@ module Rip
       end
     end
 
+    x 'Display the name of the active environment.'
     def active
       active = File.readlink(active_dir)
       active.split('/').last
     end
 
+    x 'Clone the active environment.'
     def copy(new)
       if new.strip.empty?
         return "must give a ripenv to copy to"
