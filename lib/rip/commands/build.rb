@@ -19,6 +19,7 @@ module Rip
           build_dir = File.dirname(build_file)
           Dir.chdir(build_dir) do
             system "ruby extconf.rb"
+            system "make clean"
             system "make install RUBYARCHDIR=#{manager.dir}/lib"
           end
         end
