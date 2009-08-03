@@ -100,6 +100,7 @@ module Rip
         src = File.join(RIPROOT, 'bin', 'rip')
         dst = File.join(BINDIR, 'rip')
         FileUtils.cp src, dst, :verbose => verbose, :preserve => true
+        FileUtils.chmod(0755, dst)
 
         ruby_bin = File.expand_path(File.join(BINDIR, RbConfig::CONFIG['ruby_install_name']))
         if File.exist? ruby_bin
