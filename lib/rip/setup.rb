@@ -259,7 +259,7 @@ end_error
       lines = File.readlines(file)[1..-1]
       File.open(file, 'w') do |f|
         f.puts first_line
-        f.puts lines.join("\n")
+        f.puts lines.join
         f.flush
       end
     end
