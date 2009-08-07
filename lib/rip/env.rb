@@ -77,7 +77,7 @@ module Rip
     end
 
     x 'Display all rip environments.'
-    def list(env = nil)
+    def list(options = {})
       envs = Dir.glob(File.join(Rip.dir, '*')).map do |env|
         env.split('/').last
       end
@@ -87,7 +87,17 @@ module Rip
       if envs.empty?
         "none. make one with `rip env create <env>`"
       else
-        envs.join(' ')
+        output  = [ "all installed ripenvs" ]
+        output += envs.map do |env|
+          if options[:p]
+            packages = PackageManager.new(env).packages
+            packages = packages.size > 3 ? packages[0, 3] + ['...'] : packages
+            "  #{env} - #{packages.join(', ')}"
+          else
+            "  #{env}"
+          end
+        end
+        output.join("\n")
       end
     end
 
