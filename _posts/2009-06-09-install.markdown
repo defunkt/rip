@@ -22,7 +22,7 @@ Without Rubygems
 Don't have Rubygems installed? Never fear! You can install Rip from a
 zip quite simply.
 
-    $ wget http://github.com/defunkt/rip/zipball/v0.0.2
+    $ wget http://github.com/defunkt/rip/zipball/v0.0.3
     $ unzip defunkt-rip<TAB>
     $ cd defunkt-rip<TAB>
     $ sudo ruby setup.rb
