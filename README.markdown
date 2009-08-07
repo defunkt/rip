@@ -304,6 +304,7 @@ Contributors
 * August Lilleaas
 * Andre Arko
 * Rick Olson
+* Ben Burkert
 
 Special Thanks
 --------------
