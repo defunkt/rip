@@ -45,7 +45,7 @@ module Rip
         FileUtils.rm active_dir
       rescue Errno::ENOENT
       end
-      FileUtils.ln_s(target, active_dir)
+      FileUtils.ln_s(File.join(Rip.dir, env), active_dir)
 
       "using #{env}"
     end
@@ -174,7 +174,7 @@ module Rip
         return "invalid environment name"
       end
 
-      if !File.exists?(target = File.join(Rip.dir, env))
+      if !File.exists?(File.join(Rip.dir, env))
         return "#{env} doesn't exist"
       end
     end
