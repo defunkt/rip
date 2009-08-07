@@ -74,6 +74,12 @@ module Rip
 
     x 'Display all rip environments.'
     def list(options = {})
+      # check if we got passed an env. kinda ghetto.
+      if options.is_a? String
+        target_env = options
+        options = {}
+      end
+
       envs = Dir.glob(File.join(Rip.dir, '*')).map do |env|
         env.split('/').last
       end
@@ -82,15 +88,24 @@ module Rip
 
       if envs.empty?
         "none. make one with `rip env create <env>`"
+      elsif target_env
+        if error = validate_ripenv(target_env)
+          return error
+        end
+
+        manager = PackageManager.new(target_env)
+        output  = [ target_env, "" ]
+        output += manager.packages
+        output.join("\n")
       else
-        output  = [ "all installed ripenvs" ]
+        output  = [ "all installed ripenvs", "" ]
         output += envs.map do |env|
           if options[:p]
             packages = PackageManager.new(env).packages
             packages = packages.size > 3 ? packages[0, 3] + ['...'] : packages
-            "  #{env} - #{packages.join(', ')}"
+            "#{env} - #{packages.join(', ')}"
           else
-            "  #{env}"
+            env
           end
         end
         output.join("\n")
