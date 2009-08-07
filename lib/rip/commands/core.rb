@@ -40,7 +40,7 @@ module Rip
     x 'Activate a ripenv.'
     x 'Shortcut for `rip env use`'
     def use(options = {}, ripenv = nil, *args)
-      Rip::Env.use(ripenv.to_s)
+      puts Rip::Env.use(ripenv.to_s)
     end
 
     x 'Outputs all installed libraries (and their versions) for the active env.'
