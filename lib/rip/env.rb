@@ -5,7 +5,7 @@ module Rip
     PRIVATE_ENV =  /^(rip-|active)/i
 
     def commands
-      instance_methods - %w( call active_dir commands ui )
+      instance_methods - %w( call active_dir commands ui validate_ripenv )
     end
 
     x 'Create the SOURCE environment.'
@@ -37,12 +37,8 @@ module Rip
         return "must give a ripenv to use"
       end
 
-      if env.strip =~ PRIVATE_ENV
-        return "invalid environment name"
-      end
-
-      if !File.exists?(target = File.join(Rip.dir, env))
-        return "#{env} doesn't exist"
+      if error = validate_ripenv(env)
+        return error
       end
 
       begin
@@ -156,6 +152,16 @@ module Rip
 
     def ui
       Rip.ui
+    end
+
+    def validate_ripenv(env)
+      if env.strip =~ PRIVATE_ENV
+        return "invalid environment name"
+      end
+
+      if !File.exists?(target = File.join(Rip.dir, env))
+        return "#{env} doesn't exist"
+      end
     end
   end
 end
