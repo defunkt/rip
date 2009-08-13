@@ -91,6 +91,10 @@ module Rip
     def packages_that_depend_on(name)
       (@dependents[name] || []).map { |name| package(name) }
     end
+    
+    def dependencies_for(name)
+      (@dependencies[name] || []).map { |name| package(name) }
+    end
 
     def files(name)
       Array(@files[name])
