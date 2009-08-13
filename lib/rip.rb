@@ -12,7 +12,7 @@ module Rip
     else
       dir = File.expand_path(env)
     end
-    
+
     FileUtils.mkdir_p dir unless File.exists? dir
     @dir = dir
   end
@@ -28,7 +28,7 @@ module Rip
   def self.ui=(io)
     @ui = Rip::UI.new(io)
   end
-  
+
   def self.user_home
     @home ||= ENV['HOME']
   end
@@ -47,6 +47,7 @@ require 'rip/package'
 require 'rip/package_manager'
 require 'rip/setup'
 require 'rip/sh/git'
+require 'rip/sh/gem'
 
 
 # load rip packages - order is important

@@ -22,7 +22,7 @@ module Rip
     end
 
     def exists?
-      ui.abort "can't find your gem command" unless Rip::Gems.check?
+      ui.abort "can't find your gem command" unless Sh::Gems.check?
 
       File.exists?(source)
     end
@@ -32,11 +32,11 @@ module Rip
     end
 
     def unpack!
-      Rip::Gems.rgem("unpack '#{cache_file}' --target='#{packages_path}' > /dev/null")
+      Sh::Gems.rgem("unpack '#{cache_file}' --target='#{packages_path}' > /dev/null")
     end
 
     def dependencies!
-      Rip::Gems.dependencies(name)
+      Sh::Gems.dependencies(name)
     end
 
     memoize :metadata
