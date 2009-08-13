@@ -5,7 +5,7 @@ module Rip
     def check?
       `which #{gembin}`.strip.any?
     end
- 
+
     def rgem(command)
       Timeout.timeout(30) do
         `#{gembin} #{command}`
@@ -13,7 +13,7 @@ module Rip
     rescue Timeout::Error
       ''
     end
-    
+
     def dependencies(name)
       if rgem("dependency #{name} --remote") =~ /(Gem #{name}-.*?)(Gem|\z)/m
         $1.split("\n").grep(/runtime\s*\)/).map do |line|
@@ -33,6 +33,5 @@ module Rip
     def gembin
       ENV['GEMBIN'] || 'gem'
     end
-
   end
 end

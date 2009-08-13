@@ -36,7 +36,7 @@ module Rip
           package.unpack
 
           parent_package = (parent && parent.meta_package?) ? parent.actual_package : parent
-          manager.add_package(package, parent) 
+          manager.add_package(package, parent)
 
           install_dependencies(package)
           build_extensions(package)

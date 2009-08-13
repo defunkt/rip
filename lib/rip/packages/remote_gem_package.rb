@@ -48,7 +48,7 @@ module Rip
     def dependencies!
       actual_package.dependencies
     end
-    
+
     def version
       actual_package ? actual_package.version : super
     end

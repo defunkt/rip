@@ -115,7 +115,7 @@ module Rip
       if parent && parent.meta_package? && parent.actual_package != package
         parent = parent.actual_package
       end
-      
+
       if parent && !parent.meta_package?
         @dependents[name] ||= Set.new
         @dependents[name].add(parent.name)
