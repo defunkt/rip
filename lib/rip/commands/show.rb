@@ -19,8 +19,7 @@ module Rip
       ui.puts "Files:\n\t#{manager.files(name).join("\n\t")}" if options[:f]
     end
 
-    private
-
+  private
     def display_package_list(packages)
       return "Nothing" unless packages && packages.any?
       packages.map { |p| display_package(p) }.join(", ")
