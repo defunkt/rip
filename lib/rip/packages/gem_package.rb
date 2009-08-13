@@ -1,3 +1,5 @@
+require 'rip/gems'
+
 module Rip
   class GemPackage < Package
     handles '.gem'
@@ -20,9 +22,7 @@ module Rip
     end
 
     def exists?
-      if `which #{gembin}`.strip.empty?
-        ui.abort "you don't have #{gembin} installed"
-      end
+      ui.abort "can't find your gem command" unless Rip::Gems.check?
 
       File.exists?(source)
     end
@@ -32,17 +32,17 @@ module Rip
     end
 
     def unpack!
-      system "'#{gembin}' unpack '#{cache_file}' --target='#{packages_path}' > /dev/null"
+      Rip::Gems.rgem("unpack '#{cache_file}' --target='#{packages_path}' > /dev/null")
+    end
+
+    def dependencies!
+      Rip::Gems.dependencies(name)
     end
 
     memoize :metadata
     def metadata
       parts = source.split('/').last.chomp('.gem').split('-')
       { :name => parts[0...-1].join('-'), :version => parts[-1] }
-    end
-
-    def gembin
-      ENV['GEMBIN'] || 'gem'
     end
   end
 end

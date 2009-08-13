@@ -112,6 +112,10 @@ module Rip
         raise VersionConflict.new(name, version, parent, @versions[name], @dependents[name].to_a)
       end
 
+      if parent && parent.meta_package? && parent.actual_package != package
+        parent = parent.actual_package
+      end
+      
       if parent && !parent.meta_package?
         @dependents[name] ||= Set.new
         @dependents[name].add(parent.name)

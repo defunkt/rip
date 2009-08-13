@@ -1,4 +1,5 @@
 require 'timeout'
+require 'rip/gems'
 
 module Rip
   class RemoteGemPackage < Package
@@ -20,7 +21,7 @@ module Rip
           ui.puts "Searching %s for %s..." % [ remote, source ]
 
           source_flag = "--source=http://#{remote}/"
-          if rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
+          if Rip::Gems.rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
             @@exists_cache[source] = $1
             return true
           end
@@ -28,14 +29,6 @@ module Rip
       end
 
       false
-    end
-
-    def rgem(command)
-      Timeout.timeout(5) do
-        `#{gembin} #{command}`
-      end
-    rescue Timeout::Error
-      ''
     end
 
     def meta_package?
@@ -47,11 +40,15 @@ module Rip
 
     def unpack!
       installer = Installer.new
-      installer.install actual_package
+      installer.install actual_package, self
       installer.manager.sources[actual_package.name] = source
       installer.manager.save
     end
 
+    def dependencies!
+      actual_package.dependencies
+    end
+    
     def version
       actual_package ? actual_package.version : super
     end
@@ -59,10 +56,6 @@ module Rip
     memoize :actual_package
     def actual_package
       Package.for(Dir[cache_path + '/*'].first)
-    end
-
-    def gembin
-      ENV['GEMBIN'] || 'gem'
     end
   end
 end

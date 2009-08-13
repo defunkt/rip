@@ -25,8 +25,6 @@ module Rip
         begin
           installed = @installed[package.name] || package.installed?
 
-          manager.add_package(package, parent) unless package.meta_package?
-
           return if installed
           @installed[package.name] = package
 
@@ -36,6 +34,10 @@ module Rip
 
           package.fetch
           package.unpack
+
+          parent_package = (parent && parent.meta_package?) ? parent.actual_package : parent
+          manager.add_package(package, parent) 
+
           install_dependencies(package)
           build_extensions(package)
           copy_files(package)
