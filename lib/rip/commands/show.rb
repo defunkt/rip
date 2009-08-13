@@ -15,17 +15,19 @@ module Rip
       ui.puts display_package(installed_package)
       ui.puts "Depends on: #{display_package_list(manager.dependencies_for(name))}"
       ui.puts "Required by: #{display_package_list(manager.packages_that_depend_on(name))}"
-      
-      ui.puts "Files:\n\t#{manager.files(name).join("\n\t")}" if options[:f]  
+
+      ui.puts "Files:\n\t#{manager.files(name).join("\n\t")}" if options[:f]
     end
-    
-    private 
-    
+
+    private
+
     def display_package_list(packages)
-      (packages && packages.any?) ? packages.map { |p| display_package(p) }.join(", ") : "Nothing"
+      return "Nothing" unless packages && packages.any?
+      packages.map { |p| display_package(p) }.join(", ")
     end
-    
+
     def display_package(package)
+      return '' if package.nil?
       str = package.source
       str += " (#{package.version})" if package.version
       str
