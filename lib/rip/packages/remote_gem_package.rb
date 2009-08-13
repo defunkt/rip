@@ -27,6 +27,7 @@ module Rip
         end
       end
 
+      FileUtils.rm_rf cache_path
       false
     end
 
