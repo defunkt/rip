@@ -63,7 +63,7 @@ module Rip
         method =~ /-/ || %w( help version ).include?(method)
       end
 
-      show_help nil, commands
+      show_help nil, commands.sort
 
       ui.puts
       ui.puts "For more information on a a command use:"
