@@ -19,11 +19,12 @@ module Rip
       end
 
       package = Rip::Package.for(source, version)
-      installed_package = manager.package(package.name)
 
       if !package
         ui.abort "I don't know how to install #{source}"
       end
+
+      installed_package = manager.package(package.name)
 
       if options[:f] && installed_package
         Installer.new.uninstall(installed_package) if installed_package.installed?
