@@ -22,14 +22,7 @@ module Rip
   private
     def display_package_list(packages)
       return "Nothing" unless packages && packages.any?
-      packages.map { |p| display_package(p) }.join(", ")
-    end
-
-    def display_package(package)
-      return '' if package.nil?
-      str = package.source
-      str += " (#{package.version})" if package.version
-      str
+      packages.join(", ")
     end
   end
 end
