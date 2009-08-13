@@ -7,7 +7,7 @@ module Rip
     end
  
     def rgem(command)
-      Timeout.timeout(5) do
+      Timeout.timeout(30) do
         `#{gembin} #{command}`
       end
     rescue Timeout::Error
