@@ -1,7 +1,8 @@
 module Rip
   class UI
-    def initialize(io=nil)
+    def initialize(io = nil, verbose = false)
       @io = io
+      @verbose = verbose
     end
 
     def puts(*args)
@@ -19,6 +20,10 @@ module Rip
 
     def abort(msg)
       @io && Kernel.abort("rip: #{msg}")
+    end
+
+    def vputs(*args)
+      puts(*args) if @verbose
     end
   end
 end
