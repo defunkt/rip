@@ -5,6 +5,8 @@
 
 module Rip
   module Commands
+    o 'rip build PACKAGE'
+    x "Attempts to build a package using extconf.rb"
     def build(options={}, *packages)
       packages.each do |package_name|
         package = manager.package(package_name)
