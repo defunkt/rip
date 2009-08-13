@@ -21,6 +21,7 @@ module Rip
 
           source_flag = "--source=http://#{remote}/"
           if Sh::Gem.rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
+            ui.vputs "Found #{source} at #{remote}"
             @@exists_cache[source] = $1
             return true
           end
