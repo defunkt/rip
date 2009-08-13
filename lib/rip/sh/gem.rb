@@ -1,6 +1,6 @@
 module Rip
   module Sh
-    module Gems
+    module Gem
       extend self
 
       def check?

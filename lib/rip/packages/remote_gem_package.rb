@@ -20,7 +20,7 @@ module Rip
           ui.vputs "Searching %s for %s..." % [ remote, source ]
 
           source_flag = "--source=http://#{remote}/"
-          if Sh::Gems.rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
+          if Sh::Gem.rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
             @@exists_cache[source] = $1
             return true
           end
