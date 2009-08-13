@@ -22,7 +22,7 @@ module Rip
           Dir.chdir(build_dir) do
             system "ruby extconf.rb"
             system "make clean"
-            system "make install RUBYARCHDIR=#{manager.dir}/lib"
+            system "make install sitearchdir=#{manager.dir}/lib"
           end
         end
 
