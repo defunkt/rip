@@ -12,7 +12,7 @@ module Rip
         ui.abort "The package '#{name}' doesn't seem to be installed"
       end
 
-      ui.puts display_package(installed_package)
+      ui.puts installed_package
       ui.puts "Depends on: #{display_package_list(manager.dependencies_for(name))}"
       ui.puts "Required by: #{display_package_list(manager.packages_that_depend_on(name))}"
 
