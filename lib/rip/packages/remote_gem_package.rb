@@ -18,7 +18,7 @@ module Rip
 
       Dir.chdir cache_path do
         @@remotes.each do |remote|
-          ui.puts "Searching %s for %s..." % [ remote, source ]
+          ui.vputs "Searching %s for %s..." % [ remote, source ]
 
           source_flag = "--source=http://#{remote}/"
           if Rip::Gems.rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
