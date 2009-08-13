@@ -6,7 +6,7 @@ module Rip
       RemoteGemPackage.new(source).exists?
     end
 
-    @@remotes = %w( gems.github.com gems.rubyforge.org gemcutter.org )
+    @@remotes = %w( gems.github.com gemcutter.org gems.rubyforge.org )
     @@exists_cache = {}
 
     def exists?
