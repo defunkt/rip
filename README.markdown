@@ -293,19 +293,19 @@ Contributors
 * [Blake Mizerany](http://github.com/bmizerany)
 * [Ryan Tomayko](http://github.com/rtomayko)
 * [Pat Nakajima](http://github.com/nakajima)
-* Eero Saynatkari
-* Coda Hale
-* Simon Rozet
-* Gabriel Horner
-* Pistos
-* Mark Turner
+* [Eero Saynatkari](http://github.com/rue)
+* [Coda Hale](http://github.com/codahale)
+* [Simon Rozet](http://github.com/sr)
+* [Gabriel Horner](http://github.com/cldwalker)
+* [Pistos](http://github.com/Pistos)
+* [Mark Turner](http://github.com/amerine)
 * Hongli Lai
-* Tim Carey-Smith
-* August Lilleaas
-* Andre Arko
-* Rick Olson
-* Ben Burkert
-* James Adam
+* [Tim Carey-Smith](http://github.com/halorgium)
+* [August Lilleaas](http://github.com/augustl)
+* [Andre Arko](http://github.com/indirect)
+* [Rick Olson](http://github.com/technoweenie)
+* [Ben Burkert](http://github.com/benburkert)
+* [James Adam](http://github.com/lazyatom)
 
 Special Thanks
 --------------
