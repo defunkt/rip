@@ -43,7 +43,7 @@ module Rip
 
     def unpack!
       Dir.chdir cache_path do
-        git_reset_hard(version)
+        git_reset_hard version_is_branch? ? "origin/#{version}" : version
         git_submodule_init
         git_submodule_update
       end
@@ -60,8 +60,12 @@ module Rip
 
       fetch
       Dir.chdir(cache_path) do
-        git_cat_file(@version).size > 0
+        git_cat_file(@version).size > 0 || version_is_branch?
       end
+    end
+
+    def version_is_branch?
+      git_cat_file("origin/#{version}").size > 0
     end
   end
 end
