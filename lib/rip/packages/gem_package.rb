@@ -1,5 +1,3 @@
-require 'rip/gems'
-
 module Rip
   class GemPackage < Package
     handles '.gem'
