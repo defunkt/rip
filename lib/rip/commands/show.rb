@@ -15,6 +15,8 @@ module Rip
       ui.puts display_package(installed_package)
       ui.puts "Depends on: #{display_package_list(manager.dependencies_for(name))}"
       ui.puts "Required by: #{display_package_list(manager.packages_that_depend_on(name))}"
+      
+      ui.puts "Files:\n\t#{manager.files(name).join("\n\t")}" if options[:f]  
     end
     
     private 
