@@ -17,6 +17,9 @@ module Rip
 
       Dir.chdir cache_path do
         @@remotes.each do |remote|
+          # hack: every github gem has a dash in its name
+          next if remote =~ /github/ && !source.include?('-')
+
           ui.vputs "Searching %s for %s..." % [ remote, source ]
 
           source_flag = "--source=http://#{remote}/"
