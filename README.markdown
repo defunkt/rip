@@ -281,7 +281,7 @@ Currently it's UNIX-only. This is because Rip needs to manipulate the RUBYLIB
 and PATH environment variables so that Ruby knows where to find installed Rip
 packages.
 
-As a result, the setup script expects you to be running bash or zshell.
+As a result, the setup script expects you to be running bash, zshell, or fish.
 
 Contributors
 ------------
@@ -305,6 +305,7 @@ Contributors
 * Andre Arko
 * Rick Olson
 * Ben Burkert
+* James Adam
 
 Special Thanks
 --------------
