@@ -37,8 +37,7 @@ module Rip
     end
 
     o 'rip use RIPENV'
-    x 'Activate a ripenv.'
-    x 'Shortcut for `rip env use`'
+    x 'Activates a ripenv. Shortcut for `rip env use`.'
     def use(options = {}, ripenv = nil, *args)
       puts 'ripenv: ' + Rip::Env.use(ripenv.to_s)
     end
