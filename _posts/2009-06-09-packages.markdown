@@ -18,7 +18,7 @@ package types. Currently Rip can install:
 
 Rip also has a concept of meta packages - packages which install other
 packages. Rip can install any of the above packages over HTTP 
-(with the `HTTPPackage`) and has the power to fetch remote Rubygems.
+(with the `HTTPPackage`) and has the power to fetch remote RubyGems.
 
 Authoring Packages
 ------------------
@@ -37,6 +37,9 @@ non-bang methods. For instance, `fetch!` may only need to be called
 once but multiple methods may want to ensure the package has been
 fetched before going about their business. These methods will call
 `fetch` who decides when `fetch!` is or isn't actually needed.
+
+The `rip show` command may be useful to you during development: it
+displays information about an installed package.
 
 [1]: http://github.com/defunkt/rip/blob/master/lib/rip/package_api.rb
 [2]: http://github.com/defunkt/rip/blob/master/lib/rip/package.rb)
