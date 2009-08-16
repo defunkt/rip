@@ -15,7 +15,7 @@ module Rip
       FileUtils.mkdir_p cache_path
 
       Dir.chdir cache_path do
-        ui.puts "Installing #{source} via Rubygems..."
+        ui.puts "Fetching #{self} via Rubygems..."
         unless Sh::Gem.fetch(source, version)
           FileUtils.rm_rf cache_path
           ui.abort "Couldn't find gem #{source} in any of your gem sources"
