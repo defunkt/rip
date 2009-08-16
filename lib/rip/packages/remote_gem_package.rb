@@ -33,6 +33,10 @@ module Rip
     def dependencies!
       actual_package.dependencies
     end
+    
+    def files
+      actual_package.files
+    end
 
     def version
       local_gem ? actual_package.version : @version
