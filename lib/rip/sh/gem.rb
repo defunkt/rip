@@ -31,7 +31,7 @@ module Rip
       def dependencies(path_to_gem)
         require 'rubygems' # to get the specification class
         spec = YAML.load(rgem("specification #{path_to_gem}"))
-        spec.dependencies.select { |d| d.type == :runtime }.map { |d| Package.for(d.name, d.version_requirements.to_s) }
+        spec.dependencies.select { |d| d.type != :development }.map { |d| Package.for(d.name, d.version_requirements.to_s) }
       end
 
       def gembin
