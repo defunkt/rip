@@ -3,36 +3,7 @@ require 'timeout'
 module Rip
   class RemoteGemPackage < Package
     handles do |source|
-      RemoteGemPackage.new(source).exists?
-    end
-
-    @@remotes = %w( gems.github.com gemcutter.org gems.rubyforge.org )
-    @@exists_cache = {}
-
-    def exists?
-      return false unless source =~ /^[\w-]+$/
-      return true if @@exists_cache[source] || File.exists?(cache_path)
-
-      FileUtils.mkdir_p cache_path
-
-      Dir.chdir cache_path do
-        @@remotes.each do |remote|
-          # hack: every github gem has a dash in its name
-          next if remote =~ /github/ && !source.include?('-')
-
-          ui.vputs "Searching %s for %s..." % [ remote, source ]
-
-          source_flag = "--source=http://#{remote}/"
-          if Sh::Gem.rgem("fetch #{source} #{source_flag}") =~ /Downloaded (.+)/
-            ui.vputs "Found #{source} at #{remote}"
-            @@exists_cache[source] = $1
-            return true
-          end
-        end
-      end
-
-      FileUtils.rm_rf cache_path
-      false
+      Sh::Gem.exists?(source)
     end
 
     def meta_package?
@@ -40,6 +11,16 @@ module Rip
     end
 
     def fetch!
+      return if File.exists?(cache_path)
+      FileUtils.mkdir_p cache_path
+
+      Dir.chdir cache_path do
+        ui.puts "Installing #{source} via Rubygems..."
+        unless Sh::Gem.fetch(source)
+          FileUtils.rm_rf cache_path
+          ui.abort "Couldn't find gem #{source} in any of your gem sources"
+        end
+      end
     end
 
     def unpack!

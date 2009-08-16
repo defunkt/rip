@@ -15,6 +15,17 @@ module Rip
         ''
       end
 
+      @@exists_cache = {}
+
+      def exists?(name)
+        return false unless name =~ /^[\w-]+$/
+        @@exists_cache[name] ||= rgem("search #{name} --remote").split("\n").select { |f| f =~ /^#{name} / }.any?
+      end
+      
+      def fetch(name)
+        rgem("fetch #{name}") =~ /Downloaded (.+)/
+      end
+
       def dependencies(name)
         if rgem("dependency #{name} --remote") =~ /(Gem #{name}-.*?)(Gem|\z)/m
           $1.split("\n").grep(/runtime\s*\)/).map do |line|
