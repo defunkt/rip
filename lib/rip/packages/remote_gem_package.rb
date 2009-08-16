@@ -16,7 +16,7 @@ module Rip
 
       Dir.chdir cache_path do
         ui.puts "Installing #{source} via Rubygems..."
-        unless Sh::Gem.fetch(source)
+        unless Sh::Gem.fetch(source, version)
           FileUtils.rm_rf cache_path
           ui.abort "Couldn't find gem #{source} in any of your gem sources"
         end
@@ -35,12 +35,16 @@ module Rip
     end
 
     def version
-      actual_package ? actual_package.version : super
+      local_gem ? actual_package.version : @version
     end
 
     memoize :actual_package
     def actual_package
-      Package.for(Dir[cache_path + '/*'].first)
+      Package.for(local_gem)
+    end
+    
+    def local_gem
+      Dir[cache_path + '/*'].first
     end
   end
 end

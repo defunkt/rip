@@ -22,8 +22,10 @@ module Rip
         @@exists_cache[name] ||= rgem("search #{name} --remote").split("\n").select { |f| f =~ /^#{name} / }.any?
       end
       
-      def fetch(name)
-        rgem("fetch #{name}") =~ /Downloaded (.+)/
+      def fetch(name, version=nil)
+        source_string = name
+        source_string += " --version '#{version}'" if version
+        rgem("fetch #{source_string}") =~ /Downloaded (.+)/
       end
 
       def dependencies(path_to_gem)
