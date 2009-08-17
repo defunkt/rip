@@ -38,14 +38,14 @@ module Rip
     end
     alias_method :to_s, :message
   end
-  
+
   class FileConflict < RuntimeError
     def initialize(package, other_package_name, conflicting_files)
       @package = package
       @other_package_name = other_package_name
       @conflicting_files = conflicting_files
     end
-    
+
     def message
       message = []
       message << "Some files from #{@package} conflict with those already installed by #{@other_package_name}:"
@@ -107,7 +107,7 @@ module Rip
     def packages_that_depend_on(name)
       (@dependents[name] || []).map { |name| package(name) }
     end
-    
+
     def dependencies_for(name)
       (@dependencies[name] || []).map { |name| package(name) }
     end
