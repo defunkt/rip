@@ -15,20 +15,23 @@ module Rip
         ''
       end
 
-      def dependencies(name)
-        if rgem("dependency #{name} --remote") =~ /(Gem #{name}-.*?)(Gem|\z)/m
-          $1.split("\n").grep(/runtime\s*\)/).map do |line|
-            line =~ /([\w-]+)\s*\([~><=]+\s*((?:\d+\.?)+\d+|\d)/
-            source, version = $1, $2
-            if source
-              Package.for(source, version)
-            else
-              nil
-            end
-          end.compact
-        else
-          []
-        end
+      @@exists_cache = {}
+
+      def exists?(name)
+        return false unless name =~ /^[\w-]+$/
+        @@exists_cache[name] ||= rgem("search #{name} --remote").split("\n").select { |f| f =~ /^#{name} / }.any?
+      end
+      
+      def fetch(name, version=nil)
+        source_string = name
+        source_string += " --version '#{version}'" if version
+        rgem("fetch #{source_string}") =~ /Downloaded (.+)/
+      end
+
+      def dependencies(path_to_gem)
+        require 'rubygems' # to get the specification class
+        spec = YAML.load(rgem("specification #{path_to_gem}"))
+        spec.dependencies.select { |d| d.type != :development }.map { |d| Package.for(d.name, d.version_requirements.to_s) }
       end
 
       def gembin

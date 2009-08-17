@@ -34,7 +34,7 @@ module Rip
     end
 
     def dependencies!
-      Sh::Gem.dependencies(name)
+      Sh::Gem.dependencies(cache_file)
     end
 
     memoize :metadata
