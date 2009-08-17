@@ -82,6 +82,13 @@ end
 # rip plugin commands
 #
 
+# load lib/rip/commands/*.rb from rip itself
+if File.exists? dir = File.join(File.dirname(__FILE__), 'commands')
+  Dir[dir + '/*.rb'].each do |file|
+    Rip::Commands.load_plugin(file)
+  end
+end
+
 # load ~/.rip/rip-commands/*.rb
 if File.exists? dir = File.join(Rip.dir, 'rip-commands')
   Dir[dir + '/*.rb'].each do |file|
@@ -91,14 +98,6 @@ end
 
 # load lib/rip/commands/*.rb from the active ripenv
 if File.exists? dir = File.join(Rip::Env.active_dir, 'lib', 'rip', 'commands')
-  Dir[dir + '/*.rb'].each do |file|
-    Rip::Commands.load_plugin(file)
-  end
-end
-
-
-# load lib/rip/commands/*.rb from rip itself
-if File.exists? dir = File.join(File.dirname(__FILE__), 'commands')
   Dir[dir + '/*.rb'].each do |file|
     Rip::Commands.load_plugin(file)
   end
