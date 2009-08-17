@@ -45,7 +45,7 @@ module Rip
           ui.puts "Successfully installed #{package}" unless package.meta_package?
           true
 
-        rescue VersionConflict => e
+        rescue FileConflict, VersionConflict => e
           ui.puts e.message
           rollback
           ui.abort "installation failed"

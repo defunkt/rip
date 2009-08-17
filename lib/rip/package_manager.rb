@@ -38,6 +38,22 @@ module Rip
     end
     alias_method :to_s, :message
   end
+  
+  class FileConflict < RuntimeError
+    def initialize(package, other_package_name, conflicting_files)
+      @package = package
+      @other_package_name = other_package_name
+      @conflicting_files = conflicting_files
+    end
+    
+    def message
+      message = []
+      message << "Some files from #{@package} conflict with those already installed by #{@other_package_name}:"
+      message += @conflicting_files.map { |f| "\t#{f}" }
+      message.join("\n")
+    end
+    alias_method :to_s, :message
+  end
 
   class PackageManager
     attr_reader :dependencies, :dependents, :sources, :versions, :env
@@ -116,6 +132,8 @@ module Rip
         raise VersionConflict.new(name, version, parent, @versions[name], @dependents[name].to_a)
       end
 
+      check_for_file_conflict(package)
+
       if parent && parent.meta_package? && parent.actual_package != package
         parent = parent.actual_package
       end
@@ -138,6 +156,13 @@ module Rip
       end
     ensure
       save
+    end
+    
+    def check_for_file_conflict(package)
+      @files.each do |other_package_name, files|
+        conflicts = files & package.files
+        raise FileConflict.new(package, other_package_name, conflicts) if conflicts.any?
+      end
     end
 
     def add_files(name, file_list = [])
