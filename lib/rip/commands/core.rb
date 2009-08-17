@@ -4,7 +4,7 @@ module Rip
     def list(*args)
       ui.puts 'ripenv: ' + Rip::Env.active, ''
       if manager.packages.any?
-        ui.puts manager.packages
+        ui.puts manager.packages.sort_by { |p| p.to_s }
       else
         ui.puts "nothing installed"
       end
