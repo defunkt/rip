@@ -18,6 +18,10 @@ module Rip
     def version
       nil
     end
+    
+    def actual_package
+      nil
+    end
 
     def meta_package?
       true
