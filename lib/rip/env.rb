@@ -100,12 +100,13 @@ module Rip
       else
         output  = [ "all installed ripenvs", "" ]
         output += envs.map do |env|
+          prefix = Rip::Env.active == env ? "* " : "  "
           if options[:p]
             packages = PackageManager.new(env).packages
             packages = packages.size > 3 ? packages[0, 3] + ['...'] : packages
-            "#{env} - #{packages.join(', ')}"
+            "#{prefix}#{env} - #{packages.join(', ')}"
           else
-            env
+            "#{prefix}#{env}"
           end
         end
         output.join("\n")
