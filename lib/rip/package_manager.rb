@@ -157,10 +157,13 @@ module Rip
     ensure
       save
     end
-    
+
     def check_for_file_conflict(package)
       @files.each do |other_package_name, files|
-        conflicts = files & package.files
+        pfiles = package.files.select do |file|
+          File.file?("#{Rip::Env.active_dir}/#{file}")
+        end
+        conflicts = files & pfiles
         raise FileConflict.new(package, other_package_name, conflicts) if conflicts.any?
       end
     end
