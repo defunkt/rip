@@ -3,11 +3,15 @@ require 'timeout'
 module Rip
   class RemoteGemPackage < Package
     handles do |source|
-      Sh::Gem.exists?(source)
+      RemoteGemPackage.new(source).exists?
     end
 
     def meta_package?
       true
+    end
+
+    def exists?
+      File.exists?(cache_path) || Sh::Gem.exists?(source)
     end
 
     def fetch!
@@ -33,7 +37,7 @@ module Rip
     def dependencies!
       actual_package.dependencies
     end
-    
+
     def files
       actual_package.files
     end
@@ -46,7 +50,7 @@ module Rip
     def actual_package
       Package.for(local_gem)
     end
-    
+
     def local_gem
       Dir[cache_path + '/*'].first
     end
