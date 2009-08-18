@@ -267,6 +267,38 @@ When running Ruby scripts, or even executing the `camping` binary,
 In any other ripenv, the `cheat` ripenv's binaries and libraries are as
 good as non-existant.
 
+Hooks
+-----
+
+Rip environments may also contain a `rip-hooks` directory. Like this:
+
+    rip/
+      - cheat/
+        - bin/
+          - camping
+        - lib/
+         - markaby.rb
+         - camping.rb
+        - cheat.ripenv
+        - rip-hooks/
+          - after-use
+
+Rip will attempt to execute various shell scripts inside the
+`rip-hooks` directory during the course of use.
+
+Hooks must exist and be executable in order to run. To see or edit
+existing hooks, see `rip help hooks`.
+
+Here is the complete list of current hooks:
+
+* `before-leave` - Called in the current ripenv before switching to a 
+   new ripenv. Passed the name of the current ripenv.
+* `after-use` - Called in the current ripenv after switching to
+   it. Passed the name of the new ripenv.
+
+For a discussion and examples of `after-use` in action, see the
+mailing list: http://is.gd/2meU6
+
 Deployment
 ----------
 
