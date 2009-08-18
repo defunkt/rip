@@ -299,7 +299,7 @@ Contributors
 * [Gabriel Horner](http://github.com/cldwalker)
 * [Pistos](http://github.com/Pistos)
 * [Mark Turner](http://github.com/amerine)
-* Hongli Lai
+* [Hongli Lai](http://github.com/FooBarWidget)
 * [Tim Carey-Smith](http://github.com/halorgium)
 * [August Lilleaas](http://github.com/augustl)
 * [Andre Arko](http://github.com/indirect)
