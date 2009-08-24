@@ -49,7 +49,7 @@ module Rip
 
     def dependencies!
       if File.exists? deps = File.join(cache_path, name)
-        File.readlines(deps).map do |line|
+        File.readlines(deps).select { |l| l =~ /\S/ }.map do |line|
           package_source, version, *extra = line.split(' ')
           if package = Package.for(package_source, version)
             package
