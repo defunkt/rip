@@ -109,8 +109,20 @@ module Rip
             next if @uninstalled[package.name]
             @uninstalled[package.name] = true
 
+            dirs = []
+
             package.files.each do |file|
-              FileUtils.rm_rf file
+              if File.directory?(file)
+                dirs << file
+                next
+              end
+              FileUtils.rm file
+            end
+
+            dirs.sort.reverse.each do |dir|
+              if Dir["#{dir}/*"].empty?
+                FileUtils.rmdir dir
+              end
             end
 
             manager.remove_package(package)
