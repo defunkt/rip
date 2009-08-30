@@ -2,3 +2,5 @@ _site
 dip
 reset
 irb
+pkg
+rip.gemspec
