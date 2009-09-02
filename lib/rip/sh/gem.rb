@@ -4,7 +4,7 @@ module Rip
       extend self
 
       def check?
-        `which #{gembin}`.strip.any?
+        !`which #{gembin}`.strip.empty?
       end
 
       def rgem(command)
