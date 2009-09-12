@@ -141,7 +141,7 @@ module Rip
         ui.abort STARTUP_SCRIPTS.map { |s| '  ' + s }
       end
 
-      if File.read(script).include? 'RIPDIR'
+      if ENV['RIPDIR'].to_s.empty?
         ui.puts "rip: env variables already present in startup script"
         false
       else
