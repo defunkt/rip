@@ -240,19 +240,23 @@ end_error
         end
       end
 
-      if !File.exists? File.join(BINDIR, 'rip')
-        raise InstallationError, "no rip in #{BINDIR}"
+      if !expand_paths(ENV['PATH'].split(':')).include?('rip')
+        raise InstallationError, "no rip in #{ENV['PATH']}"
       end
 
-      if !File.exists? File.join(LIBDIR, 'rip')
-        raise InstallationError, "no rip in #{LIBDIR}"
+      if !expand_paths($LOAD_PATH).include?('rip')
+        raise InstallationError, "no rip in #{$LOAD_PATH.join(":")}"
       end
 
-      if !File.exists? File.join(LIBDIR, 'rip')
-        raise InstallationError, "no rip.rb in #{LIBDIR}"
+      if !expand_paths($LOAD_PATH).include?('rip.rb')
+        raise InstallationError, "no rip.rb in #{$LOAD_PATH.join(":")}"
       end
 
       true
+    end
+
+    def expand_paths(paths)
+      paths.map { |path| Dir["#{path}/*"] }.flatten.map { |path| File.basename(path) }.uniq
     end
 
     def rewrite_bang_line(file, first_line)
