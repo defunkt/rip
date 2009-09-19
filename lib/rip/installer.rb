@@ -116,11 +116,11 @@ module Rip
                 dirs << file
                 next
               end
-              FileUtils.rm file
+              FileUtils.rm file if File.exist?(file)
             end
 
             dirs.sort.reverse.each do |dir|
-              if Dir["#{dir}/*"].empty?
+              if File.exist?(dir) and Dir["#{dir}/*"].empty?
                 FileUtils.rmdir dir
               end
             end
