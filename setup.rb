@@ -15,16 +15,17 @@ __DIR__ = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH.unshift File.join(__DIR__, 'lib')
 
 require "rip"
+require "optparse"
 
 include Rip::Setup
 
-# TODO: Use, like, real option parsing. --rue
-
-%w( bindir libdir ripdir ).each do |opt|
-  if given = ARGV.grep(/--#{opt}=\S+/).last
-    Rip::Setup.const_set(opt.upcase, File.expand_path(given.split("=").last))
+parser = OptionParser.new
+%w( bindir libdir ripdir ).each do |name|
+  parser.on("--#{name}=PATH") do |path|
+    Rip::Setup.const_set(name.upcase, File.expand_path(path))
   end
 end
+parser.parse!(ARGV)
 
 if ARGV.include? 'uninstall'
   uninstall :verbose
