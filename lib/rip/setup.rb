@@ -18,7 +18,7 @@ module Rip
 
     HOME = File.expand_path('~')
 
-    USER = HOME.split('/')[-1]    # TODO: *cough*
+    USER = ENV['USER']
 
     # Work around Apple's Ruby.
     #
