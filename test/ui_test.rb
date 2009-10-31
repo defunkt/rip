@@ -28,6 +28,18 @@ context "Rip::UI" do
     end
   end
 
+  test 'prepends "rip: " to exit message' do
+    begin
+      old = Kernel.method(:exit)
+      class << Kernel; def exit; "exiting"; end end
+      
+      assert_equal "exiting", @ui.exit("goodbye")
+      assert_equal "rip: goodbye\n", @output
+    ensure
+      class << Kernel; self end.class_eval { define_method(:exit, old) }
+    end
+  end
+  
   test "does not perform actions when no IO given" do
     ui = Rip::UI.new
     ui.puts 'this should not show up'

@@ -22,6 +22,11 @@ module Rip
       @io && Kernel.abort("rip: #{msg}")
     end
 
+    def exit(msg)
+      @io && puts("rip: #{msg}")
+      Kernel.exit
+    end
+
     def vputs(*args)
       puts(*args) if @verbose
     end
