@@ -30,6 +30,11 @@ class RipTest < Test::Unit::TestCase
     assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
   end
 
+  def test_env_use_phoney
+    out = rip "use not-real"
+    assert_includes "Can't find", out
+  end
+
   def test_shell
     output = rip "shell"
     assert_includes "RIPDIR=", output
