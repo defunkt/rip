@@ -1,0 +1,12 @@
+# Usage: rip-fetch URL
+#
+# Downloads the package at URL to $RIPDIR/.cache using the appropriate
+# transfer mechanism.
+#
+# Accepted transports:
+# git
+# hg
+# bzr
+# svn
+# curl + tar xzf
+# curl + tar xjf

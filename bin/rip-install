@@ -1,0 +1,5 @@
+# Usage: rip-install PATH
+# Installs a library into $RIPDIR/$RIPENV
+#
+# Opens $RIPDIR/$RIPENV/$RIPENV.ripenv
+#

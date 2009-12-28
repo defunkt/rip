@@ -1,0 +1,15 @@
+# Usage: rip-shell SHELL
+# Prints out shellcode which, when evaled, will help activate rip.
+#
+# normal:
+#
+# RIPDIR=${RIPDIR:-"$HOME/.rip"}
+# RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
+# PATH="$PATH:$RIPDIR/active/bin"
+# export RIPDIR RUBYLIB PATH
+#
+# fish:
+# set -x RIPDIR "$HOME/.rip"
+# set -x RUBYLIB "$RUBYLIB:$RIPDIR/active/lib"
+# set PATH $RIPDIR/active/bin $PATH
+

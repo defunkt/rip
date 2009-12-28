@@ -1,0 +1,5 @@
+# Usage: rake install
+# Installs rip itself
+# Respects PREFIX BINDIR and LIBDIR
+#
+# Exits 0 if successful, 1 if unsuccessful
