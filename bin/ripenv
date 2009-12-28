@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# Usage: ripenv
+#
+# Prints the current ripenv
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+puts RIPENV
