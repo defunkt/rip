@@ -1,0 +1,3 @@
+# Usage: rip-list RIPENV
+#
+# Displays all installed packages and their versions for RIPENV.

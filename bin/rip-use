@@ -1,0 +1,4 @@
+# Usage: rip-use RIPENV
+#
+# rm $RIPDIR/active
+# ln -s $RIPDIR/$RIPENV $RIPDIR/active

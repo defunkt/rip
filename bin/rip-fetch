@@ -1,12 +1,14 @@
-# Usage: rip-fetch URL
+# Usage: rip-fetch URL VERSION
 #
 # Downloads the package at URL to $RIPDIR/.cache using the appropriate
-# transfer mechanism.
+# transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
+# the hash of the URL from which it was retrieved. Will also fetch all
+# dependencies as specified by the package's `deps.rip`.
 #
 # Accepted transports:
-# git
-# hg
-# bzr
-# svn
-# curl + tar xzf
-# curl + tar xjf
+#   git
+#   hg
+#   bzr
+#   svn
+#   curl + tar xzf
+#   curl + tar xjf
