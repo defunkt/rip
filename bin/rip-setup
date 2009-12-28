@@ -21,4 +21,4 @@
 #
 # exits 0 if successfuly, 1 if unsuccessful
 
-exec "#{File.dirname(__FILE__)}/ripenv-create base"
+exec "#{File.dirname(__FILE__)}/rip-create base"

@@ -17,6 +17,12 @@ class RipTest < Test::Unit::TestCase
     assert File.exists?("#{@ripdir}/base")
   end
 
+  def test_env_create
+    rip "create blah"
+    assert_equal "#{@ripdir}/blah", File.readlink("#{@ripdir}/active")
+    assert File.exists?("#{@ripdir}/blah")
+  end
+
   def test_shell
     output = rip "shell"
     assert_includes "RIPDIR=", output
