@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: ripenv
+# Usage: rip-env
 #
 # Prints the current ripenv
 

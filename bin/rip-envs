@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-# Usage: ripenv-list
+# Usage: rip-envs
 #
-# Lists all ripenvs
+# Prints all ripenvs
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
