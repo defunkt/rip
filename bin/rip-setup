@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # Usage: rip-setup
 # Creates a rip directory structure at $RIPDIR
 # If $RIPDIR is not set, defaults to $HOME/.rip
@@ -20,5 +21,4 @@
 #
 # exits 0 if successfuly, 1 if unsuccessful
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
-require 'rip/setup'
+exec "#{File.dirname(__FILE__)}/ripenv-create base"
