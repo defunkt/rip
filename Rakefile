@@ -1,3 +1,10 @@
+task :default => :test
+
+desc "Run the test suite."
+task :test do 
+  ruby "test/rip_test.rb"
+end
+
 desc "Installs Rip"
 task :install do
   prefix = ENV['PREFIX'] || ENV['prefix'] || '/usr/local'
