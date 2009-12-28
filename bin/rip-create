@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: ripenv-create RIPENV
+# Usage: rip-create RIPENV
 #
 # Creates the rip directory structure for RIPENV
 #
@@ -17,4 +17,4 @@ require 'rip/script'
 mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
 mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
 mkdir_p "#{RIPDIR}/#{RIPENV}/man"
-ln_s    "#{RIPDIR}/#{RIPENV}", "#{RIPDIR}/active"
+rip      "use #{RIPENV}"
