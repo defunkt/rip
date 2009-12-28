@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# Usage: ripenv-list
+#
+# Lists all ripenvs
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+target = ARGV[0]
+
+exit if target == RIPENV
+
+if RIPENVS.include? target
+  rm "#{RIPDIR}/active"
+  ln_s "#{RIPDIR}/#{target}", "#{RIPDIR}/active"
+else
+  abort "Can't find ripenv `#{target}'"
+end
