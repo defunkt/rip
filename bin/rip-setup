@@ -19,3 +19,6 @@
 #     `-- other.ripenv
 #
 # exits 0 if successfuly, 1 if unsuccessful
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/setup'
