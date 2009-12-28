@@ -6,11 +6,11 @@ task :install do
 
   mkdir_p bindir
   Dir["bin/*"].each do |f|
-    cp f, bindir
+    cp f, bindir, :preserve => true, :verbose => true
   end
 
   mkdir_p libdir
-  Dir["lib/*.rb"].each do |f|
+  Dir["lib/**/*.rb"].each do |f|
     cp f, libdir
   end
 end
