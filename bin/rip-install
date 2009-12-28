@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # Usage: rip-install PATH
 # Installs a library into $RIPDIR/$RIPENV
 #
@@ -14,3 +15,21 @@
 #   Copies PATH/lib/* PATH/bin/* and PATH/man/* to $RIPDIR/$RIPENV
 #   Stores version, dependency, and files installed information in
 #   $RIPDIR/$RIPENV/$RIPENV.ripenv
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+path = ARGV[0]
+package = Package.new(path)
+
+if installed = DB[package.name]
+  $stderr.print "#{package} already installed at "
+  $stderr.print installed['version']
+  if installed['parents']
+    $stderr.print " by "
+    $stderr.print installed['parents'].join(' and ')
+  end
+  abort ""
+end
+
+puts package.version

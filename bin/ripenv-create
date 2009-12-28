@@ -17,5 +17,4 @@ require 'rip/script'
 mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
 mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
 mkdir_p "#{RIPDIR}/#{RIPENV}/man"
-touch   "#{RIPDIR}/#{RIPENV}/#{RIPENV}.ripenv"
 ln_s    "#{RIPDIR}/#{RIPENV}", "#{RIPDIR}/active"

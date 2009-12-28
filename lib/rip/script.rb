@@ -12,3 +12,7 @@ end
 
 require 'fileutils'
 include FileUtils
+
+require 'rip/db'
+require 'rip/package'
+include Rip
