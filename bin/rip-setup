@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # Usage: rip-setup
 # Creates a rip directory structure at $RIPDIR
-# If $RIPDIR is not set, defaults to $HOME/.rip
 #
 # Directory structure is:
 #
