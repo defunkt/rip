@@ -6,6 +6,10 @@ require 'fileutils'
 class Test::Unit::TestCase
   include FileUtils
 
+  def self.test(name, &block)
+    define_method("test_#{name.gsub(/\W/, '_')}", &block)
+  end
+
   # Asserts that `haystack` includes `needle`.
   def assert_includes(needle, haystack, message = nil)
     message = build_message message, '<?> is not in <?>.', needle, haystack
@@ -47,3 +51,4 @@ class Test::Unit::TestCase
     parent_read.read
   end
 end
+

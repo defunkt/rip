@@ -1,0 +1,2 @@
+module Rip
+end

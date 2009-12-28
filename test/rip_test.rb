@@ -9,7 +9,7 @@ class RipTest < Test::Unit::TestCase
     rip "setup"
   end
 
-  def test_setup
+  test "setup" do
     rm_rf @ripdir
     rip "setup"
     assert File.exists?("#{@ripdir}/active")
@@ -18,24 +18,24 @@ class RipTest < Test::Unit::TestCase
     assert File.exists?("#{@ripdir}/base")
   end
 
-  def test_env_create
+  test "create ripenv" do
     rip "create blah"
     assert_equal "#{@ripdir}/blah", File.readlink("#{@ripdir}/active")
     assert File.exists?("#{@ripdir}/blah")
   end
 
-  def test_env_use
+  test "use ripenv" do
     rip "create blah"
     rip "use base"
     assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
   end
 
-  def test_env_use_phoney
+  test "use fake ripenv" do
     out = rip "use not-real"
     assert_includes "Can't find", out
   end
 
-  def test_shell
+  test "shell" do
     output = rip "shell"
     assert_includes "RIPDIR=", output
   end
