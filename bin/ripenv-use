@@ -1,12 +1,16 @@
 #!/usr/bin/env ruby
-# Usage: ripenv-list
+# Usage: ripenv-use RIPENV
 #
-# Lists all ripenvs
+# Use RIPENV for the remainder of this shell session
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target = ARGV[0]
+
+if ENV['RIPENV']
+  abort "You have $RIPENV set. Please unset it or change it manually."
+end
 
 exit if target == RIPENV
 
