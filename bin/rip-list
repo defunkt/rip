@@ -1,3 +1,5 @@
 # Usage: rip-list RIPENV
 #
 # Displays all installed packages and their versions for RIPENV.
+# If RIPENV is omitted shows installed packages for the current
+# RIPENV.
