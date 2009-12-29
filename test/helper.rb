@@ -39,7 +39,7 @@ class Test::Unit::TestCase
   def rip(subcommand, *args)
     parent_read, child_write = IO.pipe
 
-    fork do
+    pid = fork do
       yield if block_given?
       $stdout.reopen(child_write)
       $stderr.reopen(child_write)
@@ -47,6 +47,7 @@ class Test::Unit::TestCase
       exec "rip-#{subcommand}", *args
     end
 
+    Process.waitpid(pid)
     child_write.close
     parent_read.read
   end

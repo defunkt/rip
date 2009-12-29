@@ -3,16 +3,12 @@
 # Installs a library into $RIPDIR/$RIPENV
 #
 # Steps:
-#   Infers the current version
-#   Reads $RIPDIR/$RIPENV/$RIPENV.ripenv
-#   Fails if PATH is already installed at a different version
-#   Reads PATH/deps.rip
-#   Calls rip-fetch on each dependency
-#   Repeats for each dependency's deps.rip
-#   Creates dependency mapping in memory
-#   Checks for version mismatch between memory and ripenv
-#   Fails if any mismatch detected
-#   Copies PATH/lib/* PATH/bin/* and PATH/man/* to $RIPDIR/$RIPENV
+#   Calls `rip-installed PATH`
+#   Fails if already installed
+#   Calls `rip-fetch-dependencies deps.rip`
+#   Calls `rip-detect-conflicts deps.rip`
+#   Fails if conflicts exist
+#   Calls `rip-copy-paths PATH`
 #   Stores version, dependency, and files installed information in
 #   $RIPDIR/$RIPENV/$RIPENV.ripenv
 

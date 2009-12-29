@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch-dependencies deps.rip
+# Recursively downloads dependencies.
+

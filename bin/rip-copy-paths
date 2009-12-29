@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# Usage: rip-copy-paths PATH
+# Copies PATH/lib/* PATH/bin/* and PATH/man/* to $RIPDIR/$RIPENV
+#
+# Prints all files copied to standard out.
+

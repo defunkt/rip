@@ -2,8 +2,9 @@
 #
 # Downloads the package at URL to $RIPDIR/.cache using the appropriate
 # transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
-# the hash of the URL from which it was retrieved. Will also fetch all
-# dependencies as specified by the package's `deps.rip`.
+# the hash of the URL from which it was retrieved.
+#
+# Prints the full path to the fetched package to standard out.
 #
 # Accepted transports:
 #   git

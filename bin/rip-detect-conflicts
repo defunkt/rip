@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# Usage: rip-detect-conflicts deps.rip
+# Determines whether any dependencies (or their dependencies)
+# specified in a deps.rip conflicts with the packages installed in the
+# current ripenv.
+#
+# Exits 1 if so, 0 if not.
+# Prints YAML of failed package, who is trying to install it at what
+# version, and who already installed it at what version.
+
+

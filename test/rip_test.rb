@@ -24,6 +24,9 @@ class RipTest < Test::Unit::TestCase
     assert File.exists?("#{@ripdir}/blah")
   end
 
+  test "create existing ripenv" do
+  end
+
   test "use ripenv" do
     rip "create blah"
     rip "use base"
