@@ -7,11 +7,22 @@ class CheckTest < Rip::Test
     assert_exited_successfully
   end
 
-  def test_failed_check
-    rip "check" do
+  def test_no_ripdir
+    out = rip "check" do
       ENV.delete('RIPDIR')
     end
     assert_exited_with_error
+    assert_equal "$RIPDIR not set. Please eval `rip-shell`\n", out
+  end
+
+  def test_invalid_ripdir
+    out = rip "check" do
+      ENV['RIPDIR'] = 'blahblah'
+    end
+    assert_exited_with_error
+
+    ripdir = File.expand_path('blahblah')
+    assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
   end
 
   def test_check_outputs_env_variables
