@@ -3,8 +3,26 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 require 'rip'
 require 'fileutils'
 
-class Test::Unit::TestCase
+class Rip::Test < Test::Unit::TestCase
   include FileUtils
+
+  # Setup test/ripdir for testing as a valid rip directory.
+  # Remove it after test runs.
+  def setup
+    @ripdir = File.expand_path(File.dirname(__FILE__) + "/ripdir")
+    rm_rf @ripdir
+    ENV['RIPDIR'] = @ripdir
+    rip "setup"
+  end
+
+  def teardown
+    rm_rf @ripdir
+  end
+
+  # Needed when subclassing Test::Unit::TestCase
+  def test_ok
+    assert true
+  end
 
   def self.test(name, &block)
     define_method("test_#{name.gsub(/\W/, '_')}", &block)
@@ -12,7 +30,7 @@ class Test::Unit::TestCase
 
   # Asserts that `haystack` includes `needle`.
   def assert_includes(needle, haystack, message = nil)
-    message = build_message message, '<?> is not in <?>.', needle, haystack
+    message = build_message(message, '<?> is not in <?>.', needle, haystack)
     assert_block message do
       haystack.include? needle
     end
@@ -20,9 +38,25 @@ class Test::Unit::TestCase
 
   # Asserts that `haystack` does not include `needle`.
   def assert_not_includes(needle, haystack, message = nil)
-    message = build_message message, '<?> is in <?>.', needle, haystack
+    message = build_message(message, '<?> is in <?>.', needle, haystack)
     assert_block message do
       !haystack.include? needle
+    end
+  end
+
+  def assert_exited_successfully(message = nil)
+    actual = $?.to_i
+    message = build_message(message, 'rip exited with <?>, not 0', actual)
+    assert_block message do
+      0 == actual
+    end
+  end
+
+  def assert_exited_with_error(message = nil)
+    actual = $?.to_i
+    message = build_message(message, 'rip exited with 0, not > 0')
+    assert_block message do
+      actual > 0
     end
   end
 
@@ -47,9 +81,11 @@ class Test::Unit::TestCase
       exec "rip-#{subcommand}", *args
     end
 
+    # Wait for the process to exit so we can use $?
+    # in our tests.
     Process.waitpid(pid)
+
     child_write.close
     parent_read.read
   end
 end
-

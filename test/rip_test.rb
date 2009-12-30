@@ -1,17 +1,19 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class RipTest < Test::Unit::TestCase
+class RipTest < Rip::Test
   def setup
-    ripdir = File.expand_path(File.dirname(__FILE__) + "/ripdir")
-    rm_rf ripdir
-    ENV['RIPDIR'] = @ripdir = ripdir
+    @ripdir = File.expand_path(File.dirname(__FILE__) + "/ripdir")
+    rm_rf @ripdir
+    ENV['RIPDIR'] = @ripdir
     rip "setup"
   end
 
-  test "setup" do
+  def teardown
     rm_rf @ripdir
-    rip "setup"
+  end
+
+  test "setup" do
     assert File.exists?("#{@ripdir}/active")
     assert File.symlink?("#{@ripdir}/active")
     assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
@@ -25,6 +27,22 @@ class RipTest < Test::Unit::TestCase
   end
 
   test "create existing ripenv" do
+  end
+
+  test "no $RIPDIR set" do
+    out = rip "env" do
+      Object.const_set(:RIPDIR, nil)
+      ENV.delete('RIPDIR')
+    end
+    assert_equal '', out
+  end
+
+  test "invalid $RIPDIR" do
+    out = rip "env" do
+      Object.const_set(:RIPDIR, 'blah')
+      ENV['RIPDIR'] = 'blah'
+    end
+    assert_equal '', out
   end
 
   test "use ripenv" do

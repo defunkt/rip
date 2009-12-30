@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+# Usage: rip-check
+#
+# Checks that the current shell session is rip-ready and rip-valid.
+#
+# Exits 0 if so, 1 if not
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+ripdir = ENV['RIPDIR']
+
+# We could guess that the $RIPDIR is $HOME, but then they probably
+# don't have their RUBYLIB or PATH variables setup properly,
+# either. Checking $RIPDIR ensures they at least know what they're
+# doing.
+if ripdir.to_s.empty?
+  abort "$RIPDIR not set. Please eval `rip-shell`"
+end
+
+# Ensure the rip directory structure is sound.
+if !File.exists?(ripdir = File.expand_path(ripdir))
+l  abort "#{ripdir} not found. Please run `rip-setup`"
+end
+
+if ripenv = ENV['RIPENV']
+  if !File.directory?("#{ripdir}/#{ripenv}")
+    abort "ripenv #{ripenv} not found"
+  end
+else
+  if File.symlink?("#{ripdir}/active")
+    ripenv = File.basename(File.readlink("#{ripdir}/active"))
+  else
+    abort "No ripenvs found. Please run `rip-setup`"
+  end
+end
+
+puts "RIPDIR=#{ripdir}"
+puts "RIPENV=#{ripenv}"
