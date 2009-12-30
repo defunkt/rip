@@ -1,8 +1,15 @@
-ripdir  = ENV['RIPDIR']
-ripenv  = ENV['RIPENV']
+check = `rip-check`
 
-RIPDIR  = ripdir ? File.expand_path(ripdir) : nil
-RIPENV  = ripenv ? ripenv : File.basename(File.readlink("#{RIPDIR}/active"))
+if $?.success?
+  check.split("\n").each do |line|
+    const, value = line.split("=")
+    Object.const_set(const, value)
+  end
+else
+  print check
+  exit 1
+end
+
 RIPENVS = Dir["#{RIPDIR}/*"].map { |f| File.basename(f) }.reject do |ripenv|
   ripenv == 'active' || ripenv[0].chr == '.'
 end

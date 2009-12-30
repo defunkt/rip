@@ -9,12 +9,17 @@
 # |-- man
 # `-- RIPENV.ripenv
 
-ENV['RIPENV'] = ARGV[0]
+RIPENV = ARGV[0] || ENV['RIPENV']
+RIPDIR = ENV['RIPDIR']
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
-require 'rip/script'
+if RIPDIR.to_s.empty?
+  abort "$RIPDIR not set. Please eval `rip-shell`"
+end
+
+require 'fileutils'
+include FileUtils
 
 mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
 mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
 mkdir_p "#{RIPDIR}/#{RIPENV}/man"
-rip      "use #{RIPENV}"
+ln_s    "#{RIPDIR}/#{RIPENV}", "#{RIPDIR}/active"

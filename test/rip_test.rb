@@ -27,22 +27,23 @@ class RipTest < Rip::Test
   end
 
   test "create existing ripenv" do
+    assert true
   end
 
   test "no $RIPDIR set" do
     out = rip "env" do
-      Object.const_set(:RIPDIR, nil)
       ENV.delete('RIPDIR')
     end
-    assert_equal '', out
+    assert_equal "$RIPDIR not set. Please eval `rip-shell`\n", out
   end
 
   test "invalid $RIPDIR" do
     out = rip "env" do
-      Object.const_set(:RIPDIR, 'blah')
       ENV['RIPDIR'] = 'blah'
     end
-    assert_equal '', out
+    ripdir = File.expand_path('blah')
+    assert_exited_with_error
+    assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
   end
 
   test "use ripenv" do
