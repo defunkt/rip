@@ -22,4 +22,9 @@ include FileUtils
 mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
 mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
 mkdir_p "#{RIPDIR}/#{RIPENV}/man"
-ln_s    "#{RIPDIR}/#{RIPENV}", "#{RIPDIR}/active"
+
+if File.exists?(symlink = "#{RIPDIR}/active")
+  rm symlink
+end
+
+ln_s "#{RIPDIR}/#{RIPENV}", symlink

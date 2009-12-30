@@ -22,6 +22,7 @@ class RipTest < Rip::Test
 
   test "create ripenv" do
     rip "create blah"
+    assert_exited_successfully
     assert_equal "#{@ripdir}/blah", File.readlink("#{@ripdir}/active")
     assert File.exists?("#{@ripdir}/blah")
   end
