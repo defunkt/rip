@@ -44,19 +44,22 @@ class Rip::Test < Test::Unit::TestCase
     end
   end
 
+  # Asserts that the last exited child process (probably `rip`) exited
+  # successfully.
   def assert_exited_successfully(message = nil)
-    actual = $?.to_i
+    actual = $?.exitstatus
     message = build_message(message, 'rip exited with <?>, not 0', actual)
     assert_block message do
-      0 == actual
+      $?.success?
     end
   end
 
+  # Asserts that the last exited child process (probably `rip`) did
+  # not exit successfully.
   def assert_exited_with_error(message = nil)
-    actual = $?.to_i
     message = build_message(message, 'rip exited with 0, not > 0')
     assert_block message do
-      actual > 0
+      !$?.success?
     end
   end
 
