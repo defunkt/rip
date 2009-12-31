@@ -14,8 +14,17 @@ RIPENVS = Dir["#{RIPDIR}/*"].map { |f| File.basename(f) }.reject do |ripenv|
   ripenv == 'active' || ripenv[0].chr == '.'
 end
 
+CACHEDIR  = "#{RIPDIR}/.cache"
+ACTIVEDIR = "#{RIPDIR}/active"
+
 require 'fileutils'
 include FileUtils
+
+require 'digest'
+
+def md5(string)
+  Digest::MD5.hexdigest(string.to_s)
+end
 
 require 'rip'
 include Rip

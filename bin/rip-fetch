@@ -1,4 +1,5 @@
-# Usage: rip-fetch URL VERSION
+#!/usr/bin/env ruby
+# Usage: rip-fetch URL
 #
 # Downloads the package at URL to $RIPDIR/.cache using the appropriate
 # transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
@@ -13,3 +14,17 @@
 #   svn
 #   curl + tar xzf
 #   curl + tar xjf
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+target = ARGV[0]
+
+name  = target.split('/').last
+cache = "#{CACHEDIR}/#{name}-#{md5(target)}"
+
+if system("git clone #{target} #{cache} &> /dev/null")
+  puts cache
+else
+  exit 1
+end
