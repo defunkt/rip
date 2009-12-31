@@ -2,3 +2,12 @@
 # Usage: rip-fetch-dependencies deps.rip
 # Recursively downloads dependencies.
 
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+deps = ARGV[0]
+
+File.read(File.expand_path(deps)).split("\n").each do |dep|
+  dep, version = dep.split(' ')
+  puts rip("fetch #{dep}")
+end

@@ -2,7 +2,9 @@ task :default => :test
 
 desc "Run the test suite."
 task :test do 
-  ruby "test/rip_test.rb"
+  Dir['test/*_test.rb'].each do |file|
+    ruby file
+  end
 end
 
 desc "Installs Rip"

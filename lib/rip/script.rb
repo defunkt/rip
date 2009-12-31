@@ -31,5 +31,5 @@ include Rip
 
 def rip(command, *args)
   bindir = File.dirname(__FILE__) + "/../../bin/"
-  exec "#{bindir}/rip-#{command}", *args
+  `#{bindir}/rip-#{command} #{args.join(' ')}`
 end

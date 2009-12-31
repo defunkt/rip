@@ -25,7 +25,7 @@ class Rip::Test < Test::Unit::TestCase
   end
 
   def self.test(name, &block)
-    define_method("test_#{name.gsub(/\W/, '_')}", &block)
+    define_method("test_#{name.gsub(/\W/, '_')}", &block) if block
   end
 
   # Asserts that `haystack` includes `needle`.

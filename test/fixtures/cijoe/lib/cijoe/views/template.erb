@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="<%= cijoe_root %>/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="<%= cijoe_root %>/favicon.ico" type="image/x-icon" />
+    <title><%= h(joe.project) %>: CI Joe</title>
+  </head>
+  <body>
+    <div class="site">
+      <div class="title">
+        <a href="<%= cijoe_root %>/">CI Joe</a>
+        <span class="extra">because knowing is half the battle</span>
+      </div>
+
+      <div id="home">
+        <h1><a href="<%= joe.url %>"><%= joe.project %></a></h1>
+        <ul class="posts">
+          <% if joe.current_build %>
+            <li>
+              <span class="date"><%= pretty_time(joe.current_build.started_at) if joe.current_build %></span> &raquo;
+              <% if joe.current_build.sha %>
+                Building <a href="<%= joe.url %>/commits/<%= joe.current_build.sha %>"><%= joe.current_build.short_sha %></a> <small>(pid: <%= joe.pid %>)</small>
+              <% else %>
+                Build starting...
+              <% end %>
+            </li>
+          <% else %>
+            <li><form method="POST"><input type="submit" value="Build"/></form></li>
+          <% end %>
+          
+          <% if joe.last_build %>
+            <li><span class="date"><%= pretty_time(joe.last_build.finished_at) %></span> &raquo; Built <a href="<%= joe.url %>/commits/<%= joe.last_build.sha %>"><%= joe.last_build.short_sha %></a> <span class="<%= joe.last_build.status %>">(<%= joe.last_build.status %>)</span></li>
+            <% if joe.last_build.failed? %>
+              <li><pre class="terminal"><code><%=ansi_color_codes h(joe.last_build.output) %></code></pre></li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+
+      <div class="footer">
+        <div class="contact">
+          <p>
+            <a href="http://github.com/defunkt/cijoe/tree/master#readme">Documentation</a><br/>
+            <a href="http://github.com/defunkt/cijoe">Source</a><br/>
+            <a href="http://github.com/defunkt/cijoe/issues">Issues</a><br/>
+            <a href="http://twitter.com/defunkt">Twitter</a>
+          </p>
+        </div>
+        <div class="contact">
+          <p>
+            Designed by <a href="http://tom.preston-werner.com/">Tom Preston-Werner</a><br/>
+            Influenced by <a href="http://integrityapp.com/">Integrity</a><br/>
+            Built with <a href="http://sinatrarb.com/">Sinatra</a><br/>
+            Keep it simple, Sam.
+          </p>
+        </div>        
+        <div class="rss">
+          <a href="http://github.com/defunkt/cijoe">
+            <img src="<%= cijoe_root %>/octocat.png" alt="Octocat!" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
