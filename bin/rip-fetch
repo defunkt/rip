@@ -21,7 +21,7 @@ require 'rip/script'
 target = ARGV[0]
 
 name  = target.split('/').last
-cache = "#{CACHEDIR}/#{name}-#{md5(target)}"
+cache = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
 
 if system("git clone #{target} #{cache} &> /dev/null")
   puts cache

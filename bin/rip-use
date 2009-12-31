@@ -9,8 +9,8 @@ require 'rip/script'
 target = ARGV[0]
 
 if RIPENVS.include? target
-  rm "#{RIPDIR}/active" rescue nil
-  ln_s "#{RIPDIR}/#{target}", "#{RIPDIR}/active"
+  rm Rip.active rescue nil
+  ln_s "#{RIPDIR}/#{target}", Rip.active
 else
   abort "Can't find ripenv `#{target}'"
 end

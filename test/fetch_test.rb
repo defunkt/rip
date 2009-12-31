@@ -23,11 +23,10 @@ class FetchTest < Rip::Test
 
   test "fetch dependencies" do
     out = rip "fetch git://localhost/cijoe"
-    out = rip "fetch-dependencies #{out.chomp}/deps.rip"
-    puts out.inspect
+    rip "fetch-dependencies #{out.chomp}/deps.rip"
     fetched = Dir["#{@ripdir}/.cache/*"].map do |f|
       File.basename(f).split('-', 2)[0]
     end
-    assert_equal %w( cijoe rack sinatra tinder choice ), fetched
+    assert_equal %w( cijoe rack sinatra tinder choice ).sort, fetched.sort
   end
 end

@@ -1,33 +1,30 @@
+require 'rip'
+
 check = `rip-check`
 
 if $?.success?
   check.split("\n").each do |line|
     const, value = line.split("=")
-    Object.const_set(const, value)
+
+    if const == 'RIPDIR'
+      Rip.dir = value
+    elsif const == 'RIPENV'
+      Rip.env = value
+    end
   end
 else
   print check
   exit 1
 end
 
-RIPENVS = Dir["#{RIPDIR}/*"].map { |f| File.basename(f) }.reject do |ripenv|
-  ripenv == 'active' || ripenv[0].chr == '.'
-end
-
-CACHEDIR  = "#{RIPDIR}/.cache"
-ACTIVEDIR = "#{RIPDIR}/active"
+RIPDIR    = Rip.dir
+RIPENV    = Rip.env
+RIPENVS   = Rip.envs
+CACHEDIR  = Rip.cache
+ACTIVEDIR = Rip.active
 
 require 'fileutils'
 include FileUtils
-
-require 'digest'
-
-def md5(string)
-  Digest::MD5.hexdigest(string.to_s)
-end
-
-require 'rip'
-include Rip
 
 def rip(command, *args)
   bindir = File.dirname(__FILE__) + "/../../bin/"
