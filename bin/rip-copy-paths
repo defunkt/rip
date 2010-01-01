@@ -4,3 +4,15 @@
 #
 # Prints all files copied to standard out.
 
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+target = ARGV[0]
+
+%w( lib bin man ).each do |type|
+  Dir["#{target}/#{type}/**/*"].each do |file|
+    target = file.split("#{type}/", 2).last
+    cp_r file, "#{Rip.active}/#{type}/#{target}"
+    puts "#{type}/#{target}" unless File.directory?(file)
+  end
+end
