@@ -1,10 +1,11 @@
+require 'rake/testtask'
+
 task :default => :test
 
-desc "Run the test suite."
-task :test do 
-  Dir['test/*_test.rb'].each do |file|
-    ruby file
-  end
+Rake::TestTask.new do |t|
+  t.libs << 'lib'
+  t.pattern = 'test/*_test.rb'
+  t.verbose = false
 end
 
 desc "Installs Rip"
