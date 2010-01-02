@@ -23,9 +23,15 @@ class InstallTest < Rip::Test
     assert_equal files.join("\n") + "\n", copied
   end
 
-  test "detect-conflicts" do
+  test "detect-conflicts, none" do
     out = rip "fetch git://localhost/cijoe"
     rip "detect-conflicts #{out.chomp}/deps.rip"
     assert_exited_successfully
+  end
+
+  test "detect-conflicts, file not found" do
+    out = rip "fetch git://localhost/cijoe"
+    rip "detect-conflicts #{out.chomp}/deps.zip"
+    assert_exited_with_error
   end
 end

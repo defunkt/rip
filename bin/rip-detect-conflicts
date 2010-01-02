@@ -11,5 +11,8 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
-target = ARGV[0]
-deps = Rip::Deps.new(target)
+if File.exists? target = File.expand_path(ARGV[0])
+  deps = Rip::Deps.new(target)
+else
+  abort "`#{target}' not found"
+end
