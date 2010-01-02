@@ -89,6 +89,16 @@ class Rip::Test < Test::Unit::TestCase
     Process.waitpid(pid)
 
     child_write.close
-    parent_read.read
+    out = parent_read.read
+
+    # Set the PRINT env variable to see rip command output during
+    # test execution.
+    if ENV['PRINT'] && !out.empty?
+      puts
+      puts ['$ rip', subcommand, *args].join(' ')
+      puts out
+    end
+
+    out
   end
 end
