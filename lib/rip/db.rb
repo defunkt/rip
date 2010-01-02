@@ -11,7 +11,7 @@ module Rip
     end
 
     def file
-      "#{RIPDIR}/#{RIPENV}/#{RIPENV}.ripenv"
+      "#{Rip.dir}/#{Rip.env}/#{Rip.env}.ripenv"
     end
 
     def save

@@ -24,3 +24,4 @@ end
 
 require 'rip/package'
 require 'rip/db'
+require 'rip/deps'

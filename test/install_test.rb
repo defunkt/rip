@@ -6,7 +6,7 @@ class InstallTest < Rip::Test
     out = rip "fetch git://localhost/cijoe"
     copied = rip "copy-paths #{out}"
 
-    files  = %w(
+    files = %w(
       lib/cijoe/build.rb
       lib/cijoe/campfire.rb
       lib/cijoe/commit.rb
@@ -21,5 +21,9 @@ class InstallTest < Rip::Test
     )
 
     assert_equal files.join("\n") + "\n", copied
+  end
+
+  test "detect-conflicts" do
+
   end
 end

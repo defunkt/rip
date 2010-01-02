@@ -8,4 +8,8 @@
 # Prints YAML of failed package, who is trying to install it at what
 # version, and who already installed it at what version.
 
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
 
+target = ARGV[0]
+deps = Deps.new(target)
