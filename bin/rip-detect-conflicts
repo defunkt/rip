@@ -12,4 +12,4 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target = ARGV[0]
-deps = Deps.new(target)
+deps = Rip::Deps.new(target)
