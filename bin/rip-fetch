@@ -23,7 +23,11 @@ target = ARGV[0]
 name  = target.split('/').last
 cache = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
 
-if system("git clone #{target} #{cache} &> /dev/null")
+if File.directory?(cache)
+  cd cache
+  system("git pull origin master &> /dev/null")
+  puts cache
+elsif system("git clone #{target} #{cache} &> /dev/null")
   puts cache
 else
   exit 1
