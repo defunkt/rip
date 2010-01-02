@@ -24,6 +24,8 @@ class InstallTest < Rip::Test
   end
 
   test "detect-conflicts" do
-
+    out = rip "fetch git://localhost/cijoe"
+    rip "detect-conflicts #{out.chomp}/deps.rip"
+    assert_exited_successfully
   end
 end
