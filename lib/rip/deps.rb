@@ -17,6 +17,9 @@ module Rip
 
     def deps!
       File.read(@file).split("\n").map do |line|
+        # Remove comments
+        line.gsub!(/#.*$/, '')
+
         url, version = line.split(' ')
         Dep.new(url, version)
       end
