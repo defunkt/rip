@@ -22,6 +22,12 @@ class RipTest < Rip::Test
     assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
     assert File.exists?("#{@ripdir}/base")
   end
+  
+  test "invalid ripenv named 'active'" do
+    out = rip "create active"
+    assert_exited_with_error
+    assert_equal "Cannot name $RIPENV 'active'\n", out
+  end
 
   test "no $RIPDIR set" do
     out = rip "env" do
