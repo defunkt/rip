@@ -16,9 +16,9 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 path = ARGV[0]
-package = Package.new(path)
+package = Rip::Package.new(path)
 
-if installed = DB[package.name]
+if installed = Rip::DB.package(package.name)
   $stderr.print "#{package} already installed at "
   $stderr.print installed['version']
   if installed['parents']

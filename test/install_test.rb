@@ -29,6 +29,12 @@ class InstallTest < Rip::Test
     assert_exited_successfully
   end
 
+  test "detect-conflicts, one" do
+    out = rip "fetch git://localhost/cijoe"
+    rip "detect-conflicts #{out.chomp}/deps.rip"
+    assert_exited_with_error
+  end
+
   test "detect-conflicts, file not found" do
     out = rip "fetch git://localhost/cijoe"
     rip "detect-conflicts #{out.chomp}/deps.zip"
