@@ -1,4 +1,9 @@
 module Rip
+  autoload :DB, 'rip/package'
+  autoload :Dep, 'rip/deps'
+  autoload :Deps, 'rip/deps'
+  autoload :Package, 'rip/package'
+
   extend self
   attr_accessor :dir, :env
 
@@ -25,7 +30,3 @@ module Rip
     Digest::MD5.hexdigest(string.to_s)
   end
 end
-
-require 'rip/package'
-require 'rip/db'
-require 'rip/deps'
