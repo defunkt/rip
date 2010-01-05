@@ -15,7 +15,6 @@
 #   curl + tar xzf
 #   curl + tar xjf
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 source = ARGV[0]

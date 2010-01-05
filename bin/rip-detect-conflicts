@@ -12,7 +12,6 @@
 # On conflict, prints YAML of failed package, who is trying to install
 # it at what version, and who already installed it at what version.
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 if File.exists? target = File.expand_path(ARGV[0])

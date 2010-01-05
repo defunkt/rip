@@ -4,7 +4,6 @@
 # Parses a `.rip` file and prints a YAML representation of it to
 # standard out.
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip'
 
 puts Rip::Parser.parse(ARGF.read, ARGF.path).to_yaml

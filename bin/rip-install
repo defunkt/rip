@@ -12,7 +12,6 @@
 #   Stores version, dependency, and files installed information in
 #   $RIPDIR/$RIPENV/$RIPENV.ripenv
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 path = ARGV[0]

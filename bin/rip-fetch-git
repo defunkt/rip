@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # Usage: rip-fetch-git URL
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target  = ARGV[0]

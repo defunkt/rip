@@ -2,7 +2,6 @@
 # Usage: rip-fetch-dependencies deps.rip
 # Recursively downloads dependencies.
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 Rip::Environment.new(ARGV[0]).packages.each do |package|

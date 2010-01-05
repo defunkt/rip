@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # Usage: rip-dependency-tree deps.rip
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip'
 
 packages = Rip::Parser.parse(ARGF.read, ARGF.path)
