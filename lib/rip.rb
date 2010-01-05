@@ -10,6 +10,10 @@ module Rip
     "#{dir}/active"
   end
 
+  def envdir
+    "#{dir}/#{env}"
+  end
+
   def envs
     Dir["#{dir}/*"].map { |f| File.basename(f) }.reject do |ripenv|
       ripenv == 'active' || ripenv[0].chr == '.'
