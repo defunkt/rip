@@ -14,9 +14,10 @@
 # set -x RUBYLIB "$RUBYLIB:$RIPDIR/active/lib"
 # set PATH $RIPDIR/active/bin $PATH
 
+RIPENV = ENV['RIPENV'] || 'active'
 puts <<-end_shellcode
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
-RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
-PATH="$PATH:$RIPDIR/active/bin"
+RUBYLIB="$RUBYLIB:$RIPDIR/#{RIPENV}/lib"
+PATH="$PATH:$RIPDIR/#{RIPENV}/bin"
 export RIPDIR RUBYLIB PATH
 end_shellcode
