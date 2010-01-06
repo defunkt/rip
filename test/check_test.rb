@@ -25,6 +25,14 @@ class CheckTest < Rip::Test
     assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
   end
 
+  def test_invalid_ripenv
+    out = rip "check" do
+      ENV['RIPENV'] = 'blahblah'
+    end
+    assert_exited_with_error
+    assert_equal "ripenv blahblah not found\n", out
+  end
+
   def test_check_outputs_env_variables
     out = rip "check"
     assert_equal "RIPDIR=#{ENV['RIPDIR']}\nRIPENV=base\n", out
