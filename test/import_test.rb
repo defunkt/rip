@@ -1,11 +1,11 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class CopyPathsTest < Rip::Test
+class ImportTest < Rip::Test
   FIXTURES = File.expand_path(File.dirname(__FILE__) + "/fixtures")
 
-  def test_copying_files_into_ripdir
-    out = rip "copy-paths", File.join(FIXTURES, "cijoe")
+  def test_importing_files_into_ripdir
+    out = rip "import", File.join(FIXTURES, "cijoe")
     assert_exited_successfully
 
     assert File.exist?("#{@ripdir}/base/bin/cijoe")

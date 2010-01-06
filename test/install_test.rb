@@ -2,9 +2,9 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
 class InstallTest < Rip::Test
-  test "copy-paths" do
+  test "import" do
     out = rip "fetch git://localhost/cijoe"
-    copied = rip "copy-paths #{out}"
+    copied = rip "import #{out}"
 
     files = %w(
       lib/cijoe/build.rb
