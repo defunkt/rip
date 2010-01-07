@@ -28,9 +28,4 @@ class RipTest < Rip::Test
     out = rip "use not-real"
     assert_includes "Can't find", out
   end
-
-  test "shell" do
-    output = rip "shell"
-    assert_includes "RIPDIR=", output
-  end
 end
