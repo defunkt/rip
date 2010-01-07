@@ -2,13 +2,6 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
 class RipTest < Rip::Test
-  test "setup" do
-    assert File.exists?("#{@ripdir}/active")
-    assert File.symlink?("#{@ripdir}/active")
-    assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
-    assert File.exists?("#{@ripdir}/base")
-  end
-
   test "create ripenv" do
     rip "create blah"
     assert_exited_successfully
@@ -22,7 +15,7 @@ class RipTest < Rip::Test
     assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
     assert File.exists?("#{@ripdir}/base")
   end
-  
+
   test "invalid ripenv named 'active'" do
     out = rip "create active"
     assert_exited_with_error
