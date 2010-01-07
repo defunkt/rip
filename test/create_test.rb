@@ -16,6 +16,14 @@ class CreateTest < Rip::Test
     assert File.exists?("#{@ripdir}/base")
   end
 
+  test "fails if RIPDIR is not set" do
+    out = rip "create foo" do
+      ENV.delete('RIPDIR')
+    end
+    assert_exited_with_error
+    assert_equal "$RIPDIR not set. Please eval `rip-shell`\n", out
+  end
+
   test "invalid ripenv named 'active'" do
     out = rip "create active"
     assert_exited_with_error
