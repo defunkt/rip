@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class RipTest < Rip::Test
+class UseTest < Rip::Test
   test "use ripenv" do
     rip "create blah"
     rip "use base"
