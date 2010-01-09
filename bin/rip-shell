@@ -9,15 +9,36 @@
 # PATH="$PATH:$RIPDIR/active/bin"
 # export RIPDIR RUBYLIB PATH
 #
+# switching envs:
+#
+# RIPDIR=${RIPDIR:-"$HOME/.rip"}
+# RUBYLIB="${RUBYLIB/:$RIPDIR\/active\/lib}:$RIPDIR/foo/lib"
+# PATH="${PATH/:$RIPDIR\/active\/bin}:$RIPDIR/foo/bin"
+# export RIPDIR RUBYLIB PATH
+#
 # fish:
 # set -x RIPDIR "$HOME/.rip"
 # set -x RUBYLIB "$RUBYLIB:$RIPDIR/active/lib"
 # set PATH $RIPDIR/active/bin $PATH
 
+RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
+
+def clean_env_path(name, subdir)
+  if ENV[name] =~ /:?#{RIPDIR}\/(\w+)\/#{subdir}/ && $1 != RIPENV
+    re = $&.sub(/#{RIPDIR}/, "$RIPDIR").gsub('/', '\/')
+    "${#{name}/#{re}}"
+  else
+    "$#{name}"
+  end
+end
+
+RUBYLIB = clean_env_path('RUBYLIB', 'lib')
+PATH    = clean_env_path('PATH', 'bin')
+
 puts <<-end_shellcode
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
-RUBYLIB="$RUBYLIB:$RIPDIR/#{RIPENV}/lib"
-PATH="$PATH:$RIPDIR/#{RIPENV}/bin"
+RUBYLIB="#{RUBYLIB}:$RIPDIR/#{RIPENV}/lib"
+PATH="#{PATH}:$RIPDIR/#{RIPENV}/bin"
 export RIPDIR RUBYLIB PATH
 end_shellcode
