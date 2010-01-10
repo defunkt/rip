@@ -18,6 +18,7 @@ class InstallTest < Rip::Test
       lib/cijoe/version.rb
       lib/cijoe/views/template.erb
       lib/cijoe.rb
+      bin/cijoe
     )
 
     assert_equal files.join("\n") + "\n", copied
