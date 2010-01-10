@@ -8,7 +8,7 @@
 #   Calls `rip-fetch-dependencies deps.rip`
 #   Calls `rip-detect-conflicts deps.rip`
 #   Fails if conflicts exist
-#   Calls `rip-copy-paths PATH`
+#   Calls `rip-import PATH`
 #   Stores version, dependency, and files installed information in
 #   $RIPDIR/$RIPENV/$RIPENV.ripenv
 
