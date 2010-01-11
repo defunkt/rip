@@ -1,0 +1,15 @@
+[submodule "test/fixtures/tinder"]
+	path = test/fixtures/tinder
+	url = git://github.com/collectiveidea/tinder.git
+[submodule "test/fixtures/choice"]
+	path = test/fixtures/choice
+	url = git://github.com/defunkt/choice.git
+[submodule "test/fixtures/sinatra"]
+	path = test/fixtures/sinatra
+	url = git://github.com/sinatra/sinatra.git
+[submodule "test/fixtures/rack"]
+	path = test/fixtures/rack
+	url = git://github.com/rack/rack.git
+[submodule "test/fixtures/cijoe"]
+	path = test/fixtures/cijoe
+	url = git://github.com/defunkt/cijoe.git
