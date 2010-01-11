@@ -1,19 +1,20 @@
 rip2
 ====
 
-Environment
------------
+Running the Tests
+-----------------
 
-RIPDIR
-RIPENV
-RUBYLIB
-PATH
+Grab the submodules:
 
-RIPDIR=%s
-RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
-PATH="$PATH:$RIPDIR/active/bin"
-export RIPDIR RUBYLIB PATH
+    $ git submodule update --init
 
+Run the fetch server:
+
+    $ ruby test/fetch_server.rb
+
+Run the tests:
+
+    $ rake
 
 Contributing
 ------------
