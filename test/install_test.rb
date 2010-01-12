@@ -2,6 +2,11 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
 class InstallTest < Rip::Test
+  def setup
+    start_git_daemon
+    super
+  end
+
   test "import" do
     out = rip "fetch git://localhost/cijoe"
     copied = rip "import #{out}"

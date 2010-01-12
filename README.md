@@ -8,10 +8,6 @@ Grab the submodules:
 
     $ git submodule update --init
 
-Run the fetch server:
-
-    $ ruby test/fetch_server.rb
-
 Run the tests:
 
     $ rake

@@ -101,4 +101,29 @@ class Rip::Test < Test::Unit::TestCase
 
     out
   end
+
+  def start_git_daemon
+    $start_git_daemon ||= start_git_daemon!
+  end
+
+  def start_git_daemon!
+    require 'tempfile'
+    daemon_pid = Tempfile.new("pid")
+
+    pid = fork do
+      exec "git daemon --export-all --base-path=test/fixtures --pid-file=#{daemon_pid.path}"
+    end
+
+    at_exit do
+      # kill child "git" process
+      Process.kill "TERM", pid
+      Process.wait pid
+
+      # "git" doesn't kill its child "git-daemon" process
+      Process.kill "TERM", daemon_pid.read.to_i
+      daemon_pid.unlink
+    end
+
+    true
+  end
 end

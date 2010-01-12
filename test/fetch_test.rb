@@ -2,6 +2,11 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
 class FetchTest < Rip::Test
+  def setup
+    start_git_daemon
+    super
+  end
+
   test "fetch git://" do
     out = rip "fetch git://localhost/cijoe"
     target = "#{@ripdir}/.cache/cijoe-da109be2f8636efacba2984c933c2048"
