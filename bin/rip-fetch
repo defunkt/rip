@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # Usage: rip-fetch URL
 #
-# Downloads the package at URL to $RIPDIR/.cache using the appropriate
+# Downloads the package at URL to $RIPDIR/.packages using the appropriate
 # transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
 # the hash of the URL from which it was retrieved.
 #
@@ -20,15 +20,15 @@ require 'rip/script'
 
 target = ARGV[0]
 
-name  = target.split('/').last
-cache = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
+name     = target.split('/').last
+packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5(target)}"
 
-if File.directory?(cache)
-  cd cache
+if File.directory?(packages)
+  cd packages
   system("git pull origin master &> /dev/null")
-  puts cache
-elsif system("git clone #{target} #{cache} &> /dev/null")
-  puts cache
+  puts packages
+elsif system("git clone #{target} #{packages} &> /dev/null")
+  puts packages
 else
   exit 1
 end

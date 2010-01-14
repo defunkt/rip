@@ -7,6 +7,10 @@ module Rip
   extend self
   attr_accessor :dir, :env
 
+  def packages
+    "#{dir}/.packages"
+  end
+
   def cache
     "#{dir}/.cache"
   end

@@ -17,11 +17,12 @@ else
   exit 1
 end
 
-RIPDIR    = Rip.dir
-RIPENV    = Rip.env
-RIPENVS   = Rip.envs
-CACHEDIR  = Rip.cache
-ACTIVEDIR = Rip.active
+RIPDIR     = Rip.dir
+RIPENV     = Rip.env
+RIPENVS    = Rip.envs
+CACHEDIR   = Rip.cache
+PACKAGEDIR = Rip.packages
+ACTIVEDIR  = Rip.active
 
 require 'fileutils'
 include FileUtils
