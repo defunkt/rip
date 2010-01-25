@@ -4,11 +4,7 @@ rip2
 Running the Tests
 -----------------
 
-Grab the submodules:
-
-    $ git submodule update --init
-
-Run the tests:
+To fetch the submodule fixtures and run the test suite:
 
     $ rake
 
