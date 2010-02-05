@@ -18,16 +18,23 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
-target = ARGV[0]
+target  = ARGV[0]
+version = ARGV[1]
 
 name     = target.split('/').last.chomp('.git')
-packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5(target)}"
+packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5("#{target}#{version}")}"
 
 if File.directory?(packages)
-  cd packages
-  system("git pull origin master &> /dev/null")
+  if version.nil?
+    cd packages
+    system("git pull origin master &> /dev/null")
+  end
+
   puts packages
 elsif system("git clone #{target} #{packages} &> /dev/null")
+  cd packages
+  version ||= "master"
+  system("git checkout #{version} &> /dev/null")
   puts packages
 else
   exit 1
