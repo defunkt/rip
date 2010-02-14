@@ -25,7 +25,8 @@ local_target = `rip-fetch-cache #{target}`.chomp
 
 ref = nil
 cd(local_target) do
-  ref = `git rev-parse --verify --quiet #{version}` || abort("#{version} not found")
+  ref = `git rev-parse --verify --quiet #{version}`
+  abort("#{version} not found") unless $?.success?
 end
 
 name     = target.split('/').last.chomp('.git')
