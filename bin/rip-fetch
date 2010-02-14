@@ -19,22 +19,23 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target  = ARGV[0]
-version = ARGV[1]
+version = ARGV[1] || "master"
+
+local_target = `rip-fetch-cache #{target}`.chomp
+
+ref = nil
+cd(local_target) do
+  ref = `git rev-parse --verify --quiet #{version}` || abort("#{version} not found")
+end
 
 name     = target.split('/').last.chomp('.git')
-packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5("#{target}#{version}")}"
+packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5("#{target}#{ref}")}"
 
 if File.directory?(packages)
-  if version.nil?
-    cd packages
-    system("git pull origin master &> /dev/null")
-  end
-
   puts packages
-elsif system("git clone #{target} #{packages} &> /dev/null")
+elsif system("git clone #{local_target} #{packages} &> /dev/null")
   cd packages
-  version ||= "master"
-  system("git checkout #{version} &> /dev/null")
+  system("git checkout --quiet #{ref} &> /dev/null")
   puts packages
 else
   exit 1
