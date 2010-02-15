@@ -13,7 +13,7 @@ if File.directory?(repo)
   cd repo
   system("git fetch origin &> /dev/null")
   puts repo
-elsif system("git clone --bare #{target} #{repo} &> /dev/null")
+elsif system("git clone --no-checkout #{target} #{repo} &> /dev/null")
   puts repo
 else
   abort
