@@ -11,9 +11,9 @@ repo = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
 
 if File.directory?(repo)
   cd repo
-  system("git fetch origin &> /dev/null")
+  system("git fetch -q")
   puts repo
-elsif system("git clone --no-checkout #{target} #{repo} &> /dev/null")
+elsif system("git clone --bare --mirror #{target} #{repo} &> /dev/null")
   puts repo
 else
   abort
