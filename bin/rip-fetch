@@ -18,23 +18,38 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
-target  = ARGV[0]
-version = ARGV[1] || "master"
-
-local_target = `rip-fetch-cache #{target}`.chomp
-
-ref = nil
-cd(local_target) do
-  ref = `git rev-parse --verify --quiet #{version}`
-  abort("#{version} not found") unless $?.success?
+def parse_git_rev(path, rev)
+  ref = nil
+  cd(path) do
+    ref = `git rev-parse --verify --quiet #{rev}`
+    return nil unless $?.success?
+  end
+  ref
 end
 
-name     = target.split('/').last.chomp('.git')
+target  = ARGV[0]
+version = ARGV[1] || "master"
+name    = target.split('/').last.chomp('.git')
+
+cache = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
+ref   = nil
+
+# Cache exists and we have a static reference
+if File.directory?(cache)
+  ref = parse_git_rev(cache, version)
+  ref = nil unless ref =~ /^#{version}/
+end
+
+unless ref
+  cache = `rip-fetch-cache #{target}`.chomp
+  ref = parse_git_rev(cache, version) || abort("#{version} not found")
+end
+
 packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5("#{target}#{ref}")}"
 
 if File.directory?(packages)
   puts packages
-elsif system("git clone #{local_target} #{packages} &> /dev/null")
+elsif system("git clone #{cache} #{packages} &> /dev/null")
   cd packages
   system("git checkout --quiet #{ref} &> /dev/null")
   puts packages
