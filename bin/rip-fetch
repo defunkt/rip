@@ -18,33 +18,11 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
-def parse_git_rev(path, rev)
-  ref = nil
-  cd(path) do
-    ref = `git rev-parse --verify --quiet #{rev}`
-    return nil unless $?.success?
-  end
-  ref
-end
-
 target  = ARGV[0]
 version = ARGV[1] || "master"
 name    = target.split('/').last.chomp('.git')
 
-cache = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
-ref   = nil
-
-# Cache exists and we have a static reference
-if File.directory?(cache)
-  ref = parse_git_rev(cache, version)
-  ref = nil unless ref =~ /^#{version}/
-end
-
-unless ref
-  cache = `rip-fetch-cache #{target}`.chomp
-  ref = parse_git_rev(cache, version) || abort("#{version} not found")
-end
-
+cache, ref = `rip-deref #{target} #{version}`.chomp.split(' ')
 packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5("#{target}#{ref}")}"
 
 if File.directory?(packages)
