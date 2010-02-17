@@ -17,6 +17,9 @@ else
   exit 1
 end
 
+# Clear out GIT_DIR incase we are running from a git subprocess
+ENV.delete('GIT_DIR')
+
 RIPDIR     = Rip.dir
 RIPENV     = Rip.env
 RIPENVS    = Rip.envs
