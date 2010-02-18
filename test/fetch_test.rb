@@ -9,7 +9,7 @@ class FetchTest < Rip::Test
 
   test "fetch git://" do
     out = rip "fetch git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-4daea8c1f26a894145eaf3e5c3015c58"
+    target = "#{@ripdir}/.packages/cijoe-9d341f3da2c3881cbac4569a0cf67c98"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/cijoe/version.rb")
@@ -17,31 +17,27 @@ class FetchTest < Rip::Test
 
   test "fetch git:// with ref" do
     out = rip "fetch git://localhost/cijoe 28e583afc7c3153860e3b425fe4e4179f951835f"
-    target = "#{@ripdir}/.packages/cijoe-414249968732aa0fc53b7f7ce94b84c8"
+    target = "#{@ripdir}/.packages/cijoe-5e096d4e73f7b9281514ccfb6667ec94"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert !File.exist?("#{target}/lib/cijoe/version.rb")
   end
 
   test "fetch git:// with floating ref" do
-    # Expose rack branchs to git daemon
-    system "echo 92f79ea8def92c3c2373b9ab5f5fa8e03aa7669d > test/fixtures/rack/.git/refs/heads/rack-0.4"
-    system "echo e6ebd831978adc3172ad487be18affab940f3d4d > test/fixtures/rack/.git/refs/heads/rack-1.1"
-
     out = rip "fetch git://localhost/rack master"
-    target = "#{@ripdir}/.packages/rack-a41744c571bebea931f89ab1e296fea4"
+    target = "#{@ripdir}/.packages/rack-c3d5bb01b7e8e3cf08139d8c997239ae"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
     out = rip "fetch git://localhost/rack rack-1.1"
-    target = "#{@ripdir}/.packages/rack-b13505f2d998e179129895b2c400816d"
+    target = "#{@ripdir}/.packages/rack-d09f0f92cbc9fd9445818a3f3677854e"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
     out = rip "fetch git://localhost/rack rack-0.4"
-    target = "#{@ripdir}/.packages/rack-80b6452b78dbf9c69d875f1305adfcb4"
+    target = "#{@ripdir}/.packages/rack-30a09c76441ee7f3cc320aae57e9c99e"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert !File.exist?("#{target}/lib/rack/methodoverride.rb")
@@ -49,11 +45,11 @@ class FetchTest < Rip::Test
 
   test "fetch twice" do
     out = rip "fetch git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-4daea8c1f26a894145eaf3e5c3015c58"
+    target = "#{@ripdir}/.packages/cijoe-9d341f3da2c3881cbac4569a0cf67c98"
     assert_equal target, out.chomp
 
     out = rip "fetch git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-4daea8c1f26a894145eaf3e5c3015c58"
+    target = "#{@ripdir}/.packages/cijoe-9d341f3da2c3881cbac4569a0cf67c98"
     assert_equal target, out.chomp
   end
 
