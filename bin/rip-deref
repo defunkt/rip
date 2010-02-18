@@ -14,7 +14,7 @@ end
 target  = ARGV[0]
 version = ARGV[1]
 
-name = target.split('/').last
+name = target.split('/').last.chomp('.git')
 repo = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
 ref  = nil
 

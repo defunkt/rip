@@ -6,7 +6,7 @@ require 'rip/script'
 
 target = ARGV[0]
 
-name = target.split('/').last
+name = target.split('/').last.chomp('.git')
 repo = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
 
 if File.directory?(repo)
