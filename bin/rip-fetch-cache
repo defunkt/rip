@@ -5,9 +5,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target = ARGV[0]
-
-name = target.split('/').last.chomp('.git')
-repo = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
+repo   = Rip.cache_dir(target)
 
 if File.directory?(repo)
   cd repo

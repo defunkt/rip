@@ -29,6 +29,16 @@ module Rip
     end
   end
 
+  def package_dir(url, version)
+    name = url.split('/').last.chomp('.git')
+    "#{packages}/#{name}-#{md5("#{url}#{version}")}"
+  end
+
+  def cache_dir(url)
+    name = url.split('/').last.chomp('.git')
+    "#{cache}/#{name}-#{md5(url)}"
+  end
+
   def md5(string)
     require 'digest'
     Digest::MD5.hexdigest(string.to_s)

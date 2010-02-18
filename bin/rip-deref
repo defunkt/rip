@@ -14,8 +14,7 @@ end
 target  = ARGV[0]
 version = ARGV[1]
 
-name = target.split('/').last.chomp('.git')
-repo = "#{CACHEDIR}/#{name}-#{Rip.md5(target)}"
+repo = Rip.cache_dir(target)
 ref  = nil
 
 # Cache exists and we have a static reference

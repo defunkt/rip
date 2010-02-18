@@ -20,10 +20,9 @@ require 'rip/script'
 
 target  = ARGV[0]
 version = ARGV[1] || "master"
-name    = target.split('/').last.chomp('.git')
 
 cache, ref = `rip-deref #{target} #{version}`.chomp.split(' ')
-packages = "#{PACKAGEDIR}/#{name}-#{Rip.md5("#{target}#{ref}")}"
+packages = Rip.package_dir(target, ref)
 
 if File.directory?(packages)
   puts packages
