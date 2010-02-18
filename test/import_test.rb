@@ -4,8 +4,13 @@ require 'helper'
 class ImportTest < Rip::Test
   FIXTURES = File.expand_path(File.dirname(__FILE__) + "/fixtures")
 
+  def setup
+    super
+    @cijoe = rip("fetch file://#{FIXTURES}/cijoe").chomp
+  end
+
   def test_importing_files_into_ripdir
-    out = rip "import", File.join(FIXTURES, "cijoe")
+    out = rip "import", @cijoe
     assert_exited_successfully
 
     assert File.exist?("#{@ripdir}/base/bin/cijoe")
