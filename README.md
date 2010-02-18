@@ -4,7 +4,7 @@ rip2
 Running the Tests
 -----------------
 
-To fetch the submodule fixtures and run the test suite:
+To run the test suite:
 
     $ rake
 

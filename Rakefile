@@ -2,12 +2,6 @@ require 'rake/testtask'
 
 task :default => :test
 
-task :test => :submodules
-
-task :submodules do 
-  sh "git submodule update --init > /dev/null"
-end
-
 Rake::TestTask.new do |t|
   t.libs << 'lib'
   t.pattern = 'test/*_test.rb'
