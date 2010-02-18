@@ -15,8 +15,8 @@ fcd67583ad8d1c70a5fb5b110b85e6cb83cb1f4c refs/tags/0.4
 ^dcb6081279c0728e13658773d38c842c4de785aa
 046be71448cb048a295a5221c8636d57b3c148f3 refs/tags/0.2
 bee7489d36600eb87a9da0a1bb899088feea78c9 refs/tags/0.1
-e6ebd831978adc3172ad487be18affab940f3d4d refs/heads/rack-1.1
-d0a2084e64f394068a80ea073e1910d7c3ffa44b refs/heads/rack-1.0
-bb802688bfae7cbe771d0cae4d88343d1d1b863b refs/heads/rack-0.9
-92f79ea8def92c3c2373b9ab5f5fa8e03aa7669d refs/heads/rack-0.4
-01532da684cbb004661987c40d8ba8c952a773e3 refs/heads/master
+e6ebd831978adc3172ad487be18affab940f3d4d refs/remotes/origin/rack-1.1
+d0a2084e64f394068a80ea073e1910d7c3ffa44b refs/remotes/origin/rack-1.0
+bb802688bfae7cbe771d0cae4d88343d1d1b863b refs/remotes/origin/rack-0.9
+92f79ea8def92c3c2373b9ab5f5fa8e03aa7669d refs/remotes/origin/rack-0.4
+01532da684cbb004661987c40d8ba8c952a773e3 refs/remotes/origin/master

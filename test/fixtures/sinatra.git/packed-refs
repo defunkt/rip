@@ -18,8 +18,8 @@ c09025efc5c5e5aca8b26eb22d76ab0b7943ac49 refs/tags/0.3.1
 d7032a0c91ca962aee6f25dbf5d5c3228658a9f1 refs/tags/0.2.2
 886c5a413e01a9d412edb45ee26e63b7009e99f0 refs/tags/0.2.1
 ca9ac7b5aeb3d5adc1a4c7fb86e21b0dc688e55b refs/tags/0.2.0
-39e1f8726ca256a7a82d88a2c4e9d05ff504f282 refs/heads/rack11
-07db23b55c79b3fb16064817041dd2b881f4e565 refs/heads/obsolete-default
-3ea36c94cf5f65d5d3244df07c384a2e70647853 refs/heads/master
-119f56e95f97095b5a7425030fb664982f48dd2f refs/heads/0.9.x
-4aefc7d024837e4a947fa978d621b4f019aeda1d refs/heads/0.3.x
+39e1f8726ca256a7a82d88a2c4e9d05ff504f282 refs/remotes/origin/rack11
+07db23b55c79b3fb16064817041dd2b881f4e565 refs/remotes/origin/obsolete-default
+3ea36c94cf5f65d5d3244df07c384a2e70647853 refs/remotes/origin/master
+119f56e95f97095b5a7425030fb664982f48dd2f refs/remotes/origin/0.9.x
+4aefc7d024837e4a947fa978d621b4f019aeda1d refs/remotes/origin/0.3.x
