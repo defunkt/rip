@@ -50,7 +50,7 @@ Each Rip file describes a set of Rip packages, one package per line.
 .
 .SH "DESCRIPTION"
 A basic Rip package can be described in terms of its source and
-relevant install\-time instructions. Comments are Ruby\-style #s.
+relevant install\-time instructions.
 .
 .P
 The format is:
@@ -59,7 +59,7 @@ The format is:
 .
 .nf
 
-source [install options] [comment] 
+source [install options] 
 .
 .fi
 .
@@ -67,6 +67,21 @@ source [install options] [comment]
 .
 .P
 Each line of a Rip file can be fed to \fBrip\-install\fR.
+.
+.SS "Comments"
+Rip files use Ruby\-style \fB#\fR comments. Anything after a \fB#\fR on a line
+is considered a comment.
+.
+.IP "" 4
+.
+.nf
+
+# comment
+redis # also a comment 
+.
+.fi
+.
+.IP "" 0
 .
 .SS "Source"
 Always the first item in the line, the source describes where the

@@ -29,13 +29,21 @@ Each Rip file describes a set of Rip packages, one package per line.
 ## DESCRIPTION
 
 A basic Rip package can be described in terms of its source and
-relevant install-time instructions. Comments are Ruby-style #s.
+relevant install-time instructions.
 
 The format is:
 
-    source [install options] [comment]
+    source [install options]
 
 Each line of a Rip file can be fed to `rip-install`.
+
+### Comments
+
+Rip files use Ruby-style `#` comments. Anything after a `#` on a line
+is considered a comment.
+
+    # comment
+    redis # also a comment
 
 ### Source
 

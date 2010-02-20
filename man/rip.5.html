@@ -94,14 +94,23 @@ git://github.com/rails/rails.git /activerecord
 <h2>DESCRIPTION</h2>
 
 <p>A basic Rip package can be described in terms of its source and
-relevant install-time instructions. Comments are Ruby-style #s.</p>
+relevant install-time instructions.</p>
 
 <p>The format is:</p>
 
-<pre><code>source [install options] [comment]
+<pre><code>source [install options]
 </code></pre>
 
 <p>Each line of a Rip file can be fed to <code>rip-install</code>.</p>
+
+<h3>Comments</h3>
+
+<p>Rip files use Ruby-style <code>#</code> comments. Anything after a <code>#</code> on a line
+is considered a comment.</p>
+
+<pre><code># comment
+redis # also a comment
+</code></pre>
 
 <h3>Source</h3>
 
