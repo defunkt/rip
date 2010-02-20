@@ -1,0 +1,449 @@
+.\" generated with Ron/v0.3
+.\" http://github.com/rtomayko/ron/
+.
+.TH "RIP" "5" "February 2010" "DEFUNKT" "Rip Manual"
+.
+.SH "NAME"
+\fBrip\fR \-\- rip file format
+.
+.SH "SYNOPSIS"
+A simple Rip file (e.g. deps.rip):
+.
+.IP "" 4
+.
+.nf
+
+git://github.com/ezmobius/redis\-rb.git eed200ad
+git://github.com/brianmario/yajl\-ruby.git 0.6.3
+rack
+sinatra
+mustache 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+A more complex Rip file:
+.
+.IP "" 4
+.
+.nf
+
+git://github.com/ezmobius/redis\-rb.git @1.0 =>redis
+git://github.com/brianmario/yajl\-ruby.git 0.6.3
+sinatra 0.9.4
+* rack 1.0
+rake # any version
+!brew install mongodb
+# Classier with caps
+git://github.com/quirkey/vegas.git v0.1.2 =>Vegas
+logging.rip
+git://github.com/rails/rails.git /activerecord 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Each Rip file describes a set of Rip packages, one package per line.
+.
+.SH "DESCRIPTION"
+A basic Rip package can be described in terms of its source and
+relevant install\-time instructions. Comments are Ruby\-style #s.
+.
+.P
+The format is:
+.
+.IP "" 4
+.
+.nf
+
+source [install options] [comment] 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Each line of a Rip file can be fed to \fBrip\-install\fR.
+.
+.SS "Source"
+Always the first item in the line, the source describes where the
+package can be found. A source can be any of the following things:
+.
+.IP "\(bu" 4
+git repository
+.
+.IP "\(bu" 4
+hg repository
+.
+.IP "\(bu" 4
+bzr repository
+.
+.IP "\(bu" 4
+tarball
+.
+.IP "\(bu" 4
+zip
+.
+.IP "\(bu" 4
+\fB.rip\fR file
+.
+.IP "\(bu" 4
+shell command
+.
+.IP "\(bu" 4
+local directory
+.
+.IP "\(bu" 4
+local file
+.
+.IP "\(bu" 4
+remote file (http)
+.
+.IP "" 0
+.
+.P
+More details on each under \fBSOURCES\fR.
+.
+.SS "Version"
+The version is any argument which starts with [a\-z0\-9]. Some examples:
+.
+.IP "\(bu" 4
+master
+.
+.IP "\(bu" 4
+0.6.3
+.
+.IP "\(bu" 4
+v0.1.2
+.
+.IP "\(bu" 4
+eed200ad
+.
+.IP "" 0
+.
+.P
+See \fBFake Version\fR below to learn how to lie about the package
+version.
+.
+.SS "Path"
+A path is an argument which begins with a slash. Paths tells Rip which
+subdirectory to use as the base directory when installing the target
+package. For example, given this line:
+.
+.IP "" 4
+.
+.nf
+
+git://github.com/rails/rails.git /activerecord 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Rip would fetch and unpack \fBgit://github.com/rails/rails.git\fR but use \fBactiverecord\fR as the root when installing.
+.
+.SS "Dependency"
+A dependency can be specified using a star. It will be installed
+before the package which depends on it.
+.
+.P
+For example, these lines:
+.
+.IP "" 4
+.
+.nf
+
+sinatra 0.9.4
+* rack 1.0 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Will basically be executed as:
+.
+.IP "" 4
+.
+.nf
+
+$ rip\-install rack 1.0
+$ rip\-install sinatra 0.9.4 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Dependencies can be nested as deeply as you'd like.
+.
+.IP "" 4
+.
+.nf
+
+sinatra 0.9.4
+* rack 1.0
+mustache 0.3.1
+* temple 1.2
+** hot\-parser 0.4.5
+** cacher 0.1
+*** httparty 1.0 /party
+* markdown 1.0
+** rdiscount 0.9.4.1 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "Name"
+Rip derives a package's name from its source, but it may be helpful to
+specify your own name.
+.
+.P
+A name is an argument which begins with an equal sign followed by a
+greater than sign.
+.
+.IP "" 4
+.
+.nf
+
+git://github.com/ezmobius/redis\-rb.git =>redis 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This line says we want the installed package to be named "redis". Note
+now that installing the gem "redis" will fail due to a name conflict.
+.
+.P
+This also means gems depending on the "redis" gem will see your
+git\-based package as that depenedency, and may fail to install because
+the versions differ.
+.
+.P
+If that's the case you can specify a fake version.
+.
+.SS "Fake Versions"
+Fake verisions register a package as being installed at a different
+version than it's actually installed at.
+.
+.P
+For example:
+.
+.IP "" 4
+.
+.nf
+
+git://github.com/defunkt/mustache.git @1.0.2 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This says mustache is installed at version 1.0.2, but really it'll
+install the latest version from the git repo's \fBmaster\fR branch.
+.
+.P
+This can be useful in development or when combined with the \fBname\fR
+argument:
+.
+.IP "" 4
+.
+.nf
+
+git://github.com/ezmobius/redis\-rb.git @1.0 =>redis 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This makes it appear as though we have version 1.0 of the redis gem
+installed.
+.
+.SH "SOURCES"
+Thanks to pip(1) for the inspiration.
+.
+.SS "git repository"
+Rip will use git to fetch a package if its source is in one of the
+following formats:
+.
+.IP "" 4
+.
+.nf
+
+git://git.myproject.org/MyProject
+git@git.myproject.org:MyProject.git
+git+http://git.myproject.org/MyProject
+git+ssh://git@myproject.org/MyProject 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Rip will also try to fetch any source ending in \fB.git\fR:
+.
+.IP "" 4
+.
+.nf
+
+http://git.myproject.org/MyProject.git
+file:///Users/chris/Projects/rip/.git 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "hg repository"
+Rip will use hg to fetch a package if its source is in one of the
+following formats:
+.
+.IP "" 4
+.
+.nf
+
+hg+http://hg.myproject.org/MyProject/
+hg+https://hg.myproject.org/MyProject/
+hg+ssh://hg@myproject.org/MyProject/ 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "bzr repository"
+Rip will use bzr to fetch a package if its source is in one of the
+following formats:
+.
+.IP "" 4
+.
+.nf
+
+bzr+http://bzr.myproject.org/MyProject/trunk/ /MyProject
+bzr+sftp://user@myproject.org/MyProject/trunk/ /MyProject
+bzr+ssh://user@myproject.org/MyProject/trunk/ /MyProject
+bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "
+.rip file"
+Any source ending in \fB.rip\fR will be loaded recursively. That is, each
+line will be fed to \fBrip\-install\fR as if they were a top level
+line. Kind of like a partial or include.
+.
+.IP "" 4
+.
+.nf
+
+deps.rip
+http://defunkt.github.com/hub/latest.rip 
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Keep in mind these also work as argument to \fBrip\-install\fR:
+.
+.IP "" 4
+.
+.nf
+
+$ rip\-install http://defunkt.github.com/hub/latest.rip 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "shell command"
+Rip can run shell commands, it's true. Shell commands are special and
+take up the entire line \- everything will be run right on the shell.
+.
+.IP "" 4
+.
+.nf
+
+!brew install redis
+!brew install mongo
+!brew install ruby
+redis 1.0
+mongo 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "zip"
+Anything ending in \fB.zip\fR will be fetched and unzipped, be it remote
+or local.
+.
+.IP "" 4
+.
+.nf
+
+http://defunkt.github.com/backups/redis\-rb.zip 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "tarball"
+Anything ending in \fB.tar\fR, \fB.tar.gz\fR, or `.tgz. will be fetched and
+dezipped, be it remote or local.
+.
+.IP "" 4
+.
+.nf
+
+http://defunkt.github.com/backups/redis.tar.gz 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "local directory"
+Directories can be specified as long as they begin with \fB/\fR or \fB~\fR.
+.
+.IP "" 4
+.
+.nf
+
+/var/packages/iphone
+~/Projects/stunners @1.0 
+.
+.fi
+.
+.IP "" 0
+.
+.SS "file"
+Files can be specified as long as they begin with \fB/\fR or \fB~\fR.
+.
+.IP "" 4
+.
+.nf
+
+/var/packages/iphone/iphone.rb
+~/Projects/stunners/index.rb 
+.
+.fi
+.
+.IP "" 0
+.
+.SH "BUGS"
+\fIhttp://github.com/defunkt/rip/issues\fR
+.
+.SH "AUTHOR"
+Chris Wanstrath :: chris@ozmm.org :: @defunkt
+.
+.SH "SEE ALSO"
+rip(1), git(1),\fIhttp://github.com\fR, \fIhttp://github.com/defunkt/rip\fR

@@ -8,6 +8,16 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
+desc "Build rip manual"
+task :build_man do
+  sh "ron -br5 --organization=DEFUNKT --manual='Rip Manual' man/*.ron"
+end
+
+desc "Show rip manual"
+task :man => :build_man do
+  exec "man man/*.{1,5}"
+end
+
 desc "Installs Rip"
 task :install do
   prefix = ENV['PREFIX'] || ENV['prefix'] || '/usr/local'

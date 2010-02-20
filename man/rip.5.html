@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ron/v0.3'>
+  <title>rip(5) -- rip file format</title>
+  <style type='text/css'>
+    body {margin:0}
+    #man, #man code, #man pre, #man tt, #man kbd, #man samp {
+      font-family:consolas,monospace;
+      font-size:16px;
+      line-height:1.3;
+      color:#343331;
+      background:#fff; }
+    #man { max-width:89ex; text-align:justify; margin:0 25px 25px 25px }
+    #man h1, #man h2, #man h3 { color:#232221;clear:left }
+    #man h1 { font-size:28px; margin:15px 0 30px 0; text-align:center }
+    #man h2 { font-size:18px; margin-bottom:0; margin-top:10px; line-height:1.3; }
+    #man h3 { font-size:16px; margin:0 0 0 4ex; }
+    #man p, #man ul, #man ol, #man dl, #man pre { margin:0 0 18px 0; }
+    #man pre {
+      color:#333231;
+      background:#edeceb;
+      padding:5px 7px;
+      margin:0px 0 20px 0;
+      border-left:2ex solid #ddd}
+    #man pre + h2, #man pre + h3 {
+      margin-top:22px;
+    }
+    #man h2 + pre, #man h3 + pre {
+      margin-top:5px;
+    }
+    #man > p, #man > ul, #man > ol, #man > dl, #man > pre { margin-left:8ex; }
+    #man dt { margin:0; clear:left }
+    #man dt.flush { float:left; width:8ex }
+    #man dd { margin:0 0 0 9ex }
+    #man code, #man strong, #man b { font-weight:bold; color:#131211; }
+    #man pre code { font-weight:normal; color:#232221; background:inherit }
+    #man em, var, u {
+      font-style:normal; color:#333231; border-bottom:1px solid #999; }
+    #man h1.man-title { display:none; }
+    #man ol.man, #man ol.man li { margin:2px 0 10px 0; padding:0;
+      float:left; width:33%; list-style-type:none;
+      text-transform:uppercase; font-size:18px; color:#999;
+      letter-spacing:1px;}
+    #man ol.man { width:100%; }
+    #man ol.man li.tl { text-align:left }
+    #man ol.man li.tc { text-align:center;letter-spacing:4px }
+    #man ol.man li.tr { text-align:right }
+    #man ol.man a { color:#999 }
+    #man ol.man a:hover { color:#333231 }
+  </style>
+</head>
+<body>
+<div id='man'>
+
+<h1 class='man-title'>rip(5)</h1>
+
+<ol class='head man'>
+  <li class='tl'>rip(5)</li>
+  <li class='tc'>Rip Manual</li>
+  <li class='tr'>rip(5)</li>
+</ol>
+
+<h2 id='NAME'>NAME</h2>
+<p><code>rip</code> -- rip file format</p>
+<h2>SYNOPSIS</h2>
+
+<p>A simple Rip file (e.g. deps.rip):</p>
+
+<pre><code>git://github.com/ezmobius/redis-rb.git eed200ad
+git://github.com/brianmario/yajl-ruby.git 0.6.3
+rack
+sinatra
+mustache
+</code></pre>
+
+<p>A more complex Rip file:</p>
+
+<pre><code>git://github.com/ezmobius/redis-rb.git @1.0 =&gt;redis
+git://github.com/brianmario/yajl-ruby.git 0.6.3
+sinatra 0.9.4
+* rack 1.0
+rake # any version
+!brew install mongodb
+# Classier with caps
+git://github.com/quirkey/vegas.git v0.1.2 =&gt;Vegas
+logging.rip
+git://github.com/rails/rails.git /activerecord
+</code></pre>
+
+<p>Each Rip file describes a set of Rip packages, one package per line.</p>
+
+<h2>DESCRIPTION</h2>
+
+<p>A basic Rip package can be described in terms of its source and
+relevant install-time instructions. Comments are Ruby-style #s.</p>
+
+<p>The format is:</p>
+
+<pre><code>source [install options] [comment]
+</code></pre>
+
+<p>Each line of a Rip file can be fed to <code>rip-install</code>.</p>
+
+<h3>Source</h3>
+
+<p>Always the first item in the line, the source describes where the
+package can be found. A source can be any of the following things:</p>
+
+<ul>
+<li>git repository</li>
+<li>hg repository</li>
+<li>bzr repository</li>
+<li>tarball</li>
+<li>zip</li>
+<li>
+<code>.rip</code> file</li>
+<li>shell command</li>
+<li>local directory</li>
+<li>local file</li>
+<li>remote file (http)</li>
+</ul>
+
+
+<p>More details on each under <code>SOURCES</code>.</p>
+
+<h3>Version</h3>
+
+<p>The version is any argument which starts with [a-z0-9]. Some examples:</p>
+
+<ul>
+<li>master</li>
+<li>0.6.3</li>
+<li>v0.1.2</li>
+<li>eed200ad</li>
+</ul>
+
+
+<p>See <code>Fake Version</code> below to learn how to lie about the package
+version.</p>
+
+<h3>Path</h3>
+
+<p>A path is an argument which begins with a slash. Paths tells Rip which
+subdirectory to use as the base directory when installing the target
+package. For example, given this line:</p>
+
+<pre><code>git://github.com/rails/rails.git /activerecord
+</code></pre>
+
+<p>Rip would fetch and unpack <code>git://github.com/rails/rails.git</code> but use
+<code>activerecord</code> as the root when installing.</p>
+
+<h3>Dependency</h3>
+
+<p>A dependency can be specified using a star. It will be installed
+before the package which depends on it.</p>
+
+<p>For example, these lines:</p>
+
+<pre><code>sinatra 0.9.4
+* rack 1.0
+</code></pre>
+
+<p>Will basically be executed as:</p>
+
+<pre><code>$ rip-install rack 1.0
+$ rip-install sinatra 0.9.4
+</code></pre>
+
+<p>Dependencies can be nested as deeply as you'd like.</p>
+
+<pre><code>sinatra 0.9.4
+* rack 1.0
+mustache 0.3.1
+* temple 1.2
+** hot-parser 0.4.5
+** cacher 0.1
+*** httparty 1.0 /party
+* markdown 1.0
+** rdiscount 0.9.4.1
+</code></pre>
+
+<h3>Name</h3>
+
+<p>Rip derives a package's name from its source, but it may be helpful to
+specify your own name.</p>
+
+<p>A name is an argument which begins with an equal sign followed by a
+greater than sign.</p>
+
+<pre><code>git://github.com/ezmobius/redis-rb.git =&gt;redis
+</code></pre>
+
+<p>This line says we want the installed package to be named "redis". Note
+now that installing the gem "redis" will fail due to a name conflict.</p>
+
+<p>This also means gems depending on the "redis" gem will see your
+git-based package as that depenedency, and may fail to install because
+the versions differ.</p>
+
+<p>If that's the case you can specify a fake version.</p>
+
+<h3>Fake Versions</h3>
+
+<p>Fake verisions register a package as being installed at a different
+version than it's actually installed at.</p>
+
+<p>For example:</p>
+
+<pre><code>git://github.com/defunkt/mustache.git @1.0.2
+</code></pre>
+
+<p>This says mustache is installed at version 1.0.2, but really it'll
+install the latest version from the git repo's <code>master</code> branch.</p>
+
+<p>This can be useful in development or when combined with the <code>name</code>
+argument:</p>
+
+<pre><code>git://github.com/ezmobius/redis-rb.git @1.0 =&gt;redis
+</code></pre>
+
+<p>This makes it appear as though we have version 1.0 of the redis gem
+installed.</p>
+
+<h2>SOURCES</h2>
+
+<p>Thanks to pip(1) for the inspiration.</p>
+
+<h3>git repository</h3>
+
+<p>Rip will use git to fetch a package if its source is in one of the
+following formats:</p>
+
+<pre><code>git://git.myproject.org/MyProject
+git@git.myproject.org:MyProject.git
+git+http://git.myproject.org/MyProject
+git+ssh://git@myproject.org/MyProject
+</code></pre>
+
+<p>Rip will also try to fetch any source ending in <code>.git</code>:</p>
+
+<pre><code>http://git.myproject.org/MyProject.git
+file:///Users/chris/Projects/rip/.git
+</code></pre>
+
+<h3>hg repository</h3>
+
+<p>Rip will use hg to fetch a package if its source is in one of the
+following formats:</p>
+
+<pre><code>hg+http://hg.myproject.org/MyProject/
+hg+https://hg.myproject.org/MyProject/
+hg+ssh://hg@myproject.org/MyProject/
+</code></pre>
+
+<h3>bzr repository</h3>
+
+<p>Rip will use bzr to fetch a package if its source is in one of the
+following formats:</p>
+
+<pre><code>bzr+http://bzr.myproject.org/MyProject/trunk/ /MyProject
+bzr+sftp://user@myproject.org/MyProject/trunk/ /MyProject
+bzr+ssh://user@myproject.org/MyProject/trunk/ /MyProject
+bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject
+</code></pre>
+
+<h3>
+<code>.rip</code> file</h3>
+
+<p>Any source ending in <code>.rip</code> will be loaded recursively. That is, each
+line will be fed to <code>rip-install</code> as if they were a top level
+line. Kind of like a partial or include.</p>
+
+<pre><code>deps.rip
+http://defunkt.github.com/hub/latest.rip
+</code></pre>
+
+<p>Keep in mind these also work as argument to <code>rip-install</code>:</p>
+
+<pre><code>$ rip-install http://defunkt.github.com/hub/latest.rip
+</code></pre>
+
+<h3>shell command</h3>
+
+<p>Rip can run shell commands, it's true. Shell commands are special and
+take up the entire line - everything will be run right on the shell.</p>
+
+<pre><code>!brew install redis
+!brew install mongo
+!brew install ruby
+redis 1.0
+mongo
+</code></pre>
+
+<h3>zip</h3>
+
+<p>Anything ending in <code>.zip</code> will be fetched and unzipped, be it remote
+or local.</p>
+
+<pre><code>http://defunkt.github.com/backups/redis-rb.zip
+</code></pre>
+
+<h3>tarball</h3>
+
+<p>Anything ending in <code>.tar</code>, <code>.tar.gz</code>, or `.tgz. will be fetched and
+dezipped, be it remote or local.</p>
+
+<pre><code>http://defunkt.github.com/backups/redis.tar.gz
+</code></pre>
+
+<h3>local directory</h3>
+
+<p>Directories can be specified as long as they begin with <code>/</code> or <code>~</code>.</p>
+
+<pre><code>/var/packages/iphone
+~/Projects/stunners @1.0
+</code></pre>
+
+<h3>file</h3>
+
+<p>Files can be specified as long as they begin with <code>/</code> or <code>~</code>.</p>
+
+<pre><code>/var/packages/iphone/iphone.rb
+~/Projects/stunners/index.rb
+</code></pre>
+
+<h2>BUGS</h2>
+
+<p><a href="http://github.com/defunkt/rip/issues">http://github.com/defunkt/rip/issues</a></p>
+
+<h2>AUTHOR</h2>
+
+<p>Chris Wanstrath :: chris@ozmm.org :: @defunkt</p>
+
+<h2>SEE ALSO</h2>
+
+<p>rip(1), git(1),
+<a href="http://github.com">http://github.com</a>,
+<a href="http://github.com/defunkt/rip">http://github.com/defunkt/rip</a></p>
+
+<ol class='foot man'>
+  <li class='tl'>DEFUNKT</li>
+  <li class='tc'>February 2010</li>
+  <li class='tr'>rip(5)</li>
+</ol>
+
+</div>
+</body>
+</html>
