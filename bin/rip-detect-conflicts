@@ -2,17 +2,27 @@
 # Usage: rip-detect-conflicts deps.rip
 # Determines whether any dependencies (or their dependencies)
 # specified in a deps.rip conflicts with the packages installed in the
-# current ripenv.
+# current ripenv (or each other).
 #
-# Exits 1 if so, 0 if not.
-# Prints YAML of failed package, who is trying to install it at what
-# version, and who already installed it at what version.
+# Exit codes:
+#   0 No conflicts
+#   1 Conflicts (printed)
+#   2 deps.rip not found
+#
+# On conflict, prints YAML of failed package, who is trying to install
+# it at what version, and who already installed it at what version.
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 if File.exists? target = File.expand_path(ARGV[0])
   deps = Rip::Deps.new(target)
+  if deps.conflicts?
+    abort deps.conflicts
+  else
+    exit 0
+  end
 else
-  abort "`#{target}' not found"
+  puts "`#{target}' not found"
+  exit 2
 end
