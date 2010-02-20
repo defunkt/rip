@@ -1,5 +1,11 @@
 module Rip
   class GitPackage
+    def self.handle?(source)
+      source =~ /file:\/\// ||
+        source =~ /git:\/\// ||
+        source =~ /\.git/
+    end
+
     attr_reader :source
 
     def initialize(source, version = nil)

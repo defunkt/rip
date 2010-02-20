@@ -22,7 +22,10 @@ class FetchTest < Rip::Test
     assert_equal "e021fc44c09d09d38a33e49d4f92901704e55c1e", out.chomp
   end
 
-  test "deference rubygem version"
+  test "deference rubygem version" do
+    out = rip "deref github"
+    assert_equal "0.4.1", out.chomp
+  end
 
   test "deference rubygem version comparison"
 end

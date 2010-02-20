@@ -14,19 +14,33 @@ end
 target  = ARGV[0]
 version = ARGV[1]
 
-repo = Rip::GitPackage.new(target).cache_path
-ref  = nil
+if Rip::GitPackage.handle?(target)
+  repo = Rip::GitPackage.new(target).cache_path
+  ref  = nil
 
-# Cache exists and we have a static reference
-if File.directory?(repo)
-  ref = parse_git_rev(repo, version)
-  ref = nil unless ref =~ /^#{version}/
+  # Cache exists and we have a static reference
+  if File.directory?(repo)
+    ref = parse_git_rev(repo, version)
+    ref = nil unless ref =~ /^#{version}/
+  end
+
+  # Update cache and deference
+  unless ref
+    repo = `rip-fetch-cache #{target}`.chomp
+    ref  = parse_git_rev(repo, version) || abort("#{version} not found")
+  end
+
+  puts ref
+else
+  def lookup_gem_version(name)
+    if `gem search #{name} --remote`.split("\n").detect { |f| f =~ /^#{name} \((.+)\)/ }
+      $1
+    end
+  end
+
+  if version = lookup_gem_version(target)
+    puts version
+  else
+    abort 1
+  end
 end
-
-# Update cache and deference
-unless ref
-  repo = `rip-fetch-cache #{target}`.chomp
-  ref  = parse_git_rev(repo, version) || abort("#{version} not found")
-end
-
-puts ref
