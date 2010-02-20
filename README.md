@@ -1,6 +1,9 @@
 rip2
 ====
 
+This is a ground up rewrite of Rip to embrace more of the Unix
+spirit.
+
 Running the Tests
 -----------------
 
