@@ -5,7 +5,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target = ARGV[0]
-repo   = Rip.cache_dir(target)
+repo   = Rip::GitPackage.new(target).cache_path
 
 if File.directory?(repo)
   cd repo

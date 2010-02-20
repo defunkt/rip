@@ -14,7 +14,7 @@ end
 target  = ARGV[0]
 version = ARGV[1]
 
-repo = Rip.cache_dir(target)
+repo = Rip::GitPackage.new(target).cache_path
 ref  = nil
 
 # Cache exists and we have a static reference

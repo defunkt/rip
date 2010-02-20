@@ -20,10 +20,10 @@ require 'rip/script'
 
 target  = ARGV[0]
 version = ARGV[1] || "master"
-cache   = Rip.cache_dir(target)
+cache   = Rip::GitPackage.new(target).cache_path
 
 ref = `rip-deref #{target} #{version}`.chomp
-packages = Rip.package_dir(target, ref)
+packages = Rip::GitPackage.new(target, ref).package_path
 
 if File.directory?(packages)
   puts packages

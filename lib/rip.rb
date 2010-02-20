@@ -2,7 +2,7 @@ module Rip
   autoload :DB, 'rip/package'
   autoload :Dep, 'rip/deps'
   autoload :Deps, 'rip/deps'
-  autoload :Package, 'rip/package'
+  autoload :GitPackage, 'rip/packages/git_package'
 
   extend self
   attr_accessor :dir, :env
@@ -27,16 +27,6 @@ module Rip
     Dir["#{dir}/*"].map { |f| File.basename(f) }.reject do |ripenv|
       ripenv == 'active' || ripenv[0].chr == '.'
     end
-  end
-
-  def package_dir(url, version)
-    name = url.split('/').last.chomp('.git')
-    "#{packages}/#{name}-#{md5("#{url}#{version}")}"
-  end
-
-  def cache_dir(url)
-    name = url.split('/').last.chomp('.git')
-    "#{cache}/#{name}-#{md5(url)}"
   end
 
   def md5(string)
