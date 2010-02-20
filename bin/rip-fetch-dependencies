@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch-dependencies deps.rip
+# Recursively downloads dependencies.
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+Rip::Deps.new(ARGV[0]).each do |dep|
+  rip "fetch #{dep.url}"
+end

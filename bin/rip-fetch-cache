@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch URL
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+target = ARGV[0]
+repo   = Rip.cache_dir(target)
+
+if File.directory?(repo)
+  cd repo
+  system("git fetch -q")
+  puts repo
+elsif system("git clone --bare --mirror #{target} #{repo} &> /dev/null")
+  puts repo
+else
+  abort
+end

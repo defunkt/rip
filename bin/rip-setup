@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# Usage: rip-setup
+# Creates a rip directory structure at $RIPDIR
+#
+# Directory structure is:
+#
+# $RIPDIR/
+# |-- active -> (active ripenv)
+# |-- base
+# |   |-- bin
+# |   |-- lib
+# |   |-- man
+# |   `-- base.ripenv
+# |-- .cache
+# `-- other
+#     |-- bin
+#     |-- lib
+#     |-- man
+#     `-- other.ripenv
+#
+# exits 0 if successfuly, 1 if unsuccessful
+
+exec "#{File.dirname(__FILE__)}/rip-create base"

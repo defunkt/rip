@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+# Usage: rip-install PATH
+# Installs a library into $RIPDIR/$RIPENV
+#
+# Steps:
+#   Calls `rip-installed PATH`
+#   Fails if already installed
+#   Calls `rip-fetch-dependencies deps.rip`
+#   Calls `rip-detect-conflicts deps.rip`
+#   Fails if conflicts exist
+#   Calls `rip-import PATH`
+#   Stores version, dependency, and files installed information in
+#   $RIPDIR/$RIPENV/$RIPENV.ripenv
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+path = ARGV[0]
+package = Rip::Package.new(path)
+
+if installed = Rip::DB.package(package.name)
+  $stderr.print "#{package} already installed at "
+  $stderr.print installed['version']
+  if installed['parents']
+    $stderr.print " by "
+    $stderr.print installed['parents'].join(' and ')
+  end
+  abort ""
+end
+
+puts package.version

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# Usage: rip-uninstall PACKAGE
+# Uninstalls a library from $RIPENV
+#
+# Steps:
+#   Reads $RIPDIR/$RIPENV/$RIPENV.ripenv
+#   Removes all files PACKAGE installed
+#   Saves $RIPDIR/$RIPENV/$RIPENV.ripenv

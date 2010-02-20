@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch URL
+#
+# Downloads the package at URL to $RIPDIR/.packages using the appropriate
+# transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
+# the hash of the URL from which it was retrieved.
+#
+# Prints the full path to the fetched package to standard out.
+#
+# Accepted transports:
+#   git
+#   hg
+#   bzr
+#   svn
+#   curl + tar xzf
+#   curl + tar xjf
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+target  = ARGV[0]
+version = ARGV[1] || "master"
+
+cache, ref = `rip-deref #{target} #{version}`.chomp.split(' ')
+packages = Rip.package_dir(target, ref)
+
+if File.directory?(packages)
+  puts packages
+elsif system("git clone #{cache} #{packages} &> /dev/null")
+  cd packages
+  system("git checkout --quiet #{ref} &> /dev/null")
+  puts packages
+else
+  exit 1
+end

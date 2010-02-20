@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# Usage: rip-create RIPENV
+#
+# Creates the rip directory structure for RIPENV
+#
+# RIPENV/
+# |-- bin
+# |-- lib
+# |-- man
+# `-- RIPENV.ripenv
+
+RIPENV = ARGV[0] || ENV['RIPENV']
+RIPDIR = ENV['RIPDIR']
+
+if RIPDIR.to_s.empty?
+  abort "$RIPDIR not set. Please eval `rip-shell`"
+end
+
+if RIPENV.to_s =~ /active/i
+  abort "Cannot name $RIPENV 'active'"
+end
+
+require 'fileutils'
+include FileUtils
+
+mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
+mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
+mkdir_p "#{RIPDIR}/#{RIPENV}/man"
+
+if File.exists?(symlink = "#{RIPDIR}/active")
+  rm symlink
+end
+
+ln_s "#{RIPDIR}/#{RIPENV}", symlink

@@ -1,0 +1,46 @@
+module Rip
+  autoload :DB, 'rip/package'
+  autoload :Dep, 'rip/deps'
+  autoload :Deps, 'rip/deps'
+  autoload :Package, 'rip/package'
+
+  extend self
+  attr_accessor :dir, :env
+
+  def packages
+    "#{dir}/.packages"
+  end
+
+  def cache
+    "#{dir}/.cache"
+  end
+
+  def active
+    "#{dir}/active"
+  end
+
+  def envdir
+    "#{dir}/#{env}"
+  end
+
+  def envs
+    Dir["#{dir}/*"].map { |f| File.basename(f) }.reject do |ripenv|
+      ripenv == 'active' || ripenv[0].chr == '.'
+    end
+  end
+
+  def package_dir(url, version)
+    name = url.split('/').last.chomp('.git')
+    "#{packages}/#{name}-#{md5("#{url}#{version}")}"
+  end
+
+  def cache_dir(url)
+    name = url.split('/').last.chomp('.git')
+    "#{cache}/#{name}-#{md5(url)}"
+  end
+
+  def md5(string)
+    require 'digest'
+    Digest::MD5.hexdigest(string.to_s)
+  end
+end

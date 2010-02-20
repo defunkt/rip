@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# Usage: ripenv-use RIPENV
+#
+# Use RIPENV for the remainder of this shell session
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+target = ARGV[0]
+
+if RIPENVS.include? target
+  rm Rip.active rescue nil
+  ln_s "#{RIPDIR}/#{target}", Rip.active
+else
+  abort "Can't find ripenv `#{target}'"
+end

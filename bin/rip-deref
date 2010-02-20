@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch URL VERSION
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip/script'
+
+def parse_git_rev(path, rev)
+  cd(path) do
+    ref = `git rev-parse --verify --quiet #{rev}`.chomp
+    return $?.success? ? ref : nil
+  end
+end
+
+target  = ARGV[0]
+version = ARGV[1]
+
+repo = Rip.cache_dir(target)
+ref  = nil
+
+# Cache exists and we have a static reference
+if File.directory?(repo)
+  ref = parse_git_rev(repo, version)
+  ref = nil unless ref =~ /^#{version}/
+end
+
+# Update cache and deference
+unless ref
+  repo = `rip-fetch-cache #{target}`.chomp
+  ref  = parse_git_rev(repo, version) || abort("#{version} not found")
+end
+
+puts "#{repo} #{ref}"
