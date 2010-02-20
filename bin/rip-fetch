@@ -20,8 +20,9 @@ require 'rip/script'
 
 target  = ARGV[0]
 version = ARGV[1] || "master"
+cache   = Rip.cache_dir(target)
 
-cache, ref = `rip-deref #{target} #{version}`.chomp.split(' ')
+ref = `rip-deref #{target} #{version}`.chomp
 packages = Rip.package_dir(target, ref)
 
 if File.directory?(packages)

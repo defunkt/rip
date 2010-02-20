@@ -29,4 +29,4 @@ unless ref
   ref  = parse_git_rev(repo, version) || abort("#{version} not found")
 end
 
-puts "#{repo} #{ref}"
+puts ref
