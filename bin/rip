@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'rip'
-require 'rip/commands'
-
-Rip::Commands.invoke(ARGV)
