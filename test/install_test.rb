@@ -2,13 +2,8 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
 class InstallTest < Rip::Test
-  def setup
-    start_git_daemon
-    super
-  end
-
   test "import" do
-    out = rip "fetch git://localhost/cijoe"
+    out = rip "fetch #{fixture(:cijoe)}"
     copied = rip "import #{out}"
 
     files = %w(
@@ -30,19 +25,19 @@ class InstallTest < Rip::Test
   end
 
   test "detect-conflicts, none" do
-    out = rip "fetch git://localhost/cijoe"
+    out = rip "fetch #{fixture(:cijoe)}"
     rip "detect-conflicts #{out.chomp}/deps.rip"
     assert_exited_successfully
   end
 
   test "detect-conflicts, one" do
-    out = rip "fetch git://localhost/cijoe"
+    out = rip "fetch #{fixture(:cijoe)}"
     rip "detect-conflicts #{out.chomp}/deps.rip"
     assert_exited_with_error
   end
 
   test "detect-conflicts, file not found" do
-    out = rip "fetch git://localhost/cijoe"
+    out = rip "fetch #{fixture(:cijoe)}"
     rip "detect-conflicts #{out.chomp}/deps.zip"
     assert_exited_with_error
   end

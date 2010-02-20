@@ -104,6 +104,11 @@ class Rip::Test < Test::Unit::TestCase
     out
   end
 
+  # Given a name, returns the path to the fixture's directory.
+  def fixture(name)
+    "test/fixtures/#{name}.git"
+  end
+
   def start_git_daemon
     $start_git_daemon ||= start_git_daemon!
   end
