@@ -41,6 +41,6 @@ else
   if version = lookup_gem_version(target)
     puts version
   else
-    abort 1
+    abort "#{target} #{version} could not be found"
   end
 end
