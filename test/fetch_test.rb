@@ -43,15 +43,17 @@ class FetchTest < Rip::Test
     assert !File.exist?("#{target}/lib/rack/methodoverride.rb")
   end
 
-  test "fetch git:// with path" do
-    out = rip "fetch git://localhost/rails"
+  test "fech git:// with explict root path" do
+    out = rip "fetch git://localhost/rails /"
     target = "#{@ripdir}/.packages/rails-1030698f9aa6e31414934c7fe4f4eee3"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/activesupport/lib/active_support.rb")
     assert File.exist?("#{target}/actionpack/lib/action_controller.rb")
     assert File.exist?("#{target}/activerecord/lib/active_record.rb")
+  end
 
+  test "fetch git:// with path" do
     out = rip "fetch git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-27f688b1f08408fd3e20626c4c048a4f"
     assert_equal target, out.chomp
