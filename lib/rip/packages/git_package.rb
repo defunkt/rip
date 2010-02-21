@@ -6,10 +6,11 @@ module Rip
         source =~ /\.git/
     end
 
-    attr_reader :source
+    attr_reader :path, :source
 
-    def initialize(source, version = nil)
+    def initialize(source, path = "/", version = nil)
       @source  = source
+      @path    = path
       @version = version
     end
 
@@ -22,7 +23,7 @@ module Rip
     end
 
     def package_name
-      "#{name}-#{Rip.md5("#{source}#{version}")}"
+      "#{name}-#{Rip.md5("#{source}#{path}#{version}")}"
     end
 
     def package_path

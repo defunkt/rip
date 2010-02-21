@@ -19,18 +19,30 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 target  = ARGV[0]
-version = ARGV[1] || "master"
+
+if ARGV[1] =~ /^\//
+  path    = ARGV[1]
+  version = ARGV[2]
+else
+  path    = "/"
+  version = ARGV[1]
+end
+
+version ||= "master"
 cache   = Rip::GitPackage.new(target).cache_path
 
 ref = `rip-deref #{target} #{version}`.chomp
-packages = Rip::GitPackage.new(target, ref).package_path
+packages = Rip::GitPackage.new(target, path, ref).package_path
 
 if File.directory?(packages)
   puts packages
-elsif system("git clone #{cache} #{packages} &> /dev/null")
+elsif path == "/"
+  system("git clone #{cache} #{packages} &> /dev/null") || exit(1)
   cd packages
   system("git checkout --quiet #{ref} &> /dev/null")
   puts packages
 else
-  exit 1
+  base_package = `rip-fetch #{target} #{ref}`.chomp
+  ln "#{base_package}#{path}", packages
+  puts packages
 end
