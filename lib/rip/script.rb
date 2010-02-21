@@ -34,3 +34,9 @@ def rip(command, *args)
   bindir = File.dirname(__FILE__) + "/../../bin/"
   `#{bindir}/rip-#{command} #{args.join(' ')}`
 end
+
+def sh(*cmd)
+  result = `#{cmd}`.chomp
+  exit 1 unless $?.success?
+  result
+end

@@ -31,8 +31,7 @@ end
 version ||= "master"
 cache   = Rip::GitPackage.new(target).cache_path
 
-ref = `rip-deref #{target} #{version}`.chomp
-exit 1 if ref == ''
+ref = sh "rip-deref #{target} #{version}"
 
 packages = Rip::GitPackage.new(target, path, ref).package_path
 
@@ -44,7 +43,7 @@ elsif path == "/"
   system("git checkout --quiet #{ref} &> /dev/null")
   puts packages
 else
-  base_package = `rip-fetch #{target} #{ref}`.chomp
+  base_package = sh "rip-fetch #{target} #{ref}"
   ln_s "#{base_package}#{path}", packages
   puts packages
 end
