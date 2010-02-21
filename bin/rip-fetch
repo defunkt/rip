@@ -43,6 +43,6 @@ elsif path == "/"
   puts packages
 else
   base_package = `rip-fetch #{target} #{ref}`.chomp
-  ln "#{base_package}#{path}", packages
+  ln_s "#{base_package}#{path}", packages
   puts packages
 end
