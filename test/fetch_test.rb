@@ -61,6 +61,11 @@ class FetchTest < Rip::Test
     assert File.exist?("#{target}/lib/active_record.rb")
   end
 
+  test "fetch git:// with nonexistent path" do
+    out = rip "fetch git://localhost/rails /merb"
+    assert_equal "git://localhost/rails /merb does not exist", out.chomp
+  end
+
   test "fetch twice" do
     out = rip "fetch git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-f15cc69100b3b00a1a600001a3ed60b6"

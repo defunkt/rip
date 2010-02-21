@@ -44,6 +44,7 @@ elsif path == "/"
   puts packages
 else
   base_package = sh "rip-fetch #{target} #{ref}"
+  abort "#{target} #{path} does not exist" unless File.exist?("#{base_package}#{path}")
   ln_s "#{base_package}#{path}", packages
   puts packages
 end
