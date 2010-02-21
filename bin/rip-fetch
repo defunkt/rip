@@ -32,6 +32,8 @@ version ||= "master"
 cache   = Rip::GitPackage.new(target).cache_path
 
 ref = `rip-deref #{target} #{version}`.chomp
+exit 1 if ref == ''
+
 packages = Rip::GitPackage.new(target, path, ref).package_path
 
 if File.directory?(packages)
