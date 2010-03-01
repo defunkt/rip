@@ -136,20 +136,20 @@ class Rip::Test < Test::Unit::TestCase
   end
 
   def start_gem_daemon
-#     return if `ps aux | grep [g]em server`.to_s.strip.length != 0
+    ENV['GEM_SERVER'] = "http://localhost:8808/"
+    return if `ps aux | grep "[g]em server"`.to_s.strip.length != 0
     $start_gem_daemon ||= start_gem_daemon!
   end
 
   def start_gem_daemon!
     pid = fork do
-      exec "gem server --dir test/fixtures/gems --no-daemon"
+      exec "gem server --dir test/fixtures/gems --no-daemon > /dev/null"
     end
 
     at_exit do
       # kill child "gem" process
       Process.kill "TERM", pid
       Process.wait pid
-      daemon_pid.unlink
     end
 
     true
