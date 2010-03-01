@@ -2,10 +2,17 @@ require 'rake/testtask'
 
 task :default => :test
 
-Rake::TestTask.new do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/*_test.rb'
-  t.verbose = false
+if system("which turn &> /dev/null")
+  desc "Run the tests using `turn`."
+  task :test do
+    exec "turn test/*.rb"
+  end
+else
+  Rake::TestTask.new do |t|
+    t.libs << 'lib'
+    t.pattern = 'test/*_test.rb'
+    t.verbose = false
+  end
 end
 
 desc "Build rip manual"
