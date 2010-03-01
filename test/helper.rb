@@ -142,7 +142,7 @@ class Rip::Test < Test::Unit::TestCase
 
   def start_gem_daemon!
     pid = fork do
-      exec "gem server --dir test/fixtures --no-daemon"
+      exec "gem server --dir test/fixtures/gems --no-daemon"
     end
 
     at_exit do
