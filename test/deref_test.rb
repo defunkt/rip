@@ -24,8 +24,8 @@ class DerefTest < Rip::Test
   end
 
   test "deference rubygem version" do
-    out = rip "deref github"
-    assert_equal "0.4.1", out.chomp
+    out = rip "deref repl"
+    assert_equal "0.1.0", out.chomp
   end
 
   test "deference rubygem version comparison"
