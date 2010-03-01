@@ -110,6 +110,7 @@ class Rip::Test < Test::Unit::TestCase
   end
 
   def start_git_daemon
+    return if `ps aux | grep [g]it-daemon`.to_s.strip.length != 0
     $start_git_daemon ||= start_git_daemon!
   end
 
