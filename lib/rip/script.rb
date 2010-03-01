@@ -35,6 +35,11 @@ def rip(command, *args)
   `#{bindir}/rip-#{command} #{args.join(' ')}`
 end
 
+def gem(command, *args)
+  args << "-s #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
+  `gem #{command} #{args.join(' ')}`
+end
+
 def sh(*cmd)
   result = `#{cmd}`.chomp
   exit 1 unless $?.success?
