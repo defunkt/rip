@@ -20,7 +20,7 @@ class DerefTest < Rip::Test
 
   test "deference git:// floating ref" do
     out = rip "deref git://localhost/cijoe master"
-    assert_equal "e021fc44c09d09d38a33e49d4f92901704e55c1e", out.chomp
+    assert_equal "e8a53aac256665563cf6bb27c04788ce758424ac", out.chomp
   end
 
   test "deference rubygem version" do
