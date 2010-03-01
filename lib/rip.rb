@@ -3,6 +3,7 @@ module Rip
   autoload :Dep, 'rip/deps'
   autoload :Deps, 'rip/deps'
   autoload :GitPackage, 'rip/packages/git_package'
+  autoload :Helpers, 'rip/helpers'
 
   extend self
   attr_accessor :dir, :env
