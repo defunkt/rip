@@ -1,9 +1,10 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class FetchTest < Rip::Test
+class DerefTest < Rip::Test
   def setup
     start_git_daemon
+    start_gem_daemon
     super
   end
 

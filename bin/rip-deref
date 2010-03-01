@@ -33,7 +33,8 @@ if Rip::GitPackage.handle?(target)
   puts ref
 else
   def lookup_gem_version(name)
-    if `gem search #{name} --remote`.split("\n").detect { |f| f =~ /^#{name} \((.+)\)/ }
+    gems = `gem search #{name} --remote`.split("\n")
+    if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
       $1
     end
   end
