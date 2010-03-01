@@ -34,3 +34,10 @@ task :install do
     cp f, libdir
   end
 end
+
+desc "Run a git-daemon for the tests."
+task "git-daemon" do
+  cmd = "git daemon --export-all --base-path=test/fixtures"
+  puts "Running #{cmd}"
+  exec cmd
+end
