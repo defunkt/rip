@@ -9,7 +9,7 @@ class FetchTest < Rip::Test
 
   test "fetch git://" do
     out = rip "fetch git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-f15cc69100b3b00a1a600001a3ed60b6"
+    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/cijoe/version.rb")
@@ -68,11 +68,11 @@ class FetchTest < Rip::Test
 
   test "fetch twice" do
     out = rip "fetch git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-f15cc69100b3b00a1a600001a3ed60b6"
+    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
 
     out = rip "fetch git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-f15cc69100b3b00a1a600001a3ed60b6"
+    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
   end
 
