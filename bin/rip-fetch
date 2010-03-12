@@ -41,6 +41,7 @@ elsif path == "/"
   system("git clone #{cache} #{packages} &> /dev/null") || exit(1)
   cd packages
   system("git checkout --quiet #{ref} &> /dev/null")
+  system("git remote rm origin &> /dev/null")
   puts packages
 else
   base_package = sh "rip-fetch #{target} #{ref}"
