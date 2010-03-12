@@ -42,6 +42,7 @@ elsif path == "/"
   cd packages
   system("git checkout --quiet #{ref} &> /dev/null")
   system("git remote rm origin &> /dev/null")
+  system("git branch -D master &> /dev/null")
   puts packages
 else
   base_package = sh "rip-fetch #{target} #{ref}"
