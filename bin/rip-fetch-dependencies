@@ -6,5 +6,5 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 Rip::Environment.new(ARGV[0]).packages.each do |package|
-  rip "fetch #{package[:source]}"
+  rip "fetch #{package.source}"
 end
