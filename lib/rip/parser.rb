@@ -1,4 +1,19 @@
 module Rip
+  # The Parser takes a `.rip` file and parses it into a YAML data
+  # structure. Because a .rip file is really a \n separated list of
+  # package definitions, it can also take a single package and do the
+  # same.
+  #
+  # For example:
+  # $ echo git://github.com/ezmobius/redis 0.2.0 @1.0 | rip-parse
+  # ---
+  # - :version: 0.2.0
+  #   :reported_version: "1.0"
+  #   :source: git://github.com/ezmobius/redis
+  #
+  # Note that all we care about here is parsing the `.rip` file format
+  # into a YAML data structure. The above package would have an
+  # inferred name of "redis", but that's handled elsewhere.
   class Parser
     def self.parse(content, path = nil)
       new(content, path).parse
