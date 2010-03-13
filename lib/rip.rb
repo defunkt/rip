@@ -2,7 +2,6 @@ require 'yaml'
 
 module Rip
   autoload :Parser, 'rip/parser'
-  autoload :DB, 'rip/package'
   autoload :Dep, 'rip/deps'
   autoload :Deps, 'rip/deps'
   autoload :GitPackage, 'rip/packages/git_package'
