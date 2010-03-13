@@ -60,7 +60,7 @@ module Rip
       if source =~ /\.rip$/
         if source.include?('/')
           file = source
-        elsif @path
+        elsif @path != '-'
           file = File.join(@path, source)
         else
           file = source
