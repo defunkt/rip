@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class InstallTest < Rip::Test
+class ConflictTest < Rip::Test
   test "detect-conflicts, none" do
     out = rip "fetch #{fixture(:cijoe)}"
     assert_exited_successfully rip("detect-conflicts #{out.chomp}/deps.rip")
