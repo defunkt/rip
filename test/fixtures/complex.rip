@@ -2,6 +2,10 @@ git://github.com/ezmobius/redis-rb.git @1.0 =>redis
 git://github.com/brianmario/yajl-ruby.git 0.6.3
 sinatra 0.9.4
 * rack 1.0
+** url_escape
+* haml 1.0.0
+** temple
+** sass 1.2.1
 rake # any version
 # !brew install mongodb
 # Classier with caps

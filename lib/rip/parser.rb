@@ -10,6 +10,10 @@ module Rip
       @content = content
       @path = File.dirname(path) if path
       @packages = []
+      @last_package = nil
+
+      @stack = []
+      @indent = 0
     end
 
     def parse(content = @content)
@@ -22,7 +26,20 @@ module Rip
     end
 
     def parse_dependency(line)
-      parse_package(line.strip.sub(/^\*\s*/, ''))
+      indent = line.count('*')
+
+      if indent > @indent
+        @indent = indent
+        @stack << @last_package
+      elsif indent < @indent
+        @indent = indent
+        @stack.pop
+      end
+
+      target = @stack.last
+
+      target[:dependencies] ||= []
+      target[:dependencies] << parse_package(line.gsub('*', ''))
     end
 
     def parse_package(line)
@@ -33,9 +50,8 @@ module Rip
       return nil if line.empty?
 
       # This is a dependency.
-      if line.strip[0] == ?*
-        @packages.last[:dependencies] ||= []
-        @packages.last[:dependencies] << parse_dependency(line)
+      if line[0] == ?*
+        parse_dependency(line)
         return nil
       end
 
@@ -73,7 +89,7 @@ module Rip
         package[:path] = $1
       end
 
-      package
+      @last_package = package
     end
   end
 end

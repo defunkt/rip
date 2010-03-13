@@ -27,8 +27,16 @@ yaml
 - :source: git://github.com/brianmario/yajl-ruby.git
   :version: 0.6.3
 - :dependencies:
-  - :source: rack
+  - :dependencies:
+    - :source: url_escape
+    :source: rack
     :version: "1.0"
+  - :dependencies:
+    - :source: temple
+    - :source: sass
+      :version: 1.2.1
+    :source: haml
+    :version: 1.0.0
   :source: sinatra
   :version: 0.9.4
 - :source: rake
