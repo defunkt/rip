@@ -9,9 +9,31 @@ class ImportTest < Rip::Test
     @cijoe = rip("fetch file://#{FIXTURES}/cijoe").chomp
   end
 
-  def test_importing_files_into_ripdir
-    out = rip "import", @cijoe
-    assert_exited_successfully
+  test "import" do
+    out = rip "fetch #{fixture(:cijoe)}"
+    copied = rip "import #{out}"
+
+    files = %w(
+      lib/cijoe/build.rb
+      lib/cijoe/campfire.rb
+      lib/cijoe/commit.rb
+      lib/cijoe/config.rb
+      lib/cijoe/public/favicon.ico
+      lib/cijoe/public/octocat.png
+      lib/cijoe/public/screen.css
+      lib/cijoe/server.rb
+      lib/cijoe/version.rb
+      lib/cijoe/views/template.erb
+      lib/cijoe.rb
+      bin/cijoe
+    )
+
+    assert_equal files.join("\n") + "\n", copied
+  end
+
+  test "importing files into ripdir" do
+    out = rip("import", @cijoe)
+    assert_exited_successfully out
 
     assert File.exist?("#{@ripdir}/base/bin/cijoe")
     assert File.exist?("#{@ripdir}/base/lib/cijoe.rb")
