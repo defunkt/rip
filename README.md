@@ -16,7 +16,7 @@ Contributing
 
 Once you've made your great commits:
 
-1. [Fork][0] rip2
+1. [Fork][0] rip
 2. Create a topic branch - `git checkout -b my_branch`
 3. Push to your branch - `git push origin my_branch`
 4. Create an [Issue][1] with a link to your branch
@@ -25,7 +25,7 @@ Once you've made your great commits:
 Author
 ------
 
-Chris Wanstrath :: chris@ozmm.org :: @defunkt
+Chris Wanstrath :: chris@ozmm.org 
 
 [0]: http://help.github.com/forking/
-[1]: http://github.com/defunkt/rip2/issues
+[1]: http://github.com/defunkt/rip/issues
