@@ -2,12 +2,12 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
 class CheckTest < Rip::Test
-  def test_check
+  test "check" do
     rip "check"
     assert_exited_successfully
   end
 
-  def test_no_ripdir
+  test "no ripdir" do
     out = rip "check" do
       ENV.delete('RIPDIR')
     end
@@ -15,7 +15,7 @@ class CheckTest < Rip::Test
     assert_equal "$RIPDIR not set. Please eval `rip-shell`\n", out
   end
 
-  def test_invalid_ripdir
+  test "invalid ripdir" do
     out = rip "check" do
       ENV['RIPDIR'] = 'blahblah'
     end
@@ -25,7 +25,7 @@ class CheckTest < Rip::Test
     assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
   end
 
-  def test_invalid_ripenv
+  test "invalid ripenv" do
     out = rip "check" do
       ENV['RIPENV'] = 'blahblah'
     end
@@ -33,7 +33,7 @@ class CheckTest < Rip::Test
     assert_equal "ripenv blahblah not found\n", out
   end
 
-  def test_check_outputs_env_variables
+  test "check outputs env variables" do
     out = rip "check"
     assert_equal "RIPDIR=#{ENV['RIPDIR']}\nRIPENV=base\n", out
   end
