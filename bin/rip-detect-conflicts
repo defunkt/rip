@@ -16,9 +16,10 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
 if File.exists? target = File.expand_path(ARGV[0])
-  deps = Rip::Deps.new(target)
-  if deps.conflicts?
-    abort deps.conflicts
+  env = Rip::Environment.new(target)
+  if env.conflicts?
+    warn env.conflicts.join("\n")
+    exit 1
   else
     exit 0
   end
