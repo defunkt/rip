@@ -3,8 +3,7 @@ require 'helper'
 
 class CheckTest < Rip::Test
   test "check" do
-    rip "check"
-    assert_exited_successfully
+    assert_exited_successfully rip("check")
   end
 
   test "no ripdir" do
