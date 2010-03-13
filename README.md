@@ -1,5 +1,5 @@
-rip2
-====
+rip
+===
 
 This is a ground up rewrite of Rip to embrace more of the Unix
 spirit.
@@ -25,7 +25,7 @@ Once you've made your great commits:
 Author
 ------
 
-Chris Wanstrath :: chris@ozmm.org 
+Chris Wanstrath :: chris@ozmm.org
 
 [0]: http://help.github.com/forking/
 [1]: http://github.com/defunkt/rip/issues
