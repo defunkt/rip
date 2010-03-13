@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# Usage: rip-dependency-tree deps.rip
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+require 'rip'
+
+packages = Rip::Parser.parse(ARGF.read, ARGF.path)
+puts ARGF.filename
+
+def print_package(package, indent=0, last=false)
+  if indent > 0
+    print '|   '
+  end
+
+  if indent > 1
+    print '    ' * (indent-1)
+  end
+
+  print last ? '`-- ' : '|-- '
+  print package[:source]
+  puts package[:version] ? " (#{package[:version]})" : ''
+
+  if deps = package[:dependencies]
+    deps.each do |dep|
+      print_package(dep, indent+1, dep == deps.last)
+    end
+  end
+end
+
+packages.each do |package|
+  print_package(package, indent=0, last=package == packages.last)
+end
