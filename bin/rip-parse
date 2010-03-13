@@ -7,4 +7,4 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip'
 
-puts Rip::Parser.parse(ARGF.read, ARGF.path)
+puts Rip::Parser.parse(ARGF.read, ARGF.path).to_yaml

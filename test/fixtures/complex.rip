@@ -3,6 +3,8 @@ git://github.com/brianmario/yajl-ruby.git 0.6.3
 sinatra 0.9.4
 * rack 1.0
 ** url_escape
+*** cgi_escape
+*** url_parser 0.4.3
 * haml 1.0.0
 ** temple
 ** sass 1.2.1

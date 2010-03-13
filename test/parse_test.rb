@@ -28,7 +28,11 @@ yaml
   :version: 0.6.3
 - :dependencies:
   - :dependencies:
-    - :source: url_escape
+    - :dependencies:
+      - :source: cgi_escape
+      - :source: url_parser
+        :version: 0.4.3
+      :source: url_escape
     :source: rack
     :version: "1.0"
   - :dependencies:

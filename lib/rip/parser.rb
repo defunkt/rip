@@ -1,5 +1,3 @@
-require 'yaml'
-
 module Rip
   class Parser
     def self.parse(content, path = nil)
@@ -22,7 +20,7 @@ module Rip
         @packages << package if package
       end
 
-      @packages.to_yaml
+      @packages
     end
 
     def parse_dependency(line)
@@ -31,8 +29,10 @@ module Rip
       if indent > @indent
         @indent = indent
         @stack << @last_package
-      elsif indent < @indent
-        @indent = indent
+      end
+
+      while indent < @indent
+        @indent -= 1
         @stack.pop
       end
 
