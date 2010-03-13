@@ -19,7 +19,7 @@ class EnvTest < Rip::Test
       ENV['RIPDIR'] = 'blah'
     end
     ripdir = File.expand_path('blah')
-    assert_exited_with_error
+    assert_exited_with_error out
     assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
   end
 end

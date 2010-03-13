@@ -19,7 +19,7 @@ class CheckTest < Rip::Test
     out = rip "check" do
       ENV['RIPDIR'] = 'blahblah'
     end
-    assert_exited_with_error
+    assert_exited_with_error out
 
     ripdir = File.expand_path('blahblah')
     assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
@@ -29,7 +29,7 @@ class CheckTest < Rip::Test
     out = rip "check" do
       ENV['RIPENV'] = 'blahblah'
     end
-    assert_exited_with_error
+    assert_exited_with_error out
     assert_equal "ripenv blahblah not found\n", out
   end
 

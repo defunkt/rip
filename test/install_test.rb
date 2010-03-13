@@ -26,19 +26,16 @@ class InstallTest < Rip::Test
 
   test "detect-conflicts, none" do
     out = rip "fetch #{fixture(:cijoe)}"
-    rip "detect-conflicts #{out.chomp}/deps.rip"
-    assert_exited_successfully
+    assert_exited_successfully rip("detect-conflicts #{out.chomp}/deps.rip")
   end
 
   test "detect-conflicts, one" do
     out = rip "fetch #{fixture(:cijoe)}"
-    rip "detect-conflicts #{out.chomp}/deps.rip"
-    assert_exited_with_error
+    assert_exited_with_error rip("detect-conflicts #{out.chomp}/deps.rip")
   end
 
   test "detect-conflicts, file not found" do
     out = rip "fetch #{fixture(:cijoe)}"
-    rip "detect-conflicts #{out.chomp}/deps.zip"
-    assert_exited_with_error
+    assert_exited_with_error rip("detect-conflicts #{out.chomp}/deps.zip")
   end
 end
