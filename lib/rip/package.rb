@@ -8,25 +8,35 @@ module Rip
       [ GitPackage, GemPackage ]
     end
 
-    def self.from_hash(package)
+    def self.from_hash(hash)
       handler = handlers.detect do |klass|
-        klass.handle? package[:source]
+        klass.handle? hash[:source]
       end
 
-      if handler
-        handler.new(package[:source], package[:path], package[:version])
-      else
-        nil
+      return nil if handler.nil?
+
+      package = handler.new(hash.delete(:source))
+
+      # Special key.
+      package.dependencies = Array(hash.delete(:dependencies)).map do |dep|
+        from_hash(dep)
       end
+
+      hash.each do |key, value|
+        package.send("#{key}=", value)
+      end
+
+      package
     end
 
-    attr_reader :path, :source, :name, :version
+    attr_accessor :path, :source, :version, :name, :dependencies
 
-    def initialize(source, path = nil, version = nil, name = nil)
+    def initialize(source, path = nil, version = nil)
       @source  = source
       @path    = path || "/"
       @version = version
-      @name    = name
+
+      @dependencies = []
     end
 
     def package_name
