@@ -7,22 +7,17 @@ require 'rip'
 packages = Rip::Parser.parse(ARGF.read, ARGF.path)
 puts ARGF.filename
 
-def print_package(package, indent=0, last=false)
-  if indent > 0
-    print '|   '
-  end
-
-  if indent > 1
-    print '    ' * (indent-1)
-  end
-
+def print_package(package, indent=0, last=false, prefix='')
+  print prefix
   print last ? '`-- ' : '|-- '
+
   print package[:source]
   puts package[:version] ? " (#{package[:version]})" : ''
 
   if deps = package[:dependencies]
     deps.each do |dep|
-      print_package(dep, indent+1, dep == deps.last)
+      print_package(dep, indent+1, dep == deps.last,
+        last ? prefix + '    ' : prefix + '|   ')
     end
   end
 end
