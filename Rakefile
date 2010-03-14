@@ -1,5 +1,11 @@
 require 'rake/testtask'
 
+if ENV['RUBYLIB']
+  ENV['RUBYLIB'] += ':lib/'
+else
+  ENV['RUBYLIB'] = 'lib/'
+end
+
 task :default => :test
 
 if system("which turn &> /dev/null")
