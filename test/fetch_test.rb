@@ -4,6 +4,7 @@ require 'helper'
 class FetchTest < Rip::Test
   def setup
     start_git_daemon
+    start_gem_daemon
     super
   end
 
@@ -90,6 +91,13 @@ class FetchTest < Rip::Test
     out = rip "fetch git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
+  end
+
+  test "fetch gem" do
+    out = rip("fetch repl 0.1.0").chomp
+    target = "#{@ripdir}/.packages/repl-df5953e0bdf7d0c218632bb5d08cb458"
+    assert_equal target, out
+    assert File.directory?(target)
   end
 
   test "fetch git@"
