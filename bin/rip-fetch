@@ -18,37 +18,8 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
 require 'rip/script'
 
-target  = ARGV[0]
+source = ARGV[0]
 
-if ARGV[1] =~ /^\//
-  path    = ARGV[1]
-  version = ARGV[2]
-else
-  path    = "/"
-  version = ARGV[1]
-end
+type = Rip::GitPackage.handle?(source) ? :git : :gem
 
-version ||= "master"
-cache   = Rip::GitPackage.new(target).cache_path
-
-ref = sh "rip-deref #{target} #{version}"
-
-packages = Rip::GitPackage.new(target, path, ref).package_path
-
-if File.directory?(packages)
-  puts packages
-elsif path == "/"
-  sh "git clone #{cache} #{packages} &> /dev/null"
-  cd packages
-  sh "git checkout --quiet #{ref} &> /dev/null"
-  sh "git remote rm origin &> /dev/null"
-  sh "git branch -D master &> /dev/null"
-  puts packages
-else
-  base_package = sh "rip-fetch #{target} #{ref}"
-  if !File.exist?("#{base_package}#{path}")
-    abort "#{target} #{path} does not exist"
-  end
-  ln_s "#{base_package}#{path}", packages
-  puts packages
-end
+exec "rip-fetch-#{type}", *ARGV
