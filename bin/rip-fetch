@@ -38,15 +38,17 @@ packages = Rip::GitPackage.new(target, path, ref).package_path
 if File.directory?(packages)
   puts packages
 elsif path == "/"
-  system("git clone #{cache} #{packages} &> /dev/null") || exit(1)
+  sh "git clone #{cache} #{packages} &> /dev/null"
   cd packages
-  system("git checkout --quiet #{ref} &> /dev/null")
-  system("git remote rm origin &> /dev/null")
-  system("git branch -D master &> /dev/null")
+  sh "git checkout --quiet #{ref} &> /dev/null"
+  sh "git remote rm origin &> /dev/null"
+  sh "git branch -D master &> /dev/null"
   puts packages
 else
   base_package = sh "rip-fetch #{target} #{ref}"
-  abort "#{target} #{path} does not exist" unless File.exist?("#{base_package}#{path}")
+  if !File.exist?("#{base_package}#{path}")
+    abort "#{target} #{path} does not exist"
+  end
   ln_s "#{base_package}#{path}", packages
   puts packages
 end
