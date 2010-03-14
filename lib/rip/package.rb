@@ -1,7 +1,5 @@
 module Rip
   class Package
-    include FileUtils
-
     def self.handle?(source)
       false
     end
@@ -10,18 +8,14 @@ module Rip
       [ GitPackage, GemPackage ]
     end
 
-    def self.from_source(source, *args)
+    def self.from_hash(hash)
       handler = handlers.detect do |klass|
-        klass.handle? source
+        klass.handle? hash[:source]
       end
 
-      handler.new(source, *args) if handler
-    end
+      return nil if handler.nil?
 
-    def self.from_hash(hash)
-      package = from_source(hash.delete(:source))
-
-      return nil if package.nil?
+      package = handler.new(hash.delete(:source))
 
       # Special key.
       package.dependencies = Array(hash.delete(:dependencies)).map do |dep|
@@ -43,10 +37,6 @@ module Rip
       @version = version
 
       @dependencies = []
-    end
-
-    def fetch
-      raise "Override me."
     end
 
     def package_name
