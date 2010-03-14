@@ -11,7 +11,7 @@ module Rip
     end
 
     def sh(*cmd)
-      result = `#{cmd}`.chomp
+      result = `#{cmd * ' '}`.chomp
 
       if $?.success?
         result
