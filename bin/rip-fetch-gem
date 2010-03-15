@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch-gem URL
+
+require 'rip/script'
+
+target  = ARGV[0]
+
+if ARGV[1] =~ /^\//
+  path    = ARGV[1]
+  version = ARGV[2]
+else
+  path    = "/"
+  version = ARGV[1]
+end
+
+cache  = Rip::GemPackage.new(target).cache_path
+
+ref = sh "rip-deref #{target} #{version}"
+packages = Rip::GemPackage.new(target, path, ref).package_path
+
+sh "rip-cache #{target} #{ref}"
+
+if File.directory?(packages)
+  puts packages
+elsif path == "/"
+  mkdir_p Rip.packages
+  cd Rip.packages
+  sh "gem unpack #{cache} #{packages}"
+  puts packages
+else
+  base_package = sh "rip-fetch #{target} #{ref}"
+  if !File.exist?("#{base_package}#{path}")
+    abort "#{target} #{path} does not exist"
+  end
+  ln_s "#{base_package}#{path}", packages
+  puts packages
+end

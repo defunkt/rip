@@ -1,17 +1,32 @@
 #!/usr/bin/env ruby
-# Usage: rip-cache URL
+# Usage: rip-cache URL VERSION
 
 require 'rip/script'
 
-target = ARGV[0]
-repo   = Rip::GitPackage.new(target).cache_path
+target  = ARGV[0]
+version = ARGV[1]
 
-if File.directory?(repo)
-  cd repo
-  system("git fetch -q &> /dev/null")
-  puts repo
-elsif system("git clone --bare --mirror #{target} #{repo} &> /dev/null")
-  puts repo
+if Rip::GitPackage.handle? target
+  repo = Rip::GitPackage.new(target).cache_path
+
+  if File.directory?(repo)
+    cd repo
+    system("git fetch -q &> /dev/null")
+    puts repo
+  elsif system("git clone --bare --mirror #{target} #{repo} &> /dev/null")
+    puts repo
+  else
+    abort
+  end
 else
-  abort
+  cache = Rip::GemPackage.new(target, nil, version).cache_path
+
+  if File.directory?(cache)
+    puts cache
+  else
+    mkdir_p Rip.cache
+    cd Rip.cache
+    gem version ? "fetch #{target} -v #{version}" : "fetch #{target}"
+    puts cache
+  end
 end

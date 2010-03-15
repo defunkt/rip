@@ -7,5 +7,9 @@ module Rip
     def name
       source
     end
+
+    def cache_name
+      "#{name}-#{version}-#{Rip.md5(source)}"
+    end
   end
 end
