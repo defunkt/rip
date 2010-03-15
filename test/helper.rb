@@ -92,12 +92,13 @@ class Rip::Test < Test::Unit::TestCase
 
     # Set the PRINT env variable to see rip command output during
     # test execution.
-    if ENV['PRINT'] && !out.empty?
+    if ENV['PRINT']
       require 'colored'
       puts
       puts ['$'.yellow, 'rip', subcommand, *args].join(' ').yellow
+      print $?.exitstatus.to_s.send($?.success? ? :green : :red)
       print '> '.blue
-      puts out
+      puts out.empty? ? "(no output)" : out
     end
 
     out
