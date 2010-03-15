@@ -16,9 +16,5 @@
 #   curl + tar xjf
 
 require 'rip/script'
-
-source = ARGV[0]
-
-type = Rip::GitPackage.handle?(source) ? :git : :gem
-
+type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
 exec "rip-fetch-#{type}", *ARGV
