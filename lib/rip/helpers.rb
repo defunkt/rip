@@ -10,6 +10,10 @@ module Rip
       sh "gem", command, *args
     end
 
+    def git(command, *args)
+      sh :git, command, *args
+    end
+
     def sh(*cmd)
       result = `#{cmd * ' '}`.chomp
 
