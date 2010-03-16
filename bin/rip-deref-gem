@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-deref NAME VERSION
+# Usage: rip-deref-gem NAME VERSION
 
 require 'rip/script'
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-deref URL VERSION
+# Usage: rip-deref-git URL VERSION
 
 require 'rip/script'
 

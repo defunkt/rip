@@ -17,7 +17,7 @@ version ||= "master"
 
 cache  = Rip::GitPackage.new(target).cache_path
 
-ref = sh "rip-deref #{target} #{version}"
+ref = sh "rip-deref-git #{target} #{version}"
 packages = Rip::GitPackage.new(target, path, ref).package_path
 
 if File.directory?(packages)
