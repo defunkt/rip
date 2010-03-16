@@ -6,9 +6,12 @@ require 'rip/script'
 target  = ARGV[0]
 version = ARGV[1]
 
-package = Rip::GemPackage.new(target, nil, version)
+if version
+  puts version
+  exit 0
+end
 
-version = nil
+package = Rip::GemPackage.new(target, nil, version)
 
 gems = gem("list #{target} --remote").split("\n")
 if gems.detect { |f| f =~ /^#{target} \((.+)\)/ }
