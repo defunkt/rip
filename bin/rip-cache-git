@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# Usage: rip-cache-git URL VERSION
+
+require 'rip/script'
+
+target  = ARGV[0]
+version = ARGV[1]
+
+repo = Rip::GitPackage.new(target).cache_path
+
+if File.directory?(repo)
+  cd repo
+  git "fetch -q"
+  puts repo
+elsif git "clone --bare --mirror #{target} #{repo}"
+  puts repo
+else
+  abort
+end

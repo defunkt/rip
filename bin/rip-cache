@@ -2,31 +2,5 @@
 # Usage: rip-cache URL VERSION
 
 require 'rip/script'
-
-target  = ARGV[0]
-version = ARGV[1]
-
-if Rip::GitPackage.handle? target
-  repo = Rip::GitPackage.new(target).cache_path
-
-  if File.directory?(repo)
-    cd repo
-    git "fetch -q"
-    puts repo
-  elsif git "clone --bare --mirror #{target} #{repo}"
-    puts repo
-  else
-    abort
-  end
-else
-  cache = Rip::GemPackage.new(target, nil, version).cache_path
-
-  if File.directory?(cache)
-    puts cache
-  else
-    mkdir_p Rip.cache
-    cd Rip.cache
-    gem version ? "fetch #{target} -v #{version}" : "fetch #{target}"
-    puts cache
-  end
-end
+type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
+exec "rip-cache-#{type}", *ARGV
