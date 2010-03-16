@@ -37,16 +37,16 @@ module Rip
     def update_cache
       if File.directory?(cache_path)
         cd(cache_path) do
-          system("git fetch -q &> /dev/null")
+          git "fetch -q &> /dev/null"
         end
       else
-        system("git clone --bare --mirror #{source} #{cache_path} &> /dev/null")
+        git "clone --bare --mirror #{source} #{cache_path} &> /dev/null"
       end
     end
 
     def parse_git_rev(path, rev)
       cd(path) do
-        ref = `git rev-parse --verify --quiet #{rev}`.chomp
+        ref = git "rev-parse --verify --quiet #{rev}"
         return $?.success? ? ref : nil
       end
     end
