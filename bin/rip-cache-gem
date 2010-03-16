@@ -14,5 +14,9 @@ else
   mkdir_p Rip.cache
   cd Rip.cache
   gem version ? "fetch #{target} -v #{version}" : "fetch #{target}"
-  puts cache
+  if File.exist?(cache)
+    puts cache
+  else
+    exit 1
+  end
 end
