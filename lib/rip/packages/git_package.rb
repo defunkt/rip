@@ -12,7 +12,7 @@ module Rip
     end
 
     def name
-      super || source.split('/').last.chomp('.git')
+      super || source.split(%r{:|/}).last.chomp('.git')
     end
 
     # TODO: better name
