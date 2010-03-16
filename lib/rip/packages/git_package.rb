@@ -35,7 +35,13 @@ module Rip
     end
 
     def update_cache
-      rip "fetch-cache #{source}"
+      if File.directory?(cache_path)
+        cd(cache_path) do
+          system("git fetch -q &> /dev/null")
+        end
+      else
+        system("git clone --bare --mirror #{source} #{cache_path} &> /dev/null")
+      end
     end
 
     def parse_git_rev(path, rev)
