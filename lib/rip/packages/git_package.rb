@@ -6,6 +6,11 @@ module Rip
         source =~ /\.git/
     end
 
+    def initialize(*args)
+      super
+      @version ||= "master"
+    end
+
     def name
       super || source.split('/').last.chomp('.git')
     end
@@ -13,7 +18,6 @@ module Rip
     # TODO: better name
     def ref
       ref = nil
-      version = @version || "master"
 
       # Cache exists and we have a static reference
       if File.directory?(cache_path)
