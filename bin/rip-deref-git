@@ -25,7 +25,7 @@ end
 
 # Update cache and deference
 unless ref
-  rip "cache #{target}"
+  rip "cache-git #{target}"
   ref = parse_git_rev(package.cache_path, version)
 end
 

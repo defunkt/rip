@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-# Usage: rip-cache URL VERSION
-
-require 'rip/script'
-type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
-exec "rip-cache-#{type}", *ARGV

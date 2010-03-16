@@ -18,7 +18,7 @@ cache  = Rip::GemPackage.new(target).cache_path
 ref = sh "rip-deref #{target} #{version}"
 packages = Rip::GemPackage.new(target, path, ref).package_path
 
-sh "rip-cache #{target} #{ref}"
+sh "rip-cache-gem #{target} #{ref}"
 
 if File.directory?(packages)
   puts packages
