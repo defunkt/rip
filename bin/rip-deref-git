@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# Usage: rip-deref URL VERSION
+
+require 'rip/script'
+
+target  = ARGV[0]
+version = ARGV[1]
+
+package = Rip::GitPackage.new(target, nil, version)
+
+def parse_git_rev(path, rev)
+  cd(path) do
+    ref = git "rev-parse --verify --quiet #{rev}"
+    return $?.success? ? ref : nil
+  end
+end
+
+ref = nil
+
+# Cache exists and we have a static reference
+if File.directory?(package.cache_path)
+  ref = parse_git_rev(package.cache_path, version)
+  ref = nil unless ref =~ /^#{version}/
+end
+
+# Update cache and deference
+unless ref
+  rip "cache #{target}"
+  ref = parse_git_rev(package.cache_path, version)
+end
+
+unless ref
+  abort "#{target} #{version} could not be found"
+end
+
+puts ref
