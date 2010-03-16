@@ -11,9 +11,9 @@ if Rip::GitPackage.handle? target
 
   if File.directory?(repo)
     cd repo
-    system("git fetch -q &> /dev/null")
+    git "fetch -q"
     puts repo
-  elsif system("git clone --bare --mirror #{target} #{repo} &> /dev/null")
+  elsif git "clone --bare --mirror #{target} #{repo}"
     puts repo
   else
     abort

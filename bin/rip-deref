@@ -6,11 +6,48 @@ require 'rip/script'
 target  = ARGV[0]
 version = ARGV[1]
 
-handler = Rip::Package.handlers.detect { |klass| klass.handle? target }
-package = handler.new(target, nil, version)
+if Rip::GitPackage.handle? target
+  package = Rip::GitPackage.new(target, nil, version)
 
-if ref = package.ref
+  def parse_git_rev(path, rev)
+    cd(path) do
+      ref = git "rev-parse --verify --quiet #{rev}"
+      return $?.success? ? ref : nil
+    end
+  end
+
+  ref = nil
+
+  # Cache exists and we have a static reference
+  if File.directory?(package.cache_path)
+    ref = parse_git_rev(package.cache_path, version)
+    ref = nil unless ref =~ /^#{version}/
+  end
+
+  # Update cache and deference
+  unless ref
+    rip "cache #{target}"
+    ref = parse_git_rev(package.cache_path, version)
+  end
+
+  unless ref
+    abort "#{target} #{version} could not be found"
+  end
+
   puts ref
 else
-  abort "#{target} #{version} could not be found"
+  package = Rip::GemPackage.new(target, nil, version)
+
+  version = nil
+
+  gems = gem("list #{target} --remote").split("\n")
+  if gems.detect { |f| f =~ /^#{target} \((.+)\)/ }
+    version = $1
+  end
+
+  unless version
+    abort "#{target} #{version} could not be found"
+  end
+
+  puts version
 end
