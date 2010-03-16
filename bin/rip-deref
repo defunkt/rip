@@ -3,44 +3,14 @@
 
 require 'rip/script'
 
-def parse_git_rev(path, rev)
-  cd(path) do
-    ref = git "rev-parse --verify --quiet #{rev}"
-    return $?.success? ? ref : nil
-  end
-end
-
 target  = ARGV[0]
 version = ARGV[1]
 
-if Rip::GitPackage.handle?(target)
-  repo = Rip::GitPackage.new(target).cache_path
-  ref  = nil
+handler = Rip::Package.handlers.detect { |klass| klass.handle? target }
+package = handler.new(target, nil, version)
 
-  # Cache exists and we have a static reference
-  if File.directory?(repo)
-    ref = parse_git_rev(repo, version)
-    ref = nil unless ref =~ /^#{version}/
-  end
-
-  # Update cache and deference
-  unless ref
-    repo = sh "rip-cache #{target}"
-    ref  = parse_git_rev(repo, version) || abort("#{version} not found")
-  end
-
+if ref = package.ref
   puts ref
 else
-  def lookup_gem_version(name)
-    gems = gem("list #{name} --remote").split("\n")
-    if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
-      $1
-    end
-  end
-
-  if version = lookup_gem_version(target)
-    puts version
-  else
-    abort "#{target} #{version} could not be found"
-  end
+  abort "#{target} #{version} could not be found"
 end
