@@ -10,7 +10,7 @@ package = Rip::GitPackage.new(target, nil, version)
 
 def parse_git_rev(path, rev)
   cd(path) do
-    ref = git "rev-parse --verify --quiet #{rev}"
+    ref = `git rev-parse --verify --quiet #{rev}`.chomp
     return $?.success? ? ref : nil
   end
 end

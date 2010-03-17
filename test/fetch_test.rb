@@ -67,6 +67,11 @@ class FetchTest < Rip::Test
     assert_equal "git://localhost/rails /merb does not exist", out.chomp
   end
 
+  test "fetch git:// with nonexistent ref" do
+    out = rip "fetch git://localhost/rails xyz"
+    assert_equal "git://localhost/rails xyz could not be found", out.chomp
+  end
+
   test "fetch git:// clears remotes" do
     out = rip "fetch git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
