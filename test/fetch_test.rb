@@ -95,7 +95,7 @@ class FetchTest < Rip::Test
 
   test "fetch gem" do
     out = rip("fetch repl 0.1.0").chomp
-    target = "#{@ripdir}/.packages/repl-df5953e0bdf7d0c218632bb5d08cb458"
+    target = "#{@ripdir}/.packages/repl-7b5b351042bb6367328ea897d6c6b651"
     assert_equal target, out
     assert File.directory?(target)
   end
