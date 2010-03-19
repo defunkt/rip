@@ -18,15 +18,15 @@ end
 ref = nil
 
 # Cache exists and we have a static reference
-if File.directory?(package.cache_path)
-  ref = parse_git_rev(package.cache_path, version)
+if cache = rip("fetch-git --offline #{target}", :exit => false)
+  ref = parse_git_rev(cache, version)
   ref = nil unless ref =~ /^#{version}/
 end
 
 # Update cache and deference
 unless ref
-  rip "fetch-git #{target}"
-  ref = parse_git_rev(package.cache_path, version)
+  cache = rip "fetch-git #{target}"
+  ref = parse_git_rev(cache, version)
 end
 
 unless ref
