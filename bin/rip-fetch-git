@@ -2,6 +2,13 @@
 # Usage: rip-fetch-git URL
 
 require 'rip/script'
+require 'optparse'
+
+OptionParser.new do |opts|
+  opts.on("--offline") do |v|
+    $offline = true
+  end
+end.parse!
 
 target = ARGV[0]
 
@@ -10,6 +17,15 @@ unless target
 end
 
 repo = Rip::GitPackage.new(target).cache_path
+
+if $offline
+  if File.directory?(repo)
+    puts repo
+    exit 0
+  else
+    exit 1
+  end
+end
 
 synchronize(repo) do
   if File.directory?(repo)

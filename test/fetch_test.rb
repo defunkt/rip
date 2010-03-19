@@ -34,6 +34,19 @@ class FetchTest < Rip::Test
     assert_equal "/tmp/null.git not found", out.chomp
   end
 
+  test "fetch uncached git repository offline fails" do
+    out = rip "fetch-git --offline git://localhost/cijoe"
+    assert_equal "", out.chomp
+  end
+
+  test "fetch cached git repository offline does not update" do
+    rip "fetch-git git://localhost/cijoe"
+
+    out = rip "fetch-git --offline git://localhost/cijoe"
+    target = "#{@ripdir}/.cache/cijoe-da109be2f8636efacba2984c933c2048"
+    assert_equal target, out.chomp
+  end
+
   test "fetch gem" do
     out = rip("fetch-gem repl 0.1.0").chomp
     target = "#{@ripdir}/.cache/repl-0.1.0.gem"
