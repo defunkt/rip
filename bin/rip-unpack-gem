@@ -16,15 +16,14 @@ end
 version = sh "rip-deref-gem #{target} #{version}"
 package = Rip::GemPackage.new(target, path, version)
 
-cache    = package.cache_path
 packages = package.package_path
-
-sh "rip-fetch-gem #{target} #{version}"
 
 synchronize(packages) do
   if File.directory?(packages)
     puts packages
   elsif path == "/"
+    cache = sh "rip-fetch-gem #{target} #{version}"
+
     mkdir_p Rip.packages
     cd Rip.packages
     if path = sh("gem unpack '#{cache}' --target='#{Rip.packages}'") =~ /^Unpacked gem: '(.+)'$/

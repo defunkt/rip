@@ -19,13 +19,13 @@ version ||= "master"
 ref = sh "rip-deref-git #{target} #{version}"
 package = Rip::GitPackage.new(target, path, ref)
 
-cache    = package.cache_path
 packages = package.package_path
 
 synchronize(packages) do
   if File.directory?(packages)
     puts packages
   elsif path == "/"
+    cache = sh "rip-fetch-git #{target}"
     system("git clone #{cache} #{packages} &> /dev/null") || exit(1)
     cd packages
     system("git checkout --quiet #{ref} &> /dev/null")
