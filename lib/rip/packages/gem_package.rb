@@ -7,9 +7,5 @@ module Rip
     def name
       source
     end
-
-    def cache_name
-      "#{name}-#{version}.gem"
-    end
   end
 end

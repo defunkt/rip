@@ -47,14 +47,6 @@ module Rip
       "#{Rip.packages}/#{package_name}"
     end
 
-    def cache_name
-      "#{name}-#{Rip.md5(source)}"
-    end
-
-    def cache_path
-      "#{Rip.cache}/#{cache_name}"
-    end
-
     def to_s
       "#{name} (#{version})"
     end

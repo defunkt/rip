@@ -16,7 +16,8 @@ unless target
   abort "no git url given"
 end
 
-repo = Rip::GitPackage.new(target).cache_path
+package = Rip::GitPackage.new(target)
+repo = "#{Rip.cache}/#{package.name}-#{Rip.md5(target)}"
 
 if $offline
   if File.directory?(repo)
