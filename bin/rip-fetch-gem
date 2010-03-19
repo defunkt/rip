@@ -6,6 +6,14 @@ require 'rip/script'
 target  = ARGV[0]
 version = ARGV[1]
 
+unless target
+  abort "no gem name given"
+end
+
+unless version
+  abort "no gem version given"
+end
+
 cache = Rip::GemPackage.new(target, nil, version).cache_path
 
 synchronize(cache) do
@@ -14,11 +22,13 @@ synchronize(cache) do
   else
     mkdir_p Rip.cache
     cd Rip.cache
-    gem version ? "fetch #{target} -v #{version}" : "fetch #{target}"
+
+    gem "fetch", target, "-v #{version}"
+
     if File.exist?(cache)
       puts cache
     else
-      exit 1
+      abort "#{target} #{version} not found"
     end
   end
 end

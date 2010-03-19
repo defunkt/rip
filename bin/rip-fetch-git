@@ -3,7 +3,11 @@
 
 require 'rip/script'
 
-target  = ARGV[0]
+target = ARGV[0]
+
+unless target
+  abort "no git url given"
+end
 
 repo = Rip::GitPackage.new(target).cache_path
 

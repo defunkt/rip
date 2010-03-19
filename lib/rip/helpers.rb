@@ -9,7 +9,9 @@ module Rip
 
     def gem(command, *args)
       args << "-s #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
-      sh "gem", command, *args
+      args << "2> /dev/null"
+
+      `gem #{command} #{args * ' '}`
     end
 
     def git(command, *args)
