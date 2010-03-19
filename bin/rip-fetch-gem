@@ -21,22 +21,24 @@ packages = package.package_path
 
 sh "rip-cache-gem #{target} #{version}"
 
-if File.directory?(packages)
-  puts packages
-elsif path == "/"
-  mkdir_p Rip.packages
-  cd Rip.packages
-  if path = sh("gem unpack '#{cache}' --target='#{Rip.packages}'") =~ /^Unpacked gem: '(.+)'$/
-    mv $1, packages
+synchronize(packages) do
+  if File.directory?(packages)
     puts packages
+  elsif path == "/"
+    mkdir_p Rip.packages
+    cd Rip.packages
+    if path = sh("gem unpack '#{cache}' --target='#{Rip.packages}'") =~ /^Unpacked gem: '(.+)'$/
+      mv $1, packages
+      puts packages
+    else
+      exit 1
+    end
   else
-    exit 1
+    base_package = sh "rip-fetch #{target} #{version}"
+    if !File.exist?("#{base_package}#{path}")
+      abort "#{target} #{path} does not exist"
+    end
+    ln_s "#{base_package}#{path}", packages
+    puts packages
   end
-else
-  base_package = sh "rip-fetch #{target} #{version}"
-  if !File.exist?("#{base_package}#{path}")
-    abort "#{target} #{path} does not exist"
-  end
-  ln_s "#{base_package}#{path}", packages
-  puts packages
 end

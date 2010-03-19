@@ -8,12 +8,14 @@ version = ARGV[1]
 
 repo = Rip::GitPackage.new(target).cache_path
 
-if File.directory?(repo)
-  cd repo
-  git "fetch -q"
-  puts repo
-elsif git "clone --bare --mirror #{target} #{repo}"
-  puts repo
-else
-  abort
+synchronize(repo) do
+  if File.directory?(repo)
+    cd repo
+    git "fetch -q"
+    puts repo
+  elsif git "clone --bare --mirror #{target} #{repo}"
+    puts repo
+  else
+    abort
+  end
 end
