@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-cache-gem NAME VERSION
+# Usage: rip-fetch-gem NAME VERSION
 
 require 'rip/script'
 

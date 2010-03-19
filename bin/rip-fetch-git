@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-cache-git URL
+# Usage: rip-fetch-git URL
 
 require 'rip/script'
 

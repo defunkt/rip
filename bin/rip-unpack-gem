@@ -19,7 +19,7 @@ package = Rip::GemPackage.new(target, path, version)
 cache    = package.cache_path
 packages = package.package_path
 
-sh "rip-cache-gem #{target} #{version}"
+sh "rip-fetch-gem #{target} #{version}"
 
 synchronize(packages) do
   if File.directory?(packages)
