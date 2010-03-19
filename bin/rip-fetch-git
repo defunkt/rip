@@ -4,7 +4,6 @@
 require 'rip/script'
 
 target  = ARGV[0]
-version = ARGV[1]
 
 repo = Rip::GitPackage.new(target).cache_path
 
@@ -13,9 +12,9 @@ synchronize(repo) do
     cd repo
     git "fetch -q"
     puts repo
-  elsif git "clone --bare --mirror #{target} #{repo}"
+  elsif system("git clone --bare --mirror #{target} #{repo} &> /dev/null")
     puts repo
   else
-    abort
+    abort "#{target} not found"
   end
 end
