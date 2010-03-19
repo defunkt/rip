@@ -1,43 +1,43 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class FetchTest < Rip::Test
+class UnpackTest < Rip::Test
   def setup
     start_git_daemon
     start_gem_daemon
     super
   end
 
-  test "fetch git://" do
-    out = rip "fetch git://localhost/cijoe"
+  test "unpack git://" do
+    out = rip "unpack git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/cijoe/version.rb")
   end
 
-  test "fetch git:// with ref" do
-    out = rip "fetch git://localhost/cijoe 28e583afc7c3153860e3b425fe4e4179f951835f"
+  test "unpack git:// with ref" do
+    out = rip "unpack git://localhost/cijoe 28e583afc7c3153860e3b425fe4e4179f951835f"
     target = "#{@ripdir}/.packages/cijoe-424ead3b3ff8b3bfc56780c79b027c21"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert !File.exist?("#{target}/lib/cijoe/version.rb")
   end
 
-  test "fetch git:// with floating ref" do
-    out = rip "fetch git://localhost/rack master"
+  test "unpack git:// with floating ref" do
+    out = rip "unpack git://localhost/rack master"
     target = "#{@ripdir}/.packages/rack-dcd7e5a5c9005603446721d8d5226f96"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
-    out = rip "fetch git://localhost/rack rack-1.1"
+    out = rip "unpack git://localhost/rack rack-1.1"
     target = "#{@ripdir}/.packages/rack-4219275757b34b94d4f1146d0d7a9802"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
-    out = rip "fetch git://localhost/rack rack-0.4"
+    out = rip "unpack git://localhost/rack rack-0.4"
     target = "#{@ripdir}/.packages/rack-985b79109d3ffde301f757dd92f8e9e5"
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -45,7 +45,7 @@ class FetchTest < Rip::Test
   end
 
   test "fech git:// with explict root path" do
-    out = rip "fetch git://localhost/rails /"
+    out = rip "unpack git://localhost/rails /"
     target = "#{@ripdir}/.packages/rails-1030698f9aa6e31414934c7fe4f4eee3"
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -54,71 +54,71 @@ class FetchTest < Rip::Test
     assert File.exist?("#{target}/activerecord/lib/active_record.rb")
   end
 
-  test "fetch git:// with path" do
-    out = rip "fetch git://localhost/rails /activerecord"
+  test "unpack git:// with path" do
+    out = rip "unpack git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-27f688b1f08408fd3e20626c4c048a4f"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/active_record.rb")
   end
 
-  test "fetch git:// with nonexistent path" do
-    out = rip "fetch git://localhost/rails /merb"
+  test "unpack git:// with nonexistent path" do
+    out = rip "unpack git://localhost/rails /merb"
     assert_equal "git://localhost/rails /merb does not exist", out.chomp
   end
 
-  test "fetch git:// with nonexistent ref" do
-    out = rip "fetch git://localhost/rails xyz"
+  test "unpack git:// with nonexistent ref" do
+    out = rip "unpack git://localhost/rails xyz"
     assert_equal "git://localhost/rails xyz could not be found", out.chomp
   end
 
-  test "fetch git:// clears remotes" do
-    out = rip "fetch git://localhost/cijoe"
+  test "unpack git:// clears remotes" do
+    out = rip "unpack git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
     assert File.directory?(target)
     cd(target) { assert_equal '', `git remote`.chomp }
   end
 
-  test "fetch git:// clears branches" do
-    out = rip "fetch git://localhost/cijoe"
+  test "unpack git:// clears branches" do
+    out = rip "unpack git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
     assert File.directory?(target)
     cd(target) { assert_equal '* (no branch)', `git branch`.chomp }
   end
 
-  test "fetch twice" do
-    out = rip "fetch git://localhost/cijoe"
+  test "unpack twice" do
+    out = rip "unpack git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
 
-    out = rip "fetch git://localhost/cijoe"
+    out = rip "unpack git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
     assert_equal target, out.chomp
   end
 
-  test "fetch gem" do
-    out = rip("fetch repl 0.1.0").chomp
+  test "unpack gem" do
+    out = rip("unpack repl 0.1.0").chomp
     target = "#{@ripdir}/.packages/repl-7b5b351042bb6367328ea897d6c6b651"
     assert_equal target, out
     assert File.directory?(target)
   end
 
-  test "fetch git@"
+  test "unpack git@"
 
-  test "fetch hg"
+  test "unpack hg"
 
-  test "fetch bzr"
+  test "unpack bzr"
 
-  test "fetch http tar.gz"
+  test "unpack http tar.gz"
 
-  test "fetch http tar.bz"
+  test "unpack http tar.bz"
 
-  test "fetch svn"
+  test "unpack svn"
 
-  test "fetch dependencies" do
-    out = rip "fetch git://localhost/cijoe"
+  test "unpack dependencies" do
+    out = rip "unpack git://localhost/cijoe"
     rip "fetch-dependencies #{out.chomp}/deps.rip"
     fetched = Dir["#{@ripdir}/.packages/*"].map do |f|
       File.basename(f).split('-', 2)[0]

@@ -6,11 +6,11 @@ class ImportTest < Rip::Test
 
   def setup
     super
-    @cijoe = rip("fetch file://#{FIXTURES}/cijoe").chomp
+    @cijoe = rip("unpack file://#{FIXTURES}/cijoe").chomp
   end
 
   test "import" do
-    out = rip "fetch #{fixture(:cijoe)}"
+    out = rip "unpack #{fixture(:cijoe)}"
     copied = rip "import #{out}"
 
     files = %w(
