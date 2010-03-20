@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+# Usage: rip-recursive-link source target
+
+require 'pathname'
+
+def recursive_link(source, target)
+  source.children.each do |child|
+    symlink_or_expand(child, target.join(child.basename))
+  end
+end
+
+def symlink_or_expand(source, target)
+  if source.directory? && target.directory?
+    if target.symlink?
+      link_target = target.readlink
+      target.unlink
+      target.mkpath
+      recursive_link(link_target, target)
+    end
+
+    recursive_link(source, target)
+  else
+    target.unlink if target.symlink?
+    target.make_symlink(source.realpath)
+  end
+end
+
+source = ARGV[0]
+target = ARGV[1]
+
+unless source && target
+  abort "missing source and target"
+end
+
+source = Pathname.new(source)
+target = Pathname.new(target)
+
+recursive_link(source, target)
