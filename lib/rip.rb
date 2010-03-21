@@ -34,6 +34,16 @@ module Rip
     end
   end
 
+  def platform_hash
+    md5(shell_ruby_platform)
+  end
+
+  # Shell out to ruby so we always get the shells activate ruby,
+  # not whatever ruby version is running rip.
+  def shell_ruby_platform
+    `ruby -rrbconfig -e "puts RbConfig::CONFIG['sitearchdir']"`
+  end
+
   def md5(string)
     require 'digest'
     Digest::MD5.hexdigest(string.to_s)
