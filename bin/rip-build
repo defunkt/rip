@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# Usage: rip-build PATH
+
+target = ARGV[0]
+
+require 'rip/script'
+
+package_path = ARGV[0]
+File.basename(package_path)[/(.+)-([a-zA-Z0-9]{32})$/]
+name, md5 = $1, $2
+
+unless name && md5
+  abort "path is not a rip package"
+end
+
+# If the package does not need to be compiled,
+# return with the original path
+if Dir["#{package_path}/**/extconf.rb"].empty?
+  puts package_path
+  exit 0
+end
+
+# Bake ruby platform info into the package hash
+platform_package_name = "#{name}-#{Rip.md5("#{md5}#{Rip.platform_hash}")}"
+platform_package_path = "#{Rip.packages}/#{platform_package_name}"
+
+synchronize(platform_package_path) do
+  if File.directory?(platform_package_path)
+    puts platform_package_path
+  else
+    cp_r package_path, platform_package_path
+
+    Dir["#{platform_package_path}/**/extconf.rb"].each do |build_file|
+      build_dir = File.dirname(build_file)
+      Dir.chdir(build_dir) do
+        sh "ruby extconf.rb"
+        sh "make install sitearchdir=#{platform_package_path}/lib"
+      end
+    end
+
+    puts platform_package_path
+  end
+end
