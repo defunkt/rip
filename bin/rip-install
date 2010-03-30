@@ -15,3 +15,9 @@
 require 'rip/script'
 
 path = ARGV[0]
+
+packages = rip "fetch-dependencies #{path}"
+
+packages.each do |package|
+  rip "import #{package.chomp}"
+end
