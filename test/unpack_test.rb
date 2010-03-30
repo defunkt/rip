@@ -119,10 +119,10 @@ class UnpackTest < Rip::Test
 
   test "unpack dependencies" do
     out = rip "unpack git://localhost/cijoe"
-    rip "fetch-dependencies #{out.chomp}/deps.rip"
-    fetched = Dir["#{@ripdir}/.packages/*"].map do |f|
-      File.basename(f).split('-', 2)[0]
-    end
-    assert_equal %w( cijoe rack sinatra tinder choice ).sort, fetched.sort
+    assert_equal "cijoe", File.basename(out).split('-', 2)[0]
+
+    out = rip "fetch-dependencies #{out.chomp}/deps.rip"
+    fetched = out.map { |f| File.basename(f).split('-', 2)[0] }
+    assert_equal %w( rack sinatra tinder choice ).sort, fetched.sort
   end
 end
