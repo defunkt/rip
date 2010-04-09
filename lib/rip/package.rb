@@ -42,7 +42,7 @@ module Rip
     end
 
     def package_name
-      "#{name}-#{version}"
+      "#{name}-#{Rip.md5("#{source}#{path}#{version}")}"
     end
 
     def package_path
@@ -51,6 +51,15 @@ module Rip
 
     def to_s
       "#{name} (#{version})"
+    end
+
+    def to_rip
+      ripfile = []
+      ripfile << source
+      ripfile << version if version
+      ripfile << path    if path != '/'
+
+      ripfile * ' '
     end
   end
 end
