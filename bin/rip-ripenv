@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# Usage: rip-ripenv RIPENV
+# Prints the contents of the .ripenv file for the given
+# RIPENV.
+
+require 'rip/script'
+
+Rip.env = ARGV[0] || Rip.env
+
+require 'pp'
+pp Rip.ripenv
