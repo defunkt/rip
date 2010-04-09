@@ -49,8 +49,18 @@ task :install do
 end
 
 desc "Run a git-daemon for the tests."
-task "git-daemon" do
+task "daemon:git" do
   cmd = "git daemon --export-all --base-path=test/fixtures"
   puts "Running #{cmd}"
-  exec cmd
+  sh cmd
 end
+
+desc "Run a gem server for the tests."
+task "daemon:gem" do
+  cmd = "gem server --dir test/fixtures/gems --no-daemon"
+  puts "Running #{cmd}"
+  sh cmd
+end
+
+desc "Run gem and git daemons for the tests."
+task :daemons => %w( daemon:git daemon:gem )
