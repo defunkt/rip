@@ -17,7 +17,7 @@ version ||= "master"
 
 
 ref = sh "rip-deref-git #{target} #{version}"
-package = Rip::GitPackage.new(target, path, ref)
+package = Rip::GitPackage.new(target, path, version, ref)
 
 packages = package.package_path
 
@@ -39,7 +39,7 @@ synchronize(packages) do
 
     puts packages
   else
-    base_package = sh "rip-package #{target} #{ref}"
+    base_package = sh "rip-package #{target} #{version}"
     if !File.exist?("#{base_package}#{path}")
       abort "#{target} #{path} does not exist"
     end
