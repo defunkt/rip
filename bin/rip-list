@@ -4,3 +4,10 @@
 # Displays all installed packages and their versions for RIPENV.
 # If RIPENV is omitted shows installed packages for the current
 # RIPENV.
+
+require 'rip/script'
+
+Rip.env = ARGV[0] || Rip.env
+Rip.ripenv.each do |name, package|
+  puts package
+end
