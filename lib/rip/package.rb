@@ -29,15 +29,14 @@ module Rip
       package
     end
 
-    attr_accessor :path, :source, :version, :actual_version
+    attr_accessor :path, :source, :version
     attr_accessor :name, :dependencies, :files
 
-    def initialize(source, path = nil, version = nil, actual_version = nil)
-      @source         = source
-      @path           = path || "/"
-      @version        = version
-      @actual_version = actual_version
-      @files          = []
+    def initialize(source, path = nil, version = nil)
+      @source  = source
+      @path    = path || "/"
+      @version = version
+      @files   = []
 
       @dependencies = []
     end
