@@ -63,4 +63,4 @@ task "daemon:gem" do
 end
 
 desc "Run gem and git daemons for the tests."
-task :daemons => %w( daemon:git daemon:gem )
+multitask :daemons => %w( daemon:git daemon:gem )
