@@ -35,7 +35,7 @@ module Rip
     if File.exists?(ripenv_path)
       @ripenv = YAML.load_file(ripenv_path)
     else
-      @ripenv = { :files => {}, :packages => {} }
+      @ripenv = {}
     end
   end
 
