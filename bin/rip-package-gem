@@ -28,6 +28,12 @@ synchronize(packages) do
     cd Rip.packages
     if path = sh("gem unpack '#{cache}' --target='#{Rip.packages}'") =~ /^Unpacked gem: '(.+)'$/
       mv $1, packages
+
+      # Save package.rip to disk with version, source, etc
+      File.open("#{packages}/#{package.name}.rip", 'w') do |f|
+        f.puts package.to_rip
+      end
+
       puts packages
     else
       exit 1
