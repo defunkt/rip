@@ -5,5 +5,5 @@
 require 'rip/script'
 
 Rip::Environment.new(ARGV[0]).packages.each do |package|
-  puts rip("unpack #{package.source}")
+  puts rip("package #{package.source}")
 end
