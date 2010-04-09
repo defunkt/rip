@@ -1,4 +1,5 @@
 require 'rip'
+require 'pp'
 
 check = `rip-check`
 

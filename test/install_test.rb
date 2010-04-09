@@ -17,4 +17,7 @@ class InstallTest < Rip::Test
     assert File.exist?("#{@ripdir}/base/lib/cijoe.rb")
     assert File.exist?("#{@ripdir}/base/lib/cijoe/build.rb")
   end
+
+  test "records which files were installed" do
+  end
 end

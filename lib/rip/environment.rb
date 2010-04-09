@@ -1,5 +1,7 @@
 module Rip
   class Environment
+    attr_accessor :path
+
     def initialize(path)
       @path = path
     end

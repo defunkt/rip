@@ -14,10 +14,13 @@
 
 require 'rip/script'
 
-path = ARGV[0]
+env = Rip::Environment.new(ARGV[0])
+rip "fetch-dependencies #{env.path}"
 
-packages = rip "fetch-dependencies #{path}"
-
-packages.each do |package|
-  rip "import #{package.chomp}"
+env.packages.each do |package|
+  package.files = rip "import #{package.package_path}"
+  Rip.ripenv[package.name] = package
+  warn "Installed #{package}"
 end
+
+Rip.save_ripenv

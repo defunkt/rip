@@ -30,11 +30,13 @@ module Rip
     end
 
     attr_accessor :path, :source, :version, :name, :dependencies
+    attr_accessor :files
 
     def initialize(source, path = nil, version = nil)
       @source  = source
       @path    = path || "/"
       @version = version
+      @files   = []
 
       @dependencies = []
     end
