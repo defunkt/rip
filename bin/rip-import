@@ -9,6 +9,8 @@ require 'rip/script'
 source = ARGV[0]
 
 %w( lib bin man ).each do |type|
+  mkdir_p "#{Rip.envdir}/#{type}"
+
   Dir["#{source}/#{type}/**/*"].each do |file|
     target = file.split("#{type}/", 2).last
     cp_r file, "#{Rip.envdir}/#{type}/#{target}"
