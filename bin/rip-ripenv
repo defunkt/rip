@@ -7,5 +7,4 @@ require 'rip/script'
 
 Rip.env = ARGV[0] || Rip.env
 
-require 'pp'
 pp Rip.ripenv
