@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-unpack URL
+# Usage: rip-package URL
 #
 # Downloads the package at URL to $RIPDIR/.packages using the appropriate
 # transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
@@ -17,4 +17,4 @@
 
 require 'rip/script'
 type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
-exec "rip-unpack-#{type}", *ARGV
+exec "rip-package-#{type}", *ARGV

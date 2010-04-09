@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-unpack-git URL
+# Usage: rip-package-git URL
 
 require 'rip/script'
 
@@ -33,7 +33,7 @@ synchronize(packages) do
     system("git branch -D master &> /dev/null")
     puts packages
   else
-    base_package = sh "rip-unpack #{target} #{ref}"
+    base_package = sh "rip-package #{target} #{ref}"
     if !File.exist?("#{base_package}#{path}")
       abort "#{target} #{path} does not exist"
     end

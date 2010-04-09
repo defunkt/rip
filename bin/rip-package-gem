@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-unpack-gem URL
+# Usage: rip-package-gem URL
 
 require 'rip/script'
 
@@ -33,7 +33,7 @@ synchronize(packages) do
       exit 1
     end
   else
-    base_package = sh "rip-unpack #{target} #{version}"
+    base_package = sh "rip-package #{target} #{version}"
     if !File.exist?("#{base_package}#{path}")
       abort "#{target} #{path} does not exist"
     end
