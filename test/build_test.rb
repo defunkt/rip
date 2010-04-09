@@ -9,7 +9,7 @@ class UnpackTest < Rip::Test
   end
 
   test "build returns original path if the package has no extensions" do
-    out = rip "unpack git://localhost/cijoe"
+    out = rip "package git://localhost/cijoe"
     assert_exited_successfully out
     path = out.chomp
 
@@ -18,7 +18,7 @@ class UnpackTest < Rip::Test
   end
 
   test "build extconf" do
-    out = rip "unpack git://localhost/yajl-ruby"
+    out = rip "package git://localhost/yajl-ruby"
     assert_exited_successfully out
     path = out.chomp
 
