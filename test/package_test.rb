@@ -8,6 +8,13 @@ class PackageTest < Rip::Test
     super
   end
 
+  test "writes package.rip" do
+    out = rip "package git://localhost/cijoe"
+    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
+    assert File.exist?("#{target}/cijoe.rip")
+    assert_equal "cijoe", File.read("#{target}/cijoe.rip")
+  end
+
   test "package git://" do
     out = rip "package git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
