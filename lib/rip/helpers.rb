@@ -27,6 +27,8 @@ module Rip
       else
         # Err, this sucks, maybe exit 1 shouldn't
         # be the default option
+        #
+        # I agree.
         if options[:exit] == false
           false
         else
