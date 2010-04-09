@@ -31,11 +31,6 @@ synchronize(packages) do
     system("git remote rm origin &> /dev/null")
     system("git branch -D master &> /dev/null")
 
-    # Save package.rip to disk with version, source, etc
-    File.open("#{packages}/#{package.name}.rip", 'w') do |f|
-      f.puts package.to_rip
-    end
-
     puts packages
   else
     base_package = sh "rip-package #{target} #{version}"
