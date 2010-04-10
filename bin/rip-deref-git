@@ -24,12 +24,12 @@ if cache = rip("fetch-git --offline #{target}", :exit => false)
 end
 
 # Update cache and deference
-unless ref
+if !ref
   cache = rip "fetch-git #{target}"
   ref = parse_git_rev(cache, version)
 end
 
-unless ref
+if !ref
   abort "#{target} #{version} could not be found"
 end
 

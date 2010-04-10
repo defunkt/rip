@@ -14,7 +14,29 @@
 #   svn
 #   curl + tar xzf
 #   curl + tar xjf
+#
+# Works like this:
+#
+#  rip-package git://github/foo.git v1.0
+#  |-- rip-fetch git://github/foo.git
+#  |-- rip-unpack .rip/.cache/foo-123abc
+#  |-- rip-build .rip/.packages/foo-123abc
+#  |-- (Write rip metadata to package dir)
+#  `-- return .rip/.packages/foo-123abc
 
 require 'rip/script'
-type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
-exec "rip-package-#{type}", *ARGV
+
+target  = ARGV[0]
+version = ARGV[1]
+
+cache   = sh "rip-fetch #{target} #{version}"
+package = sh "rip-unpack #{cache}"
+
+sh "rip-build #{package}"
+
+# Save package.rip to disk with version, source, etc
+File.open("#{package.package_path}/#{package.name}.rip", 'w') do |f|
+  f.puts package.to_rip
+end
+
+puts package.package_path

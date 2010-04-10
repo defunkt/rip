@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# Usage: rip-unpack URL
+
+require 'rip/script'
+
+cached = ARGV[0]
+
+type = cached =~ /\.gem$/ ? :gem : :git
+puts sh("rip-unpack-#{type}", *ARGV)

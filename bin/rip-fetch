@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+# Usage: rip-fetch URL
+
+require 'rip/script'
+
+type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
+puts sh("rip-fetch-#{type}", *ARGV)
