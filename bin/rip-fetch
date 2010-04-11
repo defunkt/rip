@@ -3,5 +3,5 @@
 
 require 'rip/script'
 
-type = Rip::GitPackage.handle?(ARGV[0]) ? :git : :gem
+type = Rip::GitPackage.handle?(ARGV.args[0]) ? :git : :gem
 puts sh("rip-fetch-#{type}", *ARGV)
