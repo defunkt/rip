@@ -13,12 +13,17 @@ end
 
 package = Rip::GemPackage.new(target, nil, version)
 
-gems = gem("list #{target} --remote").split("\n")
-if gems.detect { |f| f =~ /^#{target} \((.+)\)/ }
-  version = $1
+if target.include? '/'
+  spec = YAML.load(gem("spec #{target}"))
+  version = spec.ivars['version'].ivars['version']
+else
+  gems = gem("list #{target} --remote").split("\n")
+  if gems.detect { |f| f =~ /^#{target} \((.+)\)/ }
+    version = $1
+  end
 end
 
-unless version
+if !version
   abort "#{target} #{version} could not be found"
 end
 

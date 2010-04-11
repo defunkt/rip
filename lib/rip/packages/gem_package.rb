@@ -5,7 +5,7 @@ module Rip
     end
 
     def name
-      source
+      source.split('/').last.split('-')[0...-1].join('-')
     end
   end
 end

@@ -45,7 +45,7 @@ class UnpackTest < Rip::Test
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
     out = rip "unpack #{cache} rack-0.4"
-    target = "#{@ripdir}/.packages/rack-985b79109d3ffde301f757dd92f8e9e5"
+    target = "#{@ripdir}/.packages/rack-654c8ccb49ddbb6173337a3773782193"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert !File.exist?("#{target}/lib/rack/methodoverride.rb")
@@ -76,13 +76,13 @@ class UnpackTest < Rip::Test
   test "unpacks git:// with nonexistent path" do
     cache = rip "fetch git://localhost/rails"
     out = rip "unpack #{cache} /merb"
-    assert_equal "git://localhost/rails /merb does not exist", out.chomp
+    assert_equal "#{cache.chomp} /merb does not exist", out.chomp
   end
 
   test "unpacks git:// with nonexistent ref" do
     cache = rip "fetch git://localhost/rails"
     out = rip "unpack #{cache} xyz"
-    assert_equal "git://localhost/rails xyz could not be found", out.chomp
+    assert_equal "#{cache.chomp} xyz could not be found", out.chomp
   end
 
   test "unpack git:// clears remotes" do
@@ -117,9 +117,9 @@ class UnpackTest < Rip::Test
   end
 
   test "unpack gem" do
-    cache = rip("fetch repl 0.1.0")
+    cache = rip("fetch repl 0.1.0").chomp
     out = rip("unpack #{cache}").chomp
-    target = "#{@ripdir}/.packages/repl-7b5b351042bb6367328ea897d6c6b651"
+    target = "#{@ripdir}/.packages/repl-4f08d9eb33c43c9ee5a662ff0599a0d8"
 
     assert_equal target, out
     assert File.directory?(target)

@@ -22,11 +22,13 @@ synchronize(packages) do
   if File.directory?(packages)
     puts packages
   elsif path == "/"
-    cache = sh "rip-fetch-gem #{target} #{version}"
-
     mkdir_p Rip.packages
     cd Rip.packages
-    if path = sh("gem unpack '#{cache}' --target='#{Rip.packages}'") =~ /^Unpacked gem: '(.+)'$/
+
+    path = sh("gem unpack '#{target}' --target='#{Rip.packages}'") =~
+      /^Unpacked gem: '(.+)'$/
+
+    if path
       mv $1, packages
       puts packages
     else
