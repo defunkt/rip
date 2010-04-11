@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# Usage: rip-handle source
+
+require 'rip/script'
+
+source = ARGV[0]
+
+# TODO: Eventually search load path for all rip-handle-*
+types = %w( git gem )
+
+types.each do |type|
+  if rip("handle-#{type}", source, :exit => false)
+    puts type
+    exit 0
+  end
+end
+
+abort "no handler found for #{source}"

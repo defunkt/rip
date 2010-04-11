@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# Usage: rip-handle-gem source
+
+if ARGV[0] =~ /\.gem$/ || ARGV[0] =~ /^\w+$/
+  exit 0
+else
+  exit 1
+end
