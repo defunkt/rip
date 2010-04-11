@@ -72,7 +72,10 @@ class Rip::Test < Test::Unit::TestCase
   # If a block is given it will be run in the child process before
   # execution begins. You can use this to monkeypatch or fudge the
   # environment before running `rip`.
-  def rip(subcommand, *args)
+  def rip(subcommand)
+    args = subcommand.split(' ')
+    subcommand = args.shift
+
     parent_read, child_write = IO.pipe
 
     pid = fork do

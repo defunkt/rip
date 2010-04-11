@@ -22,7 +22,7 @@ class UnpackTest < Rip::Test
   test "unpacks git:// with ref" do
     cache = rip "fetch git://localhost/cijoe"
     out = rip "unpack #{cache} 28e583afc7c3153860e3b425fe4e4179f951835f"
-    target = "#{@ripdir}/.packages/cijoe-424ead3b3ff8b3bfc56780c79b027c21"
+    target = "#{@ripdir}/.packages/cijoe-66d4e9bd5651a5d1b76df6d51eb54630"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -32,14 +32,14 @@ class UnpackTest < Rip::Test
   test "unpacks git:// with floating ref" do
     cache = rip "fetch git://localhost/rack"
     out = rip "unpack #{cache} master"
-    target = "#{@ripdir}/.packages/rack-dcd7e5a5c9005603446721d8d5226f96"
+    target = "#{@ripdir}/.packages/rack-41d1cc3dd91106567938e473c5c1bbfa"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
     out = rip "unpack #{cache} rack-1.1"
-    target = "#{@ripdir}/.packages/rack-4219275757b34b94d4f1146d0d7a9802"
+    target = "#{@ripdir}/.packages/rack-2749f85b690184fefd07bc6f1240a87a"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
@@ -54,7 +54,7 @@ class UnpackTest < Rip::Test
   test "unpacks git:// with explict root path" do
     cache = rip "fetch git://localhost/rails"
     out = rip "unpack #{cache} /"
-    target = "#{@ripdir}/.packages/rails-1030698f9aa6e31414934c7fe4f4eee3"
+    target = "#{@ripdir}/.packages/rails-ca17c9c555d42e8e639470ee2be9aff3"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -66,7 +66,7 @@ class UnpackTest < Rip::Test
   test "unpacks git:// with path" do
     cache = rip "fetch git://localhost/rails"
     out = rip "unpack #{cache} /activerecord"
-    target = "#{@ripdir}/.packages/rails-27f688b1f08408fd3e20626c4c048a4f"
+    target = "#{@ripdir}/.packages/rails-dd74aeed5f9dfc46263339506c992f4e"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -88,7 +88,7 @@ class UnpackTest < Rip::Test
   test "unpack git:// clears remotes" do
     cache = rip "fetch git://localhost/cijoe"
     out = rip "unpack #{cache}"
-    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
+    target = "#{@ripdir}/.packages/cijoe-7dc61376d0d25d249f01db8e3fa5b8d4"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -98,7 +98,7 @@ class UnpackTest < Rip::Test
   test "unpack git:// clears branches" do
     cache = rip "fetch git://localhost/cijoe"
     out = rip "unpack #{cache}"
-    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
+    target = "#{@ripdir}/.packages/cijoe-7dc61376d0d25d249f01db8e3fa5b8d4"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -108,11 +108,11 @@ class UnpackTest < Rip::Test
   test "unpack twice" do
     cache = rip "fetch git://localhost/cijoe"
     out = rip "unpack #{cache}"
-    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
+    target = "#{@ripdir}/.packages/cijoe-7dc61376d0d25d249f01db8e3fa5b8d4"
     assert_equal target, out.chomp
 
     out = rip "unpack #{cache}"
-    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
+    target = "#{@ripdir}/.packages/cijoe-7dc61376d0d25d249f01db8e3fa5b8d4"
     assert_equal target, out.chomp
   end
 
