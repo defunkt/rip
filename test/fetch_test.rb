@@ -26,6 +26,12 @@ class FetchTest < Rip::Test
 
   test "fetch with no repository" do
     out = rip "fetch"
+    assert_equal "no gem name given", out.chomp
+
+    out = rip "fetch-gem"
+    assert_equal "no gem name given", out.chomp
+
+    out = rip "fetch-git"
     assert_equal "no git url given", out.chomp
   end
 
