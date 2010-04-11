@@ -19,7 +19,7 @@ class RecursiveLinkTest < Rip::Test
   end
 
   test "missing target causes an error" do
-    out = rip("recursive-link", @source)
+    out = rip("recursive-link #{@source}")
     assert_exited_with_error out
     assert_equal "missing source and target", out.chomp
   end
@@ -29,7 +29,7 @@ class RecursiveLinkTest < Rip::Test
     mkdir "#{@source}/foo"
     touch "#{@source}/foo/version.rb"
 
-    out = rip("recursive-link", @source, @target)
+    out = rip("recursive-link #{@source} #{@target}")
     assert_exited_successfully out
 
     assert File.symlink?("#{@target}/foo.rb")
@@ -41,7 +41,7 @@ class RecursiveLinkTest < Rip::Test
     mkdir_p other_source
     touch "#{other_source}/foo.rb"
 
-    out = rip("recursive-link", other_source, @target)
+    out = rip("recursive-link #{other_source} #{@target}")
     assert_exited_successfully out
 
     assert File.symlink?("#{@target}/foo.rb")
@@ -49,7 +49,7 @@ class RecursiveLinkTest < Rip::Test
 
     touch "#{@source}/foo.rb"
 
-    out = rip("recursive-link", @source, @target)
+    out = rip("recursive-link #{@source} #{@target}")
     assert_exited_successfully out
 
     assert File.symlink?("#{@target}/foo.rb")
@@ -63,7 +63,7 @@ class RecursiveLinkTest < Rip::Test
     mkdir "#{@source}/foo"
     touch "#{@source}/foo/baz.rb"
 
-    out = rip("recursive-link", @source, @target)
+    out = rip("recursive-link #{@source} #{@target}")
     assert_exited_successfully out
 
     assert File.directory?("#{@target}/foo")
@@ -78,13 +78,13 @@ class RecursiveLinkTest < Rip::Test
     mkdir "#{other_source}/foo"
     touch "#{other_source}/foo/bar.rb"
 
-    out = rip("recursive-link", other_source, @target)
+    out = rip("recursive-link #{other_source} #{@target}")
     assert_exited_successfully out
 
     mkdir "#{@source}/foo"
     touch "#{@source}/foo/baz.rb"
 
-    out = rip("recursive-link", @source, @target)
+    out = rip("recursive-link #{@source} #{@target}")
     assert_exited_successfully out
 
     assert File.directory?("#{@target}/foo")

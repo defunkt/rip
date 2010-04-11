@@ -32,7 +32,7 @@ class ImportTest < Rip::Test
   end
 
   test "importing files into ripdir" do
-    out = rip("import", @cijoe)
+    out = rip("import #{@cijoe}")
     assert_exited_successfully out
 
     assert File.exist?("#{@ripdir}/base/bin/cijoe")
