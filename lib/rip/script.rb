@@ -21,6 +21,16 @@ end
 # Clear out GIT_DIR incase we are running from a git subprocess
 ENV.delete('GIT_DIR')
 
+# ARGV.args vs ARGV.flags
+def ARGV.flags
+  select { |arg| arg =~ /^-/ }
+end
+
+def ARGV.args
+  self - flags
+end
+
+
 RIPDIR     = Rip.dir
 RIPENV     = Rip.env
 RIPENVS    = Rip.envs
