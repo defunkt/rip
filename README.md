@@ -4,6 +4,19 @@ rip
 This is a ground up rewrite of Rip to embrace more of the Unix
 spirit.
 
+Commands
+--------
+
+* rip-fetch
+* rip-unpack
+* rip-package
+* rip-install
+* rip-uninstall
+
+* rip-list
+* rip-envs
+* rip-env
+
 Running the Tests
 -----------------
 
