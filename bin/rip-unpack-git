@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
-# Usage: rip-unpack-git URL
+# Usage: rip-unpack-git URL PATH VERSION
 
 require 'rip/script'
 
-target  = ARGV[0]
+target = ARGV[0]
 
 if ARGV[1] =~ /^\//
   path    = ARGV[1]
@@ -24,8 +24,7 @@ synchronize(packages) do
   if File.directory?(packages)
     puts packages
   elsif path == "/"
-    cache = sh "rip-fetch-git #{target}"
-    system("git clone #{cache} #{packages} &> /dev/null") || exit(1)
+    system("git clone #{target} #{packages} &> /dev/null") || exit(1)
     cd packages
     system("git checkout --quiet #{ref} &> /dev/null")
     system("git remote rm origin &> /dev/null")

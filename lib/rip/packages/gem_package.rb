@@ -1,7 +1,7 @@
 module Rip
   class GemPackage < Package
     def self.handle?(source)
-      source =~ /^\w+$/
+      source =~ /\.gem$/ || source =~ /^\w+$/
     end
 
     def name

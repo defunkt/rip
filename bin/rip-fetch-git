@@ -12,7 +12,7 @@ end.parse!
 
 target = ARGV[0]
 
-unless target
+if !target
   abort "no git url given"
 end
 

@@ -19,7 +19,11 @@ module Rip
     end
 
     def name
-      super || source.split(%r{:|/}).last.chomp('.git')
+      if source =~ /([^\/]+?)-.{32}/
+        $1
+      else
+        super || source.split(%r{:|/}).last.chomp('.git')
+      end
     end
   end
 end

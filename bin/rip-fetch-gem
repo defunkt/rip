@@ -6,11 +6,11 @@ require 'rip/script'
 target  = ARGV[0]
 version = ARGV[1]
 
-unless target
+if !target
   abort "no gem name given"
 end
 
-unless version
+if !version
   abort "no gem version given"
 end
 
