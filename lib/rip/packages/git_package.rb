@@ -3,7 +3,8 @@ module Rip
     def self.handle?(source)
       source =~ /file:\/\// ||
         source =~ /git:\/\// ||
-        source =~ /\.git/
+        source =~ /\.git/ ||
+        File.directory?(source) && File.exists?("#{source}/HEAD")
     end
 
     attr_accessor :ref
