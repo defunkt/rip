@@ -4,6 +4,7 @@
 require 'rip/script'
 
 source = ARGV[0]
+abort "no handler found" if source.to_s.empty?
 
 # TODO: Eventually search load path for all rip-handle-*
 types = %w( git gem )
