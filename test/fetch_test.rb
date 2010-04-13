@@ -26,7 +26,7 @@ class FetchTest < Rip::Test
 
   test "fetch with no repository" do
     out = rip "fetch"
-    assert_equal "no gem name given", out.chomp
+    assert_equal "no handler found", out.chomp
 
     out = rip "fetch-gem"
     assert_equal "no gem name given", out.chomp
@@ -71,12 +71,12 @@ class FetchTest < Rip::Test
   end
 
   test "fetch gem missing name" do
-    out = rip("fetch").chomp
-    assert_equal "no gem name given", out.chomp
+    assert_exited_with_error out = rip("fetch").chomp
+    assert_equal "no handler found", out.chomp
   end
 
   test "fetch gem missing version" do
-    out = rip("fetch repl").chomp
+    assert_exited_with_error out = rip("fetch repl").chomp
     assert_equal "no gem version given", out.chomp
   end
 end
