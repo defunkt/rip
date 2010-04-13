@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 # Usage: rip-handle-gem source
 
-require 'rip/script'
-
-if Rip::GemPackage.handle?(ARGV[0])
+if ARGV[0] =~ /\.gem$/ || ARGV[0] =~ /^\w+$/
   exit 0
 else
   exit 1

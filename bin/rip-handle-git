@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 # Usage: rip-handle-git source
 
-require 'rip/script'
-
-if Rip::GitPackage.handle?(ARGV[0])
+if ARGV[0] =~ %r{^file://|^git://|\.git$}
   exit 0
 else
   exit 1
