@@ -3,7 +3,5 @@
 
 require 'rip/script'
 
-cached = ARGV[0]
-
-type = cached =~ /\.gem$/ ? :gem : :git
+type = rip("handle", ARGV.args[0])
 puts sh("rip-unpack-#{type}", *ARGV)
