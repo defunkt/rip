@@ -122,7 +122,8 @@ class Rip::Test < Test::Unit::TestCase
     daemon_pid = Tempfile.new("pid")
 
     pid = fork do
-      exec "git daemon --export-all --base-path=test/fixtures --pid-file=#{daemon_pid.path}"
+      path = daemon_pid.path
+      exec "git daemon --export-all --base-path=test/fixtures --pid-file=#{path}"
     end
 
     at_exit do
