@@ -8,6 +8,10 @@ module Rip
       [ GitPackage, GemPackage ]
     end
 
+    def self.for_source(source)
+      from_hash :source => source
+    end
+
     def self.from_hash(hash)
       handler = handlers.detect do |klass|
         klass.handle? hash[:source]
@@ -47,6 +51,14 @@ module Rip
 
     def package_path
       "#{Rip.packages}/#{package_name}"
+    end
+
+    def cache_name
+      "#{name}-#{Rip.md5(source)}"
+    end
+
+    def cache_path
+      "#{Rip.cache}/#{cache_name}"
     end
 
     def to_s

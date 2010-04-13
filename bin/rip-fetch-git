@@ -17,7 +17,7 @@ if !target
 end
 
 package = Rip::GitPackage.new(target)
-repo = "#{Rip.cache}/#{package.name}-#{Rip.md5(target)}"
+repo    = package.cache_path
 
 if $offline
   if File.directory?(repo)
