@@ -5,7 +5,7 @@ module Rip
     end
 
     def name
-      source.split('/').last.split('-')[0...-1].join('-')
+      source
     end
 
     def cache_name
