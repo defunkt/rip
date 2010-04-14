@@ -22,6 +22,11 @@ class HandleTest < Rip::Test
     assert_equal "gem", out.chomp
   end
 
+  test "handle gem with dash" do
+    out = rip "handle rack-cache"
+    assert_equal "gem", out.chomp
+  end
+
   test "can't handle unknown protocol" do
     out = rip "handle foo://bar"
     assert_exited_with_error
