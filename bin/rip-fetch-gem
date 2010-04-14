@@ -14,8 +14,7 @@ if !version
   abort "no gem version given"
 end
 
-package = Rip::GemPackage.from_hash(:source => target, :version => version)
-cache   = package.cache_path
+cache = "#{Rip.cache}/#{target}-#{version}.gem"
 
 synchronize(cache) do
   if File.directory?(cache)
@@ -24,7 +23,7 @@ synchronize(cache) do
     mkdir_p Rip.cache
     cd Rip.cache
 
-    gem "fetch", target, "-v #{version}"
+    out = gem "fetch", target, "-v #{version}"
 
     if File.exist?(cache)
       puts cache
