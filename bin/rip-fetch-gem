@@ -17,7 +17,7 @@ end
 cache = "#{Rip.cache}/#{target}-#{version}.gem"
 
 synchronize(cache) do
-  if File.directory?(cache)
+  if File.file?(cache)
     puts cache
   else
     mkdir_p Rip.cache
