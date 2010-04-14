@@ -6,12 +6,11 @@ class ImportTest < Rip::Test
 
   def setup
     super
-    @cijoe = rip("package file://#{FIXTURES}/cijoe").chomp
+    @cijoe = rip("package file://#{FIXTURES}/cijoe.git").chomp
   end
 
   test "import" do
-    out = rip "package #{fixture(:cijoe)}"
-    copied = rip "import #{out}"
+    copied = rip "import #{@cijoe}"
 
     files = %w(
       lib/cijoe/build.rb
