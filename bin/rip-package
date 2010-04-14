@@ -31,8 +31,7 @@ version = ARGV[1]
 
 package = Rip::Package.from_hash(:source => target, :version => version)
 
-cache_path   = sh "rip-fetch #{package.source} #{package.version}"
-package_path = sh "rip-unpack #{cache_path}"
+package_path = sh "rip-unpack #{package.source} #{package.version}"
 sh "rip-build #{package_path}"
 
 # Save package.rip to disk with version, source, etc
@@ -40,4 +39,4 @@ File.open("#{package_path}/#{package.name}.rip", 'w') do |f|
   f.puts package.to_rip
 end
 
-puts package
+puts package_path
