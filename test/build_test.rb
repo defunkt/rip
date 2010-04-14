@@ -9,7 +9,7 @@ class UnpackTest < Rip::Test
   end
 
   test "build returns original path if the package has no extensions" do
-    out = rip "package git://localhost/cijoe"
+    out = rip "unpack git://localhost/cijoe"
     assert_exited_successfully out
     path = out.chomp
 
@@ -18,12 +18,12 @@ class UnpackTest < Rip::Test
   end
 
   test "build extconf" do
-    out = rip "package git://localhost/yajl-ruby"
+    out = rip "unpack git://localhost/yajl-ruby"
     assert_exited_successfully out
     path = out.chomp
 
     out = rip "build #{path}"
-    target = "#{@ripdir}/.packages/yajl-ruby-b7356846d718122622c186b92675a5c0"
+    target = "#{@ripdir}/.packages/yajl-ruby-b026ddaf414856f1874df270a20d222e"
     assert_equal target, out.chomp
 
     assert File.exist?("#{target}/ext/Makefile")
