@@ -29,14 +29,15 @@ require 'rip/script'
 target  = ARGV[0]
 version = ARGV[1]
 
-package = Rip::Package.from_hash(:source => target, :version => version)
-
-package_path = sh "rip-unpack #{package.source} #{package.version}"
+package_path = sh "rip-unpack #{target} #{version}"
 sh "rip-build #{package_path}"
 
+# BUSTED
+# package = Rip::Package.from_hash(:source => target, :version => version)
+
 # Save package.rip to disk with version, source, etc
-File.open("#{package_path}/#{package.name}.rip", 'w') do |f|
-  f.puts package.to_rip
-end
+# File.open("#{package_path}/#{package.name}.rip", 'w') do |f|
+#   f.puts package.to_rip
+# end
 
 puts package_path

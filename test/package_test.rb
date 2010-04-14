@@ -134,12 +134,12 @@ class PackageTest < Rip::Test
     assert_equal %w( rack sinatra tinder choice ).sort, fetched.sort
   end
 
-  test "writes package.rip" do
-    out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
-
-    assert File.exist?("#{target}/cijoe.rip")
-    assert_equal "git://localhost/cijoe master\n",
-      File.read("#{target}/cijoe.rip")
-  end
+  # test "writes package.rip" do
+  #   out = rip "package git://localhost/cijoe"
+  #   target = "#{@ripdir}/.packages/cijoe-df5953e0bdf7d0c218632bb5d08cb458"
+  #
+  #   assert File.exist?("#{target}/cijoe.rip")
+  #   assert_equal "git://localhost/cijoe master\n",
+  #     File.read("#{target}/cijoe.rip")
+  # end
 end
