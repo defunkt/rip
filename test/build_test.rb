@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class UnpackTest < Rip::Test
+class BuildTest < Rip::Test
   def setup
     start_git_daemon
     start_gem_daemon
