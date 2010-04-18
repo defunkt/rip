@@ -20,7 +20,6 @@ synchronize(cache) do
   if File.file?(cache)
     puts cache
   else
-    mkdir_p Rip.cache
     cd Rip.cache
 
     out = gem "fetch", target, "-v #{version}"
