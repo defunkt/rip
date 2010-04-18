@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+# Usage: rip-package-gem NAME VERSION
+
+source  = ARGV[0]
+version = ARGV[1]
+
+unless source =~ /\.gem$/ || source =~ /^(\w|-)+$/
+  exit 1
+end
+
+require 'rip/script'
+
+if version.nil?
+  gems = gem("list #{source} --remote").split("\n")
+  if gems.detect { |f| f =~ /^#{source} \((.+)\)/ }
+    version = $1
+  end
+end
+
+cache_path   = "#{Rip.cache}/#{source}-#{version}.gem"
+package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
+
+synchronize(package_path) do
+  if File.directory?(package_path)
+    puts package_path
+    exit 0
+  end
+
+  synchronize(cache_path) do
+    unless File.file?(cache_path)
+      # TODO: rip-setup should create .cache
+      mkdir_p Rip.cache
+
+      cd Rip.cache do
+        gem "fetch", source, "-v #{version}"
+
+        unless File.exist?(cache_path)
+          abort "#{source} #{version} not found"
+        end
+      end
+    end
+  end
+
+  # TODO: rip-setup should create .packages
+  mkdir_p Rip.packages
+  cd Rip.packages
+
+  path = sh("gem unpack '#{cache_path}' --target='#{Rip.packages}'") =~
+    /^Unpacked gem: '(.+)'$/
+
+  if path.nil?
+    abort "#{source} #{version} not found"
+  end
+
+  mv $1, package_path
+
+  File.open("#{package_path}/#{source}.rip", 'w') do |f|
+    f.puts "#{source} #{version}"
+  end
+
+  puts package_path
+end
