@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'helper'
 
-class PackageTest < Rip::Test
+class PackageGemTest < Rip::Test
   def setup
     start_gem_daemon
     super
