@@ -28,9 +28,6 @@ synchronize(package_path) do
 
   synchronize(cache_path) do
     unless File.file?(cache_path)
-      # TODO: rip-setup should create .cache
-      mkdir_p Rip.cache
-
       cd Rip.cache do
         gem "fetch", source, "-v #{version}"
 
@@ -41,8 +38,6 @@ synchronize(package_path) do
     end
   end
 
-  # TODO: rip-setup should create .packages
-  mkdir_p Rip.packages
   cd Rip.packages
 
   path = sh("gem unpack '#{cache_path}' --target='#{Rip.packages}'") =~
