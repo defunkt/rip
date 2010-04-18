@@ -26,18 +26,39 @@
 
 require 'rip/script'
 
-target  = ARGV[0]
-version = ARGV[1]
+target = ARGV[0]
 
-package_path = sh "rip-unpack #{target} #{version}"
-sh "rip-build #{package_path}"
+# package is at a subpath,
+# fetch root and symlink into the package
+if ARGV[1] =~ /^\//
+  path    = ARGV[1]
+  version = ARGV[2]
 
-# BUSTED
-# package = Rip::Package.from_hash(:source => target, :version => version)
+  base_package = sh "rip-package #{target} #{version}"
+  if !File.exist?("#{base_package}#{path}")
+    abort "#{target} #{path} does not exist"
+  end
 
-# Save package.rip to disk with version, source, etc
-# File.open("#{package_path}/#{package.name}.rip", 'w') do |f|
-#   f.puts package.to_rip
-# end
+  name, hash = File.basename(base_package).split("-")
+  package_path = "#{Rip.packages}/#{name}-#{Rip.md5("#{hash}#{path}")}"
+  ln_s "#{base_package}#{path}", package_path
+  puts package_path
+else
+  # TODO: Eventually search load path for all rip-handle-*
+  types = %w( git gem )
 
-puts package_path
+  types.each do |type|
+    out = `rip-package-#{type} #{ARGV * ' '}`
+
+    if $?.exitstatus == 123
+      next
+    elsif $?.success?
+      package_path = out.chomp
+      package_path = sh "rip-build #{package_path}"
+      puts package_path
+      exit 0
+    else
+      exit $?.exitstatus
+    end
+  end
+end
