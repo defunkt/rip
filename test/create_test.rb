@@ -27,4 +27,14 @@ class CreateTest < Rip::Test
     assert_exited_with_error out
     assert_equal "Cannot name $RIPENV 'active'\n", out
   end
+
+  test "creates .packages directory" do
+    assert_exited_successfully rip("create blah")
+    assert File.directory?("#{@ripdir}/.packages")
+  end
+
+  test "creates .cache directory" do
+    assert_exited_successfully rip("create blah")
+    assert File.directory?("#{@ripdir}/.cache")
+  end
 end

@@ -23,6 +23,9 @@ end
 require 'fileutils'
 include FileUtils
 
+mkdir_p "#{RIPDIR}/.cache"
+mkdir_p "#{RIPDIR}/.packages"
+
 mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
 mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
 mkdir_p "#{RIPDIR}/#{RIPENV}/man"

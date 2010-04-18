@@ -23,7 +23,6 @@ synchronize(packages) do
   elsif path == "/"
     cache = sh "rip-fetch-gem #{target} #{version}"
 
-    mkdir_p Rip.packages
     cd Rip.packages
 
     path = sh("gem unpack '#{cache}' --target='#{Rip.packages}'") =~
