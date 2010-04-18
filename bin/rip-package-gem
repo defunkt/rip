@@ -5,7 +5,7 @@ source  = ARGV[0]
 version = ARGV[1]
 
 unless source =~ /\.gem$/ || source =~ /^(\w|-)+$/
-  exit 1
+  exit 123 # Need to research bash exit code conventions
 end
 
 require 'rip/script'
