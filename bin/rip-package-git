@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+# Usage: rip-package-git URL VERSION
+
+source  = ARGV[0]
+version = ARGV[1] || "master"
+
+unless source =~ %r{^file://|^git://|\.git$} ||
+    File.directory?(source) && File.exists?("#{source}/HEAD")
+  exit 1
+end
+
+
+require 'rip/script'
+
+def parse_git_rev(path, rev)
+  cd(path) do
+    ref = `git rev-parse --verify --quiet #{rev}`.chomp
+    return $?.success? ? ref : nil
+  end
+end
+
+
+if source =~ /([^\/]+?)-.{32}/
+  name = $1
+else
+  name = source.split(%r{:|/}).last.chomp('.git')
+end
+
+ref = nil
+cache_path = "#{Rip.cache}/#{name}-#{Rip.md5(source)}"
+
+
+synchronize(cache_path) do
+  # Cache exists and we have a static reference
+  if File.directory?(cache_path)
+    ref = parse_git_rev(cache_path, version)
+    ref = nil unless ref =~ /^#{version}/
+  end
+
+  # Update cache and deference
+  if !ref
+    if File.directory?(cache_path)
+      cd cache_path do
+        git "fetch -q"
+      end
+    elsif !system("git clone --bare --mirror #{source} #{cache_path} &> /dev/null")
+      abort "#{source} not found"
+    end
+
+    ref = parse_git_rev(cache_path, version)
+  end
+
+  if !ref
+    abort "#{source} #{version} could not be found"
+  end
+end
+
+
+package_path = "#{Rip.packages}/#{name}-#{Rip.md5("#{source}#{ref}")}"
+
+synchronize(package_path) do
+  if File.directory?(package_path)
+    puts package_path
+    exit 0
+  end
+
+  system("git clone #{source} #{package_path} &> /dev/null") || exit(1)
+  cd package_path
+  system("git checkout --quiet #{ref} &> /dev/null")
+  system("git remote rm origin &> /dev/null")
+  system("git branch -D master &> /dev/null")
+
+  File.open("#{package_path}/#{name}.rip", 'w') do |f|
+    f.puts "#{source} #{ref}"
+  end
+
+  puts package_path
+end
