@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-# Usage: rip-unpack URL
-
-require 'rip/script'
-
-type = rip("handle", ARGV.args[0])
-puts sh("rip-unpack-#{type}", *ARGV)
