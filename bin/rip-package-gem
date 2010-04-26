@@ -49,7 +49,7 @@ synchronize(package_path) do
 
   mv $1, package_path
 
-  File.open("#{package_path}/#{source}.rip", 'w') do |f|
+  File.open("#{package_path}/metadata.rip", 'w') do |f|
     f.puts "#{source} #{version}"
   end
 

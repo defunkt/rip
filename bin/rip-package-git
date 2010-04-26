@@ -70,7 +70,7 @@ synchronize(package_path) do
   system("git remote rm origin &> /dev/null")
   system("git branch -D master &> /dev/null")
 
-  File.open("#{package_path}/#{name}.rip", 'w') do |f|
+  File.open("#{package_path}/metadata.rip", 'w') do |f|
     f.puts "#{source} #{ref}"
   end
 

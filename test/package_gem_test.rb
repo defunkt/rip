@@ -50,8 +50,8 @@ class PackageGemTest < Rip::Test
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp
-    assert File.exist?("#{target}/repl.rip")
+    assert File.exist?("#{target}/metadata.rip")
     assert_equal "repl 0.1.0\n",
-      File.read("#{target}/repl.rip")
+      File.read("#{target}/metadata.rip")
   end
 end

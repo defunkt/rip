@@ -138,8 +138,8 @@ class PackageTest < Rip::Test
     out = rip "package git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
 
-    assert File.exist?("#{target}/cijoe.rip")
+    assert File.exist?("#{target}/metadata.rip")
     assert_equal "git://localhost/cijoe e8a53aac256665563cf6bb27c04788ce758424ac\n",
-      File.read("#{target}/cijoe.rip")
+      File.read("#{target}/metadata.rip")
   end
 end
