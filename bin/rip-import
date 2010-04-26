@@ -11,9 +11,12 @@ source = ARGV[0]
 %w( lib bin man ).each do |type|
   mkdir_p "#{Rip.envdir}/#{type}"
 
+  if File.directory?("#{source}/#{type}")
+    rip "recursive-link #{source}/#{type} #{Rip.envdir}/#{type}"
+  end
+
   Dir["#{source}/#{type}/**/*"].each do |file|
     target = file.split("#{type}/", 2).last
-    cp_r file, "#{Rip.envdir}/#{type}/#{target}"
     puts "#{type}/#{target}" unless File.directory?(file)
   end
 end
