@@ -7,11 +7,21 @@ module Rip
       sh "#{bindir}/rip-#{command}", *args
     end
 
+    def rpg_available?
+      return false if ENV['DISABLE_RPG']
+      `which rpg`
+      $?.success?
+    end
+
     def gem(command, *args)
       args << "-s #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
       args << "2> /dev/null"
 
       `gem #{command} #{args * ' '}`
+    end
+
+    def rpg(command, *args)
+      sh :rpg, command, *args
     end
 
     def git(command, *args)

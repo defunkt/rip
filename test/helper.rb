@@ -140,6 +140,9 @@ class Rip::Test < Test::Unit::TestCase
   end
 
   def start_gem_daemon
+    # disable rpg for testing because we can't change its gem server
+    ENV['DISABLE_RPG'] = '1'
+
     ENV['GEM_SERVER'] = "http://localhost:8808/"
     return if `ps aux | grep "[g]em server"`.to_s.strip.length != 0
     $start_gem_daemon ||= start_gem_daemon!

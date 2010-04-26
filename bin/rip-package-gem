@@ -10,14 +10,56 @@ end
 
 require 'rip/script'
 
-if version.nil?
-  gems = gem("list #{source} --remote").split("\n")
-  if gems.detect { |f| f =~ /^#{source} \((.+)\)/ }
-    version = $1
+def gem_list(name)
+  gems = gem("list #{name} --remote").split("\n")
+  if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
+    $1
   end
 end
 
-cache_path   = "#{Rip.cache}/#{source}-#{version}.gem"
+def gem_fetch(name, version)
+  path = "#{Rip.cache}/#{name}-#{version}.gem"
+
+  synchronize(path) do
+    unless File.file?(path)
+      cd Rip.cache do
+        gem "fetch", name, "-v #{version}"
+
+        unless File.exist?(path)
+          abort "#{name} #{version} not found"
+        end
+      end
+    end
+  end
+
+  path
+end
+
+def gem_unpack(name, version)
+  gem_path = gem_fetch(name, version)
+
+  path = sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
+    /^Unpacked gem: '(.+)'$/
+
+  if path.nil?
+    abort "#{name} #{version} not found"
+  end
+
+  $1
+end
+
+def rpg_list(name)
+  if rpg("list -a | grep '^#{name} '") =~ /^#{name} (.+)$/
+    $1
+  end
+end
+
+def rpg_unpack(name, version)
+  rpg "unpack #{name} #{version} &>/dev/null"
+end
+
+version ||= rpg_available? ? rpg_list(source) : gem_list(source)
+
 package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
 
 synchronize(package_path) do
@@ -26,28 +68,10 @@ synchronize(package_path) do
     exit 0
   end
 
-  synchronize(cache_path) do
-    unless File.file?(cache_path)
-      cd Rip.cache do
-        gem "fetch", source, "-v #{version}"
-
-        unless File.exist?(cache_path)
-          abort "#{source} #{version} not found"
-        end
-      end
-    end
-  end
-
   cd Rip.packages
 
-  path = sh("gem unpack '#{cache_path}' --target='#{Rip.packages}'") =~
-    /^Unpacked gem: '(.+)'$/
-
-  if path.nil?
-    abort "#{source} #{version} not found"
-  end
-
-  mv $1, package_path
+  path = rpg_available? ? rpg_unpack(source, version) : gem_unpack(source, version)
+  mv path, package_path
 
   File.open("#{package_path}/metadata.rip", 'w') do |f|
     f.puts "#{source} #{version}"
