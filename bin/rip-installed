@@ -8,3 +8,20 @@
 #   Reads $RIPDIR/$RIPENV/$RIPENV.ripenv
 #   Checks if PATH is already installed in the ripenv
 
+require 'rip/script'
+
+require 'set'
+
+installed = Set.new
+
+%w( lib bin man ).each do |type|
+  Dir["#{Rip.envdir}/#{type}/**/*"].each do |file|
+    if File.symlink?(file)
+      installed << File.readlink(file)[/^(#{Rip.packages}\/[^\/]+)/, 1]
+    end
+  end
+end
+
+installed.each do |package|
+  puts File.read("#{package}/metadata.rip")
+end
