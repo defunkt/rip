@@ -18,10 +18,9 @@ env = Rip::Environment.new(ARGV[0])
 # rip "fetch-dependencies #{env.path}"
 
 env.packages.each do |package|
-  path = sh "rip-fetch #{package.source} #{package.version}"
-  puts sh("rip-unpack #{path} #{package.version}")
-  exit
-  package.files = rip "import #{package.package_path}"
+  path = sh "rip-package #{package.source} #{package.version}"
+  puts path
+  package.files = rip "import #{path}"
   Rip.ripenv[package.name] = package
   warn "Installed #{package}"
 end
