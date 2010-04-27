@@ -63,6 +63,8 @@ else
 
   name, hash = File.basename(base_package).split("-")
   package_path = "#{Rip.packages}/#{name}-#{Rip.md5("#{hash}#{path}")}"
-  ln_s "#{base_package}#{path}", package_path
+  if !File.exist?(package_path)
+    ln_s "#{base_package}#{path}", package_path
+  end
   puts package_path
 end
