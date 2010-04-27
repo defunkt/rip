@@ -48,8 +48,12 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package with explict root path" do
+    out = rip "package git://localhost/rails"
+    target = "#{@ripdir}/.packages/rails-ed4cb2c29c01dd09ac6ee2a4b1faa3e1"
+    assert_equal target, out.chomp
+
     out = rip "package git://localhost/rails /"
-    target = "#{@ripdir}/.packages/rails-c769868ff92d4f593396571d900e9c04"
+    target = "#{@ripdir}/.packages/rails-ed4cb2c29c01dd09ac6ee2a4b1faa3e1"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
