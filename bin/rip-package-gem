@@ -49,13 +49,15 @@ def gem_unpack(name, version)
 end
 
 def rpg_list(name)
-  if rpg("list -a | grep '^#{name} '") =~ /^#{name} (.+)$/
+  if rpg("list -a 2>/dev/null | grep '^#{name} '") =~ /^#{name} (.+)$/
     $1
   end
 end
 
 def rpg_unpack(name, version)
-  rpg "unpack #{name} #{version} &>/dev/null"
+  if path = rpg("unpack #{name} #{version}")
+    path.chomp
+  end
 end
 
 version ||= rpg_available? ? rpg_list(source) : gem_list(source)
@@ -71,6 +73,11 @@ synchronize(package_path) do
   cd Rip.packages
 
   path = rpg_available? ? rpg_unpack(source, version) : gem_unpack(source, version)
+
+  if !File.exist?(path)
+    abort "#{source} #{version} not found"
+  end
+
   mv path, package_path
 
   File.open("#{package_path}/metadata.rip", 'w') do |f|

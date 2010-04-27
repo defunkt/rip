@@ -8,7 +8,6 @@ module Rip
     end
 
     def rpg_available?
-      return false if ENV['DISABLE_RPG']
       `which rpg`
       $?.success?
     end
@@ -21,7 +20,9 @@ module Rip
     end
 
     def rpg(command, *args)
-      sh :rpg, command, *args
+      args << "2> /dev/null"
+
+      `rpg #{command} #{args * ' '}`
     end
 
     def git(command, *args)

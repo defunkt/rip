@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'rip'
 require 'fileutils'
+require 'tempfile'
 
 class Rip::Test < Test::Unit::TestCase
   include FileUtils
@@ -118,7 +119,6 @@ class Rip::Test < Test::Unit::TestCase
   end
 
   def start_git_daemon!
-    require 'tempfile'
     daemon_pid = Tempfile.new("pid")
 
     pid = fork do
@@ -140,8 +140,9 @@ class Rip::Test < Test::Unit::TestCase
   end
 
   def start_gem_daemon
-    # disable rpg for testing because we can't change its gem server
-    ENV['DISABLE_RPG'] = '1'
+    ENV['RPGPATH']     = "#{Dir.tmpdir}/rpg"
+    ENV['RPGSPECSURL'] = "http://localhost:8808/specs.4.8.gz"
+    ENV['RPGGEMURL']   = "http://localhost:8808/gems"
 
     ENV['GEM_SERVER'] = "http://localhost:8808/"
     return if `ps aux | grep "[g]em server"`.to_s.strip.length != 0
