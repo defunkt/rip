@@ -17,35 +17,32 @@ def gem_list(name)
   end
 end
 
-def gem_fetch(name, version)
-  path = "#{Rip.cache}/#{name}-#{version}.gem"
+def gem_unpack(name, version)
+  path = nil
 
-  synchronize(path) do
-    unless File.file?(path)
-      cd Rip.cache do
-        gem "fetch", name, "-v #{version}"
+  cd Rip.cache do
+    gem_path = File.expand_path("#{name}-#{version}.gem")
 
-        unless File.exist?(path)
-          abort "#{name} #{version} not found"
-        end
+    begin
+      gem "fetch", name, "-v #{version}"
+
+      unless File.exist?(gem_path)
+        abort "#{name} #{version} not found"
       end
+
+      sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
+        /^Unpacked gem: '(.+)'$/
+      path = $1
+    ensure
+      rm_rf gem_path
     end
   end
-
-  path
-end
-
-def gem_unpack(name, version)
-  gem_path = gem_fetch(name, version)
-
-  path = sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
-    /^Unpacked gem: '(.+)'$/
 
   if path.nil?
     abort "#{name} #{version} not found"
   end
 
-  $1
+  path
 end
 
 def rpg_list(name)
