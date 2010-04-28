@@ -11,6 +11,7 @@ class Rip::Test < Test::Unit::TestCase
   def setup
     @ripdir = File.expand_path(File.dirname(__FILE__) + "/ripdir")
     rm_rf @ripdir
+    ENV['RIPDEBUG'] = nil
     ENV['RIPDIR'] = @ripdir
     rip "setup"
   end
