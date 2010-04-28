@@ -7,22 +7,25 @@
 # Exit codes:
 #   0 No conflicts
 #   1 Conflicts (printed)
-#   2 deps.rip not found
+#   4 Given .rip file not found
 #
 # On conflict, prints YAML of failed package, who is trying to install
 # it at what version, and who already installed it at what version.
 
 require 'rip/script'
 
-if File.exists? target = File.expand_path(ARGV[0])
-  env = Rip::Environment.new(target)
-  if env.conflicts?
-    warn env.conflicts.join("\n")
-    exit 1
-  else
-    exit 0
-  end
-else
-  puts "`#{target}' not found"
-  exit 2
+env = Environment.new
+
+rip("installed").split("\n").each do |package|
+  env.merge("#{package}/metadata.rip")
+end
+
+ARGV.each do |arg|
+  exit 4 unless File.exists?(arg)
+  env.merge(arg)
+end
+
+if env.conflicts?
+  warn env.conflicts.join("\n")
+  exit 1
 end

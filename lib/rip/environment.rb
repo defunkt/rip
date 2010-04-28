@@ -18,15 +18,19 @@ module Rip
   end
 
   class Environment
-    attr_accessor :path
+    attr_accessor :path, :text
 
-    def initialize(path)
-      if File.exists?(path)
+    def initialize(path = nil)
+      if path && File.exists?(path)
         @path = path
         @text = File.read(path)
       else
-        @text = path
+        @text = path.to_s
       end
+    end
+
+    def merge(env)
+      @text << "\n#{Environment.new(env).text}"
     end
 
     def packages
