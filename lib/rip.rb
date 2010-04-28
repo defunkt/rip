@@ -4,6 +4,7 @@ require 'ostruct'
 module Rip
   autoload :Parser,      'rip/parser'
   autoload :Environment, 'rip/environment'
+  autoload :Package,     'rip/environment'
   autoload :Helpers,     'rip/helpers'
 
   extend self

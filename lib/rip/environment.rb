@@ -1,15 +1,15 @@
 module Rip
   class Package < OpenStruct
+    def self.parse(text)
+      new(Parser.parse(text).first)
+    end
+
     def to_s
       "#{name} (#{version})"
     end
 
     def name
-      if source =~ /git/
-        source.split('/').last.chomp('.git')
-      else
-        source
-      end
+      source.split('/').last.chomp('.git').chomp('.gem')
     end
 
     def dependencies
