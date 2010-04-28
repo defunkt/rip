@@ -7,7 +7,6 @@
 
 require 'rip/script'
 
-Rip.env = ARGV[0] || Rip.env
-Rip.ripenv.each do |name, package|
-  puts package
+rip("installed").each do |package|
+  puts rip("metadata #{package}")
 end

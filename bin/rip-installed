@@ -22,6 +22,4 @@ installed = Set.new
   end
 end
 
-installed.each do |package|
-  puts rip("metadata #{package}")
-end
+puts installed.to_a

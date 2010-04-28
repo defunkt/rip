@@ -14,6 +14,6 @@ class InstalledTest < Rip::Test
     assert_exited_successfully out
 
     out = rip "installed"
-    assert_equal "git://localhost/cijoe e8a53aac256665563cf6bb27c04788ce758424ac", out.chomp
+    assert_equal "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f", out.chomp
   end
 end
