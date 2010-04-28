@@ -1,8 +1,17 @@
 #!/usr/bin/env ruby
-# Usage: rip-env
+# Usage: rip-env RIPENV
 #
-# Prints the current ripenv
+# Prints or changes the current ripenv.
 
 require 'rip/script'
+
+if target = ARGV[0]
+  if RIPENVS.include? target
+    rm Rip.active rescue nil
+    ln_s "#{RIPDIR}/#{target}", Rip.active
+  else
+    abort "Can't find ripenv `#{target}'"
+  end
+end
 
 puts RIPENV

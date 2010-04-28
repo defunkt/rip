@@ -22,4 +22,15 @@ class EnvTest < Rip::Test
     assert_exited_with_error out
     assert_equal "#{ripdir} not found. Please run `rip-setup`\n", out
   end
+
+  test "switch to ripenv" do
+    rip "create blah"
+    rip "env base"
+    assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
+  end
+
+  test "attempt to switch to fake ripenv" do
+    out = rip "env not-real"
+    assert_includes "Can't find", out
+  end
 end
