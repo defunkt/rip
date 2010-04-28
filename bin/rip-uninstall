@@ -6,3 +6,27 @@
 #   Reads $RIPDIR/$RIPENV/$RIPENV.ripenv
 #   Removes all files PACKAGE installed
 #   Saves $RIPDIR/$RIPENV/$RIPENV.ripenv
+
+require 'rip/script'
+
+name = ARGV[0]
+
+# Find package from name
+# TODO turn into a seperate bin
+package = rip("installed").detect do |package|
+  rip("metadata #{package}") =~ /^#{name}/
+end
+
+if !package
+  abort "#{name} not installed"
+end
+
+package = package.chomp
+
+Dir["#{Rip.envdir}/**/*"].each do |file|
+  if File.symlink?(file)
+    if File.readlink(file).index(package)
+      File.unlink(file)
+    end
+  end
+end
