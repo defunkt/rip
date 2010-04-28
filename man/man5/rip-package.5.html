@@ -103,10 +103,11 @@ package = "#{Rip.packages}/#{Rip.md5("#{source}#{version}")}"
 sh "git clone #{source} #{package}"
 sh "git checkout #{version}"
 
-Rip.write_metadata("#{package}/metadata.rip",
-  :source =&gt; source, :version =&gt; version)
+File.open("#{package}/metadata.rip", 'w') do |f|
+  f.puts "#{source} #{version}"
+end
 
- puts package
+puts package
 </code></pre>
 
 <h2>SEE ALSO</h2>

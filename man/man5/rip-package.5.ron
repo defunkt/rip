@@ -40,10 +40,11 @@ A Simple .git handler.
     sh "git clone #{source} #{package}"
     sh "git checkout #{version}"
 
-    Rip.write_metadata("#{package}/metadata.rip",
-      :source => source, :version => version)
+    File.open("#{package}/metadata.rip", 'w') do |f|
+      f.puts "#{source} #{version}"
+    end
 
-     puts package
+    puts package
 
 ## SEE ALSO
 
