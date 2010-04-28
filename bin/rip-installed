@@ -23,5 +23,5 @@ installed = Set.new
 end
 
 installed.each do |package|
-  puts File.read("#{package}/metadata.rip")
+  puts rip("metadata #{package}")
 end
