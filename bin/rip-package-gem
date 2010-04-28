@@ -10,6 +10,14 @@ end
 
 require 'rip/script'
 
+def list(name)
+  rpg_available? ? rpg_list(name) : gem_list(name)
+end
+
+def unpack(name, version)
+  rpg_available? ? rpg_unpack(name, version) : gem_unpack(name, version)
+end
+
 def gem_list(name)
   gems = gem("list #{name} --remote").split("\n")
   if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
@@ -57,7 +65,7 @@ def rpg_unpack(name, version)
   end
 end
 
-version ||= rpg_available? ? rpg_list(source) : gem_list(source)
+version ||= list(source)
 
 package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
 
@@ -69,7 +77,7 @@ synchronize(package_path) do
 
   cd Rip.packages
 
-  path = rpg_available? ? rpg_unpack(source, version) : gem_unpack(source, version)
+  path = unpack(source, version)
 
   if !File.exist?(path)
     abort "#{source} #{version} not found"
