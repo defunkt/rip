@@ -37,8 +37,9 @@ RUBYLIB = clean_env_path('RUBYLIB', 'lib')
 PATH    = clean_env_path('PATH', 'bin')
 
 puts <<-end_shellcode
+RIPDEBUG=1
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
 RUBYLIB="#{RUBYLIB}:$RIPDIR/#{RIPENV}/lib"
 PATH="#{PATH}:$RIPDIR/#{RIPENV}/bin"
-export RIPDIR RUBYLIB PATH
+export RIPDEBUG RIPDIR RUBYLIB PATH
 end_shellcode
