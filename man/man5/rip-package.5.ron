@@ -1,0 +1,49 @@
+rip-package(5) -- rip package handler convention
+================================================
+
+Package handlers must implement "rip-package-$type" that accepts
+"source", "path", "version" arguments.
+
+Handlers are discovered by grepping the load path for
+"rip-package-\w+".
+
+Handlers are always tested in alphabetical order. If a handler can't
+handle a source, it must quickly exit with an error code of "3" so the
+next handler can be tested. If everything when smoothly, the handler
+should exit with status 0 and print out an opaque path to a directory
+in .packages.
+
+The handler will also be expected to write out metadata to
+"metadata.rip" inside the package. Attributes should include the
+fetched source, subpath, a short name (rip, rack, etc), actual version
+or ref fetched (1ebe4e5, 1.1.0). File formatting TBA.
+
+Concepts like "fetch", "unpack", "deref" will all be encapsulated
+inside the package handler. rip must not call these commands directly
+anymore. Rip will provide a ".cache" dir as a persistent tmp space but
+will not know how to access any of the files directly. Handlers can
+make use of the cache directory anyway they wish.
+
+## EXAMPLES
+
+    source  = ARGV[0]
+    version = ARGV[1] || "master"
+
+    unless source =~ /\.git$/
+     exit 123 # Need to research bash exit code conventions
+    end
+
+    package = "#{Rip.packages}/#{Rip.md5("#{source}#{version}")}"
+
+    sh "git clone #{source} #{package}"
+    sh "git checkout #{version}"
+
+    Rip.write_metadata("#{package}/metadata.rip",
+      :source => source, :version => version)
+
+   puts package
+
+## SEE ALSO
+
+rip(5), rip(1), git(1),
+<http://github.com/defunkt/rip>
