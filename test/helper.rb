@@ -63,6 +63,15 @@ class Rip::Test < Test::Unit::TestCase
     end
   end
 
+  # Given a String of content, returns a Tempfile.
+  def tempfile(content)
+    file = Tempfile.new("rip")
+    file.puts content
+    file.close
+
+    file
+  end
+
   # Shortcut for running the `rip` command in a subprocess. Returns
   # STDOUT as a string. Pass it what you would normally pass `rip` on
   # the command line, e.g.
