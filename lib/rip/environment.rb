@@ -58,11 +58,11 @@ module Rip
       bad = []
 
       packages.each do |package|
-        if hash[package.name]
-          bad << hash[package.name]
-          bad << package
+        installed_at = hash[package.name]
+        if installed_at && package.version && installed_at != package.version
+          bad << package.to_s
         else
-          hash[package.name] = package
+          hash[package.name] = package.version if package.version
         end
       end
 
