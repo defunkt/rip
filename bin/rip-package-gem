@@ -35,7 +35,9 @@ def gem_unpack(name, version)
       gem "fetch", name, "-v #{version}"
 
       unless File.exist?(gem_path)
-        abort "#{name} #{version} not found"
+        gem = name
+        gem << " #{version}" if version
+        abort "#{gem} not found"
       end
 
       sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
