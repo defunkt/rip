@@ -21,7 +21,10 @@ module Rip
     attr_accessor :path, :text
 
     def initialize(path = nil)
-      if path && File.directory?(path)
+      if path && path.is_a?(Array)
+        @text = ''
+        path.each { |p| merge(p) }
+      elsif path && File.directory?(path)
         @path = "#{path}/metadata.rip"
         @text = File.read(@path)
       elsif path && File.exists?(path)

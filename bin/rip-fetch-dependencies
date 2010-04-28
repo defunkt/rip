@@ -4,6 +4,17 @@
 
 require 'rip/script'
 
-Rip::Environment.new(ARGV * ' ').packages.each do |package|
-  puts rip("package #{package.source} #{package.version}")
+def fetch_dependencies(env)
+  env.packages.each do |package|
+    path = rip("package #{package.source} #{package.version}")
+
+    if File.exists? deps = "#{path}/deps.rip"
+      warn "found #{deps}"
+      fetch_dependencies Environment.new(deps)
+    end
+
+    puts path
+  end
 end
+
+fetch_dependencies Environment.new(ARGV * ' ')
