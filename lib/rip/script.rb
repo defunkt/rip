@@ -41,3 +41,4 @@ ACTIVEDIR  = Rip.active
 require 'fileutils'
 include FileUtils
 include Rip::Helpers
+include Rip
