@@ -4,10 +4,6 @@ module Rip
   autoload :Parser,      'rip/parser'
   autoload :Environment, 'rip/environment'
   autoload :Helpers,     'rip/helpers'
-  autoload :Package,     'rip/package'
-
-  autoload :GitPackage, 'rip/packages/git_package'
-  autoload :GemPackage, 'rip/packages/gem_package'
 
   extend self
   attr_accessor :dir, :env

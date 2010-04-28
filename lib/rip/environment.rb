@@ -7,6 +7,7 @@ module Rip
     end
 
     def packages
+      return []
       Rip::Parser.parse(File.read(@path), @path).map do |hash|
         package_and_dependencies Rip::Package.from_hash(hash)
       end.flatten
