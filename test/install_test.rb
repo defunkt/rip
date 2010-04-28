@@ -23,7 +23,7 @@ class InstallTest < Rip::Test
     out = rip "install repl"
     assert_exited_successfully out
 
-    assert_equal "installed repl (0.2.1)", out.strip
+    assert_equal "installed repl (0.1.0)", out.strip
 
     assert File.exist?("#{@ripdir}/base/bin/repl")
     assert File.exist?("#{@ripdir}/base/man/repl.1")
