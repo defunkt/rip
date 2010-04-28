@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
-# Usage: rip-installed PATH
-# Determines whether a package is already installed or not.
-# Exits 1 if so, 0 if not.
-#
-# Steps:
-#   Infers the current version
-#   Reads $RIPDIR/$RIPENV/$RIPENV.ripenv
-#   Checks if PATH is already installed in the ripenv
+# Usage: rip-packages
+# Prints the installed rip packages
 
 require 'rip/script'
 

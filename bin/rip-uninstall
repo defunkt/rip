@@ -13,7 +13,7 @@ name = ARGV[0]
 
 # Find package from name
 # TODO turn into a seperate bin
-package = rip("installed").detect do |package|
+package = rip("packages").detect do |package|
   rip("metadata #{package}") =~ /^#{name}/
 end
 

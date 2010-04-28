@@ -7,6 +7,6 @@
 
 require 'rip/script'
 
-rip("installed").each do |package|
+rip("packages").each do |package|
   puts rip("metadata #{package}")
 end
