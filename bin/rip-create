@@ -6,8 +6,7 @@
 # RIPENV/
 # |-- bin
 # |-- lib
-# |-- man
-# `-- RIPENV.ripenv
+# `-- man
 
 RIPENV = ARGV[0] || ENV['RIPENV']
 RIPDIR = ENV['RIPDIR']
