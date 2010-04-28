@@ -49,7 +49,7 @@ def gem_unpack(name, version)
 end
 
 def rpg_list(name)
-  if rpg("list -a 2>/dev/null | grep '^#{name} '") =~ /^#{name} (.+)$/
+  if rpg("list -a #{name}") =~ /^#{name} (.+)$/
     $1
   end
 end
