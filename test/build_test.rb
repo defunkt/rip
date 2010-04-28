@@ -23,7 +23,7 @@ class BuildTest < Rip::Test
     path = out.chomp
 
     out = rip "build #{path}"
-    target = "#{@ripdir}/.packages/yajl-ruby-f4647498685a0f80011c5db175be3570"
+    target = "#{@ripdir}/.packages/yajl-ruby-28ab3e9b3b6983fc7e4209b4935dc84a"
     assert_equal target, out.chomp
 
     assert File.exist?("#{target}/ext/Makefile")

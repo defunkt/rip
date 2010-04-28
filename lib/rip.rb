@@ -33,7 +33,7 @@ module Rip
   end
 
   def platform_hash
-    md5(shell_ruby_platform)
+    ENV['RIPPLATFORM'] || md5(shell_ruby_platform)
   end
 
   # Shell out to ruby so we always get the shells activate ruby,
