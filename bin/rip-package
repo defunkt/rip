@@ -36,6 +36,8 @@ else
   version = ARGV[1]
 end
 
+warn "packaging #{ARGV * ' '}"
+
 
 if path == "/"
   # TODO: Eventually search load path for all rip-handle-*
