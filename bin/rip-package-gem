@@ -35,7 +35,7 @@ def gem_unpack(name, version)
       gem "fetch", name, "-v #{version}"
 
       unless File.exist?(gem_path)
-        gem = name
+        gem = name.dup
         gem << " #{version}" if version
         abort "#{gem} not found"
       end

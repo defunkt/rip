@@ -22,10 +22,16 @@ class ConflictTest < Rip::Test
   end
 
   test "detect-conflics, one in env" do
-    rip "install repl 0.2.1"
-    out = rip("detect-conflicts test/fixtures/basic.rip")
+    rip "install repl 0.1.0"
+
+    file = Tempfile.new('basic.rip')
+    file.puts File.read("test/fixtures/basic.rip")
+    file.puts "repl 0.1.1"
+    file.close
+
+    out = rip("detect-conflicts #{file.path}")
     assert_exited_with_error out
-    assert_equal "repl (0.2.1)\nrepl (0.1.0)\n", out
+    assert_equal "repl (0.1.0)\nrepl (0.1.1)\n", out
 
     rip "remove repl"
     assert_exited_successfully rip("detect-conflicts test/fixtures/basic.rip")
