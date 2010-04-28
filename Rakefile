@@ -14,11 +14,13 @@ if system("which turn &> /dev/null")
     exec "turn test/*.rb"
   end
 else
-  Rake::TestTask.new do |t|
-    t.libs << 'lib'
-    t.pattern = 'test/*_test.rb'
-    t.verbose = false
-  end
+  task :test => "test:unit"
+end
+
+Rake::TestTask.new "test:unit" do |t|
+  t.libs << 'lib'
+  t.pattern = 'test/*_test.rb'
+  t.verbose = false
 end
 
 desc "Build rip manual"
