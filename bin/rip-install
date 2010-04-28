@@ -4,11 +4,28 @@
 
 require 'rip/script'
 
-env = Rip::Environment.new(ARGV * ' ')
-# rip "fetch-dependencies #{env.path}"
+thing = ARGV * ' '
+env   = Rip::Environment.new(thing)
+paths = []
 
+# Grab all dependencies
 env.packages.each do |package|
-  path = sh "rip-package #{package.source} #{package.version}"
+  paths << rip("package #{package.source} #{package.version}")
+end
+
+# See if we have any conflicts
+conflicts = `rip-detect-conflicts #{paths * ' '} 2>&1`.chomp
+
+# Abort if so
+if conflicts.to_s.any?
+  warn "Conflicts:"
+  warn conflicts
+  exit 1
+end
+
+# Install all else if not.
+env.packages.each do |package|
+  path = paths.shift
   rip "import #{path}"
   package = Package.parse(rip("metadata", path))
   warn "installed #{package}"

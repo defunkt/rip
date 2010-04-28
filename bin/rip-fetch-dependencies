@@ -4,6 +4,6 @@
 
 require 'rip/script'
 
-Rip::Environment.new(ARGV[0]).packages.each do |package|
+Rip::Environment.new(ARGV * ' ').packages.each do |package|
   puts rip("package #{package.source} #{package.version}")
 end

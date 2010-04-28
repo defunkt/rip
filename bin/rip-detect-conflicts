@@ -21,7 +21,6 @@ rip("installed").split("\n").each do |package|
 end
 
 ARGV.each do |arg|
-  exit 4 unless File.exists?(arg)
   env.merge(arg)
 end
 
