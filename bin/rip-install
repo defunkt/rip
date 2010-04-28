@@ -1,14 +1,6 @@
 #!/usr/bin/env ruby
 # Usage: rip-install PATH
 # Installs a library into $RIPDIR/$RIPENV
-#
-# Steps:
-#   Calls `rip-installed PATH`
-#   Fails if already installed
-#   Calls `rip-fetch-dependencies deps.rip`
-#   Calls `rip-detect-conflicts deps.rip`
-#   Fails if conflicts exist
-#   Calls `rip-import PATH`
 
 require 'rip/script'
 
