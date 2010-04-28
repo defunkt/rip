@@ -9,7 +9,7 @@ def fetch_dependencies(env)
     path = rip("package #{package.source} #{package.version}")
 
     if File.exists? deps = "#{path}/deps.rip"
-      warn "found #{deps}"
+      debug "found #{deps}"
       fetch_dependencies Environment.new(deps)
     end
 

@@ -2,6 +2,10 @@ require 'tempfile'
 
 module Rip
   module Helpers
+    def debug(msg)
+      warn(msg) if ENV['RIPDEBUG']
+    end
+
     def rip(command, *args)
       bindir = File.dirname(__FILE__) + "/../../bin/"
       sh "#{bindir}/rip-#{command}", *args

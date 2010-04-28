@@ -36,7 +36,7 @@ else
   version = ARGV[1]
 end
 
-warn "packaging #{ARGV * ' '}"
+debug "packaging #{ARGV * ' '}"
 
 
 if path == "/"
