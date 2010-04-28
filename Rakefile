@@ -25,12 +25,12 @@ end
 
 desc "Build rip manual"
 task :build_man do
-  sh "ron -br5 --organization=DEFUNKT --manual='Rip Manual' man/*.ron"
+  sh "ron -br5 --organization=RIP --manual='Rip Manual' man/**/*.ron"
 end
 
 desc "Show rip manual"
 task :man => :build_man do
-  exec "man man/*.{1,5}"
+  exec "man man/**/*.{1,5}"
 end
 
 desc "Installs Rip"

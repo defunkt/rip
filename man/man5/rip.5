@@ -1,7 +1,7 @@
 .\" generated with Ron/v0.3
 .\" http://github.com/rtomayko/ron/
 .
-.TH "RIP" "5" "February 2010" "DEFUNKT" "Rip Manual"
+.TH "RIP" "5" "April 2010" "RIP" "Rip Manual"
 .
 .SH "NAME"
 \fBrip\fR \-\- rip file format
@@ -13,11 +13,11 @@ A simple Rip file (e.g. deps.rip):
 .
 .nf
 
-git://github.com/ezmobius/redis\-rb.git eed200ad
-git://github.com/brianmario/yajl\-ruby.git 0.6.3
+\fBgit://github.com/ezmobius/redis-rb.git eed200ad
+git://github.com/brianmario/yajl-ruby.git 0.6.3
 rack
 sinatra
-mustache 
+mustache \fR
 .
 .fi
 .
@@ -30,8 +30,8 @@ A more complex Rip file:
 .
 .nf
 
-git://github.com/ezmobius/redis\-rb.git @1.0 =>redis
-git://github.com/brianmario/yajl\-ruby.git 0.6.3
+\fBgit://github.com/ezmobius/redis-rb.git @1.0 =>redis
+git://github.com/brianmario/yajl-ruby.git 0.6.3
 sinatra 0.9.4
 * rack 1.0
 rake # any version
@@ -39,7 +39,7 @@ rake # any version
 # Classier with caps
 git://github.com/quirkey/vegas.git v0.1.2 =>Vegas
 logging.rip
-git://github.com/rails/rails.git /activerecord 
+git://github.com/rails/rails.git /activerecord \fR
 .
 .fi
 .
@@ -59,14 +59,14 @@ The format is:
 .
 .nf
 
-source [install options] 
+\fBsource [install options] \fR
 .
 .fi
 .
 .IP "" 0
 .
 .P
-Each line of a Rip file can be fed to \fBrip\-install\fR.
+Each line of a Rip file can be fed to \fBrip-install\fR.
 .
 .SS "Comments"
 Rip files use Ruby\-style \fB#\fR comments. Anything after a \fB#\fR on a line
@@ -76,8 +76,8 @@ is considered a comment.
 .
 .nf
 
-# comment
-redis # also a comment 
+\fB# comment
+redis # also a comment \fR
 .
 .fi
 .
@@ -152,7 +152,7 @@ package. For example, given this line:
 .
 .nf
 
-git://github.com/rails/rails.git /activerecord 
+\fBgit://github.com/rails/rails.git /activerecord \fR
 .
 .fi
 .
@@ -172,8 +172,8 @@ For example, these lines:
 .
 .nf
 
-sinatra 0.9.4
-* rack 1.0 
+\fBsinatra 0.9.4
+* rack 1.0 \fR
 .
 .fi
 .
@@ -186,8 +186,8 @@ Will basically be executed as:
 .
 .nf
 
-$ rip\-install rack 1.0
-$ rip\-install sinatra 0.9.4 
+\fB$ rip-install rack 1.0
+$ rip-install sinatra 0.9.4 \fR
 .
 .fi
 .
@@ -200,15 +200,15 @@ Dependencies can be nested as deeply as you'd like.
 .
 .nf
 
-sinatra 0.9.4
+\fBsinatra 0.9.4
 * rack 1.0
 mustache 0.3.1
 * temple 1.2
-** hot\-parser 0.4.5
+** hot-parser 0.4.5
 ** cacher 0.1
 *** httparty 1.0 /party
 * markdown 1.0
-** rdiscount 0.9.4.1 
+** rdiscount 0.9.4.1 \fR
 .
 .fi
 .
@@ -226,7 +226,7 @@ greater than sign.
 .
 .nf
 
-git://github.com/ezmobius/redis\-rb.git =>redis 
+\fBgit://github.com/ezmobius/redis-rb.git =>redis \fR
 .
 .fi
 .
@@ -255,7 +255,7 @@ For example:
 .
 .nf
 
-git://github.com/defunkt/mustache.git @1.0.2 
+\fBgit://github.com/defunkt/mustache.git @1.0.2 \fR
 .
 .fi
 .
@@ -273,7 +273,7 @@ argument:
 .
 .nf
 
-git://github.com/ezmobius/redis\-rb.git @1.0 =>redis 
+\fBgit://github.com/ezmobius/redis-rb.git @1.0 =>redis \fR
 .
 .fi
 .
@@ -294,10 +294,10 @@ following formats:
 .
 .nf
 
-git://git.myproject.org/MyProject
+\fBgit://git.myproject.org/MyProject
 git@git.myproject.org:MyProject.git
 git+http://git.myproject.org/MyProject
-git+ssh://git@myproject.org/MyProject 
+git+ssh://git@myproject.org/MyProject \fR
 .
 .fi
 .
@@ -310,8 +310,8 @@ Rip will also try to fetch any source ending in \fB.git\fR:
 .
 .nf
 
-http://git.myproject.org/MyProject.git
-file:///Users/chris/Projects/rip/.git 
+\fBhttp://git.myproject.org/MyProject.git
+file:///Users/chris/Projects/rip/.git \fR
 .
 .fi
 .
@@ -325,9 +325,9 @@ following formats:
 .
 .nf
 
-hg+http://hg.myproject.org/MyProject/
+\fBhg+http://hg.myproject.org/MyProject/
 hg+https://hg.myproject.org/MyProject/
-hg+ssh://hg@myproject.org/MyProject/ 
+hg+ssh://hg@myproject.org/MyProject/ \fR
 .
 .fi
 .
@@ -341,10 +341,10 @@ following formats:
 .
 .nf
 
-bzr+http://bzr.myproject.org/MyProject/trunk/ /MyProject
+\fBbzr+http://bzr.myproject.org/MyProject/trunk/ /MyProject
 bzr+sftp://user@myproject.org/MyProject/trunk/ /MyProject
 bzr+ssh://user@myproject.org/MyProject/trunk/ /MyProject
-bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject 
+bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject \fR
 .
 .fi
 .
@@ -353,28 +353,28 @@ bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject
 .SS "
 .rip file"
 Any source ending in \fB.rip\fR will be loaded recursively. That is, each
-line will be fed to \fBrip\-install\fR as if they were a top level
+line will be fed to \fBrip-install\fR as if they were a top level
 line. Kind of like a partial or include.
 .
 .IP "" 4
 .
 .nf
 
-deps.rip
-http://defunkt.github.com/hub/latest.rip 
+\fBdeps.rip
+http://defunkt.github.com/hub/latest.rip \fR
 .
 .fi
 .
 .IP "" 0
 .
 .P
-Keep in mind these also work as argument to \fBrip\-install\fR:
+Keep in mind these also work as argument to \fBrip-install\fR:
 .
 .IP "" 4
 .
 .nf
 
-$ rip\-install http://defunkt.github.com/hub/latest.rip 
+\fB$ rip-install http://defunkt.github.com/hub/latest.rip \fR
 .
 .fi
 .
@@ -388,11 +388,11 @@ take up the entire line \- everything will be run right on the shell.
 .
 .nf
 
-!brew install redis
+\fB!brew install redis
 !brew install mongo
 !brew install ruby
 redis 1.0
-mongo 
+mongo \fR
 .
 .fi
 .
@@ -406,7 +406,7 @@ or local.
 .
 .nf
 
-http://defunkt.github.com/backups/redis\-rb.zip 
+\fBhttp://defunkt.github.com/backups/redis-rb.zip \fR
 .
 .fi
 .
@@ -420,7 +420,7 @@ dezipped, be it remote or local.
 .
 .nf
 
-http://defunkt.github.com/backups/redis.tar.gz 
+\fBhttp://defunkt.github.com/backups/redis.tar.gz \fR
 .
 .fi
 .
@@ -433,8 +433,8 @@ Directories can be specified as long as they begin with \fB/\fR or \fB~\fR.
 .
 .nf
 
-/var/packages/iphone
-~/Projects/stunners @1.0 
+\fB/var/packages/iphone
+~/Projects/stunners @1.0 \fR
 .
 .fi
 .
@@ -447,8 +447,8 @@ Files can be specified as long as they begin with \fB/\fR or \fB~\fR.
 .
 .nf
 
-/var/packages/iphone/iphone.rb
-~/Projects/stunners/index.rb 
+\fB/var/packages/iphone/iphone.rb
+~/Projects/stunners/index.rb \fR
 .
 .fi
 .
@@ -458,7 +458,7 @@ Files can be specified as long as they begin with \fB/\fR or \fB~\fR.
 \fIhttp://github.com/defunkt/rip/issues\fR
 .
 .SH "AUTHOR"
-Chris Wanstrath :: chris@ozmm.org :: @defunkt
+Chris Wanstrath :: chris@ozmm.org
 .
 .SH "SEE ALSO"
 rip(1), git(1),\fIhttp://github.com\fR, \fIhttp://github.com/defunkt/rip\fR
