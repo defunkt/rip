@@ -28,4 +28,9 @@ class InstallTest < Rip::Test
     assert File.exist?("#{@ripdir}/base/bin/repl")
     assert File.exist?("#{@ripdir}/base/man/repl.1")
   end
+
+  test "know about versions" do
+    out = rip "install repl 0.100.0"
+    assert_exited_with_error out
+  end
 end

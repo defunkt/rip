@@ -4,7 +4,7 @@
 
 require 'rip/script'
 
-env = Rip::Environment.new(ARGV[0])
+env = Rip::Environment.new(ARGV * ' ')
 # rip "fetch-dependencies #{env.path}"
 
 env.packages.each do |package|
