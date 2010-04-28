@@ -6,6 +6,7 @@ class InstallTest < Rip::Test
 
   def setup
     start_git_daemon
+    start_gem_daemon
     super
   end
 
@@ -18,6 +19,13 @@ class InstallTest < Rip::Test
     assert File.exist?("#{@ripdir}/base/lib/cijoe/build.rb")
   end
 
-  test "records which files were installed" do
+  test "install repl gem" do
+    out = rip "install repl"
+    assert_exited_successfully out
+
+    assert_equal "installed repl (0.2.1)", out.strip
+
+    assert File.exist?("#{@ripdir}/base/bin/repl")
+    assert File.exist?("#{@ripdir}/base/man/repl.1")
   end
 end
