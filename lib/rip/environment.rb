@@ -1,7 +1,7 @@
 module Rip
   class Package < OpenStruct
     def to_s
-      "#{source} (#{version})"
+      "#{name} (#{version})"
     end
 
     def name
@@ -10,6 +10,10 @@ module Rip
       else
         source
       end
+    end
+
+    def dependencies
+      Array(super).map { |dep| self.class.new(dep) }
     end
   end
 
@@ -22,7 +26,7 @@ module Rip
 
     def packages
       Rip::Parser.parse(File.read(@path), @path).map do |hash|
-        Package.new(hash)
+        package_and_dependencies Package.new(hash)
       end.flatten
     end
 
