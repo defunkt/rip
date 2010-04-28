@@ -21,8 +21,5 @@ env.packages.each do |package|
   path = sh "rip-package #{package.source} #{package.version}"
   puts path
   package.files = rip "import #{path}"
-  Rip.ripenv[package.name] = package
   warn "Installed #{package}"
 end
-
-Rip.save_ripenv

@@ -28,28 +28,6 @@ module Rip
     "#{dir}/#{env}"
   end
 
-  # Ugly hack.
-  def ripenv
-    return @ripenv if @ripenv
-
-    if File.exists?(ripenv_path)
-      @ripenv = YAML.load_file(ripenv_path)
-    else
-      @ripenv = {}
-    end
-  end
-
-  # Ugly hack
-  def ripenv_path
-    "#{envdir}/#{env}.ripenv"
-  end
-
-  # Uglier hack
-  def save_ripenv
-    File.open(ripenv_path, 'w') { |f| f.puts YAML.dump(ripenv) }
-    true
-  end
-
   def envs
     Dir["#{dir}/*"].map { |f| File.basename(f) }.reject do |ripenv|
       ripenv == 'active' || ripenv[0].chr == '.'
