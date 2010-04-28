@@ -1,4 +1,5 @@
 require 'yaml'
+require 'ostruct'
 
 module Rip
   autoload :Parser,      'rip/parser'
