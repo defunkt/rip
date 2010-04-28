@@ -3,4 +3,8 @@
 #
 # Reads package metadata
 
-puts File.read("#{ARGV[0]}/metadata.rip")
+if File.exists?(file = "#{ARGV[0]}/metadata.rip")
+  puts File.read(file)
+else
+  exit 1
+end
