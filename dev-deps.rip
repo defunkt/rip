@@ -1,2 +1,4 @@
-file:///Users/chris/Projects/repl v0.2.0
-file:///Users/chris/Projects/turn turn-0.7.0
+repl 0.2.0
+turn 0.7.0
+git://github.com/rtomayko/rack-cache.git
+git://github.com/rack/rack.git
