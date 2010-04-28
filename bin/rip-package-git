@@ -6,7 +6,7 @@ version = ARGV[1] || "master"
 
 unless source =~ %r{^file://|^git://|\.git$} ||
     File.directory?(source) && File.exists?("#{source}/HEAD")
-  exit 123 # Need to research bash exit code conventions
+  exit 3 # Can't handle source
 end
 
 
