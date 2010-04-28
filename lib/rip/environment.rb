@@ -21,11 +21,16 @@ module Rip
     attr_accessor :path
 
     def initialize(path)
-      @path = path
+      if File.exists?(path)
+        @path = path
+        @text = File.read(path)
+      else
+        @text = path
+      end
     end
 
     def packages
-      Rip::Parser.parse(File.read(@path), @path).map do |hash|
+      Rip::Parser.parse(@text, @path).map do |hash|
         package_and_dependencies Package.new(hash)
       end.flatten
     end
