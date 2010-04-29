@@ -54,4 +54,22 @@ class PackageGemTest < Rip::Test
     assert_equal "repl 0.1.0\n",
       File.read("#{target}/metadata.rip")
   end
+
+  test "writes deps.rip if it needs to" do
+    out = rip "package-gem ambition"
+    target = "#{@ripdir}/.packages/ambition-23537c5d0c31d3a0b0e3bcfa225a2dca"
+
+    assert_equal target, out.chomp
+    assert File.exist?("#{target}/deps.rip")
+    assert_equal "ParseTree 2.1.1\nrubigen 1.1.1\nruby2ruby 1.1.8\n",
+      File.read("#{target}/deps.rip")
+  end
+
+  test "doesn't write deps.rip if it doesn't need to" do
+    out = rip "package-gem repl"
+    target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
+
+    assert_equal target, out.chomp
+    assert !File.exist?("#{target}/deps.rip")
+  end
 end

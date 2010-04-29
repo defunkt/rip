@@ -26,15 +26,13 @@ def gem_list(name)
 end
 
 def gem_unpack(name, version)
-  path = nil
+  path = gem_path = nil
 
   cd Rip.cache do
-    gem_path = File.expand_path("#{name}-#{version}.gem")
-
     begin
-      gem "fetch", name, "-v #{version}"
-
-      unless File.exist?(gem_path)
+      if gem("fetch", name, "-v #{version}") =~ /Downloaded (.+)/
+        gem_path = File.expand_path($1) + ".gem"
+      else
         gem = name.dup
         gem << " #{version}" if version
         abort "#{gem} not found"
@@ -44,7 +42,7 @@ def gem_unpack(name, version)
         /^Unpacked gem: '(.+)'$/
       path = $1
     ensure
-      rm_rf gem_path
+      rm_rf gem_path if File.exist?(gem_path.to_s)
     end
   end
 
@@ -89,6 +87,22 @@ synchronize(package_path) do
 
   File.open("#{package_path}/metadata.rip", 'w') do |f|
     f.puts "#{source} #{version}"
+  end
+
+  if !File.exists?(deps_rip = "#{package_path}/deps.rip")
+    deps = gem("dependency --pipe -r #{source} -v #{version}")
+
+    deps = deps.split("\n").map do |dep|
+      parts = dep.split(' ')
+      source, version = parts.first, parts.last.chomp("'")
+      version == "0" ? source : "#{source} #{version}"
+    end
+
+    if deps.any?
+      File.open(deps_rip, 'w') do |f|
+        f.puts deps.join("\n")
+      end
+    end
   end
 
   puts package_path
