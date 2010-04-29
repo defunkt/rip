@@ -20,16 +20,19 @@ module Rip
       args << "-s #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
       args << "2> /dev/null"
 
+      debug "gem #{command} #{args * ' '}"
       `gem #{command} #{args * ' '}`
     end
 
     def rpg(command, *args)
       args << "2> /dev/null"
 
+      debug "rpg #{command} #{args * ' '}"
       `rpg #{command} #{args * ' '}`
     end
 
     def git(command, *args)
+      debug "git #{command} #{args * ' '}"
       sh :git, command, *args
     end
 
