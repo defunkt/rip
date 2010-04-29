@@ -90,7 +90,7 @@ synchronize(package_path) do
   end
 
   if !File.exists?(deps_rip = "#{package_path}/deps.rip")
-    deps = gem("dependency --pipe -r #{source} -v #{version}")
+    deps = gem("dependency --pipe -r /^#{source}$/ -v #{version}")
 
     deps = deps.split("\n").map do |dep|
       parts = dep.split(' ')
