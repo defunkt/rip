@@ -8,8 +8,10 @@ module Rip
       "#{name} (#{version})"
     end
 
-    def version
-      if real_version = super
+    def version(long = false)
+      return super() if long
+
+      if real_version = super()
         real_version.length == 40 ? real_version[0,10] : real_version
       end
     end
