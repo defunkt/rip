@@ -1,17 +1,38 @@
 #!/usr/bin/env ruby
-# Usage: rip-env RIPENV
-#
-# Prints or changes the current ripenv.
+## Usage: rip-env [-c] [-d] [-l] RIPENV
+##
+## Prints, changes, lists, creates, or deletes the ripenvs.
 
 require 'rip/script'
+require 'optparse'
 
-if target = ARGV[0]
-  if RIPENVS.include? target
-    rm Rip.active rescue nil
-    ln_s "#{RIPDIR}/#{target}", Rip.active
-  else
-    abort "Can't find ripenv `#{target}'"
-  end
+delete = false
+ripenv = ARGV.detect { |arg| arg[0].chr != '-' }
+
+ARGV.options do |o|
+  o.on('-c', '--create') { exec "rip-create #{ripenv}" }
+  o.on('-l', '--list')   { exec "rip-envs" }
+  o.on('-d', '--delete') { delete = true }
+  o.on('-h', '--help')   { exec "grep ^## < #$0 | cut -c4-" }
+  o.parse!
 end
 
-puts RIPENV
+abort "Can't find ripenv `#{ripenv}'" unless RIPENVS.include? ripenv
+
+if delete && RIPENVS.size > 1
+  if ripenv == RIPENV
+    abort "Can't delete current ripenv."
+  end
+
+  exec "rm -rf #{Rip.dir}/#{ripenv}"
+elsif delete
+  abort "Can't delete only ripenv."
+end
+
+if ripenv
+  rm Rip.active rescue nil
+  ln_s "#{RIPDIR}/#{ripenv}", Rip.active
+  puts ripenv
+else
+  puts RIPENV
+end
