@@ -2,6 +2,14 @@ require 'tempfile'
 
 module Rip
   module Helpers
+    def warn(msg)
+      $stderr.puts(msg)
+    end
+
+    def info(msg)
+      warn(msg) if ENV['RIPVERBOSE'] || ENV['RIPDEBUG']
+    end
+
     def debug(msg)
       warn(msg) if ENV['RIPDEBUG']
     end
