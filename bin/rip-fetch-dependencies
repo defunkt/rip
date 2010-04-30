@@ -4,8 +4,13 @@
 
 require 'rip/script'
 
+$installed = {}
+
 def fetch_dependencies(env)
   env.packages.each do |package|
+    next if $installed[package.source]
+    $installed[package.source] = true
+
     path = rip("package #{package.source} #{package.version}")
 
     if File.exists? deps = "#{path}/deps.rip"
