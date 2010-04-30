@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# Usage: rip-fsck
+# Verify integrity of packages and cache'
+
+require 'rip/script'
+
+status = 0
+
+Dir["#{Rip.packages}/*"].each do |package|
+  metadata = "#{package}/metadata.rip"
+  if !File.exists?(metadata)
+    status = 1
+    puts "#{package} is missing metadata"
+  elsif !File.readable?(metadata)
+    status = 1
+    puts "#{package} metadata is not readable"
+  end
+
+  deps = "#{package}/deps.rip"
+  if File.exist?(deps) && !File.readable?(deps)
+    status = 1
+    puts "#{package} deps is not readable"
+  end
+end
+
+exit status
