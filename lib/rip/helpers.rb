@@ -12,6 +12,7 @@ module Rip
     end
 
     def rpg_available?
+      return false if ENV['RIPRPG'] == '0'
       `which rpg`
       $?.success?
     end

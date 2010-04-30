@@ -3,6 +3,7 @@ require 'helper'
 
 class PackageGemTest < Rip::Test
   def setup
+    ENV['RIPRPG'] = '0'
     start_gem_daemon
     super
   end
@@ -71,5 +72,14 @@ class PackageGemTest < Rip::Test
 
     assert_equal target, out.chomp
     assert !File.exist?("#{target}/deps.rip")
+  end
+end
+
+if `which rpg` && $?.success?
+  class RpgPackageGemTest < PackageGemTest
+    def setup
+      super
+      ENV['RIPRPG'] = '1'
+    end
   end
 end
