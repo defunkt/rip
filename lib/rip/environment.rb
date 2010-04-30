@@ -32,10 +32,10 @@ module Rip
       if path && path.is_a?(Array)
         @text = ''
         path.each { |p| merge(p) }
-      elsif path && File.directory?(path)
+      elsif path && path.include?('/') && File.directory?(path)
         @path = "#{path}/metadata.rip"
         @text = File.read(@path)
-      elsif path && File.exists?(path)
+      elsif path && path.include?('.') && File.exists?(path)
         @path = path
         @text = File.read(path)
       else
