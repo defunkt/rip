@@ -9,24 +9,28 @@
 
 require 'rip/script'
 
-name = ARGV[0]
+name    = ARGV[0]
+package = nil
 
 # Find package from name
 # TODO turn into a seperate bin
-package = rip("installed").detect do |package|
-  rip("metadata #{package}") =~ /^#{name}/
+package_path = rip("installed").detect do |path|
+  package = Package.parse(rip("metadata #{path}"))
+  package.name == name
 end
 
-if !package
+if !package_path
   abort "#{name} not installed"
 end
 
-package = package.chomp
+package_path = package_path.chomp
 
 Dir["#{Rip.envdir}/**/*"].each do |file|
   if File.symlink?(file)
-    if File.readlink(file).index(package)
+    if File.readlink(file).index(package_path)
       File.unlink(file)
     end
   end
 end
+
+puts "#{package} uninstalled"

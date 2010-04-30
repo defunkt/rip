@@ -8,6 +8,12 @@ module Rip
       "#{name} (#{version})"
     end
 
+    def version
+      if real_version = super
+        real_version.length == 40 ? real_version[0,10] : real_version
+      end
+    end
+
     def name
       source.split('/').last.chomp('.git').chomp('.gem')
     end
@@ -21,6 +27,8 @@ module Rip
     attr_accessor :path, :text
 
     def initialize(path = nil)
+      path = path.strip if path.is_a?(String)
+
       if path && path.is_a?(Array)
         @text = ''
         path.each { |p| merge(p) }
@@ -33,6 +41,10 @@ module Rip
       else
         @text = path.to_s
       end
+    end
+
+    def to_s
+      packages.map { |package| package.to_s } * "\n"
     end
 
     def merge(env)

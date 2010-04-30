@@ -8,5 +8,5 @@
 require 'rip/script'
 
 rip("installed").each do |package|
-  puts rip("metadata #{package}")
+  puts Environment.new(package)
 end
