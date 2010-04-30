@@ -7,6 +7,25 @@ class EnvTest < Rip::Test
     assert_equal "base\n", out
   end
 
+  test "creates a RIPENV" do
+    rip "env -c newthing"
+    assert_equal "  base\n* newthing\n", rip("envs")
+  end
+
+  test "deletes a RIPENV" do
+    rip "env -c newthing"
+    assert_includes "newthing", rip("envs")
+
+    rip "env base"
+    rip "env -d newthing"
+    assert_equal "* base\n", rip("envs")
+  end
+
+  test "lists RIPENVs" do
+    out = rip "env"
+    assert_equal "base\n", out
+  end
+
   test "no $RIPDIR set" do
     out = rip "env" do
       ENV.delete('RIPDIR')

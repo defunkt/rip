@@ -6,6 +6,11 @@
 require 'rip/script'
 require 'optparse'
 
+if ARGV.empty?
+  puts RIPENV
+  exit
+end
+
 delete = false
 ripenv = ARGV.detect { |arg| arg[0].chr != '-' }
 
@@ -29,10 +34,6 @@ elsif delete
   abort "Can't delete only ripenv."
 end
 
-if ripenv
-  rm Rip.active rescue nil
-  ln_s "#{RIPDIR}/#{ripenv}", Rip.active
-  puts ripenv
-else
-  puts RIPENV
-end
+rm Rip.active rescue nil
+ln_s "#{RIPDIR}/#{ripenv}", Rip.active
+puts ripenv
