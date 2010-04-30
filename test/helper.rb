@@ -13,7 +13,6 @@ class Rip::Test < Test::Unit::TestCase
     rm_rf @ripdir
     ENV['RIPPLATFORM'] = 'test'
     ENV['RIPDEBUG'] = nil
-    ENV['RIPVERBOSE'] = '1'
     ENV['RIPDIR'] = @ripdir
     rip "setup"
   end
