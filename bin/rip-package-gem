@@ -15,6 +15,7 @@ def list(name)
 end
 
 def unpack(name, version)
+  info "fetching #{name} #{version}"
   rpg_available? ? rpg_unpack(name, version) : gem_unpack(name, version)
 end
 

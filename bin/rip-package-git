@@ -43,9 +43,11 @@ synchronize(cache_path) do
   # Update cache and deference
   if !ref
     if File.directory?(cache_path)
+      info "updating #{source}"
       git "--git-dir=#{cache_path} fetch -q"
-    elsif !git("clone --bare --mirror #{source} #{cache_path}")
-      abort "#{source} not found"
+    else
+      info "fetching #{source}"
+      git("clone --bare --mirror #{source} #{cache_path}") || abort("#{source} not found")
     end
 
     ref = parse_git_rev(cache_path, version)
