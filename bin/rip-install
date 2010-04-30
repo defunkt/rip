@@ -14,7 +14,7 @@ paths = []
 paths = rip("fetch-dependencies #{thing}").split("\n")
 
 # See if we have any conflicts
-conflicts = `rip-detect-conflicts #{paths * ' '}`.chomp
+conflicts = rip "detect-conflicts #{paths * ' '}"
 
 # Abort if so
 if conflicts.to_s.any?
