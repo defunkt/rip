@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# Usage: rip-only [-d]
+#
+# Drops a rubygems.rb into $RIPENV/lib, causing the current Rip
+# environment to be the only environment seen. Essentially turns off
+# the Ruby RubyGems API for the current ripenv.
+#
+# The -d option removes this file, undoing the changes it made.
+
+require 'rip/script'
+exec (ARGV[0] == '-d' ? "rm" : "touch") + " #{Rip.envdir}/lib/rubygems.rb"
