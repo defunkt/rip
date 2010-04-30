@@ -35,7 +35,7 @@ module Rip
       elsif path && path.include?('/') && File.directory?(path)
         @path = "#{path}/metadata.rip"
         @text = File.read(@path)
-      elsif path && path.include?('.') && File.exists?(path)
+      elsif path && File.exists?(path)
         @path = path
         @text = File.read(path)
       else
