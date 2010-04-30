@@ -13,15 +13,13 @@ end
 require 'rip/script'
 
 def parse_git_rev(path, rev)
-  cd(path) do
-    ref = `git rev-parse --verify --quiet #{rev}`.chomp
-    return $?.success? ? ref : nil
-  end
+  ref = `git --git-dir=#{path} rev-parse --verify --quiet #{rev}`.chomp
+  $?.success? ? ref : nil
 end
 
 def fixed_rev?(path, rev, ref)
   ref =~ /^#{rev}/ || # substring of ref
-    `cd #{path} && git tag -l #{rev}`.chomp == rev # tag
+    `git --git-dir=#{path} tag -l #{rev}`.chomp == rev # tag
 end
 
 
@@ -45,9 +43,7 @@ synchronize(cache_path) do
   # Update cache and deference
   if !ref
     if File.directory?(cache_path)
-      cd cache_path do
-        git "fetch -q"
-      end
+      git "--git-dir=#{cache_path} fetch -q"
     elsif !system("git clone --bare --mirror #{source} #{cache_path} &> /dev/null")
       abort "#{source} not found"
     end
