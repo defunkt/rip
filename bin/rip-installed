@@ -17,7 +17,8 @@ installed = Set.new
 %w( lib bin man ).each do |type|
   Dir["#{Rip.envdir}/#{type}/**/*"].each do |file|
     if File.symlink?(file)
-      installed << File.readlink(file)[/^(#{Rip.packages}\/[^\/]+)/, 1]
+      package = File.readlink(file)[/^(#{Rip.packages}\/[^\/]+)/, 1]
+      installed << package if package
     end
   end
 end
