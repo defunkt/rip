@@ -30,5 +30,5 @@ env.packages.each do |package|
   path = paths.shift
   rip "import #{path}"
   package = Package.parse(rip("metadata", path))
-  warn "installed #{package}"
+  info "installed #{package}"
 end
