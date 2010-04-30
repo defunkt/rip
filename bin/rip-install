@@ -4,6 +4,8 @@
 
 require 'rip/script'
 
+abort "what?" if ARGV.empty?
+
 thing = ARGV * ' '
 env   = Environment.new(thing)
 paths = []
