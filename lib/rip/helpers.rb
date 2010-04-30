@@ -38,21 +38,12 @@ module Rip
     end
 
     def sh(*cmd)
-      options = cmd.last.is_a?(Hash) ? cmd.pop : {}
       result = `#{cmd * ' '}`.chomp
 
       if $?.success?
         result
       else
-        # Err, this sucks, maybe exit 1 shouldn't
-        # be the default option
-        #
-        # I agree.
-        if options[:exit] == false
-          false
-        else
-          exit 1
-        end
+        exit 1
       end
     end
 
