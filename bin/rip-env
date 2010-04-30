@@ -22,7 +22,9 @@ ARGV.options do |o|
   o.parse!
 end
 
-abort "Can't find ripenv `#{ripenv}'" unless RIPENVS.include? ripenv
+if !RIPENVS.include?(ripenv) && !ripenv.include?('/')
+  abort "Can't find ripenv `#{ripenv}'"
+end
 
 if delete && RIPENVS.size > 1
   if ripenv == RIPENV
@@ -35,5 +37,6 @@ elsif delete
 end
 
 rm Rip.active rescue nil
-ln_s "#{RIPDIR}/#{ripenv}", Rip.active
+target = ripenv.include?('/') ? File.expand_path(ripenv) : "#{RIPDIR}/#{ripenv}"
+ln_s target, Rip.active
 puts ripenv

@@ -26,7 +26,8 @@ if ripenv = ENV['RIPENV']
   end
 else
   if File.symlink?("#{ripdir}/active")
-    ripenv = File.basename(File.readlink("#{ripdir}/active"))
+    ripenv = File.readlink("#{ripdir}/active")
+    ripenv = File.basename(ripenv) if ripenv.include? ripdir
   else
     abort "No ripenvs found. Please run `rip-setup`"
   end
