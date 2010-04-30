@@ -19,6 +19,11 @@ def parse_git_rev(path, rev)
   end
 end
 
+def fixed_rev?(path, rev, ref)
+  ref =~ /^#{rev}/ || # substring of ref
+    `cd #{path} && git tag -l #{rev}`.chomp == rev # tag
+end
+
 
 if source =~ /([^\/]+?)-.{32}/
   name = $1
@@ -31,10 +36,10 @@ cache_path = "#{Rip.cache}/#{name}-#{Rip.md5(source)}"
 
 
 synchronize(cache_path) do
-  # Cache exists and we have a static reference
+  # Cache exists and we have a fixed reference
   if File.directory?(cache_path)
     ref = parse_git_rev(cache_path, version)
-    ref = nil unless ref =~ /^#{version}/
+    ref = nil if !fixed_rev?(cache_path, version, ref)
   end
 
   # Update cache and deference
