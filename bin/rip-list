@@ -1,12 +1,21 @@
 #!/usr/bin/env ruby
-# Usage: rip-list RIPENV
+# Usage: rip-list [-p] RIPENV
 #
 # Displays all installed packages and their versions for RIPENV.
 # If RIPENV is omitted shows installed packages for the current
 # RIPENV.
+#
+# If -p is passed, prints in a "parseable" deps.rip format.
 
 require 'rip/script'
 
+parse = ARGV.delete('-p')
+
 rip("installed").each do |package|
-  puts Environment.new(package)
+  if parse
+    package = Environment.new(package).packages[0]
+    puts "#{package.source} #{package.version(:long)}"
+  else
+    puts Environment.new(package)
+  end
 end
