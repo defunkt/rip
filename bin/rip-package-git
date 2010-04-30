@@ -13,13 +13,13 @@ end
 require 'rip/script'
 
 def parse_git_rev(path, rev)
-  ref = `git --git-dir=#{path} rev-parse --verify --quiet #{rev}`.chomp
+  ref = git "--git-dir=#{path} rev-parse --verify --quiet #{rev}"
   $?.success? ? ref : nil
 end
 
 def fixed_rev?(path, rev, ref)
   ref =~ /^#{rev}/ || # substring of ref
-    `git --git-dir=#{path} tag -l #{rev}`.chomp == rev # tag
+    git("--git-dir=#{path} tag -l #{rev}") == rev # tag
 end
 
 
@@ -44,7 +44,7 @@ synchronize(cache_path) do
   if !ref
     if File.directory?(cache_path)
       git "--git-dir=#{cache_path} fetch -q"
-    elsif !system("git clone --bare --mirror #{source} #{cache_path} &> /dev/null")
+    elsif !git("clone --bare --mirror #{source} #{cache_path}")
       abort "#{source} not found"
     end
 
@@ -65,11 +65,11 @@ synchronize(package_path) do
     exit 0
   end
 
-  system("git clone #{source} #{package_path} &> /dev/null") || exit(1)
+  git("clone #{source} #{package_path}") || exit(1)
   cd package_path
-  system("git checkout --quiet #{ref} &> /dev/null")
-  system("git remote rm origin &> /dev/null")
-  system("git branch -D master &> /dev/null")
+  git "checkout --quiet #{ref}"
+  git "remote rm origin"
+  git "branch -D master"
 
   File.open("#{package_path}/metadata.rip", 'w') do |f|
     f.puts "#{source} #{ref}"
