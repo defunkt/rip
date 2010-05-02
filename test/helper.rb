@@ -46,6 +46,7 @@ class Rip::Test < Test::Unit::TestCase
       !haystack.include? needle
     end
   end
+  alias_method :assert_doesnt_include, :assert_not_includes
 
   # Asserts that the last exited child process (probably `rip`) exited
   # successfully.
