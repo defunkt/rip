@@ -2,6 +2,14 @@ require 'tempfile'
 
 module Rip
   module Helpers
+    def warn(msg)
+      $stderr.puts(msg)
+    end
+
+    def info(msg)
+      warn(msg) if ENV['RIPVERBOSE'] || ENV['RIPDEBUG']
+    end
+
     def debug(msg)
       warn(msg) if ENV['RIPDEBUG']
     end
@@ -12,6 +20,7 @@ module Rip
     end
 
     def rpg_available?
+      return false if ENV['RIPRPG'] == '0'
       `which rpg`
       $?.success?
     end
@@ -37,22 +46,8 @@ module Rip
     end
 
     def sh(*cmd)
-      options = cmd.last.is_a?(Hash) ? cmd.pop : {}
       result = `#{cmd * ' '}`.chomp
-
-      if $?.success?
-        result
-      else
-        # Err, this sucks, maybe exit 1 shouldn't
-        # be the default option
-        #
-        # I agree.
-        if options[:exit] == false
-          false
-        else
-          exit 1
-        end
-      end
+      $?.success? ? result : nil
     end
 
     # Obtain a mutually exclusive lock to operate on a path safely

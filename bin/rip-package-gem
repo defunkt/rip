@@ -15,15 +15,16 @@ def list(name)
 end
 
 def unpack(name, version)
+  info "fetching #{name} #{version}"
   rpg_available? ? rpg_unpack(name, version) : gem_unpack(name, version)
 end
 
 def dependencies(name, version)
-  if rpg_available?
-    rpg_dependencies(name, version)
-  else
+  # if rpg_available?
+  #   rpg_dependencies(name, version)
+  # else
     gem_dependencies(name, version)
-  end
+  # end
 end
 
 def gem_list(name)
@@ -83,12 +84,12 @@ def rpg_unpack(name, version)
   end
 end
 
-def rpg_dependencies(name, version)
-  rpg("dependencies #{name} #{version}").split("\n").map do |dep|
-    source, tweedle, version = dep.split(' ')
-    version == "0" ? source : "#{source} #{version}"
-  end
-end
+# def rpg_dependencies(name, version)
+#   rpg("dependencies #{name} #{version}").split("\n").map do |dep|
+#     source, tweedle, version = dep.split(' ')
+#     version == "0" ? source : "#{source} #{version}"
+#   end
+# end
 
 version ||= list(source)
 

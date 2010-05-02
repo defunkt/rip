@@ -44,7 +44,7 @@ if path == "/"
   types = %w( git gem )
 
   types.each do |type|
-    out = `rip-package-#{type} #{target} #{version}`
+    out = rip "package-#{type} #{target} #{version}"
 
     if $?.exitstatus == 3
       next

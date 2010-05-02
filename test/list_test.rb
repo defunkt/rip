@@ -12,11 +12,11 @@ class ListTest < Rip::Test
 
   test "lists installed packages" do
     assert_equal <<installed, rip("list")
-rack (1f145ca111)
 choice (8b12556493)
-tinder (29fb44ca9e)
-sinatra (e0ee682740)
 cijoe (e8a53aac25)
+rack (1f145ca111)
+sinatra (e0ee682740)
+tinder (29fb44ca9e)
 installed
   end
 

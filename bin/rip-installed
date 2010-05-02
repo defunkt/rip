@@ -23,4 +23,4 @@ installed = Set.new
   end
 end
 
-puts installed.to_a if installed.any?
+puts installed.to_a.sort if installed.any?
