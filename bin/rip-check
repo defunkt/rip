@@ -28,6 +28,8 @@ else
   if File.symlink?("#{ripdir}/active")
     ripenv = File.readlink("#{ripdir}/active")
     ripenv = File.basename(ripenv) if ripenv.include? ripdir
+  elsif File.exist?("#{ripdir}/inactive")
+    abort "rip is currently disabled. `rip-on` to re-enable."
   else
     abort "No ripenvs found. Please run `rip-setup`"
   end
