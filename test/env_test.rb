@@ -46,6 +46,7 @@ class EnvTest < Rip::Test
     rip "create blah"
     rip "env base"
     assert_equal "#{@ripdir}/base", File.readlink("#{@ripdir}/active")
+    assert_includes "* base", rip("envs")
   end
 
   test "switch to path ripenv" do
