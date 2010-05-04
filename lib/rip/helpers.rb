@@ -13,6 +13,7 @@ module Rip
     end
 
     def rip(command, *args)
+      debug "rip #{command} #{args * ' '}"
       bindir = File.dirname(__FILE__) + "/../../bin/"
       sh "#{bindir}/rip-#{command}", *args
     end
