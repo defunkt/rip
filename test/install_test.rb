@@ -7,6 +7,7 @@ class InstallTest < Rip::Test
   def setup
     start_git_daemon
     start_gem_daemon
+    ENV['RIPRPG'] = '0'
     super
   end
 

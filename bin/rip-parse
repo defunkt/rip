@@ -6,4 +6,4 @@
 
 require 'rip'
 
-puts Rip::Parser.parse(ARGF.read, ARGF.path).to_yaml
+puts YAML.dump(Rip::Parser.parse(ARGF.read, ARGF.path))

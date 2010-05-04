@@ -1,7 +1,7 @@
-module Rip
-  autoload :YAML,       'yaml'
-  autoload :OpenStruct, 'ostruct'
+autoload :YAML,       'yaml'
+autoload :OpenStruct, 'ostruct'
 
+module Rip
   autoload :Parser,      'rip/parser'
   autoload :Environment, 'rip/environment'
   autoload :Package,     'rip/environment'

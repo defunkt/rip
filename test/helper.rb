@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'yaml'
 require 'fileutils'
 require 'tempfile'
 require 'stringio'

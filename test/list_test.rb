@@ -12,6 +12,8 @@ class ListTest < Rip::Test
 
   test "lists installed packages" do
     assert_equal <<installed, rip("list")
+ripenv: base
+
 choice (8b12556493)
 cijoe (e8a53aac25)
 rack (1f145ca111)
@@ -24,6 +26,8 @@ installed
     rip "env -c newguy"
     rip "install git://localhost/rack"
     assert_equal <<installed, rip("list")
+ripenv: newguy
+
 rack (01532da684)
 installed
   end
