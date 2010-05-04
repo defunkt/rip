@@ -160,6 +160,12 @@ class Rip::Test
     ENV['RPGSPECSURL'] = "http://localhost:8808/specs.4.8.gz"
     ENV['RPGGEMURL']   = "http://localhost:8808/gems"
 
+    ENV['RPGPATH']  = rpgpath = "#{File.dirname(__FILE__)}/fixtures/rpg"
+    ENV['RPGDB']    = "#{rpgpath}/db"
+    ENV['RPGINDEX'] = "#{rpgpath}/index"
+    ENV['RPGPACKS'] = "#{rpgpath}/packs"
+    ENV['RPGCACHE'] = "#{rpgpath}/cache"
+
     ENV['GEM_SERVER'] = "http://localhost:8808/"
     return if `ps aux | grep "[g]em server"`.to_s.strip.length != 0
     $start_gem_daemon ||= start_gem_daemon!
