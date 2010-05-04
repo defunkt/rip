@@ -12,6 +12,10 @@ module Rip
       warn(msg) if ENV['RIPDEBUG']
     end
 
+    def metadata(package)
+      Package.parse(rip("metadata #{package}"))
+    end
+
     def rip(command, *args)
       debug "rip #{command} #{args * ' '}"
       bindir = File.dirname(__FILE__) + "/../../bin/"

@@ -1,17 +1,14 @@
 #!/usr/bin/env ruby
-# Usage: rip-installed PATH
-# Determines whether a package is already installed or not.
-# Exits 1 if so, 0 if not.
+# Usage: rip-installed NAME
 #
-# Steps:
-#   Infers the current version
-#   Reads $RIPDIR/$RIPENV/$RIPENV.ripenv
-#   Checks if PATH is already installed in the ripenv
+# Prints all installed packages or, if NAME is given, exits 0
+# if NAME is installed and 1 if not.
 
 require 'rip/script'
 
-require 'set'
+name = ARGV[0]
 
+require 'set'
 installed = Set.new
 
 %w( lib bin man ).each do |type|
@@ -23,4 +20,16 @@ installed = Set.new
   end
 end
 
-puts installed.to_a.sort if installed.any?
+if name
+  installed_package = installed.detect do |package|
+    metadata(package).name == name
+  end
+
+  if installed_package
+    puts metadata(installed_package).version
+  else
+    exit 1
+  end
+elsif installed.any?
+  puts installed.to_a.sort
+end
