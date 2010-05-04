@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    margin-right: 20px;
+    font-family: Helvetica;
+    font-size: 100px;
+    color: #000;
+    background-color: #fff;
+}
+
+h1, h2 {
+    padding: 0;
+    margin: 0;
+}

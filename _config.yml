@@ -1,6 +1,0 @@
-markdown: rdiscount
-pygments: true
-server: true
-server_port: 3000
-auto: true
-permalink: /:title.html
