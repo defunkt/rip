@@ -38,6 +38,7 @@ PATH    = clean_env_path('PATH', 'bin')
 
 puts <<-end_shellcode
 RIPVERBOSE=1
+RIPENV=#{RIPENV}
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
 RUBYLIB="$RIPDIR/#{RIPENV}/lib:#{RUBYLIB}"
 PATH="$RIPDIR/#{RIPENV}/bin:#{PATH}"
