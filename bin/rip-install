@@ -16,15 +16,9 @@ paths = []
 paths = rip("fetch-dependencies #{thing}").split("\n")
 
 # See if we have any conflicts
-conflicts = rip "detect-conflicts #{paths * ' '}"
+rip "detect-conflicts #{paths * ' '}"
 
-# Abort if so
-if conflicts.to_s.any?
-  warn "Conflicts:"
-  warn conflicts
-  exit 1
-end
-
+# Continue on.
 env = Environment.new(paths)
 
 # Install all else if not.

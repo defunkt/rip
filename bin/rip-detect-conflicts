@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # Usage: rip-detect-conflicts deps.rip
+#
 # Determines whether any dependencies (or their dependencies)
 # specified in a deps.rip conflicts with the packages installed in the
 # current ripenv (or each other).
@@ -9,8 +10,7 @@
 #   1 Conflicts (printed)
 #   4 Given .rip file not found
 #
-# On conflict, prints YAML of failed package, who is trying to install
-# it at what version, and who already installed it at what version.
+# On conflict prints each failed package.
 
 require 'rip/script'
 
@@ -26,6 +26,13 @@ ARGV.each do |arg|
 end
 
 if env.conflicts?
-  warn env.conflicts.join("\n")
+  warn "Conflicts"
+
+  env.conflicts.each do |package|
+    installed_at = env[package.name].version
+    warn "  #{package.name}"
+    warn "    #{package.version} requested, #{installed_at} already installed"
+  end
+
   exit 1
 end

@@ -53,6 +53,10 @@ module Rip
       @text << "\n#{Environment.new(env).text}"
     end
 
+    def [](name)
+      packages.detect { |p| p.name == name }
+    end
+
     def packages
       Rip::Parser.parse(@text, @path).map do |hash|
         package_and_dependencies Package.new(hash)
@@ -75,12 +79,12 @@ module Rip
 
     def conflicts
       hash = {}
-      bad = []
+      bad  = []
 
       packages.each do |package|
         installed_at = hash[package.name]
         if installed_at && package.version && installed_at != package.version
-          bad << package.to_s
+          bad << package
         else
           hash[package.name] = package.version if package.version
         end
