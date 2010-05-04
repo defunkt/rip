@@ -1,7 +1,7 @@
-require 'yaml'
-require 'ostruct'
-
 module Rip
+  autoload :YAML,       'yaml'
+  autoload :OpenStruct, 'ostruct'
+
   autoload :Parser,      'rip/parser'
   autoload :Environment, 'rip/environment'
   autoload :Package,     'rip/environment'

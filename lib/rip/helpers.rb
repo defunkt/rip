@@ -1,5 +1,3 @@
-require 'tempfile'
-
 module Rip
   module Helpers
     def warn(msg)
