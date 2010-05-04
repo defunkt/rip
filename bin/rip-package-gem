@@ -161,7 +161,7 @@ synchronize(package_path) do
 
     if deps.any?
       File.open(deps_rip, 'w') do |f|
-        f.puts deps.join("\n")
+        f.puts deps.sort.join("\n")
       end
     end
   end
