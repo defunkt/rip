@@ -1,0 +1,4 @@
+#!/bin/sh -e
+eval `RIPENV=$1 rip-shell`
+shift
+exec "$@"
