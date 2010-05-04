@@ -47,7 +47,8 @@ synchronize(cache_path) do
       git "--git-dir=#{cache_path} fetch -q"
     else
       info "fetching #{source}"
-      git("clone --bare --mirror #{source} #{cache_path}") || abort("#{source} not found")
+      git("clone --bare --mirror #{source} #{cache_path}") ||
+        abort("#{source} not found")
     end
 
     ref = parse_git_rev(cache_path, version)
