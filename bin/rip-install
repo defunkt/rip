@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
-# Usage: rip-install PATH
+# Usage: rip-install [-f] PATH
+#
 # Installs a library into $RIPDIR/$RIPENV
+# If -f (force) is given, doesn't check for conflicts.
 
 $-e = true
+force = ARGV.delete('-f') || ARGV.delete('--force')
 
 require 'rip/script'
 
@@ -16,7 +19,7 @@ paths = []
 paths = rip("fetch-dependencies #{thing}").split("\n")
 
 # See if we have any conflicts
-rip "detect-conflicts #{paths * ' '}"
+rip "detect-conflicts #{paths * ' '}" if force.nil?
 
 # Continue on.
 env = Environment.new(paths)
