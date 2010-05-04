@@ -64,6 +64,7 @@ end
 
 def gem_dependencies(name, version)
   deps = gem("dependency --pipe -r /^#{name}$/ -v #{version}")
+  return [] if deps =~ /^No gems found/
 
   deps.split("\n").map do |dep|
     parts = dep.split(' ')
