@@ -13,16 +13,27 @@ end
 require 'rip/script'
 
 def parse_git_rev(path, rev)
-  if tag?(path, rev)
-    rev
-  else
-    ref = git "--git-dir=#{path} rev-parse --verify --quiet #{rev}"
-    $?.success? ? ref : nil
-  end
+  ref = git "--git-dir=#{path} rev-parse --verify --quiet #{rev}"
+  $?.success? ? ref : nil
 end
 
 def tag?(path, name)
   git("--git-dir=#{path} tag -l #{name}") == name
+end
+
+def deref_version(path, version, floating = true)
+  # Fixed tag?
+  if tag?(path, version)
+    version
+  else
+    ref = parse_git_rev(path, version)
+
+    # If floating versions are allowed or SHA matches
+    # Allow partial SHAs to match
+    if floating || ref =~ /^#{version}/
+      ref
+    end
+  end
 end
 
 
@@ -37,9 +48,9 @@ cache_path = "#{Rip.cache}/#{name}-#{Rip.md5(source)}"
 
 
 synchronize(cache_path) do
-  # Cache exists and we have a (partial?) SHA - grab the full thing
-  if File.directory?(cache_path) && ref =~ /^#{version}/
-    ref = parse_git_rev(cache_path, version)
+  # Cache exists and we have a tag or SHA - grab the full thing
+  if File.directory?(cache_path)
+    ref = deref_version(cache_path, version, false)
   end
 
   # Update cache and deference
@@ -53,7 +64,7 @@ synchronize(cache_path) do
         abort("#{source} not found")
     end
 
-    ref = parse_git_rev(cache_path, version)
+    ref = deref_version(cache_path, version)
   end
 
   if !ref

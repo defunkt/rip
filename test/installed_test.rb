@@ -24,7 +24,8 @@ class InstalledTest < Rip::Test
 
     assert_equal packages.join("\n"), out.chomp
 
-    assert_equal "1.0", rip("installed rack").chomp
+    # assert_equal "1.0", rip("installed rack").chomp
+    assert_equal "8b12556493", rip("installed choice").chomp
     assert_exited_with_error rip("installed blahz")
   end
 end
