@@ -36,13 +36,18 @@ end
 RUBYLIB = clean_env_path('RUBYLIB', 'lib')
 PATH    = clean_env_path('PATH', 'bin')
 
+if ENV['RIPPUSH'] != '0'
+  puts <<-end_functions
+  function rip-push() {
+    export PATH="$PATH:$RIPDIR/$1/bin";
+    export RUBYLIB="$RUBYLIB:$RIPDIR/$1/lib";
+  };
+  end_functions
+end
+
 puts "export RIPENV=#{RIPENV}" if RIPENV != 'active'
 
 puts <<-end_shellcode
-function rip-push() {
-  export PATH="$PATH:$RIPDIR/$1/bin";
-  export RUBYLIB="$RUBYLIB:$RIPDIR/$1/lib";
-};
 RIPVERBOSE=1
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
 RUBYLIB="$RIPDIR/#{RIPENV}/lib:#{RUBYLIB}"
