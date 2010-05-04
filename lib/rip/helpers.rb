@@ -50,6 +50,7 @@ module Rip
 
     # Obtain a mutually exclusive lock to operate on a path safely
     def synchronize(path)
+      require 'tempfile'
       path = File.join(Dir.tmpdir, "#{Rip.md5(path)}.lock")
       file = File.new(path, 'w+')
       file.flock(File::LOCK_EX)
