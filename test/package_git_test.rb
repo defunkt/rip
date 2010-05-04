@@ -51,6 +51,19 @@ class PackageGitTest < Rip::Test
     assert !File.exist?("#{target}/lib/rack/methodoverride.rb")
   end
 
+  test "fetch git:// with tag" do
+    rip "package-git git://localhost/rack 0.9.1"
+    out = rip "package-git git://localhost/rack 0.9.1"
+    assert_equal "git://localhost/rack 0.9.1", rip("metadata #{out}").chomp
+
+    rip "install git://localhost/rack 0.9.1"
+    assert_equal <<list, rip("list")
+ripenv: base
+
+rack (0.9.1)
+list
+  end
+
   test "fetch git:// package with nonexistent ref" do
     out = rip "package-git git://localhost/rails xyz"
     assert_equal "git://localhost/rails xyz could not be found", out.chomp

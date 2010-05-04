@@ -13,13 +13,16 @@ end
 require 'rip/script'
 
 def parse_git_rev(path, rev)
-  ref = git "--git-dir=#{path} rev-parse --verify --quiet #{rev}"
-  $?.success? ? ref : nil
+  if tag?(path, rev)
+    rev
+  else
+    ref = git "--git-dir=#{path} rev-parse --verify --quiet #{rev}"
+    $?.success? ? ref : nil
+  end
 end
 
-def fixed_rev?(path, rev, ref)
-  ref =~ /^#{rev}/ || # substring of ref
-    git("--git-dir=#{path} tag -l #{rev}") == rev # tag
+def tag?(path, name)
+  git("--git-dir=#{path} tag -l #{name}") == name
 end
 
 
@@ -34,10 +37,9 @@ cache_path = "#{Rip.cache}/#{name}-#{Rip.md5(source)}"
 
 
 synchronize(cache_path) do
-  # Cache exists and we have a fixed reference
-  if File.directory?(cache_path)
+  # Cache exists and we have a (partial?) SHA - grab the full thing
+  if File.directory?(cache_path) && ref =~ /^#{version}/
     ref = parse_git_rev(cache_path, version)
-    ref = nil if !fixed_rev?(cache_path, version, ref)
   end
 
   # Update cache and deference
