@@ -11,9 +11,14 @@
 #   4 Given .rip file not found
 #
 # On conflict prints each failed package.
+#
+# If given -p, prints parseable output. Each line is
+# then in this format:
+#   package-name SP installed-version TAB requested-version
 
 require 'rip/script'
 
+parse = ARGV.delete('-p')
 env = Environment.new
 
 rip("installed").split("\n").each do |package|
@@ -26,12 +31,16 @@ ARGV.each do |arg|
 end
 
 if env.conflicts?
-  warn "Conflicts"
+  warn "Conflicts" if parse.nil?
 
   env.conflicts.each do |package|
     installed_at = env[package.name].version
-    warn "  #{package.name}"
-    warn "    #{package.version} requested, #{installed_at} already installed"
+    if parse
+      warn "#{package.name} #{installed_at}\t#{package.version}"
+    else
+      warn "  #{package.name}"
+      warn "    #{package.version} requested, #{installed_at} already installed"
+    end
   end
 
   exit 1

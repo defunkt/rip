@@ -12,9 +12,9 @@ class ConflictTest < Rip::Test
   end
 
   test "detect-conflicts, one" do
-    out = rip("detect-conflicts test/fixtures/bad.rip")
+    out = rip("detect-conflicts -p test/fixtures/bad.rip")
     assert_exited_with_error out
-    assert_equal "ronn (0.4.0)\n", out
+    assert_equal "ronn 0.4.1\t0.4.0\n", out
   end
 
   test "detect-conflicts, file not found" do
@@ -38,9 +38,9 @@ class ConflictTest < Rip::Test
 
     file = tempfile(File.read("test/fixtures/basic.rip") + "\nrepl 0.1.1")
 
-    out = rip("detect-conflicts #{file.path}")
+    out = rip("detect-conflicts -p #{file.path}")
     assert_exited_with_error out
-    assert_equal "repl (0.1.1)\n", out
+    assert_equal "repl 0.1.0\t0.1.1\n", out
 
     rip "remove repl"
     assert_exited_successfully rip("detect-conflicts test/fixtures/basic.rip")
