@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+require 'rip/script'
+
+packages = ''
+
+debug "finding all installed packages"
+
+`rip-envs`.each do |ripenv|
+  ripenv = ripenv[2..-1]
+  ENV['RIPENV'] = ripenv
+  packages << `RIPENV=#{ripenv} rip-installed`
+end
+
+packages = packages.split("\n")
+packages.uniq
+
+removed = 0
+
+(Dir[Rip.packages + '/*'] - packages).each do |unused|
+  removed += 1
+  rm_rf unused
+end
+
+info "removed #{removed} unused packages"
