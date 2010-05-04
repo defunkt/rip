@@ -3,6 +3,7 @@ autoload :OpenStruct, 'ostruct'
 
 module Rip
   autoload :Parser,      'rip/parser'
+  autoload :Package,     'rip/environment'
   autoload :Environment, 'rip/environment'
   autoload :Package,     'rip/environment'
   autoload :Helpers,     'rip/helpers'

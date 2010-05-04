@@ -26,47 +26,22 @@
 
 require 'rip/script'
 
-target = ARGV[0]
-
-if ARGV[1] =~ /^\//
-  path    = ARGV[1]
-  version = ARGV[2]
-else
-  path    = "/"
-  version = ARGV[1]
-end
-
 debug "packaging #{ARGV * ' '}"
 
+# TODO: Eventually search load path for all rip-handle-*
+types = %w( sub git gem )
 
-if path == "/"
-  # TODO: Eventually search load path for all rip-handle-*
-  types = %w( git gem )
+types.each do |type|
+  out = rip "package-#{type}", ARGV
 
-  types.each do |type|
-    out = rip "package-#{type} #{target} #{version}"
-
-    if $?.exitstatus == 3
-      next
-    elsif $?.success?
-      package_path = out.chomp
-      package_path = sh "rip-build #{package_path}"
-      puts package_path
-      exit 0
-    else
-      exit $?.exitstatus
-    end
+  if $?.exitstatus == 3
+    next
+  elsif $?.success?
+    package_path = out.chomp
+    package_path = sh "rip-build #{package_path}"
+    puts package_path
+    exit 0
+  else
+    exit $?.exitstatus
   end
-else
-  base_package = sh "rip-package #{target} #{version}"
-  if !File.exist?("#{base_package}#{path}")
-    abort "#{target} #{path} does not exist"
-  end
-
-  name, hash = File.basename(base_package).split("-")
-  package_path = "#{Rip.packages}/#{name}-#{Rip.md5("#{hash}#{path}")}"
-  if !File.exist?(package_path)
-    ln_s "#{base_package}#{path}", package_path
-  end
-  puts package_path
 end

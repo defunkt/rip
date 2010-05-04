@@ -1,5 +1,19 @@
 module Rip
   class Package < OpenStruct
+    def self.parse_args(args)
+      source = args[0]
+
+      if args[1] =~ /^\//
+        path    = args[1]
+        version = args[2]
+      else
+        path    = '/'
+        version = args[1]
+      end
+
+      [source, path, version]
+    end
+
     def self.parse(text)
       new(Parser.parse(text).first)
     end

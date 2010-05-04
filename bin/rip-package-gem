@@ -1,14 +1,17 @@
 #!/usr/bin/env ruby
 # Usage: rip-package-gem NAME VERSION
 
-source  = ARGV[0]
-version = ARGV[1]
+require 'rip/script'
+
+source, path, version = Rip::Package.parse_args(ARGV)
+
+# Only handle root packages
+exit 3 if path != '/'
 
 unless source =~ /\.gem$/ || source =~ /^(\w|-)+$/
   exit 3 # Can't handle source
 end
 
-require 'rip/script'
 
 def list(name)
   rpg_available? ? rpg_list(name) : gem_list(name)

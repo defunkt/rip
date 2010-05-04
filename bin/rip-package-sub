@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# Usage: rip-package-sub NAME PATH VERSION
+
+require 'rip/script'
+
+source, path, version = Rip::Package.parse_args(ARGV)
+
+# Don't handle root packages
+exit 3 if path == '/'
+
+base_package = sh "rip-package #{source} #{version}"
+
+if !File.exist?("#{base_package}#{path}")
+  abort "#{source} #{path} does not exist"
+end
+
+name, hash = File.basename(base_package).split("-")
+package_path = "#{Rip.packages}/#{name}-#{Rip.md5("#{hash}#{path}")}"
+
+if !File.exist?(package_path)
+  ln_s "#{base_package}#{path}", package_path
+end
+
+package_metadata = "#{package_path}/metadata.rip"
+
+if !File.exist?(package_metadata)
+  base_metadata = rip "metadata", base_package
+  base_source, base_version = base_metadata.split(' ')
+
+  File.open(package_metadata, 'w') do |f|
+    f.puts "#{base_source} #{path} #{base_version}"
+  end
+end
+
+puts package_path
