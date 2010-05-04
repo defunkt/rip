@@ -11,10 +11,8 @@ debug "finding all installed packages"
   packages << `RIPENV=#{ripenv} rip-installed`
 end
 
-packages = packages.split("\n")
-packages.uniq
-
-removed = 0
+packages = packages.split("\n").uniq
+removed  = 0
 
 (Dir[Rip.packages + '/*'] - packages).each do |unused|
   removed += 1
