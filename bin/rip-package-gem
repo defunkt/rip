@@ -164,7 +164,12 @@ synchronize(package_path) do
   end
 
   if !File.exists?(deps_rip = "#{package_path}/deps.rip")
-    deps = dependencies(source, version)
+    begin
+      deps = dependencies(source, version)
+    rescue Exception => e
+      warn "failed to parse #{source} #{version} dependencies: #{e.class}: #{e.message}"
+      deps = []
+    end
 
     if deps.any?
       File.open(deps_rip, 'w') do |f|
