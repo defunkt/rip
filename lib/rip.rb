@@ -1,5 +1,6 @@
 autoload :YAML,       'yaml'
 autoload :OpenStruct, 'ostruct'
+autoload :Escape,     'escape'
 
 module Rip
   autoload :Parser,      'rip/parser'
