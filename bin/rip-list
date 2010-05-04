@@ -11,7 +11,7 @@ require 'rip/script'
 
 parse = ARGV.delete('-p')
 
-puts "ripenv: #{RIPENV}", ""
+puts "ripenv: #{RIPENV}", "" unless parse
 
 rip("installed").each do |package|
   if parse
