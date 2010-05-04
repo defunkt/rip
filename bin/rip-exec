@@ -1,4 +1,4 @@
 #!/bin/sh -e
-eval `RIPENV=$1 rip-shell`
+eval `RIPENV=$1 rip-config`
 shift
 exec "$@"
