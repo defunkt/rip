@@ -17,8 +17,11 @@ h2 {
     font-family: Bitstream Vera Sans Mono, Monaco, Courier;
     font-size: 40px;
     letter-spacing: -0.04em;
-    color: #FF0066 !important;
-    text-decoration: none;
     margin: 0;
     margin-left: 270px;
+}
+
+h2 a {
+    color: #FF0066;
+    text-decoration: none;
 }
