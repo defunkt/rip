@@ -8,6 +8,10 @@ module Rip
       "#{name} (#{version})"
     end
 
+    def inspect
+      "#<Rip::Package name=#{name.inspect} version=#{version.inspect}>"
+    end
+
     def version(long = false)
       return super() if long
 
