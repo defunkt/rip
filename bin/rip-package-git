@@ -46,10 +46,10 @@ synchronize(cache_path) do
   if !ref
     if File.directory?(cache_path)
       info "updating #{source}"
-      git "--git-dir=#{cache_path} fetch -q"
+      git "--git-dir=#{cache_path} fetch -q 2> /dev/null"
     else
       info "fetching #{source}"
-      git("clone --bare --mirror #{source} #{cache_path}") ||
+      git("clone --bare --mirror #{source} #{cache_path} 2> /dev/null") ||
         abort("#{source} not found")
     end
 
