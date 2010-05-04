@@ -34,7 +34,7 @@ yaml
         :version: 0.4.3
       :source: url_escape
     :source: rack
-    :version: "1.0"
+    :version: ">=1.0"
   - :dependencies:
     - :source: temple
     - :source: sass
