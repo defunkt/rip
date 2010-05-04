@@ -2,6 +2,8 @@
 # Usage: rip-install PATH
 # Installs a library into $RIPDIR/$RIPENV
 
+$-e = true
+
 require 'rip/script'
 
 abort "what?" if ARGV.empty?

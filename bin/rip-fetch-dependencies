@@ -2,6 +2,8 @@
 # Usage: rip-fetch-dependencies deps.rip
 # Recursively downloads dependencies.
 
+$-e = true
+
 require 'rip/script'
 
 $installed = {}

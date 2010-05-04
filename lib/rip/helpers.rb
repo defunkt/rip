@@ -45,7 +45,14 @@ module Rip
 
     def sh(*cmd)
       result = `#{cmd * ' '}`.chomp
-      $?.success? ? result : nil
+
+      if $?.success?
+        result
+      elsif $-e
+        exit 1
+      else
+        nil
+      end
     end
 
     # Obtain a mutually exclusive lock to operate on a path safely
