@@ -108,7 +108,11 @@ module Gem
 
   class Dependency < Faker
     def tweedle
-      requirement.requirements[0].first if respond_to?(:requirement)
+      if respond_to?(:version_requirements)
+        version_requirements.requirements[0].first
+      elsif respond_to?(:requirement)
+        requirement.requirements[0].first
+      end
     end
 
     def version
