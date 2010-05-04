@@ -88,7 +88,7 @@ module Rip
       package = {}
       package[:source] = source
 
-      if rest.any? { |arg| arg =~ /^((?:>=|~>|=|<=)?[a-z0-9](.+))/ }
+      if rest.any? { |arg| arg =~ /^((?:>=|>|~>|=|<=|<)?[a-z0-9](.+))/ }
         package[:version] = $1
       end
 
