@@ -16,10 +16,10 @@ env   = Environment.new(thing)
 paths = []
 
 # Grab all dependencies
-paths = rip("fetch-dependencies #{thing}").split("\n")
+paths = rip("fetch-dependencies", thing).split("\n")
 
 # See if we have any conflicts
-rip "detect-conflicts #{paths * ' '}" if force.nil?
+rip "detect-conflicts", *paths if force.nil?
 
 # Continue on.
 env = Environment.new(paths)
@@ -27,7 +27,7 @@ env = Environment.new(paths)
 # Install all else if not.
 env.packages.each do |package|
   path = paths.shift
-  rip "import #{path}"
+  rip "import", path
   package = metadata(path)
   warn "installed #{package}"
 end

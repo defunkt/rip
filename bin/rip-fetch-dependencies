@@ -13,7 +13,7 @@ def fetch_dependencies(env)
     next if $installed[package.source]
     $installed[package.source] = true
 
-    path = rip("package #{package.source} #{package.version}")
+    path = rip(:package, package.source, package.version)
 
     if File.exists? deps = "#{path}/deps.rip"
       debug "found #{deps}"

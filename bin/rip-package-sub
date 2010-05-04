@@ -8,7 +8,7 @@ source, path, version = Rip::Package.parse_args(ARGV)
 # Don't handle root packages
 exit 3 if path == '/'
 
-base_package = sh "rip-package #{source} #{version}"
+base_package = rip("package", source, version)
 
 if !File.exist?("#{base_package}#{path}")
   abort "#{source} #{path} does not exist"

@@ -5,7 +5,7 @@ packages = ''
 
 debug "finding all installed packages"
 
-`rip-envs`.each do |ripenv|
+rip(:envs).each do |ripenv|
   ripenv = ripenv[2..-1]
   ENV['RIPENV'] = ripenv
   packages << `RIPENV=#{ripenv} rip-installed`

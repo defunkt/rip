@@ -93,7 +93,7 @@ def rpg_list(name)
 end
 
 def rpg_unpack(name, version)
-  if path = rpg("unpack #{name} #{version}")
+  if path = rpg("unpack", name, version)
     path.chomp
   end
 end
@@ -128,7 +128,7 @@ module Gem
 end
 
 def rpg_dependencies(name, version)
-  deps = rpg("unpack -c -m #{name} #{version}")
+  deps = rpg("unpack", "-c", "-m", name, version)
   return [] unless $?.success?
 
   deps = YAML.load(deps)
