@@ -125,6 +125,9 @@ module Gem
   class Specification < Faker; end
   class Requirement   < Faker; end
   class Version       < Faker; end
+
+  # Some older specs reference Version::Requirement
+  Version::Requirement = Requirement
 end
 
 def rpg_dependencies(name, version)
