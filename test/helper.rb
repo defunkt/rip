@@ -1,9 +1,15 @@
 require 'test/unit'
-require 'rip'
 require 'fileutils'
 require 'tempfile'
+require 'stringio'
 
-class Rip::Test < Test::Unit::TestCase
+require 'rip'
+
+$stderr = StringIO.new
+Rip::Test = Test::Unit::TestCase
+$stderr = STDERR
+
+class Rip::Test
   include FileUtils
 
   # Setup test/ripdir for testing as a valid rip directory.
@@ -21,11 +27,6 @@ class Rip::Test < Test::Unit::TestCase
 
   def teardown
     rm_rf @ripdir
-  end
-
-  # Needed when subclassing Test::Unit::TestCase
-  def test_ok
-    assert true
   end
 
   def self.test(name, &block)
