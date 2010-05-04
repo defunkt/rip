@@ -25,6 +25,6 @@ env = Environment.new(paths)
 env.packages.each do |package|
   path = paths.shift
   rip "import #{path}"
-  package = Package.parse(rip("metadata", path))
+  package = metadata(path)
   warn "installed #{package}"
 end
