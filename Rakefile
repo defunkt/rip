@@ -1,52 +1,46 @@
 require 'rake/testtask'
 
+
+#
+# Helpers
+#
+
+def command?(command)
+  system("type #{command} > /dev/null")
+end
+
 if ENV['RUBYLIB']
   ENV['RUBYLIB'] += ':lib/'
 else
   ENV['RUBYLIB'] = 'lib/'
 end
 
+
+#
+# Tests
+#
+
 task :default => :test
 
-if system("which turn &> /dev/null")
-  desc "Run the tests using `turn`."
+if command? :turn
+  desc "Run tests"
   task :test do
-    exec "turn test/*.rb"
+    suffix = "-n #{ENV['TEST']}" if ENV['TEST']
+    sh "turn test/*.rb #{suffix}"
   end
 else
-  task :test => "test:unit"
-end
-
-Rake::TestTask.new "test:unit" do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/*_test.rb'
-  t.verbose = false
-end
-
-desc "Build rip manual"
-task :build_man do
-  sh "ron -br5 --organization=RIP --manual='Rip Manual' man/**/*.ron"
-end
-
-desc "Show rip manual"
-task :man => :build_man do
-  exec "man man/**/*.{1,5}"
-end
-
-desc "Installs Rip"
-task :install do
-  prefix = ENV['PREFIX'] || ENV['prefix'] || '/usr/local'
-  bindir = ENV['BINDIR'] || ENV['bindir'] || "#{prefix}/bin"
-  libdir = ENV['LIBDIR'] || ENV['libdir'] || "#{prefix}/lib/rip"
-
-  mkdir_p bindir
-  Dir["bin/*"].each do |f|
-    cp f, bindir, :preserve => true, :verbose => true
+  Rake::TestTask.new do |t|
+    t.libs << 'lib'
+    t.pattern = 'test/**/*_test.rb'
+    t.verbose = false
   end
+end
 
-  mkdir_p libdir
-  Dir["lib/**/*.rb"].each do |f|
-    cp f, libdir
+if command? :kicker
+  desc "Launch Kicker (like autotest)"
+  task :kicker do
+    puts "Kicking... (ctrl+c to cancel)"
+    exec "kicker -e rake test lib"
   end
 end
 
@@ -66,3 +60,42 @@ end
 
 desc "Run gem and git daemons for the tests."
 multitask :daemons => %w( daemon:git daemon:gem )
+
+
+#
+# Ron
+#
+
+if command? :ronn
+  desc "Show the manual"
+  task :man => "man:build" do
+    exec "man man/rip.1"
+  end
+
+  desc "Build the manual"
+  task "man:build" do
+    sh "ronn -br5 --organization=DEFUNKT --manual='rip manual' man/*.ronn"
+  end
+end
+
+
+#
+# Installation
+#
+
+desc "Installs Rip"
+task :install do
+  prefix = ENV['PREFIX'] || ENV['prefix'] || '/usr/local'
+  bindir = ENV['BINDIR'] || ENV['bindir'] || "#{prefix}/bin"
+  libdir = ENV['LIBDIR'] || ENV['libdir'] || "#{prefix}/lib/rip"
+
+  mkdir_p bindir
+  Dir["bin/*"].each do |f|
+    cp f, bindir, :preserve => true, :verbose => true
+  end
+
+  mkdir_p libdir
+  Dir["lib/**/*.rb"].each do |f|
+    cp f, libdir
+  end
+end
