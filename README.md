@@ -67,6 +67,32 @@ Okay.
 We're ready to roll.
 
 
+Disabling rip
+-------------
+
+Many people installed Rip, played with it, realized it wasn't done,
+then forgot about it - only to become frustrated when some package
+they installed with Rip screwed up their development
+environment. Those were the kinds of problems Rip was supposed to
+solve! What does rip2 have to say about this?
+
+Two words: `rip-off`. rip2 can be enabled or disabled at any time
+using the `rip-off` and `rip-on` commands:
+
+    $ rip-env
+    choices
+    $ ruby -r choice -e ''
+    $ rip-off
+    $ rip-env
+    rip is currently disabled. `rip-on` to re-enable.
+    $ ruby -r choice -e ''
+    ruby: no such file to load -- choice (LoadError)
+    $ rip-on
+    $ ruby -r choice -e ''
+    $ rip-env
+    choices
+
+
 Try It
 ------
 
@@ -161,7 +187,7 @@ Power Usage
 -----------
 
 I'm now using rip for all my development. This includes GitHub. Here
-are some ways you can start using rip today:
+are fun things to do with rip today;
 
 * [rip-readme](http://gist.github.com/390432)
 * [Gemfile => deps.rip](http://gist.github.com/384613)
