@@ -157,3 +157,13 @@ Once you've made your great commits:
 [pp]: http://pypi.python.org/pypi/pip
 [0]: http://help.github.com/forking/
 [1]: http://github.com/defunkt/rip/issues
+
+
+Mailing List
+------------
+
+To join the list simply send an email to <rip@librelist.com>. This
+will subscribe you and send you information about your subscription,
+including unsubscribe information.
+
+The archive can be found at <http://librelist.com/browser/>.
