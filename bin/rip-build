@@ -34,7 +34,7 @@ synchronize(platform_package_path) do
       build_dir = File.dirname(build_file)
       Dir.chdir(build_dir) do
         sh "ruby extconf.rb"
-        sh "make install sitearchdir=#{platform_package_path}/lib"
+        sh "make install sitearchdir=#{platform_package_path}/lib 2> /dev/null"
       end
     end
 
