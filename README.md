@@ -163,6 +163,7 @@ Power Usage
 I'm now using rip for all my development. This includes GitHub. Here
 are some ways you can start using rip today:
 
+* [rip-readme](http://gist.github.com/390432)
 * [Gemfile => deps.rip](http://gist.github.com/384613)
 * [josh/rip-bundle](http://github.com/josh/rip-bundle)
 * [josh/rip-externals](http://github.com/josh/rip-externals)
