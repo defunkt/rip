@@ -47,7 +47,7 @@ class PackageGemTest < Rip::Test
   end
 
   test "writes package.rip" do
-    out = rip "package-gem repl"
+    out = rip "package-gem repl '>=0.0.1'"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp

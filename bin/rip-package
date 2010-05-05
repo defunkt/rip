@@ -38,8 +38,7 @@ types.each do |type|
     next
   elsif $?.success?
     package_path = out.chomp
-    package_path = sh "rip-build #{package_path}"
-    puts package_path
+    puts rip(:build, package_path)
     exit 0
   else
     exit $?.exitstatus

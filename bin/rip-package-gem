@@ -142,7 +142,8 @@ def rpg_dependencies(name, version)
   end
 end
 
-version ||= list(source)
+version = list(source) if version.nil?
+version = list(source) unless version && version =~ /^\d/
 
 package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
 
