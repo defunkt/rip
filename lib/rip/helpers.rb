@@ -16,10 +16,16 @@ module Rip
       Package.parse(rip("metadata #{package}"))
     end
 
+    def escape(*args)
+      Escape.shell_command(args.flatten.compact)
+    end
+
     def rip(command, *args)
-      debug "rip-#{command} #{args * ' '}"
+      args = escape(args)
+
+      debug "rip-#{command} #{args}"
       bindir = File.dirname(__FILE__) + "/../../bin/"
-      sh "#{bindir}/rip-#{command}", *args
+      sh "#{bindir}/rip-#{command}", args
     end
 
     def rpg_available?
@@ -29,18 +35,20 @@ module Rip
     end
 
     def gem(command, *args)
-      args << "-s #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
-      args << "2> /dev/null"
+      args = escape(args) + " 2> /dev/null"
+      args << " -s #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
+      args << " 2> /dev/null"
 
-      debug "gem #{command} #{args * ' '}"
-      `gem #{command} #{args * ' '}`
+      debug "gem #{command} #{args}"
+      `gem #{command} #{args}`
     end
 
     def rpg(command, *args)
-      args << "2> /dev/null"
+      args = escape(args)
+      args << " 2> /dev/null"
 
-      debug "rpg #{command} #{args * ' '}"
-      `rpg #{command} #{args * ' '}`
+      debug "rpg #{command} #{args}"
+      `rpg #{command} #{args}`
     end
 
     def git(command, *args)
