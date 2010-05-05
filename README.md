@@ -102,6 +102,30 @@ When we move to another ripenv, we're in a new world:
       from /ruby/ree-1.8.7/lib/ruby/1.8/irb/init.rb:254:in `load_modules'
 
 
+Dependencies
+------------
+
+When installing a RubyGem, rip respects dependencies. Installing from
+a git repository? rip will check for a deps.rip and use that.
+
+By default, rip assumes you don't want to overwrite installed
+packages:
+
+    $ rip-install rack 1.0.0
+    installed rack (1.0.0)
+    $ rip-install rack 1.1.0
+    Conflicts
+      rack
+        1.1.0 requested, 1.0.0 already installed
+
+Use `-f` to force the install:
+
+    $ rip-install -f rack 1.1.0
+    installed rack (1.1.0)
+
+(This operation may need some polish, but it works.)
+
+
 Common Commands
 ---------------
 
@@ -131,6 +155,18 @@ Spring cleaning:
 
     $ rip-gc
     $ rip-fsck
+
+
+Power Usage
+-----------
+
+I'm now using rip for all my development. This includes GitHub. Here
+are some ways you can start using rip today:
+
+* [Gemfile => deps.rip](http://gist.github.com/384613)
+* [josh/rip-bundle](http://github.com/josh/rip-bundle)
+* [josh/rip-externals](http://github.com/josh/rip-externals)
+* [stacking ripenvs](http://gist.github.com/389001)
 
 
 Running the Tests
