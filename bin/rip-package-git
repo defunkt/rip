@@ -85,14 +85,23 @@ synchronize(package_path) do
     exit 0
   end
 
+  $-e = true
+
+  at_exit do
+    if !exited_successfully?
+      info "cleaning up #{package_path}"
+      rm_rf package_path
+    end
+  end
+
   # I think the --shared flag is causing some checkout issues,
   # lets go back to the old for a week
-  # git("clone --local --shared --no-checkout #{cache_path} #{package_path} 2> /dev/null") || exit(1)
-  git("clone --no-checkout #{cache_path} #{package_path} 2> /dev/null") || exit(1)
+  # git("clone --local --shared --no-checkout #{cache_path} #{package_path} 2> /dev/null")
+  git("clone --no-checkout #{cache_path} #{package_path} 2> /dev/null")
   cd package_path
   git "checkout --quiet #{ref}"
   git "remote rm origin"
-  git "branch -D master 2> /dev/null"
+  Dir["#{package_path}/.git/refs/heads/*"].each { |branch| git "branch -D #{File.basename(branch)}" }
 
   write("#{package_path}/metadata.rip") { "#{source} #{ref}" }
 

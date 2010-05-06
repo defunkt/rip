@@ -81,6 +81,10 @@ module Rip
       end
     end
 
+    def exited_successfully?
+      $!.nil? || $!.is_a?(SystemExit) && $!.success?
+    end
+
     # Obtain a mutually exclusive lock to operate on a path safely
     def synchronize(path)
       require 'tempfile'
