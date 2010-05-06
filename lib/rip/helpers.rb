@@ -25,7 +25,7 @@ module Rip
     def write(file, &content)
       File.open(file, 'w') do |f|
         text = content.call
-        f.puts text.resond_to?(:join) ? text.join("\n") : text
+        f.puts text.respond_to?(:join) ? text.join("\n") : text
       end
     end
 
