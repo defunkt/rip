@@ -82,6 +82,11 @@ class Rip::Test
     file
   end
 
+  # Writes the content of a String block to the specified `file`.
+  def write(file, &content)
+    File.open(file, 'w') { |f| f.puts content.call }
+  end
+
   # Shortcut for running the `rip` command in a subprocess. Returns
   # STDOUT as a string. Pass it what you would normally pass `rip` on
   # the command line, e.g.
