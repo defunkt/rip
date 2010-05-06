@@ -2,7 +2,7 @@ require 'test/helper'
 
 class InstalledTest < Rip::Test
   test "install cijoe.deps" do
-    out = rip "install #{fixtures('cijoe.deps')}"
+    out = rip "install #{fixture('cijoe.deps')}"
     assert_exited_successfully out
 
     out = rip "installed"
@@ -16,8 +16,8 @@ class InstalledTest < Rip::Test
 
     assert_equal packages.join("\n"), out.chomp
 
-    assert_equal "1.0", rip("installed rack").chomp
-    assert_equal "8b12556493", rip("installed choice").chomp
+    assert_equal "#{@ripdir}/.packages/rack-4c4eec386dda665c2a1e094d579bfd11", rip("installed rack").chomp
+    assert_equal "#{@ripdir}/.packages/choice-09df20d2c7f13478ec2f50aed01b57d2", rip("installed choice").chomp
     assert_exited_with_error rip("installed blahz")
   end
 end

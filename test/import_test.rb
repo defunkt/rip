@@ -3,7 +3,7 @@ require 'test/helper'
 class ImportTest < Rip::Test
   def setup
     super
-    @cijoe = rip("package file://#{fixture('cijoe.git')}").chomp
+    @cijoe = rip("package file://#{File.expand_path fixture(:cijoe)}").chomp
   end
 
   test "import" do

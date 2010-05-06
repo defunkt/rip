@@ -134,7 +134,9 @@ class Rip::Test
 
   # Given a name, returns the path to the fixture's directory.
   def fixture(name)
-    "test/fixtures/#{name}.git"
+    name = name.to_s
+    name = name.include?('.') ? name : "#{name}.git"
+    "test/fixtures/#{name}"
   end
 
   def start_git_daemon
