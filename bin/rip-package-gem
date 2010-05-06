@@ -153,6 +153,13 @@ synchronize(package_path) do
     exit 0
   end
 
+  at_exit do
+    if !exited_successfully?
+      info "cleaning up #{package_path}"
+      rm_rf package_path
+    end
+  end
+
   cd Rip.packages
 
   path = unpack(source, version)
@@ -166,12 +173,7 @@ synchronize(package_path) do
   write("#{package_path}/metadata.rip") { "#{source} #{version}" }
 
   if !File.exists?(deps_rip = "#{package_path}/deps.rip")
-    begin
-      deps = dependencies(source, version)
-    rescue Exception => e
-      warn "failed to parse #{source} #{version} dependencies: #{e.class}: #{e.message}"
-      deps = []
-    end
+    deps = dependencies(source, version)
 
     if deps.any?
       write(deps_rip) { deps.sort }
