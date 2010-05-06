@@ -26,7 +26,7 @@ if name
   end
 
   if installed_package
-    puts metadata(installed_package).version
+    puts installed_package
   else
     exit 1
   end
