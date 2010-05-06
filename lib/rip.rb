@@ -11,6 +11,14 @@ module Rip
   extend self
   attr_accessor :dir, :env
 
+  def dir
+    @dir ||= ENV['RIPDIR']
+  end
+
+  def env
+    @env ||= ENV['RIPENV']
+  end
+
   def packages
     "#{dir}/.packages"
   end
