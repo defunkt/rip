@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'rip/script'
+
+package = ARGV[0]
+
+installed = rip(:installed).detect do |dir|
+  dir =~ /\/#{package}-\w{32}/
+end
+
+exit 1 if installed.nil?
+
+installed = installed.chomp
+source, version = rip(:metadata, installed).split(' ')
+
+puts "source: #{source}"
+puts "version: #{version}"
+puts "path: #{installed}"
+
+bins = Dir["#{installed}/bin/*"]
+if bins.any?
+  puts "bins:"
+  bins.each { |bin| puts "- #{basename bin}" }
+end
+
+mans = Dir["#{installed}/man/**/*"].select { |file| file =~ /\.\d$/ }
+if mans.any?
+  puts "manuals:"
+  mans.each { |man| puts "- #{basename man}" }
+end
+
+if deps = File.read("#{installed}/deps.rip") rescue nil
+  puts "needs:"
+  deps.each { |dep| puts "- #{dep}" }
+end
