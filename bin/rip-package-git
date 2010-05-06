@@ -85,7 +85,10 @@ synchronize(package_path) do
     exit 0
   end
 
-  git("clone --local --shared --no-checkout #{cache_path} #{package_path} 2> /dev/null") || exit(1)
+  # I think the --shared flag is causing some checkout issues,
+  # lets go back to the old for a week
+  # git("clone --local --shared --no-checkout #{cache_path} #{package_path} 2> /dev/null") || exit(1)
+  git("clone --no-checkout #{cache_path} #{package_path} 2> /dev/null") || exit(1)
   cd package_path
   git "checkout --quiet #{ref}"
   git "remote rm origin"
