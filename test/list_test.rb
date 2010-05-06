@@ -13,8 +13,8 @@ ripenv: base
 choice (8b12556493)
 cijoe (e8a53aac25)
 rack (1.0)
-sinatra (0.9.4)
-tinder (1.2.0)
+sinatra (e0ee682740)
+tinder (29fb44ca9e)
 installed
   end
 

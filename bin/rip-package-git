@@ -24,17 +24,20 @@ def tag?(path, name)
 end
 
 def deref_version(path, version, floating = true)
-  # Fixed tag?
-  if tag?(path, version)
-    version
-  else
-    ref = parse_git_rev(path, version)
+  ref = parse_git_rev(path, version)
 
-    # If floating versions are allowed or SHA matches
-    # Allow partial SHAs to match
-    if floating || ref =~ /^#{version}/
-      ref
-    end
+  # If floating versions are allowed or SHA matches
+  # Allow partial SHAs to match
+  if floating || ref =~ /^#{version}/ || tag?(path, version)
+    ref
+  end
+end
+
+def describe_ref(path, ref)
+  if git("--git-dir=#{path} describe --exact-match #{ref} 2> /dev/null") =~ /^(.+)$/
+    $1
+  else
+    ref
   end
 end
 
@@ -103,7 +106,8 @@ synchronize(package_path) do
   git "remote rm origin"
   Dir["#{package_path}/.git/refs/heads/*"].each { |branch| git "branch -D #{File.basename(branch)}" }
 
-  write("#{package_path}/metadata.rip") { "#{source} #{ref}" }
+  $-e = false
+  write("#{package_path}/metadata.rip") { "#{source} #{describe_ref(cache_path, ref)}" }
 
   puts package_path
 end

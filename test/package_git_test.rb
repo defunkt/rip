@@ -45,7 +45,7 @@ class PackageGitTest < Rip::Test
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
     assert File.exist?("#{target}/metadata.rip")
-    assert_equal "git://localhost/rack e6ebd831978adc3172ad487be18affab940f3d4d", File.read("#{target}/metadata.rip").chomp
+    assert_equal "git://localhost/rack 1.1", File.read("#{target}/metadata.rip").chomp
 
     out = rip "package-git git://localhost/rack rack-0.4"
     target = "#{@ripdir}/.packages/rack-30a09c76441ee7f3cc320aae57e9c99e"
@@ -59,7 +59,7 @@ class PackageGitTest < Rip::Test
   test "fetch git:// with tag" do
     rip "package-git git://localhost/rack 0.9.1"
     out = rip "package-git git://localhost/rack 0.9.1"
-    target = "#{@ripdir}/.packages/rack-52a857d3f17b058fbe14b450bbf0c3aa"
+    target = "#{@ripdir}/.packages/rack-edd16cfec88bea9a52ce1bf01d4aaa11"
     assert_equal target, out.chomp
 
     assert File.exist?("#{target}/metadata.rip")
