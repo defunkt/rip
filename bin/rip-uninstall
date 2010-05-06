@@ -15,8 +15,9 @@ package = nil
 # Find package from name
 # TODO turn into a seperate bin
 package_path = rip("installed").detect do |path|
-  package = metadata(path)
-  package.name == name
+  if package = metadata(path)
+    package.name == name
+  end
 end
 
 if !package_path
