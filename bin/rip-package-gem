@@ -155,7 +155,7 @@ synchronize(package_path) do
 
   at_exit do
     if !exited_successfully?
-      info "cleaning up #{package_path}"
+      debug "cleaning up #{package_path}"
       rm_rf package_path
     end
   end
