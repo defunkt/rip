@@ -27,8 +27,8 @@ if !File.exist?(package_metadata)
   base_metadata = rip "metadata", base_package
   base_source, base_version = base_metadata.split(' ')
 
-  File.open(package_metadata, 'w') do |f|
-    f.puts "#{base_source} #{path} #{base_version}"
+  write(package_metadata) do
+    "#{base_source} #{path} #{base_version}"
   end
 end
 

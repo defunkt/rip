@@ -91,9 +91,7 @@ synchronize(package_path) do
   git "remote rm origin"
   git "branch -D master 2> /dev/null"
 
-  File.open("#{package_path}/metadata.rip", 'w') do |f|
-    f.puts "#{source} #{ref}"
-  end
+  write("#{package_path}/metadata.rip") { "#{source} #{ref}" }
 
   puts package_path
 end

@@ -21,7 +21,10 @@ module Rip
     end
 
     def write(file, &content)
-      File.open(file, 'w') { |f| f.puts content.call }
+      File.open(file, 'w') do |f|
+        text = content.call
+        f.puts text.resond_to?(:join) ? text.join("\n") : text
+      end
     end
 
     def basename(file)

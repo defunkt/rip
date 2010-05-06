@@ -163,9 +163,7 @@ synchronize(package_path) do
 
   mv path, package_path
 
-  File.open("#{package_path}/metadata.rip", 'w') do |f|
-    f.puts "#{source} #{version}"
-  end
+  write("#{package_path}/metadata.rip") { "#{source} #{version}" }
 
   if !File.exists?(deps_rip = "#{package_path}/deps.rip")
     begin
@@ -176,9 +174,7 @@ synchronize(package_path) do
     end
 
     if deps.any?
-      File.open(deps_rip, 'w') do |f|
-        f.puts deps.sort.join("\n")
-      end
+      write(deps_rip) { deps.sort }
     end
   end
 
