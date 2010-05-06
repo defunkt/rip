@@ -20,6 +20,14 @@ module Rip
       Escape.shell_command(args.flatten.compact)
     end
 
+    def write(file, &content)
+      File.open(file, 'w') { |f| f.puts content.call }
+    end
+
+    def basename(file)
+      File.basename(file)
+    end
+
     def rip(command, *args)
       args = escape(args)
 
