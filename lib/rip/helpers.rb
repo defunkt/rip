@@ -13,7 +13,9 @@ module Rip
     end
 
     def metadata(package)
-      Package.parse(rip("metadata #{package}"))
+      if data = rip("metadata #{package}")
+        Package.parse(data)
+      end
     end
 
     def escape(*args)
