@@ -6,8 +6,8 @@
 require 'rip/script'
 require 'optparse'
 
-if ARGV.empty?
-  puts RIPENV
+if ARGV.empty? || path = ARGV.delete('-p')
+  puts path ? File.readlink("#{RIPDIR}/active") : RIPENV
   exit
 end
 
