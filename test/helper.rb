@@ -24,6 +24,9 @@ class Rip::Test
     ENV['RIPENV'] = nil
     ENV['RIPDIR'] = @ripdir
     rip "setup"
+
+    start_git_daemon
+    start_gem_daemon
   end
 
   def teardown

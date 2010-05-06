@@ -1,16 +1,8 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class InstalledTest < Rip::Test
-  FIXTURES = File.expand_path(File.dirname(__FILE__) + "/fixtures")
-
-  def setup
-    start_git_daemon
-    super
-  end
-
   test "install cijoe.deps" do
-    out = rip "install #{FIXTURES}/cijoe.deps"
+    out = rip "install #{fixtures('cijoe.deps')}"
     assert_exited_successfully out
 
     out = rip "installed"

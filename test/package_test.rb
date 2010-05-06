@@ -1,13 +1,6 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class PackageTest < Rip::Test
-  def setup
-    start_git_daemon
-    start_gem_daemon
-    super
-  end
-
   test "fetch git:// package" do
     out = rip "package git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"

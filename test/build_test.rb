@@ -1,13 +1,6 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class BuildTest < Rip::Test
-  def setup
-    start_git_daemon
-    start_gem_daemon
-    super
-  end
-
   test "build returns original path if the package has no extensions" do
     out = rip "package-git git://localhost/cijoe"
     assert_exited_successfully out

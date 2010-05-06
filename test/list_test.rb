@@ -1,11 +1,7 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class ListTest < Rip::Test
-  FIXTURES = File.expand_path(File.dirname(__FILE__) + "/fixtures")
-
   def setup
-    start_git_daemon
     super
     rip "install git://localhost/cijoe"
   end

@@ -1,10 +1,8 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class PackageGemTest < Rip::Test
   def setup
     ENV['RIPRPG'] = '0'
-    start_gem_daemon
     super
   end
 

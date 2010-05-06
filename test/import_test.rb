@@ -1,12 +1,9 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class ImportTest < Rip::Test
-  FIXTURES = File.expand_path(File.dirname(__FILE__) + "/fixtures")
-
   def setup
     super
-    @cijoe = rip("package file://#{FIXTURES}/cijoe.git").chomp
+    @cijoe = rip("package file://#{fixture('cijoe.git')}").chomp
   end
 
   test "import" do

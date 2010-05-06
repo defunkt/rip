@@ -1,4 +1,3 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
 require 'test/helper'
 
 class ParseTest < Rip::Test

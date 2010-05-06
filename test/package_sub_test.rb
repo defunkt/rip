@@ -1,13 +1,6 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class PackageGitTest < Rip::Test
-  def setup
-    start_git_daemon
-    start_gem_daemon
-    super
-  end
-
   test "can't handle base paths" do
     out = rip "package-sub git://localhost/rails"
     assert_exited_with_error out

@@ -1,5 +1,4 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class RecursiveLinkTest < Rip::Test
   def setup

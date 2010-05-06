@@ -1,12 +1,6 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class ConflictTest < Rip::Test
-  def setup
-    start_gem_daemon
-    super
-  end
-
   test "detect-conflicts, none" do
     assert_exited_successfully rip("detect-conflicts test/fixtures/basic.rip")
   end

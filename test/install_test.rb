@@ -1,18 +1,13 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class InstallTest < Rip::Test
-  FIXTURES = File.expand_path(File.dirname(__FILE__) + "/fixtures")
-
   def setup
-    start_git_daemon
-    start_gem_daemon
     ENV['RIPRPG'] = '0'
     super
   end
 
   test "install cijoe.deps" do
-    out = rip "install #{FIXTURES}/cijoe.deps"
+    out = rip "install #{fixture('cijoe.deps')}"
     assert_exited_successfully out
 
     assert File.exist?("#{@ripdir}/base/bin/cijoe")

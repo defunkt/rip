@@ -1,5 +1,4 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class EnvTest < Rip::Test
   test "prints out current RIPENV" do

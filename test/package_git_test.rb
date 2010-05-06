@@ -1,12 +1,6 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'helper'
+require 'test/helper'
 
 class PackageGitTest < Rip::Test
-  def setup
-    start_git_daemon
-    super
-  end
-
   test "can't handle unknown protocol" do
     out = rip "package-git rack"
     assert_exited_with_error out
