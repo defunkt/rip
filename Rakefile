@@ -6,7 +6,7 @@ require 'rake/testtask'
 #
 
 def command?(command)
-  system("type #{command} > /dev/null")
+  !`type #{command} 2> /dev/null`.empty?
 end
 
 if ENV['RUBYLIB']
