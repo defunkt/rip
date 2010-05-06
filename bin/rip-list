@@ -13,11 +13,14 @@ parse = ARGV.delete('-p')
 
 puts "ripenv: #{RIPENV}", "" unless parse
 
-rip("installed").each do |package|
-  if parse
-    package = Environment.new(package).packages[0]
-    puts "#{package.source} #{package.version(:long)}"
+rip("installed").each do |package_path|
+  if package = metadata(package_path)
+    if parse
+      puts "#{package.source} #{package.version(:long)}"
+    else
+      puts package
+    end
   else
-    puts Environment.new(package)
+    warn "missing: #{package_path.chomp}" if parse.nil?
   end
 end
