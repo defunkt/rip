@@ -6,4 +6,7 @@
 
 require 'rip'
 
-puts YAML.dump(Rip::Parser.parse(ARGF.read, ARGF.path))
+target  = ARGV[0]
+content = File.exists?(target) ? File.read(target) : target
+
+puts YAML.dump(Rip::Parser.parse(content))

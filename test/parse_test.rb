@@ -22,41 +22,23 @@ yaml
     assert_equal YAML.load(<<yaml), YAML.load(out)
 ---
 - :source: git://github.com/ezmobius/redis-rb.git
-  :name: redis
-  :reported_version: "1.0"
+  :version: "1.0"
 - :source: git://github.com/brianmario/yajl-ruby.git
   :version: 0.6.3
-- :dependencies:
-  - :dependencies:
-    - :dependencies:
-      - :source: cgi_escape
-      - :source: url_parser
-        :version: 0.4.3
-      :source: url_escape
-    :source: rack
-    :version: ">=1.0"
-  - :dependencies:
-    - :source: temple
-    - :source: sass
-      :version: 1.2.1
-    :source: haml
-    :version: 1.0.0
-  :source: sinatra
+- :source: sinatra
   :version: 0.9.4
-- :source: rake
-- :source: git://github.com/quirkey/vegas.git
-  :name: Vegas
-  :version: v0.1.2
-- :source: git://github.com/defunkt/resque
-  :version: 8fb7daf8
-- :source: git://github.com/rtomayko/ronn.git
-  :version: 0.4.1
-- :source: bert
-- :source: ernie
+- :source: rack
+  :version: >= 1.0
+- :source: url_escape
+- :source: cgi_escape
+- :source: url_parser
+  :version: ~> 0.4.3
+- :source: haml
   :version: 1.0.0
-- :source: mustache
-- :path: activerecord
-  :source: git://github.com/rails/rails.git
+- :source: temple
+- :source: sass
+  :version: 1.2.1
+- :source: rake
 yaml
   end
 end

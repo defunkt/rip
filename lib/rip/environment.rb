@@ -44,7 +44,7 @@ module Rip
   end
 
   class Environment
-    attr_accessor :path, :text
+    attr_accessor :text
 
     def initialize(path = nil)
       path = path.strip if path.is_a?(String)
@@ -76,7 +76,7 @@ module Rip
     end
 
     def packages
-      Rip::Parser.parse(@text, @path).map do |hash|
+      Rip::Parser.parse(@text).map do |hash|
         package_and_dependencies Package.new(hash)
       end.flatten
     end

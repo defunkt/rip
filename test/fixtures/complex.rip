@@ -1,16 +1,12 @@
-git://github.com/ezmobius/redis-rb.git @1.0 =>redis
+git://github.com/ezmobius/redis-rb.git 1.0
 git://github.com/brianmario/yajl-ruby.git 0.6.3
 sinatra 0.9.4
-* rack >=1.0
-** url_escape
-*** cgi_escape
-*** url_parser 0.4.3
-* haml 1.0.0
-** temple
-** sass 1.2.1
+# Only the good versions of Rack
+rack >= 1.0
+url_escape
+cgi_escape
+url_parser ~> 0.4.3
+haml 1.0.0
+temple
+sass 1.2.1
 rake # any version
-# !brew install mongodb
-# Classier with caps
-git://github.com/quirkey/vegas.git v0.1.2 =>Vegas
-basic.rip
-git://github.com/rails/rails.git /activerecord
