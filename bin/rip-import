@@ -17,6 +17,7 @@ source = ARGV[0]
 
   Dir["#{source}/#{type}/**/*"].each do |file|
     target = file.split("#{type}/", 2).last
+    chmod 0755, file if type == "bin"
     puts "#{type}/#{target}" unless File.directory?(file)
   end
 end
