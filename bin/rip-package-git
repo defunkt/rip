@@ -20,7 +20,9 @@ def lookup_git_rev(path, rev)
 end
 
 def tag?(path, name)
-  git("--git-dir=#{path} tag -l #{name}") == name
+  if tags = git("--git-dir=#{path} show-ref --tags")
+    tags.grep(/^#{name}|tags\/#{name}/).any?
+  end
 end
 
 def deref_version(path, version, floating = true)

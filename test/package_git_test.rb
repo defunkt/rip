@@ -56,8 +56,7 @@ class PackageGitTest < Rip::Test
     assert_equal "git://localhost/rack 92f79ea8def92c3c2373b9ab5f5fa8e03aa7669d", File.read("#{target}/metadata.rip").chomp
   end
 
-  test "fetch git:// with tag" do
-    rip "package-git git://localhost/rack 0.9.1"
+  test "fetch git:// with tag name" do
     out = rip "package-git git://localhost/rack 0.9.1"
     target = "#{@ripdir}/.packages/rack-b81297be848f0dfd34bc5200acace641"
     assert_equal target, out.chomp
@@ -72,6 +71,33 @@ ripenv: base
 
 rack (0.9.1)
 list
+  end
+
+  test "fetch git:// with tag ref" do
+    out = rip "package-git git://localhost/rack 04ca38270fbee678eb0705510c9dd91a3b6b1dbf"
+    target = "#{@ripdir}/.packages/rack-b81297be848f0dfd34bc5200acace641"
+    assert_equal target, out.chomp
+
+    assert File.exist?("#{target}/metadata.rip")
+    assert_equal "git://localhost/rack 0.9.1", File.read("#{target}/metadata.rip").chomp
+  end
+
+  test "fetch git:// with tagged commmit ref" do
+    out = rip "package-git git://localhost/rack 488d67988ddfb7e13ad2f58272ee04809612cafe"
+    target = "#{@ripdir}/.packages/rack-b81297be848f0dfd34bc5200acace641"
+    assert_equal target, out.chomp
+
+    assert File.exist?("#{target}/metadata.rip")
+    assert_equal "git://localhost/rack 0.9.1", File.read("#{target}/metadata.rip").chomp
+  end
+
+  test "fetch git:// with partial tagged commmit ref" do
+    out = rip "package-git git://localhost/rack 488d679"
+    target = "#{@ripdir}/.packages/rack-b81297be848f0dfd34bc5200acace641"
+    assert_equal target, out.chomp
+
+    assert File.exist?("#{target}/metadata.rip")
+    assert_equal "git://localhost/rack 0.9.1", File.read("#{target}/metadata.rip").chomp
   end
 
   test "fetch git:// package with nonexistent ref" do
