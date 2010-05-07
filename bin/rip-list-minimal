@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# Usage: rip-list-minimal
+
+require 'rip/script'
+
+deps = []
+packages = {}
+
+rip(:installed).each do |path|
+  path = path.chomp
+  next unless package = metadata(path)
+  packages[package.source] = package
+
+  if File.exist? file ="#{path}/deps.rip"
+    File.read(file).split("\n").map do |line|
+      deps << line.split(' ').first
+    end
+  end
+end
+
+(packages.keys - deps).sort.each do |name|
+  package = packages[name]
+  puts "#{package.source} #{package.version(:long)}"
+end

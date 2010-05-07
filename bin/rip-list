@@ -6,8 +6,15 @@
 # RIPENV.
 #
 # If -p is passed, prints in a "parseable" deps.rip format.
+#
+# If -m is passed, prints the minimal list of packages needed to
+# duplicate the current ripenv.
 
 require 'rip/script'
+
+if ARGV.delete('-m')
+  exec "rip-list-minimal"
+end
 
 parse = ARGV.delete('-p')
 

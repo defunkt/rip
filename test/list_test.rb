@@ -18,6 +18,12 @@ tinder (29fb44ca9e)
 installed
   end
 
+  test "rip-list-minimal" do
+    assert_equal <<installed, rip("list-minimal")
+git://localhost/cijoe e8a53aac256665563cf6bb27c04788ce758424ac
+installed
+  end
+
   test "is ripenv specific" do
     rip "env -c newguy"
     rip "install git://localhost/rack"
