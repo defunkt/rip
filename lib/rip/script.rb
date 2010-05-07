@@ -1,21 +1,22 @@
 require 'rip'
-require 'pp'
 
-check = `rip-check`
+if Rip.dir.to_s.empty? || Rip.env.to_s.empty?
+  check = `rip-check`
 
-if $?.success?
-  check.split("\n").each do |line|
-    const, value = line.split("=")
+  if $?.success?
+    check.split("\n").each do |line|
+      const, value = line.split("=")
 
-    if const == 'RIPDIR'
-      Rip.dir = value
-    elsif const == 'RIPENV'
-      Rip.env = value
+      if const == 'RIPDIR'
+        Rip.dir = value
+      elsif const == 'RIPENV'
+        Rip.env = value
+      end
     end
+  else
+    print check
+    exit 1
   end
-else
-  print check
-  exit 1
 end
 
 # Clear out GIT_DIR incase we are running from a git subprocess
