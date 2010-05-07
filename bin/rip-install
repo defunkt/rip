@@ -6,6 +6,7 @@
 
 $-e = true
 force = ARGV.delete('-f') || ARGV.delete('--force')
+pretend = ARGV.delete('-p')
 
 require 'rip/script'
 
@@ -26,7 +27,12 @@ env = Environment.new(paths)
 # Install all else if not.
 env.packages.each do |package|
   path = paths.shift
-  rip "import", path
   package = metadata(path)
-  warn "installed #{package}"
+
+  if pretend
+    puts "#{package.source} #{package.version(:long)}"
+  else
+    rip "import", path
+    warn "installed #{package}"
+  end
 end
