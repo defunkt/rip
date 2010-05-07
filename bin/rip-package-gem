@@ -47,116 +47,101 @@ module Gem
 end
 
 
-def list(name)
-  rpg_available? ? rpg_list(name) : gem_list(name)
-end
-
-def unpack(name, version)
-  info "fetching #{name} #{version}"
-  rpg_available? ? rpg_unpack(name, version) : gem_unpack(name, version)
-end
-
-def dependencies(name, version)
-  if rpg_available?
-    rpg_dependencies(name, version)
-  else
-    gem_dependencies(name, version)
+class Fetcher
+  def unpack(name, version)
   end
-end
 
-def dep_line(name, tweedle, version)
-  if version == '0'
-    name
-  elsif tweedle == '='
-    "#{name} #{version}"
-  else
-    "#{name} #{tweedle}#{version}"
-  end
-end
+  def dependencies(name, version)
+    io = specification(name, version)
+    return [] unless io
 
+    spec = YAML.load(io)
 
-def gem_list(name)
-  gems = gem("list #{name} --remote").split("\n")
-  if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
-    $1
-  end
-end
-
-def gem_unpack(name, version)
-  path = gem_path = nil
-
-  cd Rip.cache do
-    begin
-      if gem("fetch", name, "-v #{version}") =~ /Downloaded (.+)/
-        gem_path = File.expand_path($1) + ".gem"
-      else
-        gem = name.dup
-        gem << " #{version}" if version
-        abort "#{gem} not found"
-      end
-
-      sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
-        /^Unpacked gem: '(.+)'$/
-      path = $1
-    ensure
-      rm_rf gem_path if File.exist?(gem_path.to_s)
+    deps = spec.dependencies
+    deps.map do |dep|
+      dep_line(dep.name, dep.tweedle, dep.version)
     end
   end
 
-  if path.nil?
-    abort "#{name} #{version} not found"
-  end
-
-  path
-end
-
-def gem_specification(name, version)
-  spec = gem("specification -r #{name} -v #{version}")
-  return nil unless $?.success?
-  YAML.load(spec)
-end
-
-def gem_dependencies(name, version)
-  spec = gem_specification(name, version)
-  return [] unless spec
-
-  deps = spec.dependencies
-  deps.map do |dep|
-    dep_line(dep.name, dep.tweedle, dep.version)
+  def dep_line(name, tweedle, version)
+    if version == '0'
+      name
+    elsif tweedle == '='
+      "#{name} #{version}"
+    else
+      "#{name} #{tweedle}#{version}"
+    end
   end
 end
 
+class GemFetcher < Fetcher
+  def list(name)
+    gems = gem("list #{name} --remote").split("\n")
+    if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
+      $1
+    end
+  end
 
-def rpg_list(name)
-  if rpg("list -a #{name}") =~ /^#{name} (.+)$/
-    $1
+  def unpack(name, version)
+    info "fetching #{name} #{version}"
+    path = gem_path = nil
+
+    cd Rip.cache do
+      begin
+        if gem("fetch", name, "-v #{version}") =~ /Downloaded (.+)/
+          gem_path = File.expand_path($1) + ".gem"
+        else
+          gem = name.dup
+          gem << " #{version}" if version
+          abort "#{gem} not found"
+        end
+
+        sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
+          /^Unpacked gem: '(.+)'$/
+        path = $1
+      ensure
+        rm_rf gem_path if File.exist?(gem_path.to_s)
+      end
+    end
+
+    if path.nil?
+      abort "#{name} #{version} not found"
+    end
+
+    path
+  end
+
+  def specification(name, version)
+    spec = gem("specification -r #{name} -v #{version}")
+    $?.success? ? spec : nil
   end
 end
 
-def rpg_unpack(name, version)
-  if path = rpg("unpack", name, version)
-    path.chomp
+class RpgFetcher < Fetcher
+  def list(name)
+    if rpg("list -a #{name}") =~ /^#{name} (.+)$/
+      $1
+    end
+  end
+
+  def unpack(name, version)
+    info "fetching #{name} #{version}"
+    if path = rpg("unpack", name, version)
+      path.chomp
+    end
+  end
+
+  def specification(name, version)
+    spec = rpg("unpack", "-c", "-m", name, version)
+    $?.success? ? spec : nil
   end
 end
 
-def rpg_specification(name, version)
-  spec = rpg("unpack", "-c", "-m", name, version)
-  return nil unless $?.success?
-  YAML.load(spec)
-end
+fetcher = rpg_available? ? RpgFetcher.new : GemFetcher.new
 
-def rpg_dependencies(name, version)
-  spec = rpg_specification(name, version)
-  return [] unless spec
 
-  deps = spec.dependencies
-  deps.map do |dep|
-    dep_line(dep.name, dep.tweedle, dep.version)
-  end
-end
-
-version = list(source) if version.nil?
-version = list(source) unless version && version =~ /^\d/
+version = fetcher.list(source) if version.nil?
+version = fetcher.list(source) unless version && version =~ /^\d/
 
 package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
 
@@ -175,7 +160,7 @@ synchronize(package_path) do
 
   cd Rip.packages
 
-  path = unpack(source, version)
+  path = fetcher.unpack(source, version)
 
   if !File.exist?(path)
     abort "#{source} #{version} not found"
@@ -186,7 +171,7 @@ synchronize(package_path) do
   write("#{package_path}/metadata.rip") { "#{source} #{version}" }
 
   if !File.exists?(deps_rip = "#{package_path}/deps.rip")
-    deps = dependencies(source, version)
+    deps = fetcher.dependencies(source, version)
 
     if deps.any?
       write(deps_rip) { deps.sort }
