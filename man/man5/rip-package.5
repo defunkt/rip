@@ -1,10 +1,10 @@
-.\" generated with Ron/v0.3
-.\" http://github.com/rtomayko/ron/
+.\" generated with Ronn/v0.5
+.\" http://github.com/rtomayko/ronn/
 .
-.TH "RIP\-PACKAGE" "5" "April 2010" "RIP" "Rip Manual"
+.TH "RIP\-PACKAGE" "5" "May 2010" "DEFUNKT" "rip manual"
 .
 .SH "NAME"
-\fBrip-package\fR \-\- rip package handler convention
+\fBrip\-package\fR \-\- rip package handler convention
 .
 .P
 Package handlers must implement "rip\-package\-$type" that accepts
@@ -41,9 +41,10 @@ A Simple .git handler.
 .
 .nf
 
-\fBsource  = ARGV[0]
-version = ARGV[1] || "master" 
-unless source =~ /\.git$/
+source  = ARGV[0]
+version = ARGV[1] || "master"
+
+unless source =~ /\\.git$/
   exit 3
 end
 
@@ -57,11 +58,10 @@ File.open("#{package}/metadata.rip", 'w') do |f|
 end
 
 puts package
-\fR
 .
 .fi
 .
 .IP "" 0
 .
 .SH "SEE ALSO"
-rip(5), rip(1), git(1),\fIhttp://github.com/defunkt/rip\fR
+rip(5), rip(1), git(1), \fIhttp://github.com/defunkt/rip\fR
