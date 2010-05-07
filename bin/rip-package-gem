@@ -37,6 +37,10 @@ module Gem
     def version
       version_requirements.requirements[0].last.version
     end
+
+    def type
+      @type || :runtime
+    end
   end
   class Specification < Faker; end
   class Requirement   < Faker; end
@@ -58,6 +62,9 @@ class Fetcher
     spec = YAML.load(io)
 
     deps = spec.dependencies
+
+    deps = deps.select { |dep| dep.type == :runtime }
+
     deps.map do |dep|
       dep_line(dep.name, dep.tweedle, dep.version)
     end
