@@ -59,7 +59,7 @@ class PackageGitTest < Rip::Test
   test "fetch git:// with tag" do
     rip "package-git git://localhost/rack 0.9.1"
     out = rip "package-git git://localhost/rack 0.9.1"
-    target = "#{@ripdir}/.packages/rack-edd16cfec88bea9a52ce1bf01d4aaa11"
+    target = "#{@ripdir}/.packages/rack-b81297be848f0dfd34bc5200acace641"
     assert_equal target, out.chomp
 
     assert File.exist?("#{target}/metadata.rip")

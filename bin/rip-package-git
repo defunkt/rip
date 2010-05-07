@@ -14,8 +14,8 @@ unless source =~ %r{^file://|^git://|\.git$} ||
 end
 
 
-def parse_git_rev(path, rev)
-  ref = git "--git-dir=#{path} rev-parse --verify --quiet #{rev}"
+def lookup_git_rev(path, rev)
+  ref = git "--git-dir=#{path} rev-list -n1 #{rev} 2> /dev/null"
   $?.success? ? ref : nil
 end
 
@@ -24,7 +24,7 @@ def tag?(path, name)
 end
 
 def deref_version(path, version, floating = true)
-  ref = parse_git_rev(path, version)
+  ref = lookup_git_rev(path, version)
 
   # If floating versions are allowed or SHA matches
   # Allow partial SHAs to match
