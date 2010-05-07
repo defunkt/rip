@@ -13,6 +13,40 @@ unless source =~ /\.gem$/ || source =~ /^(\w|-)+$/
 end
 
 
+# Stubbed Gem class for YAML
+module Gem
+  class Faker
+    def respond_to?(ivar)
+      instance_variable_defined?("@#{ivar}") || super
+    end
+
+    def method_missing(ivar, *args)
+      respond_to?(ivar) ? instance_variable_get("@#{ivar}") : super
+    end
+  end
+
+  class Dependency < Faker
+    def tweedle
+      if respond_to?(:version_requirements)
+        version_requirements.requirements[0].first
+      elsif respond_to?(:requirement)
+        requirement.requirements[0].first
+      end
+    end
+
+    def version
+      version_requirements.requirements[0].last.version
+    end
+  end
+  class Specification < Faker; end
+  class Requirement   < Faker; end
+  class Version       < Faker; end
+
+  # Some older specs reference Version::Requirement
+  Version::Requirement = Requirement
+end
+
+
 def list(name)
   rpg_available? ? rpg_list(name) : gem_list(name)
 end
@@ -39,6 +73,7 @@ def dep_line(name, tweedle, version)
     "#{name} #{tweedle}#{version}"
   end
 end
+
 
 def gem_list(name)
   gems = gem("list #{name} --remote").split("\n")
@@ -75,16 +110,22 @@ def gem_unpack(name, version)
   path
 end
 
-def gem_dependencies(name, version)
-  deps = gem("dependency --pipe -r /^#{name}$/ -v #{version}")
-  return [] if deps =~ /^No gems found/
+def gem_specification(name, version)
+  spec = gem("specification -r #{name} -v #{version}")
+  return nil unless $?.success?
+  YAML.load(spec)
+end
 
-  deps.split("\n").map do |dep|
-    if dep =~ /(\S+) --version '(\S+) (\S+?)'/
-      dep_line($1, $2, $3)
-    end
+def gem_dependencies(name, version)
+  spec = gem_specification(name, version)
+  return [] unless spec
+
+  deps = spec.dependencies
+  deps.map do |dep|
+    dep_line(dep.name, dep.tweedle, dep.version)
   end
 end
+
 
 def rpg_list(name)
   if rpg("list -a #{name}") =~ /^#{name} (.+)$/
@@ -98,45 +139,17 @@ def rpg_unpack(name, version)
   end
 end
 
-module Gem
-  class Faker
-    def respond_to?(ivar)
-      instance_variable_defined?("@#{ivar}") || super
-    end
-
-    def method_missing(ivar, *args)
-      respond_to?(ivar) ? instance_variable_get("@#{ivar}") : super
-    end
-  end
-
-  class Dependency < Faker
-    def tweedle
-      if respond_to?(:version_requirements)
-        version_requirements.requirements[0].first
-      elsif respond_to?(:requirement)
-        requirement.requirements[0].first
-      end
-    end
-
-    def version
-      version_requirements.requirements[0].last.version
-    end
-  end
-  class Specification < Faker; end
-  class Requirement   < Faker; end
-  class Version       < Faker; end
-
-  # Some older specs reference Version::Requirement
-  Version::Requirement = Requirement
+def rpg_specification(name, version)
+  spec = rpg("unpack", "-c", "-m", name, version)
+  return nil unless $?.success?
+  YAML.load(spec)
 end
 
 def rpg_dependencies(name, version)
-  deps = rpg("unpack", "-c", "-m", name, version)
-  return [] unless $?.success?
+  spec = rpg_specification(name, version)
+  return [] unless spec
 
-  deps = YAML.load(deps)
-  deps = deps.dependencies
-
+  deps = spec.dependencies
   deps.map do |dep|
     dep_line(dep.name, dep.tweedle, dep.version)
   end
