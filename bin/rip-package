@@ -29,7 +29,7 @@ require 'rip/script'
 debug "packaging #{ARGV * ' '}"
 
 # TODO: Eventually search load path for all rip-handle-*
-types = %w( sub git gem )
+types = %w( ripfile sub git gem )
 
 types.each do |type|
   out = rip "package-#{type}", ARGV

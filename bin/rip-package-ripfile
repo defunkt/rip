@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# Usage: rip-package-ripfile FILE
+
+$-e = true
+
+require 'rip/script'
+
+source = ARGV[0]
+
+unless source =~ %r{\.rip$} && File.file?(source)
+  exit 3 # Can't handle source
+end
+
+puts rip("fetch-dependencies", ARGV[0]).split("\n").sort
