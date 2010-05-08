@@ -37,8 +37,9 @@ types.each do |type|
   if $?.exitstatus == 3
     next
   elsif $?.success?
-    package_path = out.chomp
-    puts rip(:build, package_path)
+    out.split("\n").each do |package_path|
+      puts rip(:build, package_path)
+    end
     exit 0
   else
     exit $?.exitstatus
