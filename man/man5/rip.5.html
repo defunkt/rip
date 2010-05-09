@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv='content-type' value='text/html;charset=utf8'>
-  <meta name='generator' value='Ron/v0.3'>
+  <meta name='generator' value='Ronn/v0.5'>
   <title>rip(5) -- rip file format</title>
   <style type='text/css'>
     body {margin:0}
@@ -58,12 +58,13 @@
 
 <ol class='head man'>
   <li class='tl'>rip(5)</li>
-  <li class='tc'>Rip Manual</li>
+  <li class='tc'>rip manual</li>
   <li class='tr'>rip(5)</li>
 </ol>
 
 <h2 id='NAME'>NAME</h2>
 <p><code>rip</code> -- rip file format</p>
+
 <h2>SYNOPSIS</h2>
 
 <p>A simple Rip file (e.g. deps.rip):</p>
@@ -123,8 +124,7 @@ package can be found. A source can be any of the following things:</p>
 <li>bzr repository</li>
 <li>tarball</li>
 <li>zip</li>
-<li>
-<code>.rip</code> file</li>
+<li><code>.rip</code> file</li>
 <li>shell command</li>
 <li>local directory</li>
 <li>local file</li>
@@ -275,8 +275,7 @@ bzr+ssh://user@myproject.org/MyProject/trunk/ /MyProject
 bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject
 </code></pre>
 
-<h3>
-<code>.rip</code> file</h3>
+<h3><code>.rip</code> file</h3>
 
 <p>Any source ending in <code>.rip</code> will be loaded recursively. That is, each
 line will be fed to <code>rip-install</code> as if they were a top level
@@ -349,9 +348,10 @@ dezipped, be it remote or local.</p>
 <a href="http://github.com">http://github.com</a>,
 <a href="http://github.com/defunkt/rip">http://github.com/defunkt/rip</a></p>
 
+
 <ol class='foot man'>
-  <li class='tl'>RIP</li>
-  <li class='tc'>April 2010</li>
+  <li class='tl'>DEFUNKT</li>
+  <li class='tc'>May 2010</li>
   <li class='tr'>rip(5)</li>
 </ol>
 

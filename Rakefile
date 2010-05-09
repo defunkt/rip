@@ -69,12 +69,12 @@ multitask :daemons => %w( daemon:git daemon:gem )
 if command? :ronn
   desc "Show the manual"
   task :man => "man:build" do
-    exec "man man/rip.1"
+    exec "man man/man1/rip.1"
   end
 
   desc "Build the manual"
   task "man:build" do
-    sh "ronn -br5 --organization=DEFUNKT --manual='rip manual' man/*.ronn"
+    sh "ronn -br5 --organization=DEFUNKT --manual='rip manual' man/**/*.ronn"
   end
 end
 

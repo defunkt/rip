@@ -12,9 +12,6 @@ require 'rip/script'
 
 abort "what?" if ARGV.empty?
 
-env   = Environment.new(ARGV * ' ')
-paths = []
-
 # Grab all dependencies
 paths = rip("fetch-dependencies", *ARGV).split("\n")
 

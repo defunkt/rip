@@ -6,8 +6,8 @@ class InstallTest < Rip::Test
     super
   end
 
-  test "install cijoe.deps" do
-    out = rip "install #{fixture('cijoe.deps')}"
+  test "install cijoe-deps.rip" do
+    out = rip "install #{fixture('cijoe-deps.rip')}"
     assert_exited_successfully out
 
     assert File.exist?("#{@ripdir}/base/bin/cijoe")
