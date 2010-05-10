@@ -172,10 +172,10 @@ Introspection:
 
 Environments:
 
-      $ rip-envs
-      $ rip-env -c NEW_RIPENV
-      $ rip-env -d RIPENV_TO_DELETE
-      $ rip-env RIPENV_TO_SWITCH_TO
+    $ rip-envs
+    $ rip-env -c NEW_RIPENV
+    $ rip-env -d RIPENV_TO_DELETE
+    $ rip-env RIPENV_TO_SWITCH_TO
 
 Spring cleaning:
 
