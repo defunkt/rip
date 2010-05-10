@@ -8,7 +8,7 @@ require 'rip/script'
 
 source = ARGV[0]
 
-%w( lib bin man ).each do |type|
+%w( lib bin ).each do |type|
   mkdir_p "#{Rip.envdir}/#{type}"
 
   if File.directory?("#{source}/#{type}")
@@ -19,5 +19,18 @@ source = ARGV[0]
     target = file.split("#{type}/", 2).last
     chmod 0755, file if type == "bin"
     puts "#{type}/#{target}" unless File.directory?(file)
+  end
+end
+
+Dir["#{source}/man/*"].each do |file|
+  if file =~ /\.(\d[^.]*?)$/
+    mkdir_p dir = "#{Rip.envdir}/man/man#$1"
+
+    if File.exist? target = "#{dir}/#{basename file}"
+      rm target
+    end
+
+    ln_s file, target
+    puts target.sub("#{Rip.envdir}/", '')
   end
 end

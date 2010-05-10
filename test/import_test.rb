@@ -22,6 +22,8 @@ class ImportTest < Rip::Test
       lib/cijoe/views/template.erb
       lib/cijoe.rb
       bin/cijoe
+      man/man1/cijoe.1
+      man/man5/cijoe.conf.5
     )
 
     assert_equal files.join("\n") + "\n", copied
@@ -37,7 +39,8 @@ class ImportTest < Rip::Test
 
     files = out.split("\n")
     assert_equal "lib/cijoe/build.rb", files[0]
-    assert_equal "lib/cijoe.rb", files[-2]
-    assert_equal "bin/cijoe", files[-1]
+    assert_equal "man/man1/cijoe.1", files[-2]
+    assert_equal "lib/cijoe.rb", files[-4]
+    assert_equal "bin/cijoe", files[-3]
   end
 end
