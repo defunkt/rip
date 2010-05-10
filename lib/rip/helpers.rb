@@ -29,6 +29,10 @@ module Rip
       end
     end
 
+    def read(file)
+      File.read(file)
+    end
+
     def basename(file)
       File.basename(file)
     end
