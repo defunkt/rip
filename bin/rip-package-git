@@ -103,10 +103,14 @@ synchronize(package_path) do
   cd package_path
   git "checkout --quiet #{ref}"
   git "remote rm origin"
-  Dir["#{package_path}/.git/refs/heads/*"].each { |branch| git "branch -D #{File.basename(branch)}" }
+  Dir["#{package_path}/.git/refs/heads/*"].each do |branch|
+    git "branch -D #{basename(branch)}"
+  end
 
   $-e = false
-  write("#{package_path}/metadata.rip") { "#{source} #{describe_ref(cache_path, ref)}" }
+  write("#{package_path}/metadata.rip") do
+    "#{source} #{describe_ref(cache_path, ref)}"
+  end
 
   puts package_path
 end
