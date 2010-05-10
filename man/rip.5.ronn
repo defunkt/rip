@@ -1,0 +1,132 @@
+rip(5) -- rip file format
+=========================
+
+## SYNOPSIS
+
+A simple Rip file (e.g. deps.rip):
+
+    git://github.com/ezmobius/redis-rb.git eed200ad
+    git://github.com/brianmario/yajl-ruby.git 0.6.3
+    rack 1.0
+    sinatra
+    mustache
+
+Each Rip file describes a set of Rip packages, one package per line.
+
+## DESCRIPTION
+
+A basic Rip package can be described in terms of its source and
+relevant install-time instructions.
+
+The format is:
+
+    SOURCE [PATH] [VERSION]
+
+Each line of a Rip file can be fed to `rip-install`.
+
+### Comments
+
+Rip files use Ruby-style `#` comments. Anything after a `#` on a line
+is considered a comment.
+
+    # comment
+    redis # also a comment
+
+### Source
+
+Always the first item in the line, the source describes where the
+package can be found. A source can be any of the following things:
+
+* RubyGem
+* git repository
+* local file
+
+Planned:
+
+* hg repository
+* bzr repository
+* tarball
+* zip
+* local directory
+* remote file (http)
+
+More details on each under `SOURCES`.
+
+### Version
+
+The version is any argument which starts with [a-z0-9]. Some examples:
+
+* master
+* 0.6.3
+* v0.1.2
+* eed200ad
+
+### Path
+
+A path is an argument which begins with a slash. Paths tells Rip which
+subdirectory to use as the base directory when installing the target
+package. For example, given this line:
+
+    git://github.com/rails/rails.git /activerecord
+
+Rip would fetch and unpack `git://github.com/rails/rails.git` but use
+`activerecord` as the root when installing.
+
+### Name
+
+Rip derives a package's name from its source.
+
+## SOURCES
+
+Thanks to pip(1) for the inspiration.
+
+### git repository
+
+Rip will use git to fetch a package if its source is in one of the
+following formats:
+
+    git://git.myproject.org/MyProject
+    git@git.myproject.org:MyProject.git
+    git+http://git.myproject.org/MyProject
+    git+ssh://git@myproject.org/MyProject
+
+Rip will also try to fetch any source ending in `.git`:
+
+    http://git.myproject.org/MyProject.git
+    file:///Users/chris/Projects/rip/.git
+
+### hg repository
+
+Rip will use hg to fetch a package if its source is in one of the
+following formats:
+
+    hg+http://hg.myproject.org/MyProject/
+    hg+https://hg.myproject.org/MyProject/
+    hg+ssh://hg@myproject.org/MyProject/
+
+### bzr repository
+
+Rip will use bzr to fetch a package if its source is in one of the
+following formats:
+
+    bzr+http://bzr.myproject.org/MyProject/trunk/ /MyProject
+    bzr+sftp://user@myproject.org/MyProject/trunk/ /MyProject
+    bzr+ssh://user@myproject.org/MyProject/trunk/ /MyProject
+    bzr+ftp://user@myproject.org/MyProject/trunk/ /MyProject
+
+### local file
+
+Files can be specified as long as they exist on disk and end in
+`.rb`.
+
+    /var/packages/iphone/iphone.rb
+    index.rb
+
+## BUGS
+
+<http://github.com/defunkt/rip/issues>
+
+## SEE ALSO
+
+rip(1), git(1),
+<http://hellorip.com/>
