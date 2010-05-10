@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+commands = ENV['PATH'].split(':').map do |path|
+  Dir[path + '/rip-*'].map { |f| File.basename(f).sub('rip-', '') }
+end
+
+puts commands.flatten.uniq.sort
