@@ -1,38 +1,12 @@
 #!/usr/bin/env ruby
 # Usage: rip-package URL
-#
-# Downloads the package at URL to $RIPDIR/.packages using the appropriate
-# transfer mechanism. Stores the package as PACKAGE-md5 where md5 is
-# the hash of the URL from which it was retrieved.
-#
-# Prints the full path to the fetched package to standard out.
-#
-# Accepted transports:
-#   git
-#   hg
-#   bzr
-#   svn
-#   curl + tar xzf
-#   curl + tar xjf
-#
-# Works like this:
-#
-#  rip-package git://github/foo.git v1.0
-#  |-- rip-fetch git://github/foo.git
-#  |-- rip-unpack .rip/.cache/foo-123abc
-#  |-- rip-build .rip/.packages/foo-123abc
-#  |-- (Write rip metadata to package dir)
-#  `-- return .rip/.packages/foo-123abc
 
 require 'rip/script'
 
 debug "packaging #{ARGV * ' '}"
 
-# TODO: Eventually search load path for all rip-handle-*
-types = %w( ripfile sub git gem )
-
-types.each do |type|
-  out = rip "package-#{type}", ARGV
+rip(:commands).grep(/^package-/).each do |handler|
+  out = rip(handler.chomp, ARGV)
 
   if $?.exitstatus == 3
     next
