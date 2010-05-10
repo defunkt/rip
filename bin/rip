@@ -1,5 +1,49 @@
 #!/usr/bin/env ruby
-# rip2
+## Usage: rip [--version] [--ripdir=RIPDIR] [--ripenv=RIPENV]
+##    [-v|--verbose] [-d|--debug] [--help] COMMAND [ARGS]
+##
+## Installation:
+##
+##    $ rip install RUBYGEM
+##    $ rip install RUBYGEM VERSION
+##    $ rip install GIT_REPO
+##    $ rip install GIT_REPO TAG_OR_VERSION
+##    $ rip remove PACKAGE
+##
+## Introspection:
+##
+##    $ rip list
+##    $ rip list -p > deps.rip
+##    $ rip info PACKAGE
+##    $ rip config
+##
+## Environments:
+##
+##    $ rip envs
+##    $ rip env -c NEW_RIPENV
+##    $ rip env -d RIPENV_TO_DELETE
+##    $ rip env RIPENV_TO_SWITCH_TO
+##    $ rip exec RIPENV command_to_run_under_ripenv
+##
 
-command = ARGV.shift
-exec "rip-#{command}", *ARGV
+while ARGV[0] =~ /^-/
+  case ARGV.shift
+  when /--ripdir=(.+)/
+    ENV['RIPDIR'] = $1
+  when /--ripenv=(.+)/
+    ENV['RIPENV'] = $1
+  when '--verbose', '-v'
+    ENV['RIPVERBOSE'] = '1'
+  when '--debug', '-d'
+    ENV['RIPDEBUG'] = '1'
+  when '--quiet', '-q'
+    ENV['RIPVERBOSE'] = ENV['RIPDEBUG'] = nil
+  when '--help', '--h', '--he', '--hel', '--usage', 'help', nil
+    exec "grep ^## < #$0 | cut -c4-"
+  when '--version', 'version'
+    exec "git describe HEAD --tags"
+  end
+end
+
+exec "rip --help" if ARGV.empty? || ARGV[0] == "help"
+exec "rip-#{ARGV.shift}", *ARGV
