@@ -5,8 +5,7 @@
 # If RIPENV is omitted shows installed packages for the current
 # RIPENV.
 #
-# If -p is passed or standard out is redirect, prints in a "parseable"
-# deps.rip format.
+# If -p is passed, prints in a "parseable" deps.rip format.
 #
 # If -m is passed, prints the minimal list of packages needed to
 # duplicate the current ripenv.
@@ -17,7 +16,7 @@ if ARGV.delete('-m')
   exec "rip-list-minimal"
 end
 
-parse = ARGV.delete('-p') || !$stdout.tty?
+parse = ARGV.delete('-p')
 
 puts "ripenv: #{RIPENV}", "" unless parse
 
