@@ -1,0 +1,15 @@
+#!/bin/sh
+# Bash only for now.
+# In ~/.bashrc:
+#   eval `rip-completion`
+
+cat <<'completer'
+_rip_complete () {
+  COMPREPLY=();
+  if [ $COMP_CWORD = 1 ]; then
+    completes=`rip commands`;
+    COMPREPLY=(`compgen -W "$completes" -- $2`);
+  fi;
+};
+complete -F _rip_complete rip
+completer
