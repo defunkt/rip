@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+Dir['bin/*'].each do |f|
+  f = File.basename(f)
+  if File.exist? "man/#{f}.1.ronn"
+    print '[X] '
+  else
+    print '[ ] '
+  end
+  puts f
+end
+
+__END__
+
+[X] build
+[ ] check
+[ ] commands
+[ ] completion
+[ ] config
+[ ] create
+[ ] detect-conflicts
+[ ] diff
+[ ] env
+[ ] envs
+[ ] exec
+[ ] fetch-dependencies
+[ ] fsck
+[ ] gc
+[ ] gemfile
+[ ] import
+[ ] info
+[ ] install
+[ ] installed
+[ ] isolate
+[ ] list
+[ ] list-minimal
+[ ] metadata
+[ ] nodeps
+[ ] off
+[ ] on
+[ ] only
+[X] package
+[ ] package-gem
+[X] package-git
+[ ] package-ripfile
+[ ] package-sub
+[ ] parse
+[ ] readme
+[ ] recursive-link
+[ ] remove
+[ ] rg
+[ ] setup
+[ ] shell
+[ ] uninstall
