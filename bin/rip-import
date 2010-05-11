@@ -22,7 +22,7 @@ source = ARGV[0]
   end
 end
 
-Dir["#{source}/man/*"].each do |file|
+Dir["#{source}/man/**/*"].each do |file|
   if file =~ /\.(\d[^.]*?)$/
     mkdir_p dir = "#{Rip.envdir}/man/man#$1"
 
