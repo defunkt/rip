@@ -36,11 +36,15 @@ end
 RUBYLIB = clean_env_path('RUBYLIB', 'lib')
 PATH    = clean_env_path('PATH', 'bin')
 
-if ENV['RIPPUSH'] != '0'
+if ENV['RIPHELPERS'] != '0'
   puts <<-end_functions
   function rip-push() {
     export PATH="$PATH:$RIPDIR/$1/bin";
     export RUBYLIB="$RUBYLIB:$RIPDIR/$1/lib";
+  };
+  function rip-use {
+    export RIPENV=$1;
+    eval `rip-config`;
   };
   end_functions
 end
