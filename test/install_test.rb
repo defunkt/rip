@@ -22,7 +22,7 @@ class InstallTest < Rip::Test
     assert_equal "installed repl (0.1.0)", out.strip
 
     assert File.exist?("#{@ripdir}/base/bin/repl")
-    assert File.exist?("#{@ripdir}/base/man/repl.1")
+    assert File.exist?("#{@ripdir}/base/man/man1/repl.1")
   end
 
   test "pretend" do
@@ -31,7 +31,7 @@ git://localhost/tinder.git 29fb44ca9eb9a0c90f37286b92dafbffa5731b2e
 git://localhost/sinatra.git e0ee682740d194e956a6936dcd89512944d891a3
 git://localhost/rack.git 1.0
 git://localhost/choice.git 8b12556493c86b07ff3efc0fa31f0981b5d1ff83
-git://localhost/cijoe e8a53aac256665563cf6bb27c04788ce758424ac
+git://localhost/cijoe 04419882877337e70ac572a36d25416b0da9ba0f
 packages
   end
 

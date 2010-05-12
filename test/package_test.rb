@@ -3,7 +3,7 @@ require 'test/helper'
 class PackageTest < Rip::Test
   test "fetch git:// package" do
     out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
+    target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -76,7 +76,7 @@ class PackageTest < Rip::Test
 
   test "fetch git:// package clears remotes" do
     out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
+    target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -85,7 +85,7 @@ class PackageTest < Rip::Test
 
   test "fetch git:// package clears branches" do
     out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
+    target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -94,11 +94,11 @@ class PackageTest < Rip::Test
 
   test "fetch package twice" do
     out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
+    target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
     assert_equal target, out.chomp
 
     out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
+    target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
     assert_equal target, out.chomp
   end
 
@@ -133,10 +133,10 @@ class PackageTest < Rip::Test
 
   test "writes package.rip" do
     out = rip "package git://localhost/cijoe"
-    target = "#{@ripdir}/.packages/cijoe-20053386165d0ace45a91cd03c9ea31f"
+    target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert File.exist?("#{target}/metadata.rip")
-    assert_equal "git://localhost/cijoe e8a53aac256665563cf6bb27c04788ce758424ac\n",
+    assert_equal "git://localhost/cijoe 04419882877337e70ac572a36d25416b0da9ba0f\n",
       File.read("#{target}/metadata.rip")
   end
 end
