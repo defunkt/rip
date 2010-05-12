@@ -57,7 +57,7 @@ class PackageTest < Rip::Test
 
   test "fetch git:// package with path" do
     out = rip "package git://localhost/rails /activerecord"
-    target = "#{@ripdir}/.packages/rails-06e3a14fe30bceac347f56b5e2a4d398"
+    target = "#{@ripdir}/.packages/rails-activerecord-06e3a14fe30bceac347f56b5e2a4d398"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
