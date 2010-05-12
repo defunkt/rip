@@ -41,8 +41,7 @@ module Rip
       args = escape(args)
 
       debug "rip-#{command} #{args}"
-      bindir = File.dirname(__FILE__) + "/../../bin/"
-      sh "#{bindir}/rip-#{command}", args
+      sh "rip-#{command}", args
     end
 
     def rpg_available?
