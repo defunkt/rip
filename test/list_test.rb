@@ -11,7 +11,7 @@ class ListTest < Rip::Test
 ripenv: base
 
 choice (8b12556493)
-cijoe (e8a53aac25)
+cijoe (0441988287)
 rack (1.0)
 sinatra (e0ee682740)
 tinder (29fb44ca9e)
@@ -20,7 +20,7 @@ installed
 
   test "rip-list-minimal" do
     assert_equal <<installed, rip("list-minimal")
-git://localhost/cijoe e8a53aac256665563cf6bb27c04788ce758424ac
+git://localhost/cijoe 04419882877337e70ac572a36d25416b0da9ba0f
 installed
   end
 

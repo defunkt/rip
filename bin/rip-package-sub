@@ -15,7 +15,9 @@ if !File.exist?("#{base_package}#{path}")
 end
 
 name, hash = File.basename(base_package).split("-")
-package_path = "#{Rip.packages}/#{name}-#{Rip.md5("#{hash}#{path}")}"
+subpath = path.split("/").join("-")
+
+package_path = "#{Rip.packages}/#{name}#{subpath}-#{Rip.md5("#{hash}#{path}")}"
 
 if !File.exist?(package_path)
   ln_s "#{base_package}#{path}", package_path
