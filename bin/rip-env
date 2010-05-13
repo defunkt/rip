@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-## Usage: rip-env [-c] [-d] [-l] RIPENV
+## Usage: rip-env [-c] [-d] [-l] [-p] RIPENV [PACKAGE]
 ##
 ## Prints, changes, lists, creates, or deletes the ripenvs.
 
