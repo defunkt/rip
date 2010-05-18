@@ -2,6 +2,9 @@
 # Usage: rip-build PATH
 
 target = ARGV[0]
+if target.nil? || !File.directory?(target)
+  abort "usage: rip-build PACKAGE_PATH"
+end
 
 require 'rip/script'
 
