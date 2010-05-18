@@ -1,0 +1,35 @@
+rip-check(1) -- check the environment for rip
+=============================================
+
+## SYNOPSIS
+
+`rip-check`
+
+## DESCRIPTION
+
+`rip-check` ensures `$RIPDIR` points to a directory and `$RIPENV`
+exists on disk. If so, it prints both variables in the format of
+`VARIABLE=VALUE`. If not, it exits with 0 and prints an error to
+standard error.
+
+You should not use `rip-check` directly. It is used internally by most
+other rip programs.
+
+## EXAMPLES
+
+    $ rip-check
+    RIPDIR=/Users/chris/.rip
+    RIPENV=mustache
+
+    $ RIPENV=tomdoc rip-check
+    RIPDIR=/Users/chris/.rip
+    RIPENV=tomdoc
+
+    $ RIPDIR=. rip-check
+    No ripenvs found. Please run `rip-setup`
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+
