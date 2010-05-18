@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-# Usage: rip-build PATH
+# usage: rip-build PACKAGE_PATH
+#
+# Builds a rip package's Ruby extension(s).
 
 target = ARGV[0]
 if target.nil? || !File.directory?(target)

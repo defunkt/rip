@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+# usage: rip-commands
+#
+# Prints a list of rip commands (rip-*) to stdout.
 
 commands = ENV['PATH'].split(':').map do |path|
   Dir[path + '/rip-*'].map { |f| File.basename(f).sub('rip-', '') }

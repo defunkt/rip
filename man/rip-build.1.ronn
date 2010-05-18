@@ -18,11 +18,11 @@ creates, compiles, and imports packages for you.
 
 Compile nokogiri.
 
-  rip build ~/.rip/.packages/nokogiri-10d01f872db2d4f88ce5bd9472d21509
+  rip-build ~/.rip/.packages/nokogiri-10d01f872db2d4f88ce5bd9472d21509
 
 Manually set the Ruby platform string.
 
-  RIPPLATFORM="osx" rip build ./nokogiri-10d01f872db2d4f88ce5bd9472d21509
+  RIPPLATFORM="osx" rip-build ./nokogiri-10d01f872db2d4f88ce5bd9472d21509
 
 ## COMPILATION
 

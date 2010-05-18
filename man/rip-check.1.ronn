@@ -17,16 +17,16 @@ other rip programs.
 
 ## EXAMPLES
 
-    $ rip-check
-    RIPDIR=/Users/chris/.rip
-    RIPENV=mustache
+  $ rip-check
+  RIPDIR=/Users/chris/.rip
+  RIPENV=mustache
 
-    $ RIPENV=tomdoc rip-check
-    RIPDIR=/Users/chris/.rip
-    RIPENV=tomdoc
+  $ RIPENV=tomdoc rip-check
+  RIPDIR=/Users/chris/.rip
+  RIPENV=tomdoc
 
-    $ RIPDIR=. rip-check
-    No ripenvs found. Please run `rip-setup`
+  $ RIPDIR=. rip-check
+  No ripenvs found. Please run `rip-setup`
 
 ## SEE ALSO
 

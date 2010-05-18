@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-check
+# usage: rip-check
 #
 # Checks that the current shell session is rip-ready and rip-valid.
 #
