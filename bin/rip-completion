@@ -1,5 +1,8 @@
 #!/bin/sh
-# Bash only for now.
+# usage: rip-completion
+#
+# Bash-only completion script for rip program names.
+#
 # In ~/.bashrc:
 #   eval `rip-completion`
 

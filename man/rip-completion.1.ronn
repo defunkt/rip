@@ -1,0 +1,29 @@
+rip-completion(1) -- bash completion for rip programs
+=====================================================
+
+## SYNOPSIS
+
+`rip-completion`
+
+## DESCRIPTION
+
+`rip-completion` is a bash completion script for rip commands. You can
+use it by placing the following in your ~/.bashrc or equivalent
+startup script:
+
+  eval `rip completion`
+
+Due to its reliance on `rip-command`(1), completion will work for user
+created rip programs not distributed with rip.
+
+That is, if you have ~/bin in your path and ~/bin/rip-something
+exists, typing `rip s` then hitting TAB should display the following
+as possible completions:
+
+  setup shell something
+
+## SEE ALSO
+
+rip(1), rip-commands(1),
+<http://hellorip.com/>
+
