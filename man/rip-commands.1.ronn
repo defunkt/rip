@@ -1,0 +1,31 @@
+rip-commands(1) -- list rip commands
+====================================
+
+## SYNOPSIS
+
+`rip-commands`
+
+## DESCRIPTION
+
+`rip-commands` prints a list of rip commands available in your `$PATH`
+to standard output. This may include user installed programs not
+distributed with rip.
+
+The list does not include the `rip-` prefix when printing.
+
+This program is most useful for completion of rip program names. See
+`rip-completion`(1) for more information.
+
+# EXAMPLES
+
+  $ rip-commands
+  build
+  check
+  commands
+  completion
+
+## SEE ALSO
+
+rip(1), rip-completion(1),
+<http://hellorip.com/>
+
