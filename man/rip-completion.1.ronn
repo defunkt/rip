@@ -13,6 +13,8 @@ startup script:
 
   eval `rip completion`
 
+## COMMANDS
+
 Due to its reliance on `rip-command`(1), completion will work for user
 created rip programs not distributed with rip.
 
