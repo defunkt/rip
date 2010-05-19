@@ -3,13 +3,24 @@ rip-config(1) -- print rip shell configuration
 
 ## SYNOPSIS
 
-`rip-config`
+`rip-config` [-c|--completion]
 
 ## DESCRIPTION
 
 `rip-config` prints sh(1) code which can be used to activate rip for
 the current shell session. This includes convenience functions for
 "stacking" or activating ripenvs.
+
+## OPTIONS
+
+* `-c`, `--completion`:
+  Prints out the (bash-only) completion script. Can be used to trim down
+  the size of your ~/.bashrc
+
+## VARIABLES
+
+RIPHELPERS - If set to 0, supresses printing of `rip-push`, `rip-use`,
+and other shell helper functions.
 
 ## SEE ALSO
 
