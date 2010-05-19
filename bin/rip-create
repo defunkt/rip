@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-# Usage: rip-create RIPENV
+# usage: rip-create RIPENV
 #
-# Creates the rip directory structure for RIPENV
+# Creates a rip directory structure for RIPENV.
 #
 # RIPENV/
 # |-- bin

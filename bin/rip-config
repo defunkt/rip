@@ -1,25 +1,10 @@
 #!/usr/bin/env ruby
-# Usage: rip-shell SHELL
-# Prints out shellcode which, when evaled, will help activate rip.
+# usage: rip-config
 #
-# normal:
+# Prints sh(1) code which can be used to activate rip for the shell.
 #
-# RIPDIR=${RIPDIR:-"$HOME/.rip"}
-# RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
-# PATH="$PATH:$RIPDIR/active/bin"
-# export RIPDIR RUBYLIB PATH
-#
-# switching envs:
-#
-# RIPDIR=${RIPDIR:-"$HOME/.rip"}
-# RUBYLIB="${RUBYLIB/:$RIPDIR\/active\/lib}:$RIPDIR/foo/lib"
-# PATH="${PATH/:$RIPDIR\/active\/bin}:$RIPDIR/foo/bin"
-# export RIPDIR RUBYLIB PATH
-#
-# fish:
-# set -x RIPDIR "$HOME/.rip"
-# set -x RUBYLIB "$RUBYLIB:$RIPDIR/active/lib"
-# set PATH $RIPDIR/active/bin $PATH
+# TODO: Right now it's actually bash code. I plan to convert it once I
+#       get done reading dash(1).
 
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'

@@ -1,0 +1,57 @@
+rip-detect-conflicts(1) -- detect conflicts between rip packages
+================================================================
+
+## SYNOPSIS
+
+`rip-detect-conflicts` [-p] PACKAGE_PATH [PACKAGE_PATH] ...
+
+## DESCRIPTION
+
+Given a list of rip packages, `rip-detect-conflicts` attempts to
+find all the conflicts between them.
+
+If packageA requires rake 1.0 and packageB is rake 2.0, for example,
+`rip-detect-conflicts` will abort and print out the conflict.
+
+You should use this script directly. Instead use rip-install(1) to
+install your packages.
+
+## OPTIONS
+
+  * `-p`:
+    Prints list of conflicts in a more parseable format:
+        package-name SP installed-version TAB requested-version
+
+## CONFLICT DETECTION
+
+The current style:
+
+1. Find all installed packages for the current ripenv
+2. Add all the packages listed on the command line
+3. Detect conflicts
+
+This is nice because we assemble the entire list of packages before
+detecting conflicts, which means we can list all the conflicts at once
+instead of dying as soon as we find the first one.
+
+# CONFLICT RECOVERY
+
+See <http://github.com/defunkt/rip/issues/issue/103> for a discussion
+about conflict recovery.
+
+# BUGS
+
+Currently `rip-detect-conflicts` assumes that you want to compare the
+active ripenv to the given list of packages. This is inflexible; it
+should instead take ripenvs as arguments. That way we can compare two
+ripenvs with ease:
+
+  $ rip-detect-conflicts sinatra rails
+
+This could be used to determine a safe `rip-env-merge`, for example.
+
+## SEE ALSO
+
+rip(1), rip-env(1),
+<http://hellorip.com/>
+

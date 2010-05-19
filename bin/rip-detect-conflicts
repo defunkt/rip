@@ -1,20 +1,16 @@
 #!/usr/bin/env ruby
-# Usage: rip-detect-conflicts deps.rip
+# usage: rip-detect-conflicts [-p] PACKAGE_PATH [PACKAGE_PATH] ...
 #
-# Determines whether any dependencies (or their dependencies)
-# specified in a deps.rip conflicts with the packages installed in the
-# current ripenv (or each other).
-#
-# Exit codes:
-#   0 No conflicts
-#   1 Conflicts (printed)
-#   4 Given .rip file not found
-#
-# On conflict prints each failed package.
+# Determines whether a list of packages can exist in harmony.
 #
 # If given -p, prints parseable output. Each line is
 # then in this format:
 #   package-name SP installed-version TAB requested-version
+#
+# Exit codes:
+#   0 No conflicts
+#   1 Conflicts (printed)
+#   4 Given PACKAGE_PATH not found
 
 require 'rip/script'
 

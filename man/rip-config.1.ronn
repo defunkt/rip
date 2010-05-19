@@ -1,0 +1,18 @@
+rip-config(1) -- print rip shell configuration
+==============================================
+
+## SYNOPSIS
+
+`rip-config`
+
+## DESCRIPTION
+
+`rip-config` prints sh(1) code which can be used to activate rip for
+the current shell session. This includes convenience functions for
+"stacking" or activating ripenvs.
+
+## SEE ALSO
+
+rip(1), rip-completion(1),
+<http://hellorip.com/>
+

@@ -1,0 +1,22 @@
+rip-create(1) -- create ripenv
+==============================
+
+## SYNOPSIS
+
+`rip-create` RIPENV
+
+## DESCRIPTION
+
+`rip-create` creates a rip directory structure for a ripenv, assuming
+$RIPDIR is set and exists. It also activates the newly created ripenv
+by setting the `active` symlink.
+
+You should not use `rip-create` directly but instead `rip-env -c`.
+
+See rip-env(1) for more information on ripenvs and their structure.
+
+## SEE ALSO
+
+rip(1), rip-env(1),
+<http://hellorip.com/>
+
