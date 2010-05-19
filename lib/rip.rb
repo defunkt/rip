@@ -1,3 +1,4 @@
+autoload :Pathname,   'pathname'
 autoload :YAML,       'yaml'
 autoload :OpenStruct, 'ostruct'
 autoload :Escape,     'escape'
@@ -13,6 +14,7 @@ module Rip
 
   def dir
     @dir ||= ENV['RIPDIR']
+    Pathname.new(@dir).realpath
   end
 
   def env
