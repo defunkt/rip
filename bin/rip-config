@@ -1,12 +1,10 @@
 #!/usr/bin/env ruby
-# usage: rip-config [-c|--completion]
+# usage: rip-config
 #
 # Prints sh(1) code which can be used to activate rip for the shell.
 #
 # TODO: Right now it's actually bash code. I plan to convert it once I
 #       get done reading dash(1).
-
-complete = ARGV.delete('-c') || ARGV.delete('--completion')
 
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
@@ -45,5 +43,3 @@ RUBYLIB="$RIPDIR/#{RIPENV}/lib:#{RUBYLIB}"
 PATH="$RIPDIR/#{RIPENV}/bin:#{PATH}"
 export RIPVERBOSE RIPDIR RUBYLIB PATH
 end_shellcode
-
-exec "rip-completion" if complete
