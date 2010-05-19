@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# usage: rip-diff package version
+#
+# Prints a unified diff between a package versions.
+# Assumes the installed version.
+
+require 'rip/script'
+
+source = ARGV[0]
+version = ARGV[1]
+package = nil
+
+rip(:installed).each do |path|
+  package = metadata(path)
+  break if package.name == source
+end
+
+def package_path(source, version)
+  "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
+end
+
+diffA = package_path(source, version)
+diffB = package_path(package.name, package.version)
+
+differ = ENV['DIFFER'] || "diff"
+exec "#{differ} -ruN #{diffA} #{diffB} | sed -e '
+s@#{diffA}@#{package.name}-#{package.version}@g
+s@#{diffB}@#{source}-#{version}@g
+'"
