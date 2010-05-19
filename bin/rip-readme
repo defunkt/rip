@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# Usage: rip-readme package
+#
+# Prints the contents of the installed package's README.
+
+require 'rip/script'
+target = ARGV[0]
+
+rip(:installed).each do |package_path|
+  package_path = package_path.chomp
+  package      = metadata(package_path)
+
+  if package.name == target
+    if readme = Dir[package_path + '/*'].grep(/\/readme/i).last
+      puts File.read(readme)
+    end
+    exit 0
+  end
+end
+
+exit 1
