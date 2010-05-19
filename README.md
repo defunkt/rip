@@ -205,7 +205,7 @@ rip strives to be compatible with:
 * bash 3
 * Ruby 1.8.7
 * Ruby 1.9.1
-* RubyGems 1.3.6
+* RubyGems 1.3.7
 * rpg 0.2.0
 * git 1.7.0
 * the Ruby Packaging Standard: <http://chneukirchen.github.com/rps/>
