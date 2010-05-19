@@ -52,6 +52,6 @@ This could be used to determine a safe `rip-env-merge`, for example.
 
 ## SEE ALSO
 
-rip(1), rip-env(1),
+rip(1), rip-install(1),
 <http://hellorip.com/>
 
