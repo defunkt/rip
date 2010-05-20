@@ -1,0 +1,36 @@
+rip-diff(1) -- diff rip packages
+================================
+
+## SYNOPSIS
+
+`rip-diff` package version
+
+## DESCRIPTION
+
+`rip-diff` prints a unified diff between an installed version of a
+package and one listed on the command line.
+
+Currently only works for previously downloaded packages.
+
+## EXAMPLES
+
+  $ rip env -c sinatra-diff
+  $ rip install sinatra 1.0
+  installed sinatra (1.0)
+  $ rip install sinatra 0.9.4
+  Conflicts
+    sinatra
+      0.9.4 requested, 1.0 already installed
+  $ rip diff sinatra 0.9.4
+  < unified diff >
+
+Pipe to TextMate:
+
+  $ rip diff sinatra 0.9.4 | mate
+
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+
