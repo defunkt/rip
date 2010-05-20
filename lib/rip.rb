@@ -3,6 +3,8 @@ autoload :YAML,       'yaml'
 autoload :OpenStruct, 'ostruct'
 autoload :Escape,     'escape'
 
+require 'rip/core_ext/string'
+
 module Rip
   autoload :Parser,      'rip/parser'
   autoload :Package,     'rip/environment'
