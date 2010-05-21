@@ -3,10 +3,13 @@
 
 require 'rip/script'
 
-debug "packaging #{ARGV * ' '}"
+# flatten quoted args
+args = (ARGV * ' ').split(' ')
+
+debug "packaging #{args * ' '}"
 
 rip(:commands).grep(/^package-/).each do |handler|
-  out = rip(handler.chomp, ARGV)
+  out = rip(handler.chomp, args)
 
   if $?.exitstatus == 3
     next
