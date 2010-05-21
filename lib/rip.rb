@@ -15,8 +15,7 @@ module Rip
   attr_accessor :dir, :env
 
   def dir
-    @dir ||= ENV['RIPDIR']
-    Pathname.new(@dir).realpath
+    @dir ||= realpath(ENV['RIPDIR'])
   end
 
   def env
@@ -58,5 +57,11 @@ module Rip
   def md5(string)
     require 'digest'
     Digest::MD5.hexdigest(string.to_s)
+  end
+
+  def realpath(path)
+    return unless path
+    path = Pathname.new(path)
+    path.exist? ? path.realpath.to_s : nil
   end
 end
