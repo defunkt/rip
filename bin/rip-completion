@@ -1,12 +1,25 @@
 #!/bin/sh
 # usage: rip-completion
 #
-# Bash-only completion script for rip program names.
+# Completion script for rip program names.
 #
 # In ~/.bashrc:
-#   eval `rip-completion`
+#   eval `rip-completion --bash`
+#
+# In ~/.zshrc
+#   eval `rip-completion --zsh`
 
-cat <<'completer'
+case $1 in
+  --zsh )
+    cat <<'completer'
+function _rip_completion () {
+  reply=(`rip commands`);
+};
+compctl -K _rip_completion rip
+completer
+    ;;
+  * )
+    cat <<'completer'
 _rip_complete () {
   COMPREPLY=();
   if [ $COMP_CWORD = 1 ]; then
@@ -16,3 +29,5 @@ _rip_complete () {
 };
 complete -F _rip_complete rip
 completer
+    ;;
+esac
