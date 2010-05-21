@@ -27,8 +27,8 @@ class InstallTest < Rip::Test
 
   test "pretend" do
     assert_equal <<packages, rip("install -p #{fixture('cijoe-deps.rip')}")
-git://localhost/tinder.git 29fb44ca9eb9a0c90f37286b92dafbffa5731b2e
-git://localhost/sinatra.git e0ee682740d194e956a6936dcd89512944d891a3
+git://localhost/tinder.git 1.2.0
+git://localhost/sinatra.git 0.9.4
 git://localhost/rack.git 1.0
 git://localhost/choice.git 8b12556493c86b07ff3efc0fa31f0981b5d1ff83
 git://localhost/cijoe 04419882877337e70ac572a36d25416b0da9ba0f

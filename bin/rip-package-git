@@ -36,7 +36,7 @@ def deref_version(path, version, floating = true)
 end
 
 def describe_ref(path, ref)
-  if git("--git-dir=#{path} describe --exact-match #{ref} 2> /dev/null") =~ /^(.+)$/
+  if git("--git-dir=#{path} describe --tags --exact-match #{ref} 2> /dev/null") =~ /^(.+)$/
     $1
   else
     ref
