@@ -21,6 +21,7 @@ class Rip::Test
     ENV['RIPPLATFORM'] = 'test'
     ENV['RIPVERBOSE'] = nil
     ENV['RIPDEBUG'] = nil
+    ENV['RIPPROCESSES'] = nil
     ENV['RIPENV'] = nil
     ENV['RIPDIR'] = @ripdir
     rip "setup"

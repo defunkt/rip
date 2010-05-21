@@ -44,6 +44,10 @@ module Rip
     end
   end
 
+  def processes
+    @processes ||= (ENV['RIPPROCESSES'] || 1).to_i
+  end
+
   def platform_hash
     ENV['RIPPLATFORM'] || md5(shell_ruby_platform)
   end
