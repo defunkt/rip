@@ -1,6 +1,13 @@
 #!/usr/bin/env ruby
 # Usage: rip-package URL
 
+if !$stdin.tty? && ARGV.empty?
+  IO.popen("xargs -I {} rip-package {}", "w") do |f|
+    $stdin.each_line { |line| f.puts(line) }
+  end
+  exit $?.exitstatus
+end
+
 require 'rip/script'
 
 # flatten quoted args

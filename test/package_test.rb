@@ -128,6 +128,22 @@ class PackageTest < Rip::Test
 
   test "fetch svn package"
 
+  test "fetch multiple package via stdin" do
+    out = ""
+
+    IO.popen("rip-package", "w+") do |f|
+      f.puts("git://localhost/rack")
+      f.puts("git://localhost/cijoe")
+      f.close_write
+      out = f.read
+    end
+
+    assert_equal [
+      "#{@ripdir}/.packages/rack-c3d5bb01b7e8e3cf08139d8c997239ae",
+      "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
+    ], out.split("\n")
+  end
+
   test "fetch package with dependencies" do
     out = rip "package git://localhost/cijoe"
     assert_equal "cijoe", File.basename(out).split('-', 2)[0]
