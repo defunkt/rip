@@ -1,6 +1,12 @@
 require 'test/helper'
 
 class PackageTest < Rip::Test
+  test "package with no arguments" do
+    out = rip "package"
+    assert_exited_with_error out
+    assert_equal "", out
+  end
+
   test "fetch git:// package" do
     out = rip "package git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"

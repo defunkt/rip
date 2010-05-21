@@ -19,3 +19,5 @@ rip(:commands).grep(/^package-/).each do |handler|
     exit $?.exitstatus
   end
 end
+
+exit 1

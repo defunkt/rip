@@ -9,7 +9,7 @@ source, path, version = Rip::Package.parse_args(ARGV)
 exit 3 if path != '/'
 
 unless source =~ %r{^file://|^git://|\.git$} ||
-    File.directory?(source) && File.exists?("#{source}/HEAD")
+    (source && File.directory?(source) && File.exists?("#{source}/HEAD"))
   exit 3 # Can't handle source
 end
 
