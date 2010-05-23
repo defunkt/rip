@@ -8,6 +8,25 @@
 #
 # In ~/.zshrc
 #   eval `rip-completion --zsh`
+#
+# Consider changing your PS1 to display your active ripenv:
+#   PS1='[\u@\h \W$(_rip_ps1 " env:%s")]\$ '
+#
+# The argument to _rip_ps1 will be displayed only if there
+# is an active ripenv.  The %s token will be the name of
+# the current env.
+
+cat <<'ripps1'
+function _rip_ps1 ()
+{
+  active=$(readlink $RIPDIR/active);
+  if [ "$?" -eq "0" ]; then
+    ripenv=$(basename $active);
+    printf "${1:- env:%s}" ${ripenv};
+  fi;
+}
+;
+ripps1
 
 case $1 in
   --zsh )
