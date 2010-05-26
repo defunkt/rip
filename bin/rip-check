@@ -32,7 +32,10 @@ if ripenv = ENV['RIPENV']
 else
   if File.symlink?("#{ripdir}/active")
     ripenv = File.readlink("#{ripdir}/active")
-    ripenv = File.basename(ripenv) if ripenv.include? ripdir
+
+    if Pathname.new(ripenv).realpath.to_s.include?(ripdir)
+      ripenv = File.basename(ripenv)
+    end
   elsif File.exist?("#{ripdir}/inactive")
     abort "rip is currently disabled. `rip-on` to re-enable."
   else
