@@ -14,9 +14,12 @@ installed = Set.new
 %w( lib bin man ).each do |type|
   Dir["#{Rip.envdir}/#{type}/**/*"].each do |file|
     if File.symlink?(file)
-      realpath = Pathname.new(File.readlink(file)).realpath.to_s
-      package = realpath[/^(#{Rip.packages}\/[^\/]+)/, 1]
-      installed << package if package
+      begin
+        realpath = Pathname.new(File.readlink(file)).realpath.to_s
+        package = realpath[/^(#{Rip.packages}\/[^\/]+)/, 1]
+        installed << package if package
+      rescue Errno::ENOENT
+      end
     end
   end
 end
