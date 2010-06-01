@@ -1,0 +1,40 @@
+rip-off(1) -- disable shell-wide rip
+====================================
+
+## SYNOPSIS
+
+`rip-off`
+
+## DESCRIPTION
+
+`rip-off` disables rip for all shells, essentially setting itself to
+a blank, immutable ripenv. This can be useful when playing with rip at
+first: disable it after you're done to return your $LOAD_PATH to the
+state it was in before rip entered your life.
+
+Use `rip-on` to renable rip.
+
+## EXAMPLES
+
+Disabling shell commands
+
+  $ rip off
+  $ rip list
+  rip is currently disabled. `rip-on` to re-enable.
+  $ rip install resque
+  rip is currently disabled. `rip-on` to re-enable.
+
+Removing libraries
+
+  $ ruby -r resque -e Resque
+  $ rip off
+  $ ruby -r resque -e Resque
+  ruby: no such file to load -- resque (LoadError)
+  $ rip on
+  $ ruby -r resque -e Resque
+
+## SEE ALSO
+
+rip-on(1), rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+

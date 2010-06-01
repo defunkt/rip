@@ -1,0 +1,26 @@
+rip-on(1) -- re-enable shell-wide rip
+=====================================
+
+## SYNOPSIS
+
+`rip-on`
+
+## DESCRIPTION
+
+`rip-on` renables rip for the shell. See rip-off(1) for information on
+disabling rip.
+
+## EXAMPLES
+
+  $ ruby -r resque -e Resque
+  $ rip off
+  $ ruby -r resque -e Resque
+  ruby: no such file to load -- resque (LoadError)
+  $ rip on
+  $ ruby -r resque -e Resque
+
+## SEE ALSO
+
+rip-off(1), rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+

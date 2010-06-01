@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-# Usage: rip-envs
+# usage: rip-envs
 #
-# Prints all ripenvs
+# Prints all ripenvs.
 
 require 'rip/script'
 

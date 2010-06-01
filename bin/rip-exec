@@ -1,4 +1,8 @@
 #!/bin/sh -e
+# usage: rip-exec <ripenv> <command>
+#
+# Executes Unix command in a ripenv.
+
 eval `RIPHELPERS=0 RIPENV=$1 rip-config`
 shift
 exec "$@"

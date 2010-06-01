@@ -1,0 +1,39 @@
+rip-envs(1) -- list ripenvs
+===========================
+
+## SYNOPSIS
+
+`rip-envs`
+
+## DESCRIPTION
+
+`rip-envs` prints all ripenvs in alphabetical order, one per
+line. Each ripenv is in the following format
+
+SPACE-OR-STAR SPACE NAME
+
+Where SPACE-OR-STAR is a star (*) if the ripenv is active and a space
+otherwise.
+
+This is essentially an alias for `rip-env -l`
+
+## EXAMPLES
+
+  $ rip-envs
+  base
+  github
+  hurl
+  mustache
+* resque
+  rip-dev
+  ruby
+  system
+  tomdoc
+  xron
+
+
+## SEE ALSO
+
+rip(1), rip-env(1),
+<http://hellorip.com/>
+

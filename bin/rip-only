@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-# Usage: rip-only [-d]
+# usage: rip-only [-d]
+#
+# Removes RubyGems from the current ripenv. Re-adds with -d.
 #
 # Drops a rubygems.rb into $RIPENV/lib, causing the current Rip
 # environment to be the only environment seen. Essentially turns off

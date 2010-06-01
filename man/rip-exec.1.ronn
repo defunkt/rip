@@ -1,0 +1,53 @@
+rip-exec(1) -- unix exec in a ripenv
+====================================
+
+## SYNOPSIS
+
+`rip-exec` <ripenv>
+
+## DESCRIPTION
+
+`rip-exec` executes a shell command in a different ripenv. This means,
+for instance, that you can execute a command in the "github" ripenv
+while your shell is set to (and remains set to) the "mustache-dev"
+ripenv.
+
+You can also use this program to start a new shell under a different
+ripenv.
+
+Another idea is using this command to quickly install packages into a
+different ripenv.
+
+## EXAMPLES
+
+Run a command
+
+  rip-exec github rake test:units
+
+Run a rip command
+
+  rip-exec github rip-list
+
+Start a shell
+
+  rip-exec mustache-dev bash
+
+## SHELL CONSIDERATIONS
+
+If your shell seems less exciting than usual, you may have your
+config files set incorrectly.
+
+Your `~/.bash_profile`, for example, is executed on login but not when
+running the `bash` command from a shell. If your setup information
+only lives in this file, it won't be run.
+
+The solution is to put your config code in an rc file, like
+`~/.bashrc`. This will definitely get run.
+
+I alias `~/.bash_profile` to `~/.bashrc`
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+
