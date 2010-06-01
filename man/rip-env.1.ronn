@@ -1,0 +1,220 @@
+rip-env(1) -- control ripenvs
+=============================
+
+## SYNOPSIS
+
+`rip-env`
+`rip-env` --list
+`rip-env` --create ripenv
+`rip-env` --branch ripenv
+`rip-env` --delete ripenv
+
+`rip-env` --path
+`rip-env` --help
+
+## OVERVIEW
+
+Inspired by Python's virtualenv and virtualenvwrapper, ripenvs are
+environments which contain Ruby libraries. Programs with conflicting
+dependencies can safely run under different ripenvs at the same time,
+making system-wide version conflicts a thing of the past.
+
+In the Ruby world ripenvs are not entirely unlike the functionality
+provided for RubyGems by Bundler, Isolate, and rvm gemsets.
+
+There are two main ways to take advantage of ripenvs:
+
+### 1. In Your Shell
+
+ripenvs can enhance your day to day development of Ruby applications,
+gems, whatever by helping you identify the specific libraries needed
+to run your code.
+
+Use rip-install(1) to install packages into the current ripenv,
+rip-list(1) to see what you've got, and rip-remove(1) to remove
+installed packages.
+
+Got a stubborn package that doesn't want to install? Use `rip-install
+-f` (for --force).
+
+I have a "mustache-dev" ripenv I use when developing my Mustache
+RubyGem. Mustache currently has no dependencies and I want to keep it
+that way - this clean environment helps me ensure I do that.
+
+  $ rip env --create mustache-dev
+  $ rip list
+  ripenv: mustache-dev
+
+  $ ruby -r lib/mustache -e 'Mustache'
+
+If I want to go crazy and ensure the ripenv is free even from
+RubyGems' lovingly intentioned embrace, I can use rip-only(1):
+
+  $ rip only
+  $ ruby -rubygems -e 'Gem'
+  -e:1: uninitialized constant Gem (NameError)
+
+Now Resque, on the other hand, has a handful of dependencies. To keep
+track of which I have installed and am running tests against, I can
+create a "resque" ripenv and maintain a deps.rip file.
+
+  $ rip env --create resque
+  $ cd ~/Projects/resque
+  $ rip install deps.rip
+  fetching git://github.com/ezmobius/redis-rb.git
+  fetching git://github.com/brianmario/yajl-ruby.git
+  fetching git://github.com/sinatra/sinatra.git
+  fetching git://github.com/rack/rack.git
+  fetching git://github.com/quirkey/vegas.git
+  fetching git://github.com/brynary/rack-test.git
+  installed redis-rb (eed200ad0e)
+  installed yajl-ruby (0.6.3)
+  installed sinatra (0.9.4)
+  installed rack (1.0)
+  installed vegas (v0.1.2)
+  installed rack-test (v0.5.3)
+  installed rake (0.8.7)
+
+Now I can switch between the two:
+
+  $ rip env resque
+  resque
+  $ rip env mustache-dev
+  mustache-dev
+
+Or I can branch an existing ripenv to play with a new dependency:
+
+  $ rip env --branch resque-redis2
+  $ rip remove redis-rb
+  $ rip install git://github.com/ezmobius/redis-rb redis2
+
+### 2. When Running Ruby Applications
+
+The rip-exec(1) program is extremely handy when it comes to running
+Unix commands in an arbitrary ripenv. Using rip-exec(1) in shell
+scripts and helpers ensures you are running a command in the ripenv
+you intend to.
+
+For example, as part of my system boot process I run two rake tasks in
+the `github` ripenv:
+
+  rip-exec github rake -f ~/Projects/github/Rakefile chimney:bootstrap ernie:startd
+
+As long as my shell-wide github ripenv is sane, I know exactly how
+those rake tasks will run.
+
+## DESCRIPTION
+
+`rip-env` controls ripenvs by creating, branching, deleting, listing,
+and switching between them.
+
+Given no arguments, it prints the name of the current ripenv.
+
+## RIPENV
+
+ripenv names can be anything that would be a valid Unix directory
+name. So basically, don't use spaces. Unicode should work fine.
+
+## OPTIONS
+
+The following options are basically subcommands. The `rip-env`
+program is modeled after the `git-branch` command.
+
+  * `-c`, `--create`:
+    Creates a ripenv and switches to it. If the ripenv already
+    exists, just switches to it.
+
+  * `-b`, `--branch`:
+    Branches a ripenv, just like creating a new git branch: the
+    new one is a copy of the current ripenv.
+
+  * `-d`, `--delete`:
+    Deletes a ripenv, as long as it's not the current ripenv.
+
+  * `-l`, `--list`:
+    Lists all ripenvs, one each per line. The lines will be
+    formatted like so:
+
+    STAR-OR-SPACE SPACE NAME
+
+    Where STAR-OR-SPACE is a star (*) if it's the current ripenv
+    and NAME is the ripenv's name.
+
+  * `-p`, `--path`:
+    Prints the path to the current ripenv.
+
+  * `-h`, `--help`:
+    Usage instructions.
+
+## EXAMPLES
+
+Printing the current ripenv
+
+  $ rip env
+  mustache-dev
+  $ rip env resque
+  resque
+  $ rip env
+  resque
+
+Creating and switching to
+
+  $ rip env --create mustache-dev
+  $ rip env
+  mustache-dev
+
+Listing all
+
+  $ rip env --list
+    base
+    github
+  * mustache-dev
+    resque
+    ruby
+    tomdoc
+
+Branching
+
+  $ rip env resque
+  resque
+  $ rip install deps.rip
+  $ rip list
+  ripenv: resque
+
+  redis-rb (eed200ad0e)
+  $ rip env --branch resque-redis2.0
+  $ rip install --force redis-rb 2.0
+  $ rip list
+  ripenv: resque
+
+  redis-rb (2.0)
+  $ rip env resque
+  $ rip list
+  ripenv: resque
+
+  redis-rb (eed200ad0e)
+
+Deleting
+
+  $ rip env --list
+    base
+    github
+    mustache-dev
+  * resque
+    ruby
+    tomdoc
+ $ rip env
+  resque
+  $ rip env --delete mustache-dev
+  $ rip env --list
+    base
+    github
+  * resque
+    ruby
+    tomdoc
+
+
+## SEE ALSO
+
+rip(1), rip-list(1), rip-install(1), rip-remove(1),
+<http://hellorip.com/>
