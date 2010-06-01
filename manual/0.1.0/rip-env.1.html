@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.5 (http://github.com/rtomayko/ronn)'>
+  <title>rip-env(1) - control ripenvs</title>
+  <style type='text/css' media='all'>
+  /* STRUCTURE, INDENT, MARGINS */
+  
+  body                                { margin:0}
+  #man                                { max-width:92ex; padding:0 2ex 1ex 2ex}
+  
+  #man p, #man pre,
+  #man ul, #man ol, #man dl           { margin:0 0 20px 0}
+  #man h2                             { margin:10px 0 0 0}
+  
+  #man > p, #man > pre,
+  #man > ul, #man > ol, #man > dl     { margin-left:8ex}
+  #man h3                             { margin:0 0 0 4ex}
+  
+  #man dt                             { margin:0; clear:left}
+  #man dt.flush                       { float:left; width:8ex}
+  #man dd                             { margin:0 0 0 9ex}
+  #man h1, #man h2, #man h3, #man h4  { clear:left}
+  
+  #man pre                            { margin-bottom:20px}
+  #man pre+h2, #man pre+h3            { margin-top:22px}
+  #man h2+pre, #man h3+pre            { margin-top:5px}
+  
+  #man img                            { display:block;margin:auto}
+  #man h1.man-title                   { display:none}
+  
+  /* FONTS */
+  
+  #man, #man code, #man pre,
+  #man tt, #man kbd, #man samp,
+  #man h3, #man h4 {
+      font-family:monospace;
+      font-size:14px;
+      line-height:1.42857142857143;
+  }
+  #man h2, #man ol.man, #man .man-navigation a {
+    font-size:16px;
+    line-height:1.25
+  }
+  #man h1 {
+    font-size:20px;
+    line-height:2;
+  }
+  
+  /* TEXT STYLES */
+  
+  #man {
+    text-align:justify;
+    background:#fff;
+  }
+  #man, #man code, #man pre, #man pre code,
+  #man tt, #man kbd, #man samp            { color:#131211}
+  #man h1, #man h2, #man h3, #man h4      { color:#030201}
+  #man ol.man, #man ol.man li             { color:#636261}
+  
+  #man code, #man strong, #man b {
+      font-weight:bold;
+      color:#131211;
+  }
+  
+  #man em, #man var, #man u {
+      font-style:italic;
+      color:#434241;
+      text-decoration:none;
+  }
+  
+  #man pre {
+      background:#edeceb;
+      padding:5px 1ex;
+      border-left:1ex solid #ddd;
+  }
+  #man pre code {
+      font-weight:normal;
+      background:inherit;
+  }
+  
+  /* DOCUMENT HEADER AND FOOTER AREAS */
+  
+  #man ol.man, #man ol.man li {
+      margin:3px 0 10px 0;
+      padding:0;
+      float:left;
+      width:33%;
+      list-style-type:none;
+      text-transform:uppercase;
+      color:#999;
+      letter-spacing:1px;
+  }
+  #man ol.man                  { width:100%}
+  #man ol.man li.tl            { text-align:left}
+  #man ol.man li.tc            { text-align:center; letter-spacing:4px}
+  #man ol.man li.tr            { text-align:right; float:right}
+  
+  /* SECTION TOC NAVIGATION */
+  
+  #man div.man-navigation {
+      position:fixed;
+      top:0;
+      left:106ex;
+      height:100%;
+      width:100%;
+      padding:1ex 0 0 2ex;
+      border-left:0.25ex solid #DCDCDC;
+      background-color: #F5F5F5;
+  }
+  #man div.man-navigation a { display:block; margin-bottom:1.5ex}
+  </style>
+  <style type='text/css' media='print'>
+  #man { max-width:none}
+  #man div.man-navigation { display:none}
+  #man a[href]:not([href^="#"]):not([data-bare-link]):after {
+    content:" " attr(href);
+  }
+  </style>
+</head>
+<body id='manpage'>
+  <div id='man'>
+
+  <div class='man-navigation'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#OVERVIEW">OVERVIEW</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#RIPENV">RIPENV</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+    </div>
+
+  <h1 class='man-title'>rip-env(1)</h1>
+
+  <ol class='man head'>
+    <li class='tl'>rip-env(1)</li>
+    <li class='tc'></li>
+    <li class='tr'>rip-env(1)</li>
+  </ol>
+
+  <h2 id='NAME'>NAME</h2>
+<p><code>rip-env</code> - control ripenvs</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>rip-env</code>
+<code>rip-env</code> --list
+<code>rip-env</code> --create ripenv
+<code>rip-env</code> --branch ripenv
+<code>rip-env</code> --delete ripenv</p>
+
+<p><code>rip-env</code> --path
+<code>rip-env</code> --help</p>
+
+<h2 id="OVERVIEW">OVERVIEW</h2>
+
+<p>Inspired by Python's virtualenv and virtualenvwrapper, ripenvs are
+environments which contain Ruby libraries. Programs with conflicting
+dependencies can safely run under different ripenvs at the same time,
+making system-wide version conflicts a thing of the past.</p>
+
+<p>In the Ruby world ripenvs are not entirely unlike the functionality
+provided for RubyGems by Bundler, Isolate, and rvm gemsets.</p>
+
+<p>There are two main ways to take advantage of ripenvs:</p>
+
+<h3 id="1-In-Your-Shell">1. In Your Shell</h3>
+
+<p>ripenvs can enhance your day to day development of Ruby applications,
+gems, whatever by helping you identify the specific libraries needed
+to run your code.</p>
+
+<p>Use rip-install(1) to install packages into the current ripenv,
+rip-list(1) to see what you've got, and rip-remove(1) to remove
+installed packages.</p>
+
+<p>Got a stubborn package that doesn't want to install? Use <code>rip-install
+-f</code> (for --force).</p>
+
+<p>I have a "mustache-dev" ripenv I use when developing my Mustache
+RubyGem. Mustache currently has no dependencies and I want to keep it
+that way - this clean environment helps me ensure I do that.</p>
+
+<p>  $ rip env --create mustache-dev
+  $ rip list
+  ripenv: mustache-dev</p>
+
+<p>  $ ruby -r lib/mustache -e 'Mustache'</p>
+
+<p>If I want to go crazy and ensure the ripenv is free even from
+RubyGems' lovingly intentioned embrace, I can use rip-only(1):</p>
+
+<p>  $ rip only
+  $ ruby -rubygems -e 'Gem'
+  -e:1: uninitialized constant Gem (NameError)</p>
+
+<p>Now Resque, on the other hand, has a handful of dependencies. To keep
+track of which I have installed and am running tests against, I can
+create a "resque" ripenv and maintain a deps.rip file.</p>
+
+<p>  $ rip env --create resque
+  $ cd ~/Projects/resque
+  $ rip install deps.rip
+  fetching git://github.com/ezmobius/redis-rb.git
+  fetching git://github.com/brianmario/yajl-ruby.git
+  fetching git://github.com/sinatra/sinatra.git
+  fetching git://github.com/rack/rack.git
+  fetching git://github.com/quirkey/vegas.git
+  fetching git://github.com/brynary/rack-test.git
+  installed redis-rb (eed200ad0e)
+  installed yajl-ruby (0.6.3)
+  installed sinatra (0.9.4)
+  installed rack (1.0)
+  installed vegas (v0.1.2)
+  installed rack-test (v0.5.3)
+  installed rake (0.8.7)</p>
+
+<p>Now I can switch between the two:</p>
+
+<p>  $ rip env resque
+  resque
+  $ rip env mustache-dev
+  mustache-dev</p>
+
+<p>Or I can branch an existing ripenv to play with a new dependency:</p>
+
+<p>  $ rip env --branch resque-redis2
+  $ rip remove redis-rb
+  $ rip install git://github.com/ezmobius/redis-rb redis2</p>
+
+<h3 id="2-When-Running-Ruby-Applications">2. When Running Ruby Applications</h3>
+
+<p>The rip-exec(1) program is extremely handy when it comes to running
+Unix commands in an arbitrary ripenv. Using rip-exec(1) in shell
+scripts and helpers ensures you are running a command in the ripenv
+you intend to.</p>
+
+<p>For example, as part of my system boot process I run two rake tasks in
+the <code>github</code> ripenv:</p>
+
+<p>  rip-exec github rake -f ~/Projects/github/Rakefile chimney:bootstrap ernie:startd</p>
+
+<p>As long as my shell-wide github ripenv is sane, I know exactly how
+those rake tasks will run.</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p><code>rip-env</code> controls ripenvs by creating, branching, deleting, listing,
+and switching between them.</p>
+
+<p>Given no arguments, it prints the name of the current ripenv.</p>
+
+<h2 id="RIPENV">RIPENV</h2>
+
+<p>ripenv names can be anything that would be a valid Unix directory
+name. So basically, don't use spaces. Unicode should work fine.</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<p>The following options are basically subcommands. The <code>rip-env</code>
+program is modeled after the <code>git-branch</code> command.</p>
+
+<dl>
+<dt><code>-c</code>, <code>--create</code></dt><dd><p>Creates a ripenv and switches to it. If the ripenv already
+exists, just switches to it.</p></dd>
+<dt><code>-b</code>, <code>--branch</code></dt><dd><p>Branches a ripenv, just like creating a new git branch: the
+new one is a copy of the current ripenv.</p></dd>
+<dt><code>-d</code>, <code>--delete</code></dt><dd><p>Deletes a ripenv, as long as it's not the current ripenv.</p></dd>
+<dt><code>-l</code>, <code>--list</code></dt><dd><p>Lists all ripenvs, one each per line. The lines will be
+formatted like so:</p>
+
+<p>STAR-OR-SPACE SPACE NAME</p>
+
+<p>Where STAR-OR-SPACE is a star (*) if it's the current ripenv
+and NAME is the ripenv's name.</p></dd>
+<dt><code>-p</code>, <code>--path</code></dt><dd><p>Prints the path to the current ripenv.</p></dd>
+<dt><code>-h</code>, <code>--help</code></dt><dd><p>Usage instructions.</p></dd>
+</dl>
+
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<p>Printing the current ripenv</p>
+
+<p>  $ rip env
+  mustache-dev
+  $ rip env resque
+  resque
+  $ rip env
+  resque</p>
+
+<p>Creating and switching to</p>
+
+<p>  $ rip env --create mustache-dev
+  $ rip env
+  mustache-dev</p>
+
+<p>Listing all</p>
+
+<p>  $ rip env --list</p>
+
+<pre><code>base
+github
+</code></pre>
+
+<ul>
+<li>mustache-dev
+resque
+ruby
+tomdoc</li>
+</ul>
+
+
+<p>Branching</p>
+
+<p>  $ rip env resque
+  resque
+  $ rip install deps.rip
+  $ rip list
+  ripenv: resque</p>
+
+<p>  redis-rb (eed200ad0e)
+  $ rip env --branch resque-redis2.0
+  $ rip install --force redis-rb 2.0
+  $ rip list
+  ripenv: resque</p>
+
+<p>  redis-rb (2.0)
+  $ rip env resque
+  $ rip list
+  ripenv: resque</p>
+
+<p>  redis-rb (eed200ad0e)</p>
+
+<p>Deleting</p>
+
+<p>  $ rip env --list</p>
+
+<pre><code>base
+github
+mustache-dev
+</code></pre>
+
+<ul>
+<li>resque
+ruby
+tomdoc
+$ rip env
+resque
+$ rip env --delete mustache-dev
+$ rip env --list
+base
+github</li>
+<li>resque
+ruby
+tomdoc</li>
+</ul>
+
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p>rip(1), rip-list(1), rip-install(1), rip-remove(1),
+<a href="http://hellorip.com/" data-bare-link="true">http://hellorip.com/</a></p>
+
+
+  <ol class='man foot'>
+    <li class='tl'></li>
+    <li class='tc'>May 2010</li>
+    <li class='tr'>rip-env(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>

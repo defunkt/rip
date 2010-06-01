@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.5 (http://github.com/rtomayko/ronn)'>
+  <title>rip-package(5) - rip package handler convention</title>
+  <style type='text/css' media='all'>
+  /* STRUCTURE, INDENT, MARGINS */
+  
+  body                                { margin:0}
+  #man                                { max-width:92ex; padding:0 2ex 1ex 2ex}
+  
+  #man p, #man pre,
+  #man ul, #man ol, #man dl           { margin:0 0 20px 0}
+  #man h2                             { margin:10px 0 0 0}
+  
+  #man > p, #man > pre,
+  #man > ul, #man > ol, #man > dl     { margin-left:8ex}
+  #man h3                             { margin:0 0 0 4ex}
+  
+  #man dt                             { margin:0; clear:left}
+  #man dt.flush                       { float:left; width:8ex}
+  #man dd                             { margin:0 0 0 9ex}
+  #man h1, #man h2, #man h3, #man h4  { clear:left}
+  
+  #man pre                            { margin-bottom:20px}
+  #man pre+h2, #man pre+h3            { margin-top:22px}
+  #man h2+pre, #man h3+pre            { margin-top:5px}
+  
+  #man img                            { display:block;margin:auto}
+  #man h1.man-title                   { display:none}
+  
+  /* FONTS */
+  
+  #man, #man code, #man pre,
+  #man tt, #man kbd, #man samp,
+  #man h3, #man h4 {
+      font-family:monospace;
+      font-size:14px;
+      line-height:1.42857142857143;
+  }
+  #man h2, #man ol.man, #man .man-navigation a {
+    font-size:16px;
+    line-height:1.25
+  }
+  #man h1 {
+    font-size:20px;
+    line-height:2;
+  }
+  
+  /* TEXT STYLES */
+  
+  #man {
+    text-align:justify;
+    background:#fff;
+  }
+  #man, #man code, #man pre, #man pre code,
+  #man tt, #man kbd, #man samp            { color:#131211}
+  #man h1, #man h2, #man h3, #man h4      { color:#030201}
+  #man ol.man, #man ol.man li             { color:#636261}
+  
+  #man code, #man strong, #man b {
+      font-weight:bold;
+      color:#131211;
+  }
+  
+  #man em, #man var, #man u {
+      font-style:italic;
+      color:#434241;
+      text-decoration:none;
+  }
+  
+  #man pre {
+      background:#edeceb;
+      padding:5px 1ex;
+      border-left:1ex solid #ddd;
+  }
+  #man pre code {
+      font-weight:normal;
+      background:inherit;
+  }
+  
+  /* DOCUMENT HEADER AND FOOTER AREAS */
+  
+  #man ol.man, #man ol.man li {
+      margin:3px 0 10px 0;
+      padding:0;
+      float:left;
+      width:33%;
+      list-style-type:none;
+      text-transform:uppercase;
+      color:#999;
+      letter-spacing:1px;
+  }
+  #man ol.man                  { width:100%}
+  #man ol.man li.tl            { text-align:left}
+  #man ol.man li.tc            { text-align:center; letter-spacing:4px}
+  #man ol.man li.tr            { text-align:right; float:right}
+  
+  /* SECTION TOC NAVIGATION */
+  
+  #man div.man-navigation {
+      position:fixed;
+      top:0;
+      left:106ex;
+      height:100%;
+      width:100%;
+      padding:1ex 0 0 2ex;
+      border-left:0.25ex solid #DCDCDC;
+      background-color: #F5F5F5;
+  }
+  #man div.man-navigation a { display:block; margin-bottom:1.5ex}
+  </style>
+  <style type='text/css' media='print'>
+  #man { max-width:none}
+  #man div.man-navigation { display:none}
+  #man a[href]:not([href^="#"]):not([data-bare-link]):after {
+    content:" " attr(href);
+  }
+  </style>
+</head>
+<body id='manpage'>
+  <div id='man'>
+
+  <div class='man-navigation'>
+    <a href="#NAME">NAME</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+    </div>
+
+  <h1 class='man-title'>rip-package(5)</h1>
+
+  <ol class='man head'>
+    <li class='tl'>rip-package(5)</li>
+    <li class='tc'></li>
+    <li class='tr'>rip-package(5)</li>
+  </ol>
+
+  <h2 id='NAME'>NAME</h2>
+<p><code>rip-package</code> - rip package handler convention</p>
+
+<p>Package handlers must implement "rip-package-$type" that accepts
+"source", "path", "version" arguments.</p>
+
+<p>Handlers are discovered by grepping the load path for
+"rip-package-\w+".</p>
+
+<p>Handlers are always tested in alphabetical order. If a handler can't
+handle a source, it must quickly exit with an error code of "3" so the
+next handler can be tested. If everything when smoothly, the handler
+should exit with status 0 and print out an opaque path to a directory
+in .packages.</p>
+
+<p>The handler will also be expected to write out metadata to
+"metadata.rip" inside the package. Attributes should include the
+fetched source, subpath, a short name (rip, rack, etc), actual version
+or ref fetched (1ebe4e5, 1.1.0). File formatting TBA.</p>
+
+<p>Concepts like "fetch", "unpack", "deref" will all be encapsulated
+inside the package handler. rip must not call these commands directly
+anymore. Rip will provide a ".cache" dir as a persistent tmp space but
+will not know how to access any of the files directly. Handlers can
+make use of the cache directory anyway they wish.</p>
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<p>A Simple .git handler.</p>
+
+<pre><code>source  = ARGV[0]
+version = ARGV[1] || "master"
+
+unless source =~ /\.git$/
+  exit 3
+end
+
+package = "#{Rip.packages}/#{Rip.md5("#{source}#{version}")}"
+
+sh "git clone #{source} #{package}"
+sh "git checkout #{version}"
+
+File.open("#{package}/metadata.rip", 'w') do |f|
+  f.puts "#{source} #{version}"
+end
+
+puts package
+</code></pre>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p>rip(5), rip(1), git(1),
+<a href="http://github.com/defunkt/rip" data-bare-link="true">http://github.com/defunkt/rip</a></p>
+
+
+  <ol class='man foot'>
+    <li class='tl'></li>
+    <li class='tc'>May 2010</li>
+    <li class='tr'>rip-package(5)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
