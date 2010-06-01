@@ -10,12 +10,18 @@ rip-only(1) -- remove RubyGems from the current ripenv
 `rip-only` isolates the current ripenv by disabling or removing
 RubyGems. To add RubyGems back, use the `-d` flag.
 
+You can think of this as a flag on the ripenv: once it's been enabled,
+it'll be enabled for all uses of that ripenv. It won't be enabled,
+however, for other ripenvs you switch to during the same shell session.
+
 ## EXAMPLES
 
   $ ruby -rubygems -e 'Gem'
   $ rip-only
   $ ruby -rubygems -e 'Gem'
   -e:1: uninitialized constant Gem (NameError)
+  $ rip-env --create new-env
+  $ ruby -rubygems -e 'Gem'
 
 ## SEE ALSO
 
