@@ -11,4 +11,10 @@ unless source =~ %r{\.rip$} && File.file?(source)
   exit 3 # Can't handle source
 end
 
-puts rip("fetch-dependencies", ARGV[0]).split("\n").sort
+$-e = true
+
+require 'rip/script'
+
+File.read(source).split("\n").each do |package|
+  puts rip(:package, package)
+end
