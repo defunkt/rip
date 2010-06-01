@@ -19,6 +19,10 @@ if RIPENV.to_s =~ /active/i
   abort "Cannot name $RIPENV 'active'"
 end
 
+if RIPENV.to_s.empty?
+  abort "I need a ripenv."
+end
+
 require 'fileutils'
 include FileUtils
 

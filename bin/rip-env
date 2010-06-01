@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-## Usage: rip-env [-c] [-d] [-l] [-p] RIPENV [PACKAGE]
+## Usage: rip-env [-c] [-b] [-d] [-l] [-p] RIPENV [PACKAGE]
 ##
-## Prints, changes, lists, creates, or deletes the ripenvs.
+## Prints, changes, lists, creates, branches, or deletes the ripenvs.
 
 require 'rip/script'
 require 'optparse'
@@ -12,14 +12,31 @@ if ARGV.empty? || path = ARGV.delete('-p')
 end
 
 delete = false
+branch = false
 ripenv = ARGV.detect { |arg| arg[0].chr != '-' }
 
 ARGV.options do |o|
   o.on('-c', '--create') { exec "rip-create #{ripenv}" }
   o.on('-l', '--list')   { exec "rip-envs" }
   o.on('-d', '--delete') { delete = true }
+  o.on('-b', '--branch') { branch = true }
   o.on('-h', '--help')   { exec "grep ^## < #$0 | cut -c4-" }
   o.parse!
+end
+
+if ripenv.to_s.empty?
+  abort "I need a ripenv."
+end
+
+if branch
+  if RIPENVS.include?(ripenv)
+    abort "#{ripenv} already exists. Gimmie a new name."
+  end
+
+  cp_r "#{RIPDIR}/#{RIPENV}", "#{RIPDIR}/#{ripenv}"
+  rip :create, ripenv
+
+  exit
 end
 
 if !RIPENVS.include?(ripenv) && !ripenv.include?('/')
