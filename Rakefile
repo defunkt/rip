@@ -78,6 +78,78 @@ if command? :ronn
   end
 end
 
+#
+# Site
+#
+
+desc "Build the site. Requires ronn."
+task :site do
+  require 'lib/rip/version'
+  manuals = []
+  mkdir_p mandir = "docs/manual/#{Rip::Version}"
+
+  Dir["man/*.ronn"].each do |file|
+    out = `ronn -5 -b #{file} 2>&1`.chomp
+    if out =~ /(?:.+?): (.+)/
+      file = File.basename($1)
+      manuals << file
+      mv $1, "#{mandir}/#{file}"
+    end
+  end
+
+  index = '<ol>'
+  manuals.sort.each do |manual|
+    name, section, ext = manual.split('.')
+    index << "<li><a href='#{manual}'>#{name}(#{section})</a></li>"
+  end
+  index << '</ol>'
+
+  require 'ronn'
+  require 'ronn/document'
+  require 'ronn/template'
+
+  klass = Class.new(Ronn::Template) do
+    def initialize(manuals, html)
+      @manuals = manuals
+      @html = html
+    end
+
+    def html
+      @html
+    end
+
+    def section_heads
+      false
+    end
+
+    def any_section_heads
+      !!section_heads
+    end
+
+    def page_name
+      ""
+    end
+
+    def manual
+      "rip manual"
+    end
+    alias_method :title, :manual
+
+    def organization
+      "rip"
+    end
+
+    def date
+      Time.now.strftime('%B %Y')
+    end
+  end
+
+  view = klass.new(manuals, index)
+
+  File.open("#{mandir}/index.html", 'w+') do |f|
+    f.puts view.render
+  end
+end
 
 #
 # Installation
