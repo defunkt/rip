@@ -1,9 +1,11 @@
-rip2
-====
+rip
+===
 
 Like [virtualenv][ve] + [pip][pp] for Ruby.
 
 Installs and manages RubyGems, git repositories, and more.
+
+We're currently in a developer-mode rewrite: rip2.
 
 
 Installation
@@ -18,7 +20,7 @@ Got [hub][hb]?
 
 Old school style:
 
-    git clone http://github.com/defunkt/rip.git
+    git clone git://github.com/defunkt/rip.git
 
 Now set it up in your `~./bashrc` (or whatever):
 
@@ -230,12 +232,6 @@ Once you've made your great commits:
 4. Create an [Issue][1] with a link to your branch
 5. That's it!
 
-[hb]: http://github.com/defunkt/hub#readme
-[ve]: http://pypi.python.org/pypi/virtualenv
-[pp]: http://pypi.python.org/pypi/pip
-[0]: http://help.github.com/forking/
-[1]: http://github.com/defunkt/rip/issues
-
 
 Mailing List
 ------------
@@ -245,3 +241,10 @@ will subscribe you and send you information about your subscription,
 including unsubscribe information.
 
 The archive can be found at <http://librelist.com/browser/>.
+
+
+[hb]: http://github.com/defunkt/hub#readme
+[ve]: http://pypi.python.org/pypi/virtualenv
+[pp]: http://pypi.python.org/pypi/pip
+[0]: http://help.github.com/forking/
+[1]: http://github.com/defunkt/rip/issues
