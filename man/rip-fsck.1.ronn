@@ -1,0 +1,24 @@
+rip-fsck(1) -- check integrity of .packages/ and .cache/
+========================================================
+
+## SYNOPSIS
+
+`rip-fsck`
+
+## DESCRIPTION
+
+`rip-fsck` performs a few checks on the contents of both
+$RIPDIR/.packages/ and $RIPDIR/.cache looking for any sign of
+corruption.
+
+As time goes on, new checks may be added. For now, we're trying to
+ensure files have the right permissions and point to things that exist.
+
+You shouldn't need to call this unless you have some suspicion of
+corruption and plan to debug it.
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-remove(1),
+<http://hellorip.com/>
+

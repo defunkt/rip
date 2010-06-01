@@ -1,0 +1,27 @@
+rip-gc(1) -- remove unused .packages/
+=====================================
+
+## SYNOPSIS
+
+`rip-gc`
+
+## DESCRIPTION
+
+`rip-gc` removes rip packages (i.e. directories found in
+$RIPDIR/.packages/) that are not found in any installed ripenvs
+(i.e. directories found in $RIPDIR/ not starting with a period (.) and
+excluding "active").
+
+Call this if you're concerned about the size of your $RIPDIR
+(e.g. ~/.rip)
+
+## EXAMPLES
+
+  $ rip gc
+  removed 3 unused packages
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-remove(1),
+<http://hellorip.com/>
+

@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-# Usage: rip-fsck
-# Verify integrity of packages and cache'
+# usage: rip-fsck
+#
+# Verify integrity of .packages/ and .cache/
 
 require 'rip/script'
 

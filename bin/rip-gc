@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
+# usage: rip-gc
+#
+# Removes unused .packages/
+
 require 'rip/script'
 
 packages = ''
