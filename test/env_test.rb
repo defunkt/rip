@@ -11,6 +11,12 @@ class EnvTest < Rip::Test
     assert_equal "  base\n* newthing\n", rip("envs")
   end
 
+  test "branches a RIPENV" do
+    rip "install repl 0.1.0"
+    rip "env -b base-with-repl"
+    assert_equal "ripenv: base-with-repl\n\nrepl (0.1.0)\n", rip("list")
+  end
+
   test "deletes a RIPENV" do
     rip "env -c newthing"
     assert_includes "newthing", rip("envs")
