@@ -1,0 +1,47 @@
+rip-info(1) -- info about an installed package
+==============================================
+
+## SYNOPSIS
+
+`rip-info` package <key>
+
+## DESCRIPTION
+
+`rip-info` prints information about an installed package in a
+machine-and-human-friendly format. Basically, YAML.
+
+Use this program to find out more information about an installed
+package.
+
+Passing a third argument will treat the info as a dictionary and
+print the value associated with it.
+
+## EXAMPLES
+
+  $ rip-info ronn
+  source: ronn
+  version: 0.5
+  path: /ruby/ree-1.8.7/rip/.packages/ronn-5d5fac34f93294fecba69a5698400b23
+  bins:
+  - ronn
+  manuals:
+  - markdown.5
+  - ronn.1
+  - ronn.5
+  - ronn.7
+  needs:
+  - hpricot >=0.8.2
+  - rdiscount >=1.5.8
+
+  $ rip-info ronn version
+  0.5
+  $ rip-info ronn needs
+  - hpricot >=0.8.2
+  - rdiscount >=1.5.8
+
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+

@@ -1,8 +1,28 @@
 #!/usr/bin/env ruby
+# usage: rip-info package
+#
+# Prints information about a package installed in the current ripenv.
 
 require 'rip/script'
 
 package = ARGV[0]
+
+# Print only a single key, e.g.
+#   >> rip info repl version
+#   => 0.1.0
+if key = ARGV[1]
+  # Awesome, right?
+  require 'yaml'
+  value = YAML.load(`rip-info #{ARGV[0]}`)[key]
+
+  if value.is_a?(Array)
+    value.each { |v| puts "- #{v}"}
+  else
+    puts value
+  end
+
+  exit
+end
 
 installed = rip(:installed).detect do |dir|
   dir =~ /\/#{package}-\w{32}/
