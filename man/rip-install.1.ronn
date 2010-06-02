@@ -1,0 +1,65 @@
+rip-install(1) -- install packages
+==================================
+
+## SYNOPSIS
+
+`rip-install` package
+
+## DESCRIPTION
+
+`rip-install` installs packages into the current ripenv. A valid
+package is anything rip understands based on the installed package
+handlers.
+
+By default rip can install the following types of packages:
+
+- RubyGems
+- git repos
+- ripfiles (e.g. deps.rip)
+
+Any of these, then, are valid when passed to `rip-install`.
+
+Packages are installed into the current ripenv. See rip-env(1) for an
+explanation of ripenvs.
+
+## EXAMPLES
+
+Installing a RubyGem:
+
+  $ rip-install thin
+  installed daemons (1.0.10)
+  installed eventmachine (0.12.10)
+  installed camping (2.0)
+  installed fcgi (0.8.8)
+  installed memcache-client (1.8.3)
+  installed cgi_multipart_eof_fix (2.5.0)
+  installed fastthread (1.0.7)
+  installed gem_plugin (0.2.3)
+  installed mongrel (1.1.5)
+  installed test-spec (0.10.0)
+  installed rack (1.1.0)
+  installed thin (1.2.7)
+
+Installing a RubyGem with a version:
+
+  $ rip install mustache 0.11.0
+  fetching mustache 0.11.0
+  installed mustache (0.11.0)
+
+Installing from a deps.rip file:
+
+  $ git clone git://github.com/defunt/resque
+  $ rip install deps.rip
+  installed redis-rb (eed200ad0e)
+  installed yajl-ruby (0.6.3)
+  installed sinatra (0.9.4)
+  installed rack (1.0)
+  installed vegas (v0.1.2)
+  installed rack-test (v0.5.3)
+  installed rake (0.8.7)
+
+## SEE ALSO
+
+rip(1), rip-list(1), rip-env(1),
+<http://hellorip.com/>
+

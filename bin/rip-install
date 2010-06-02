@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-install [-f] PATH
+# ssage: rip-install [-f] PATH
 #
 # Installs a library into $RIPDIR/$RIPENV
 # If -f (force) is given, doesn't check for conflicts.
