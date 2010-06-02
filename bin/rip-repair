@@ -3,6 +3,32 @@
 #
 # Patch package to work around RPS incompatibly
 
-package_path = ARGV[0]
+require 'rip/script'
 
-puts package_path
+module Patches
+  extend self
+
+  def patch(package_path)
+    File.basename(package_path)[/(.+)-([a-zA-Z0-9]{32})$/]
+    name, md5 = $1, $2
+
+    method = "patch_#{name.downcase}".to_sym
+
+    if respond_to?(method)
+      patched_package_name = "#{name}-#{Rip.md5("#{md5}-patched")}"
+      patched_package_path = "#{Rip.packages}/#{patched_package_name}"
+
+      if !File.exist?(patched_package_path)
+        info "repairing #{name}"
+        cp_r package_path, patched_package_path
+        send(method, patched_package_path)
+      end
+
+      patched_package_path
+    else
+      package_path
+    end
+  end
+end
+
+puts Patches.patch(ARGV[0])
