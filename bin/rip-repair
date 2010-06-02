@@ -21,12 +21,40 @@ module Patches
       if !File.exist?(patched_package_path)
         info "repairing #{name}"
         cp_r package_path, patched_package_path
-        send(method, patched_package_path)
+
+        cd(patched_package_path) do
+          send(method)
+        end
       end
 
       patched_package_path
     else
       package_path
+    end
+  end
+
+  def open(file)
+    contents = yield File.read(file)
+    File.open(file, 'w') { |f| f.write contents }
+  end
+
+  def read_version
+    File.read('VERSION').chomp
+  end
+
+  def unrequire_rubygems(source)
+    source.sub!(/^(\s*)require 'rubygems'$/, '')
+    source.gsub!(/^(\s*)gem .+$/, '')
+    source
+  end
+
+  def patch_capistrano
+    open 'lib/capistrano/version.rb' do |file|
+      file.sub /CURRENT = .+$/, "CURRENT = '#{read_version}'"
+    end
+
+    open 'lib/capistrano/ssh.rb' do |file|
+      unrequire_rubygems file
     end
   end
 end
