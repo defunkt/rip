@@ -23,7 +23,7 @@ module Patches
         cp_r package_path, patched_package_path
 
         cd(patched_package_path) do
-          send(method)
+          send(method, patched_package_path)
         end
       end
 
@@ -48,7 +48,7 @@ module Patches
     source
   end
 
-  def patch_capistrano
+  def patch_capistrano(path)
     open 'lib/capistrano/version.rb' do |file|
       file.sub /CURRENT = .+$/, "CURRENT = '#{read_version}'"
     end
@@ -56,6 +56,24 @@ module Patches
     open 'lib/capistrano/ssh.rb' do |file|
       unrequire_rubygems file
     end
+  end
+
+  # Accesses all sorts of assets outside lib/
+  def patch_showoff(path)
+    open 'bin/showoff' do |file|
+      file = file.sub(/\$LOAD_PATH\.unshift(.+)$/, '')
+      unrequire_rubygems file
+    end
+
+    open 'lib/showoff.rb' do |file|
+      file = file.gsub("File.dirname(__FILE__)", "#{path}/lib".inspect)
+      unrequire_rubygems file
+    end
+  end
+
+  # Nokogiri's deps.rip for dev deps and installs incompatible deps
+  def patch_nokogiri(path)
+    rm_rf "deps.rip"
   end
 end
 
