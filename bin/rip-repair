@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# usage: rip-repair PACKAGE_PATH
+#
+# Patch package to work around RPS incompatibly
+
+package_path = ARGV[0]
+
+puts package_path
