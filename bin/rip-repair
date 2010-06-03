@@ -65,6 +65,30 @@ module Patches
     end
   end
 
+  # Nokogiri's deps.rip for dev deps and installs incompatible deps
+  def patch_nokogiri
+    rm_rf "deps.rip"
+  end
+
+  def patch_ruby_debug
+    open 'bin/rdebug' do |file|
+      unrequire_rubygems file
+    end
+
+    mv 'cli', 'lib'
+
+    mkdir_p 'man/man1'
+    cp 'doc/rdebug.1', 'man/man1/rdebug.1'
+  end
+
+  def patch_ruby_debug_base
+    rm 'lib/ChangeLog'
+
+    open 'lib/ruby-debug-base.rb' do |file|
+      unrequire_rubygems file
+    end
+  end
+
   # Accesses all sorts of assets outside lib/
   def patch_showoff
     open 'bin/showoff' do |file|
@@ -76,11 +100,6 @@ module Patches
       file = file.gsub("File.dirname(__FILE__)", "#{Dir.pwd}/lib".inspect)
       unrequire_rubygems file
     end
-  end
-
-  # Nokogiri's deps.rip for dev deps and installs incompatible deps
-  def patch_nokogiri
-    rm_rf "deps.rip"
   end
 end
 
