@@ -23,7 +23,7 @@ module Patches
         cp_r package_path, patched_package_path
 
         cd(patched_package_path) do
-          send(method, patched_package_path)
+          send(method)
         end
       end
 
@@ -49,13 +49,13 @@ module Patches
   end
 
   # aws-s3 bin scripts rely on files outside the load path
-  def patch_aws_s3(path)
+  def patch_aws_s3
     Dir['bin/*'].each do |bin|
       rm bin
     end
   end
 
-  def patch_capistrano(path)
+  def patch_capistrano
     open 'lib/capistrano/version.rb' do |file|
       file.sub /CURRENT = .+$/, "CURRENT = '#{read_version}'"
     end
@@ -66,20 +66,20 @@ module Patches
   end
 
   # Accesses all sorts of assets outside lib/
-  def patch_showoff(path)
+  def patch_showoff
     open 'bin/showoff' do |file|
       file = file.sub(/\$LOAD_PATH\.unshift(.+)$/, '')
       unrequire_rubygems file
     end
 
     open 'lib/showoff.rb' do |file|
-      file = file.gsub("File.dirname(__FILE__)", "#{path}/lib".inspect)
+      file = file.gsub("File.dirname(__FILE__)", "#{Dir.pwd}/lib".inspect)
       unrequire_rubygems file
     end
   end
 
   # Nokogiri's deps.rip for dev deps and installs incompatible deps
-  def patch_nokogiri(path)
+  def patch_nokogiri
     rm_rf "deps.rip"
   end
 end
