@@ -12,7 +12,7 @@ module Patches
     File.basename(package_path)[/(.+)-([a-zA-Z0-9]{32})$/]
     name, md5 = $1, $2
 
-    method = "patch_#{name.downcase}".to_sym
+    method = "patch_#{name.downcase.gsub('-', '_')}".to_sym
 
     if respond_to?(method)
       patched_package_name = "#{name}-#{Rip.md5("#{md5}-patched")}"
@@ -46,6 +46,13 @@ module Patches
     source.sub!(/^(\s*)require 'rubygems'$/, '')
     source.gsub!(/^(\s*)gem .+$/, '')
     source
+  end
+
+  # aws-s3 bin scripts rely on files outside the load path
+  def patch_aws_s3(path)
+    Dir['bin/*'].each do |bin|
+      rm bin
+    end
   end
 
   def patch_capistrano(path)
