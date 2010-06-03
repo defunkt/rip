@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+# Usage: rip-package-file FILE
+
+$-e = true
+
+require 'rip/script'
+
+source = ARGV[0]
+
+unless source && File.file?(source)
+  exit 3 # Can't handle source
+end
+
+if File.extname(source) == ".rb"
+  name = File.basename(source, ".rb")
+  hash = Rip.md5(File.read(source))
+  path = "#{Rip.packages}/#{name}-#{hash}"
+
+  unless File.exist?(path)
+    lib_dir = "#{path}/lib/"
+    mkdir_p lib_dir
+    cp source, lib_dir
+
+    write("#{path}/metadata.rip") { name }
+  end
+
+  puts path
+else
+  exit 3 # Can't handle source
+end
