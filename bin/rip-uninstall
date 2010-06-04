@@ -26,11 +26,10 @@ end
 
 package_path = package_path.chomp
 
-Dir["#{Rip.envdir}/**/*"].each do |file|
+Dir["#{package_path}/**/*"].each do |file|
+  file = file.sub(package_path, Rip.envdir)
   if File.symlink?(file)
-    if File.readlink(file).index(package_path)
-      File.unlink(file)
-    end
+    File.unlink(file)
   end
 end
 
