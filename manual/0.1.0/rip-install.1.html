@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv='content-type' value='text/html;charset=utf8'>
   <meta name='generator' value='Ronn/v0.5 (http://github.com/rtomayko/ronn)'>
-  <title>rip-check(1) - check the environment for rip</title>
+  <title>rip-install(1) - install packages</title>
   <style type='text/css' media='all'>
   /* STRUCTURE, INDENT, MARGINS */
   
@@ -130,54 +130,87 @@
     <a href="#SEE-ALSO">SEE ALSO</a>
     </div>
 
-  <h1 class='man-title'>rip-check(1)</h1>
+  <h1 class='man-title'>rip-install(1)</h1>
 
   <ol class='man head'>
-    <li class='tl'>rip-check(1)</li>
+    <li class='tl'>rip-install(1)</li>
     <li class='tc'></li>
-    <li class='tr'>rip-check(1)</li>
+    <li class='tr'>rip-install(1)</li>
   </ol>
 
   <h2 id='NAME'>NAME</h2>
-<p><code>rip-check</code> - check the environment for rip</p>
+<p><code>rip-install</code> - install packages</p>
 
 <h2 id="SYNOPSIS">SYNOPSIS</h2>
 
-<p><code>rip-check</code></p>
+<p><code>rip-install</code> package</p>
 
 <h2 id="DESCRIPTION">DESCRIPTION</h2>
 
-<p><code>rip-check</code> ensures <code>$RIPDIR</code> points to a directory and <code>$RIPENV</code>
-exists on disk. If so, it prints both variables in the format of
-<code>VARIABLE=VALUE</code>. If not, it exits with 0 and prints an error to
-standard error.</p>
+<p><code>rip-install</code> installs packages into the current ripenv. A valid
+package is anything rip understands based on the installed package
+handlers.</p>
 
-<p>You should not use <code>rip-check</code> directly. It is used internally by most
-other rip programs.</p>
+<p>By default rip can install the following types of packages:</p>
+
+<ul>
+<li>RubyGems</li>
+<li>git repos</li>
+<li>ripfiles (e.g. deps.rip)</li>
+</ul>
+
+
+<p>Any of these, then, are valid when passed to <code>rip-install</code>.</p>
+
+<p>Packages are installed into the current ripenv. See rip-env(1) for an
+explanation of ripenvs.</p>
 
 <h2 id="EXAMPLES">EXAMPLES</h2>
 
-<p>  $ rip-check
-  RIPDIR=/Users/chris/.rip
-  RIPENV=mustache</p>
+<p>Installing a RubyGem:</p>
 
-<p>  $ RIPENV=tomdoc rip-check
-  RIPDIR=/Users/chris/.rip
-  RIPENV=tomdoc</p>
+<p>  $ rip-install thin
+  installed daemons (1.0.10)
+  installed eventmachine (0.12.10)
+  installed camping (2.0)
+  installed fcgi (0.8.8)
+  installed memcache-client (1.8.3)
+  installed cgi_multipart_eof_fix (2.5.0)
+  installed fastthread (1.0.7)
+  installed gem_plugin (0.2.3)
+  installed mongrel (1.1.5)
+  installed test-spec (0.10.0)
+  installed rack (1.1.0)
+  installed thin (1.2.7)</p>
 
-<p>  $ RIPDIR=. rip-check
-  No ripenvs found. Please run <code>rip-setup</code></p>
+<p>Installing a RubyGem with a version:</p>
+
+<p>  $ rip install mustache 0.11.0
+  fetching mustache 0.11.0
+  installed mustache (0.11.0)</p>
+
+<p>Installing from a deps.rip file:</p>
+
+<p>  $ git clone git://github.com/defunt/resque
+  $ rip install deps.rip
+  installed redis-rb (eed200ad0e)
+  installed yajl-ruby (0.6.3)
+  installed sinatra (0.9.4)
+  installed rack (1.0)
+  installed vegas (v0.1.2)
+  installed rack-test (v0.5.3)
+  installed rake (0.8.7)</p>
 
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 
-<p>rip(1), rip-install(1), rip-env(1),
+<p>rip(1), rip-list(1), rip-env(1),
 <a href="http://hellorip.com/" data-bare-link="true">http://hellorip.com/</a></p>
 
 
   <ol class='man foot'>
     <li class='tl'></li>
     <li class='tc'>June 2010</li>
-    <li class='tr'>rip-check(1)</li>
+    <li class='tr'>rip-install(1)</li>
   </ol>
 
   </div>

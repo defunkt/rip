@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv='content-type' value='text/html;charset=utf8'>
   <meta name='generator' value='Ronn/v0.5 (http://github.com/rtomayko/ronn)'>
-  <title>rip-check(1) - check the environment for rip</title>
+  <title>rip-import(1) - imports a package into a ripenv</title>
   <style type='text/css' media='all'>
   /* STRUCTURE, INDENT, MARGINS */
   
@@ -126,58 +126,51 @@
     <a href="#NAME">NAME</a>
     <a href="#SYNOPSIS">SYNOPSIS</a>
     <a href="#DESCRIPTION">DESCRIPTION</a>
-    <a href="#EXAMPLES">EXAMPLES</a>
     <a href="#SEE-ALSO">SEE ALSO</a>
     </div>
 
-  <h1 class='man-title'>rip-check(1)</h1>
+  <h1 class='man-title'>rip-import(1)</h1>
 
   <ol class='man head'>
-    <li class='tl'>rip-check(1)</li>
+    <li class='tl'>rip-import(1)</li>
     <li class='tc'></li>
-    <li class='tr'>rip-check(1)</li>
+    <li class='tr'>rip-import(1)</li>
   </ol>
 
   <h2 id='NAME'>NAME</h2>
-<p><code>rip-check</code> - check the environment for rip</p>
+<p><code>rip-import</code> - imports a package into a ripenv</p>
 
 <h2 id="SYNOPSIS">SYNOPSIS</h2>
 
-<p><code>rip-check</code></p>
+<p><code>rip-import</code> package_path</p>
 
 <h2 id="DESCRIPTION">DESCRIPTION</h2>
 
-<p><code>rip-check</code> ensures <code>$RIPDIR</code> points to a directory and <code>$RIPENV</code>
-exists on disk. If so, it prints both variables in the format of
-<code>VARIABLE=VALUE</code>. If not, it exits with 0 and prints an error to
-standard error.</p>
+<p><code>rip-import</code> copies all contents of a package (lib/, bin/, and man/)
+into a ripenv. Technically it creates hard links: this makes
+everything much more efficient.</p>
 
-<p>You should not use <code>rip-check</code> directly. It is used internally by most
-other rip programs.</p>
+<p>Different ripenvs may share the same version of the same
+library. <code>rip-import</code> ensures the data only exists in one place, and
+also makes sure the necessary files are in the $PATH and $LOAD_PATH by
+creating hard links from the desired ripenv to the package's contents.</p>
 
-<h2 id="EXAMPLES">EXAMPLES</h2>
+<p>All files imported into the desired ripenv are printed to standard
+out.</p>
 
-<p>  $ rip-check
-  RIPDIR=/Users/chris/.rip
-  RIPENV=mustache</p>
-
-<p>  $ RIPENV=tomdoc rip-check
-  RIPDIR=/Users/chris/.rip
-  RIPENV=tomdoc</p>
-
-<p>  $ RIPDIR=. rip-check
-  No ripenvs found. Please run <code>rip-setup</code></p>
+<p>You should not use this program directly. Instead, use rip-install(1)
+to install packages.</p>
 
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 
-<p>rip(1), rip-install(1), rip-env(1),
-<a href="http://hellorip.com/" data-bare-link="true">http://hellorip.com/</a></p>
+<p>rip-install(1), rip-env(1), rip(1),
+<a href="http://github.com/defunkt/rip" data-bare-link="true">http://github.com/defunkt/rip</a></p>
 
 
   <ol class='man foot'>
     <li class='tl'></li>
     <li class='tc'>June 2010</li>
-    <li class='tr'>rip-check(1)</li>
+    <li class='tr'>rip-import(1)</li>
   </ol>
 
   </div>
