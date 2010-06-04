@@ -97,7 +97,8 @@ task :site do
     end
   end
 
-  index = '<ol>'
+  index = '<div style="clear:both;"></div>'
+  index << '<ol>'
   manuals.sort.each do |manual|
     name, section, ext = manual.split('.')
     index << "<li><a href='#{manual}'>#{name}(#{section})</a></li>"
