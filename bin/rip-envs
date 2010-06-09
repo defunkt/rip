@@ -5,9 +5,13 @@
 
 require 'rip/script'
 
+active_envs = ENV['RUBYLIB'].to_s.split(":")
+
 RIPENVS.each do |ripenv|
   if ripenv == RIPENV
     puts "* #{ripenv}"
+  elsif active_envs.any? {|e| e == "#{ENV['RIPDIR']}/#{ripenv}/lib" }
+    puts "+ #{ripenv}"
   else
     puts "  #{ripenv}"
   end

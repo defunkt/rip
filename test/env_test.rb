@@ -65,4 +65,14 @@ class EnvTest < Rip::Test
     out = rip "env not-real"
     assert_includes "Can't find", out
   end
+
+  test "envs prints an indicator for pushed envs" do
+    rip "env -c stacked"
+    rip "env -c newthing"
+    out = rip("envs") do
+      # emulate `rip-push stacked`
+      ENV['RUBYLIB'] += ":#{ENV['RIPDIR']}/stacked/lib"
+    end
+    assert_equal "  base\n* newthing\n+ stacked\n", out
+  end
 end
