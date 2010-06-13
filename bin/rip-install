@@ -13,7 +13,7 @@ require 'rip/script'
 abort "what?" if ARGV.empty?
 
 # Grab all dependencies
-paths = rip("fetch-dependencies", *ARGV).split("\n")
+paths = rip("package", *ARGV).split("\n")
 
 # See if we have any conflicts
 rip "detect-conflicts", *paths if force.nil?

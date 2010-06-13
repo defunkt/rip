@@ -1,0 +1,33 @@
+rip-package-ripfile(1) -- create packages from a ripfile
+========================================================
+
+## SYNOPSIS
+
+`rip-package-ripfile` deps.rip
+`rip-package-ripfile` package
+
+## DESCRIPTION
+
+`rip-package-ripfile` downloads all dependencies for the passed
+package or packages (if it's a ripfile).
+
+Each dependency's dependencies are downloaded, and so forth. An
+attempt is made to prevent circular dependencies and infinite loops.
+
+You should not use this directly but instead use rip-install(1).
+
+## EXAMPLES
+
+  $ rip package-ripfile test/deps.rip
+  fetching repl 0.2.0
+  fetching turn 0.7.0
+  fetching ansi 1.2.1
+  fetching facets 2.8.4
+  fetching git://github.com/rtomayko/rack-cache.git
+  updating git://github.com/rack/rack.git
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-env(1),
+<http://hellorip.com/>
+
