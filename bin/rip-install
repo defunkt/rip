@@ -15,6 +15,9 @@ abort "what?" if ARGV.empty?
 # Grab all dependencies
 paths = rip("package", *ARGV).split("\n")
 
+# TODO: This is smelly. Why would package be returning dups?
+paths.uniq!
+
 # See if we have any conflicts
 rip "detect-conflicts", *paths if force.nil?
 
