@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class SetupTest < Rip::Test
   test "setup creates base env" do

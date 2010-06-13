@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class BuildTest < Rip::Test
   test "build returns original path if the package has no extensions" do

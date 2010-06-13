@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class PackageGitTest < Rip::Test
   test "can't handle base paths" do

@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class PackageTest < Rip::Test
   test "package with no arguments" do

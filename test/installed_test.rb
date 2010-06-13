@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class InstalledTest < Rip::Test
   test "install cijoe-deps.rip" do

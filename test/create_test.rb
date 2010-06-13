@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class CreateTest < Rip::Test
   test "create ripenv" do

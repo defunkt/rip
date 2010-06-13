@@ -4,6 +4,14 @@ require 'fileutils'
 require 'tempfile'
 require 'stringio'
 
+# Ensure lib is in path for subcommands
+libdir = File.expand_path('../../lib', __FILE__)
+if ENV['RUBYLIB']
+  ENV['RUBYLIB'] += ":#{libdir}/"
+else
+  ENV['RUBYLIB'] = "#{libdir}/"
+end
+
 require 'rip'
 
 $stderr = StringIO.new

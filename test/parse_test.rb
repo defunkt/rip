@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class ParseTest < Rip::Test
   test "basic" do

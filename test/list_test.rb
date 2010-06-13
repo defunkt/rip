@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class ListTest < Rip::Test
   def setup

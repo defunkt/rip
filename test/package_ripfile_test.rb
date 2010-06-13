@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class PackageRipfileTest < Rip::Test
   test "can't urls" do

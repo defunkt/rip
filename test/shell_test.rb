@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class ShellTest < Rip::Test
   test "shell prints env vars" do

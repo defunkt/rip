@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class RecursiveLinkTest < Rip::Test
   def setup

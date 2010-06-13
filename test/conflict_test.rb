@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class ConflictTest < Rip::Test
   test "detect-conflicts, none" do

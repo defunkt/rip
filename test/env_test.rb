@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class EnvTest < Rip::Test
   test "prints out current RIPENV" do

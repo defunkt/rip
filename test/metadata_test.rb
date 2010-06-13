@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class MetaData < Rip::Test
   test "metadata" do

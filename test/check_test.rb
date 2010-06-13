@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class CheckTest < Rip::Test
   test "check" do

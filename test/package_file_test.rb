@@ -1,4 +1,4 @@
-require 'test/helper'
+require 'helper'
 
 class PackageFileTest < Rip::Test
   test "can't handle directories" do
