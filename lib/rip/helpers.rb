@@ -37,6 +37,10 @@ module Rip
       File.basename(file)
     end
 
+    def commands
+      ENV['RIPCOMMANDSCACHE'] ||= rip(:commands)
+    end
+
     def rip(command, *args)
       args = escape(args)
 
