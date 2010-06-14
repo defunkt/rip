@@ -6,7 +6,7 @@
 require 'rip/script'
 target = ARGV[0]
 
-rip(:installed).each do |package_path|
+rip(:installed) do |package_path|
   package_path = package_path.chomp
   package      = metadata(package_path)
 

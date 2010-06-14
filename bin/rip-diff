@@ -10,7 +10,7 @@ source = ARGV[0]
 version = ARGV[1]
 package = nil
 
-rip(:installed).each do |path|
+rip(:installed) do |path|
   package = metadata(path)
   break if package.name == source
 end

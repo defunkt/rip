@@ -9,7 +9,7 @@ packages = ''
 
 debug "finding all installed packages"
 
-rip(:envs).each do |ripenv|
+rip(:envs) do |ripenv|
   ENV['RIPENV'] = ripenv[2..-1].chomp
   packages << rip('installed').to_s
 end

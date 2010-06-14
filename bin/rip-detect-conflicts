@@ -17,7 +17,7 @@ require 'rip/script'
 parse = ARGV.delete('-p')
 env = Environment.new
 
-rip("installed").split("\n").each do |package|
+rip("installed") do |package|
   env.merge("#{package}/metadata.rip")
 end
 

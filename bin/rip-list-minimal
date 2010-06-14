@@ -6,7 +6,7 @@ require 'rip/script'
 deps = []
 packages = {}
 
-rip(:installed).each do |path|
+rip(:installed) do |path|
   path = path.chomp
   next unless package = metadata(path)
   packages[package.source] = package

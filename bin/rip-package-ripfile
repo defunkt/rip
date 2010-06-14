@@ -15,6 +15,6 @@ $-e = true
 
 require 'rip/script'
 
-File.read(source).split("\n").each do |package|
-  puts rip(:package, package)
+File.read(source).each_line do |line|
+  puts rip(:package, line.chomp)
 end
