@@ -12,15 +12,18 @@ require 'rip/script'
 
 abort "what?" if ARGV.empty?
 
-# Grab package
-paths = rip("package", *ARGV).split("\n")
+paths = []
 
-# Grab all dependencies
-# TODO: fetch-dependencies should accept multiple packages via stdin
-paths.each do |path|
-  rip("fetch-dependencies", path).split("\n").each do |path|
+# Grab package and all dependencies
+rip_io("fetch-dependencies", "r+") do |f|
+  rip("package", *ARGV) do |path|
     paths << path
+    f.puts(path)
   end
+  f.close_write
+
+  f.each_line { |line| paths << line.chomp }
+  f.close_read
 end
 
 # See if we have any conflicts
