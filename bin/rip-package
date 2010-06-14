@@ -22,10 +22,6 @@ commands.grep(/^package-/).each do |handler|
     next
   elsif $?.success?
     out.split("\n").each do |package_path|
-      if File.exists? deps = "#{package_path}/deps.rip"
-        puts rip(:package, deps)
-      end
-
       puts rip(:build, package_path)
     end
 

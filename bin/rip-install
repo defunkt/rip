@@ -12,11 +12,16 @@ require 'rip/script'
 
 abort "what?" if ARGV.empty?
 
-# Grab all dependencies
+# Grab package
 paths = rip("package", *ARGV).split("\n")
 
-# TODO: This is smelly. Why would package be returning dups?
-paths.uniq!
+# Grab all dependencies
+# TODO: fetch-dependencies should accept multiple packages via stdin
+paths.each do |path|
+  rip("fetch-dependencies", path).split("\n").each do |path|
+    paths << path
+  end
+end
 
 # See if we have any conflicts
 rip "detect-conflicts", *paths if force.nil?
