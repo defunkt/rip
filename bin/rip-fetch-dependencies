@@ -7,38 +7,38 @@ $-e = true
 require 'rip/script'
 require 'set'
 
-original = []
-fetched  = []
-queue    = []
+fetched = Set.new
+queue   = Set.new
 
 if ARGV.any?
   ARGV.each do |path|
-    original << path
     queue << path
   end
 else
   $stdin.each_line do |path|
-    path.chomp!
-    original << path
-    queue << path
+    queue << path.chomp
   end
 end
 
 while queue.any?
-  package_path = queue.shift
-  fetched << package_path
-
-  if !original.include?(package_path)
-    puts package_path
-  end
-
-  if File.exist?(deps = "#{package_path}/deps.rip")
-    debug "found #{deps}"
-
-    rip(:package, deps) do |dep_path|
-      if !fetched.include?(dep_path) && !queue.include?(dep_path)
-        queue << dep_path
+  rip_io(:package, "w+") do |f|
+    queue.each do |path|
+      if File.exist?(deps = "#{path}/deps.rip")
+        debug "found #{deps}"
+        f.puts deps
       end
     end
+    queue.clear
+    f.close_write
+
+    f.each_line do |line|
+      path = line.chomp
+      if !fetched.include?(path)
+        queue << path
+        fetched << path
+        puts path
+      end
+    end
+    f.close_read
   end
 end
