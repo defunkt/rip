@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
-# ssage: rip-install [-f] PATH
+# Usage: rip-install [-f] PATH
 #
 # Installs a library into $RIPDIR/$RIPENV
 # If -f (force) is given, doesn't check for conflicts.
+# If -p (pretend) is given, prints what would be installed.
+# If -o (only) is given, doesn't install dependencies.
 
 $-e = true
 force = ARGV.delete('-f') || ARGV.delete('--force')
 pretend = ARGV.delete('-p')
+only = ARGV.delete('-o') || ARGV.delete('--only')
 
 require 'rip/script'
 
@@ -14,16 +17,22 @@ abort "what?" if ARGV.empty?
 
 paths = []
 
-# Grab package and all dependencies
-rip_io("fetch-dependencies", "r+") do |f|
+if only
   rip("package", *ARGV) do |path|
     paths << path
-    f.puts(path)
   end
-  f.close_write
+else
+  # Grab package and all dependencies
+  rip_io("fetch-dependencies", "r+") do |f|
+    rip("package", *ARGV) do |path|
+      paths << path
+      f.puts(path)
+    end
+    f.close_write
 
-  f.each_line { |line| paths << line.chomp }
-  f.close_read
+    f.each_line { |line| paths << line.chomp }
+    f.close_read
+  end
 end
 
 # See if we have any conflicts

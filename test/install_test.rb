@@ -36,6 +36,13 @@ git://localhost/choice.git 8b12556493c86b07ff3efc0fa31f0981b5d1ff83
 packages
   end
 
+  test "only" do
+    out = rip("install -p -o #{fixture('cijoe-deps.rip')}")
+    assert_equal <<packages, out, out
+git://localhost/cijoe 04419882877337e70ac572a36d25416b0da9ba0f
+packages
+  end
+
   test "know about versions" do
     out = rip "install repl 0.100.0"
     assert_exited_with_error out
