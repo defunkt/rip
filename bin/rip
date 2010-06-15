@@ -46,4 +46,9 @@ while ARGV[0] =~ /^-/
 end
 
 exec "rip --help" if ARGV.empty? || ARGV[0] == "help"
-exec "rip-#{ARGV.shift}", *ARGV
+begin
+  exec "rip-#{ARGV.shift}", *ARGV
+rescue Errno::ENOENT
+  raise unless $!.message =~ /No such file or directory.*rip-(\w+)/
+  abort "'#{$1}' is not a rip command. See rip's commands with 'rip-commands'."
+end
