@@ -27,6 +27,11 @@ if ENV['RIPHELPERS'] != '0'
     export PATH="$PATH:$RIPDIR/$1/bin";
     export RUBYLIB="$RUBYLIB:$RIPDIR/$1/lib";
   };
+  function rip-pop() {
+    PATH=$(echo $1 | ruby -e 'print ENV["PATH"].sub(/:\#{ENV["RIPDIR"]}\\/\#{STDIN.read.chomp}\\/bin/,"")');
+    RUBYLIB=$(echo $1 | ruby -e 'print ENV["RUBYLIB"].sub(/:\#{ENV["RIPDIR"]}\\/\#{STDIN.read.chomp}\\/lib/,"")');
+    export RUBYLIB PATH;
+  };
   function rip-use {
     export RIPENV=$1;
     eval `rip-config`;
