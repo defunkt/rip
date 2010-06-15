@@ -33,4 +33,23 @@ class ShellTest < Rip::Test
     assert_includes '$RIPDIR\/old\/lib', output
     assert_includes 'base', output
   end
+
+  test "shell --push given no env prints error" do
+    output = rip "shell --push"
+    assert_equal "I need a ripenv.", output.chomp
+  end
+
+  test "shell --push given an invalid env prints error" do
+    output = rip "shell --push blah"
+    assert_equal "Can't find ripenv `blah'", output.chomp
+  end
+
+  test "shell --push prints function" do
+    rip "create extra"
+    output = rip "shell --push extra"
+    assert_equal <<expected, output
+export PATH="$PATH:$RIPDIR/extra/bin";
+export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
+expected
+  end
 end

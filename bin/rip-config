@@ -8,6 +8,7 @@
 
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
+push = ARGV.delete('--push')
 
 def clean_env_path(name, subdir)
   if ENV[name] =~ /:?#{RIPDIR}\/(\w+)\/#{subdir}/ && $1 != RIPENV
@@ -21,11 +22,22 @@ end
 RUBYLIB = clean_env_path('RUBYLIB', 'lib')
 PATH    = clean_env_path('PATH', 'bin')
 
+if push
+  require 'rip'
+  ripenv = ARGV[0]
+  abort "I need a ripenv." if ripenv.to_s.empty?
+  abort "Can't find ripenv `#{ripenv}'" if !Rip.envs.include?(ripenv)
+  puts <<-PUSH
+export PATH="$PATH:$RIPDIR/#{ripenv}/bin";
+export RUBYLIB="$RUBYLIB:$RIPDIR/#{ripenv}/lib";
+PUSH
+  exit
+end
+
 if ENV['RIPHELPERS'] != '0'
   puts <<-end_functions
   function rip-push() {
-    export PATH="$PATH:$RIPDIR/$1/bin";
-    export RUBYLIB="$RUBYLIB:$RIPDIR/$1/lib";
+    eval `rip-config --push $1`;
   };
   function rip-pop() {
     PATH=$(echo $1 | ruby -e 'print ENV["PATH"].sub(/:\#{ENV["RIPDIR"]}\\/\#{STDIN.read.chomp}\\/bin/,"")');
