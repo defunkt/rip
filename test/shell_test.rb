@@ -51,7 +51,7 @@ class ShellTest < Rip::Test
     assert_equal <<-expected, output
 export PATH="$PATH:$RIPDIR/extra/bin";
 export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
-export MANPATH="$RUBYLIB:$RIPDIR/extra/man";
+export MANPATH="$MANPATH:$RIPDIR/extra/man";
     expected
   end
 

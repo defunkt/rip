@@ -39,7 +39,7 @@ if push || pop
     puts <<-PUSH
 export PATH="#{PATH}:$RIPDIR/#{ripenv}/bin";
 export RUBYLIB="#{RUBYLIB}:$RIPDIR/#{ripenv}/lib";
-export MANPATH="#{RUBYLIB}:$RIPDIR/#{ripenv}/man";
+export MANPATH="#{MANPATH}:$RIPDIR/#{ripenv}/man";
     PUSH
   elsif pop
     unless ENV['RUBYLIB'][HAS_STACKED_ENV]
