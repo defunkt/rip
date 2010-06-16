@@ -34,14 +34,21 @@ run `rip-config` by hand:
 
     $ rip-config
     function rip-push() {
-      export PATH="$PATH:$RIPDIR/$1/bin";
-      export RUBYLIB="$RUBYLIB:$RIPDIR/$1/lib";
+      eval `rip-config --push $1`;
+    };
+    function rip-pop() {
+      eval `rip-config --pop $1`;
+    };
+    function rip-use {
+      export RIPENV=$1;
+      eval `rip-config`;
     };
     RIPVERBOSE=1
     RIPDIR=${RIPDIR:-"$HOME/.rip"}
     RUBYLIB="$RIPDIR/active/lib:$RUBYLIB"
     PATH="$RIPDIR/active/bin:$PATH"
-    export RIPVERBOSE RIPDIR RUBYLIB PATH
+    MANPATH="$RIPDIR/active/man:$MANPATH"
+    export RIPVERBOSE RIPDIR RUBYLIB PATH MANPATH
 
 That's what I get. So, let's test this thing out by seeing what envs
 we have.

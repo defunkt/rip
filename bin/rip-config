@@ -60,16 +60,16 @@ end
 
 if ENV['RIPHELPERS'] != '0'
   puts <<-end_functions
-  function rip-push() {
-    eval `rip-config --push $1`;
-  };
-  function rip-pop() {
-    eval `rip-config --pop $1`;
-  };
-  function rip-use {
-    export RIPENV=$1;
-    eval `rip-config`;
-  };
+function rip-push() {
+  eval `rip-config --push $1`;
+};
+function rip-pop() {
+  eval `rip-config --pop $1`;
+};
+function rip-use {
+  export RIPENV=$1;
+  eval `rip-config`;
+};
   end_functions
 end
 
