@@ -21,14 +21,15 @@ def clean_env_path(name, subdir)
 end
 
 RUBYLIB = pop ? ENV['RUBYLIB'] : clean_env_path('RUBYLIB', 'lib')
-PATH    = pop ? ENV['PATH'] : clean_env_path('PATH', 'bin')
+PATH    = pop ? ENV['PATH']    : clean_env_path('PATH', 'bin')
+MANPATH = pop ? ENV['MANPATH'] : clean_env_path('MANPATH', 'man')
 
 if push || pop
   ripenv = ARGV[0]
   abort "I need a ripenv." if ripenv.to_s.empty?
   require 'rip'
   abort "Can't find ripenv `#{ripenv}'" if !Rip.envs.include?(ripenv)
-  HAS_STACKED_ENV = /:#{ENV['RIPDIR']}\/#{ripenv}\/lib/
+  HAS_STACKED_ENV = /:#{RIPDIR}\/#{ripenv}\/lib/
 
   if push
     if ENV['RUBYLIB'][HAS_STACKED_ENV]
@@ -38,6 +39,7 @@ if push || pop
     puts <<-PUSH
 export PATH="#{PATH}:$RIPDIR/#{ripenv}/bin";
 export RUBYLIB="#{RUBYLIB}:$RIPDIR/#{ripenv}/lib";
+export MANPATH="#{RUBYLIB}:$RIPDIR/#{ripenv}/man";
     PUSH
   elsif pop
     unless ENV['RUBYLIB'][HAS_STACKED_ENV]
@@ -46,9 +48,11 @@ export RUBYLIB="#{RUBYLIB}:$RIPDIR/#{ripenv}/lib";
 
     path = PATH.sub(/:#{RIPDIR}\/#{ripenv}\/bin/, '')
     rubylib = RUBYLIB.sub(/:#{RIPDIR}\/#{ripenv}\/lib/, '')
+    manpath = MANPATH.sub(/:#{RIPDIR}\/#{ripenv}\/man/, '')
     puts <<-POP
 export PATH="#{path}";
 export RUBYLIB="#{rubylib}";
+export MANPATH="#{manpath}";
     POP
   end
   exit
@@ -76,5 +80,6 @@ RIPVERBOSE=1
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
 RUBYLIB="$RIPDIR/#{RIPENV}/lib:#{RUBYLIB}"
 PATH="$RIPDIR/#{RIPENV}/bin:#{PATH}"
-export RIPVERBOSE RIPDIR RUBYLIB PATH
+MANPATH="$RIPDIR/#{RIPENV}/man:#{MANPATH}"
+export RIPVERBOSE RIPDIR RUBYLIB PATH MANPATH
 end_shellcode

@@ -145,6 +145,7 @@ class Rip::Test
   def rip_push(env)
     ENV['RUBYLIB'] += ":#{ENV['RIPDIR']}/#{env}/lib"
     ENV['PATH'] += ":#{ENV['RIPDIR']}/#{env}/bin"
+    ENV['MANPATH'] += ":#{ENV['RIPDIR']}/#{env}/man"
   end
 
   # Given a name, returns the path to the fixture's directory.

@@ -6,6 +6,7 @@ class ShellTest < Rip::Test
     assert_includes "RIPDIR=", output
     assert_includes "RUBYLIB=", output
     assert_includes "PATH=", output
+    assert_includes "MANPATH=", output
   end
 
   test "shell uses active env if RIPENV is unset" do
@@ -50,6 +51,7 @@ class ShellTest < Rip::Test
     assert_equal <<-expected, output
 export PATH="$PATH:$RIPDIR/extra/bin";
 export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
+export MANPATH="$RUBYLIB:$RIPDIR/extra/man";
     expected
   end
 
@@ -77,6 +79,9 @@ export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
       rip_push('extra')
     end
     assert_doesnt_include "extra", output
+    assert_includes "RUBYLIB=", output
+    assert_includes "PATH=", output
+    assert_includes "MANPATH=", output
   end
 
   test "shell --pop for non-pushed env prints error" do
