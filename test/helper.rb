@@ -141,6 +141,12 @@ class Rip::Test
     out
   end
 
+  # Emulates `rip-push env`
+  def rip_push(env)
+    ENV['RUBYLIB'] += ":#{ENV['RIPDIR']}/#{env}/lib"
+    ENV['PATH'] += ":#{ENV['RIPDIR']}/#{env}/bin"
+  end
+
   # Given a name, returns the path to the fixture's directory.
   def fixture(name)
     name = name.to_s

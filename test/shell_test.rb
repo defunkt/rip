@@ -53,6 +53,14 @@ export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
     expected
   end
 
+  test "shell --push for already pushed env prints error" do
+    rip "create extra"
+    output = rip "shell --push extra" do
+      rip_push('extra')
+    end
+    assert_equal "ripenv `extra' has already been pushed", output.chomp
+  end
+
   test "shell --pop given no env prints error" do
     output = rip "shell --pop"
     assert_equal "I need a ripenv.", output.chomp
@@ -66,10 +74,14 @@ export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
   test "shell --pop prints function" do
     rip "create extra"
     output = rip "shell --pop extra" do
-      # emulate rip-push extra
-      ENV['RUBYLIB'] += ":#{ENV['RIPDIR']}/extra/lib"
-      ENV['PATH'] += ":#{ENV['RIPDIR']}/extra/bin"
+      rip_push('extra')
     end
     assert_doesnt_include "extra", output
+  end
+
+  test "shell --pop for non-pushed env prints error" do
+    rip "create extra"
+    output = rip "shell --pop extra"
+    assert_equal "ripenv `extra' hasn't been pushed yet", output.chomp
   end
 end

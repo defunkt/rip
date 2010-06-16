@@ -70,8 +70,7 @@ class EnvTest < Rip::Test
     rip "env -c stacked"
     rip "env -c newthing"
     out = rip("envs") do
-      # emulate `rip-push stacked`
-      ENV['RUBYLIB'] += ":#{ENV['RIPDIR']}/stacked/lib"
+      rip_push('stacked')
     end
     assert_equal "  base\n* newthing\n+ stacked\n", out
   end

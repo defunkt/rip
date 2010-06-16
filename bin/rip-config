@@ -28,13 +28,22 @@ if push || pop
   abort "I need a ripenv." if ripenv.to_s.empty?
   require 'rip'
   abort "Can't find ripenv `#{ripenv}'" if !Rip.envs.include?(ripenv)
+  HAS_STACKED_ENV = /:#{ENV['RIPDIR']}\/#{ripenv}\/lib/
 
   if push
+    if ENV['RUBYLIB'][HAS_STACKED_ENV]
+      abort "ripenv `#{ripenv}' has already been pushed"
+    end
+
     puts <<-PUSH
 export PATH="#{PATH}:$RIPDIR/#{ripenv}/bin";
 export RUBYLIB="#{RUBYLIB}:$RIPDIR/#{ripenv}/lib";
     PUSH
   elsif pop
+    unless ENV['RUBYLIB'][HAS_STACKED_ENV]
+      abort "ripenv `#{ripenv}' hasn't been pushed yet"
+    end
+
     path = PATH.sub(/:#{RIPDIR}\/#{ripenv}\/bin/, '')
     rubylib = RUBYLIB.sub(/:#{RIPDIR}\/#{ripenv}\/lib/, '')
     puts <<-POP
