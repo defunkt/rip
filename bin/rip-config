@@ -9,6 +9,7 @@
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
 push = ARGV.delete('--push')
+pop = ARGV.delete('--pop')
 
 def clean_env_path(name, subdir)
   if ENV[name] =~ /:?#{RIPDIR}\/(\w+)\/#{subdir}/ && $1 != RIPENV
@@ -19,18 +20,28 @@ def clean_env_path(name, subdir)
   end
 end
 
-RUBYLIB = clean_env_path('RUBYLIB', 'lib')
-PATH    = clean_env_path('PATH', 'bin')
+RUBYLIB = pop ? ENV['RUBYLIB'] : clean_env_path('RUBYLIB', 'lib')
+PATH    = pop ? ENV['PATH'] : clean_env_path('PATH', 'bin')
 
-if push
-  require 'rip'
+if push || pop
   ripenv = ARGV[0]
   abort "I need a ripenv." if ripenv.to_s.empty?
+  require 'rip'
   abort "Can't find ripenv `#{ripenv}'" if !Rip.envs.include?(ripenv)
-  puts <<-PUSH
-export PATH="$PATH:$RIPDIR/#{ripenv}/bin";
-export RUBYLIB="$RUBYLIB:$RIPDIR/#{ripenv}/lib";
-PUSH
+
+  if push
+    puts <<-PUSH
+export PATH="#{PATH}:$RIPDIR/#{ripenv}/bin";
+export RUBYLIB="#{RUBYLIB}:$RIPDIR/#{ripenv}/lib";
+    PUSH
+  elsif pop
+    path = PATH.sub(/:#{RIPDIR}\/#{ripenv}\/bin/, '')
+    rubylib = RUBYLIB.sub(/:#{RIPDIR}\/#{ripenv}\/lib/, '')
+    puts <<-POP
+export PATH="#{path}";
+export RUBYLIB="#{rubylib}";
+    POP
+  end
   exit
 end
 
@@ -40,9 +51,7 @@ if ENV['RIPHELPERS'] != '0'
     eval `rip-config --push $1`;
   };
   function rip-pop() {
-    PATH=$(echo $1 | ruby -e 'print ENV["PATH"].sub(/:\#{ENV["RIPDIR"]}\\/\#{STDIN.read.chomp}\\/bin/,"")');
-    RUBYLIB=$(echo $1 | ruby -e 'print ENV["RUBYLIB"].sub(/:\#{ENV["RIPDIR"]}\\/\#{STDIN.read.chomp}\\/lib/,"")');
-    export RUBYLIB PATH;
+    eval `rip-config --pop $1`;
   };
   function rip-use {
     export RIPENV=$1;

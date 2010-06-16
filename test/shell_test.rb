@@ -47,9 +47,29 @@ class ShellTest < Rip::Test
   test "shell --push prints function" do
     rip "create extra"
     output = rip "shell --push extra"
-    assert_equal <<expected, output
+    assert_equal <<-expected, output
 export PATH="$PATH:$RIPDIR/extra/bin";
 export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
-expected
+    expected
+  end
+
+  test "shell --pop given no env prints error" do
+    output = rip "shell --pop"
+    assert_equal "I need a ripenv.", output.chomp
+  end
+
+  test "shell --pop given an invalid env prints error" do
+    output = rip "shell --pop blah"
+    assert_equal "Can't find ripenv `blah'", output.chomp
+  end
+
+  test "shell --pop prints function" do
+    rip "create extra"
+    output = rip "shell --pop extra" do
+      # emulate rip-push extra
+      ENV['RUBYLIB'] += ":#{ENV['RIPDIR']}/extra/lib"
+      ENV['PATH'] += ":#{ENV['RIPDIR']}/extra/bin"
+    end
+    assert_doesnt_include "extra", output
   end
 end
