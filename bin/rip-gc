@@ -11,7 +11,7 @@ debug "finding all installed packages"
 
 rip(:envs) do |ripenv|
   ENV['RIPENV'] = ripenv[2..-1].chomp
-  packages << rip('installed').to_s
+  packages << "\n" << rip('installed').to_s
 end
 
 packages = packages.split("\n").uniq
