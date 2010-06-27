@@ -68,7 +68,11 @@ if command? :ronn
 
   desc "Build the manual"
   task "man:build" do
-    sh "ronn -br5 --organization=DEFUNKT --manual='rip manual' man/**/*.ronn"
+    sh "ronn -br5 --organization=DEFUNKT --manual='rip manual' man/*.ronn"
+    sh "mv man/*.1 man/man1/"
+    sh "mv man/*.1.html man/man1/"
+    sh "mv man/*.5 man/man5/"
+    sh "mv man/*.5.html man/man5/"
   end
 end
 
