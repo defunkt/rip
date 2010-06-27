@@ -162,7 +162,7 @@ task :install do
   end
 
   mkdir_p libdir
-  Dir["lib/**/*.rb"].each do |f|
-    cp f, libdir
+  Dir["lib/*"].each do |f|
+    cp_r f, libdir
   end
 end
