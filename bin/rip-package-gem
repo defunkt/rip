@@ -150,7 +150,7 @@ fetcher = rpg_available? ? RpgFetcher.new : GemFetcher.new
 version = fetcher.list(source) if version.nil?
 version = fetcher.list(source) unless version && version =~ /^\d/
 
-if version.include?(',')
+if version && version.include?(',')
   platform_versions = version.split(/\s*,\s*/).inject({}) {|acc, str|
     ver, *platforms = str.split(/\s+/)
     acc[ver] = platforms
