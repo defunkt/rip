@@ -71,6 +71,19 @@ class PackageGemTest < Rip::Test
     assert_equal target, out.chomp
     assert !File.exist?("#{target}/deps.rip")
   end
+
+  test "repackage" do
+    out = rip "package-gem repl"
+    target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
+
+    assert_equal target, out.chomp
+    assert File.directory?(target)
+
+    out = rip "repackage #{target}"
+
+    assert_equal target, out.chomp
+    assert File.directory?(target)
+  end
 end
 
 if `which rpg` && $?.success?

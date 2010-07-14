@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# usage: rip-repackage PACKAGE_PATH
+#
+# Refetches package
+
+$-e = true
+
+require 'rip/script'
+
+package_path = ARGV[0]
+metadata = rip(:metadata, package_path)
+
+mv package_path, "#{package_path}.original"
+
+at_exit do
+  if exited_successfully?
+    debug "cleaning up #{package_path}.original"
+    rm_rf "#{package_path}.original"
+  else
+    debug "restoring #{package_path}.original"
+    rm_rf package_path
+    mv "#{package_path}.original", package_path
+  end
+end
+
+new_package_path = nil
+rip_io(:package, "w+") do |f|
+  f.puts metadata
+  f.close_write
+  new_package_path = f.read.chomp
+end
+
+if new_package_path == package_path
+  puts new_package_path
+else
+  warn "failed to repackaged '#{metadata}'"
+  warn "expected: #{package_path}"
+  warn "got:      #{new_package_path}"
+  exit 1
+end
