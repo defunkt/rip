@@ -6,6 +6,21 @@
 # TODO: Right now it's actually bash code. I plan to convert it once I
 #       get done reading dash(1).
 
+def which(program)
+  path = `which #{program} 2>/dev/null`.chomp
+  $?.success? ? path : nil
+end
+
+if arg = ARGV[0]
+  # Guess if arg is an env name or ruby bin
+  if arg =~ /ruby/ && rubybin = which(arg)
+    ENV['RIPRUBY'] = rubybin
+    $reloadenv = true
+  else
+    ENV['RIPENV'] = arg
+  end
+end
+
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
 push = ARGV.delete('--push')
@@ -67,8 +82,7 @@ function rip-pop() {
   eval `rip-config --pop $1`;
 };
 function rip-use {
-  export RIPENV=$1;
-  eval `rip-config`;
+  eval `rip-config $1`;
 };
   end_functions
 end
@@ -83,3 +97,11 @@ PATH="$RIPDIR/#{RIPENV}/bin:#{PATH}"
 MANPATH="$RIPDIR/#{RIPENV}/man:#{MANPATH}"
 export RIPVERBOSE RIPDIR RUBYLIB PATH MANPATH
 end_shellcode
+
+if $reloadenv
+  ruby = ENV['RIPRUBY']
+  puts <<-end_shellcode
+export RIPRUBY=#{ruby}
+`RIPRUBY=#{ruby} rip-reload`
+end_shellcode
+end
