@@ -48,6 +48,10 @@ module Rip
     @processes ||= (ENV['RIPPROCESSES'] || 1).to_i
   end
 
+  def ruby
+    @ruby ||= ENV['RIPRUBY'] || `which ruby`.chomp
+  end
+
   def platform_hash
     ENV['RIPPLATFORM'] || md5(shell_ruby_platform)
   end
@@ -55,7 +59,7 @@ module Rip
   # Shell out to ruby so we always get the shells activate ruby,
   # not whatever ruby version is running rip.
   def shell_ruby_platform
-    `ruby -rrbconfig -e "puts RbConfig::CONFIG['sitearchdir']"`
+    `#{ruby} -rrbconfig -e "puts RbConfig::CONFIG['sitearchdir']"`
   end
 
   def md5(string)
