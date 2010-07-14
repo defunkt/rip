@@ -18,5 +18,5 @@ Dir["#{Rip.envdir}/*/**"].each do |file|
 end
 
 packages.each do |package|
-  rip :install, '-f', package
+  rip :install, '-f', '-o', package
 end
