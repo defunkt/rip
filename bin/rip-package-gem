@@ -149,6 +149,18 @@ fetcher = rpg_available? ? RpgFetcher.new : GemFetcher.new
 
 version = fetcher.list(source) if version.nil?
 version = fetcher.list(source) unless version && version =~ /^\d/
+
+if version.include?(',')
+  platform_versions = version.split(/\s*,\s*/).inject({}) {|acc, str|
+    ver, *platforms = str.split(/\s+/)
+    acc[ver] = platforms
+    acc
+  }
+
+  if found = platform_versions.find {|k,v| !(v & ['ruby', RUBY_VERSION]).empty? }
+    version = found[0]
+  end
+end
 version = version.split(" ", 2).first if version && version =~ /\s/
 
 package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
