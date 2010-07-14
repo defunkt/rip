@@ -4,7 +4,7 @@ class PackageTest < Rip::Test
   test "package with no arguments" do
     out = rip "package"
     assert_exited_with_error out
-    assert_equal "", out
+    assert_equal "package not found", out.chomp
   end
 
   test "fetch git:// package" do

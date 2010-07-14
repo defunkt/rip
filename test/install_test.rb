@@ -47,4 +47,10 @@ packages
     out = rip "install repl 0.100.0"
     assert_exited_with_error out
   end
+
+  test "install with invalid package prints error" do
+    out = rip "install blah://"
+    assert_exited_with_error out
+    assert_equal "package not found", out.chomp
+  end
 end

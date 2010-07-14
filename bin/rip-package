@@ -31,4 +31,4 @@ commands.grep(/^package-/).each do |handler|
   end
 end
 
-exit 1
+abort "package not found"
