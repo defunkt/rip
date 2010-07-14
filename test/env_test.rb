@@ -74,4 +74,12 @@ class EnvTest < Rip::Test
     end
     assert_equal "  base\n* newthing\n+ stacked\n", out
   end
+
+  test "reload packages" do
+    rip "install repl 0.1.0"
+    assert_equal "ripenv: base\n\nrepl (0.1.0)\n", rip("list")
+
+    rip "env --reload"
+    assert_equal "ripenv: base\n\nrepl (0.1.0)\n", rip("list")
+  end
 end

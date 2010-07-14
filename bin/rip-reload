@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# usage: rip-reload
+#
+# Reinstalls all packages in current environment
+
+require 'rip/script'
+
+packages = []
+
+rip("installed") do |package_path|
+  if package = metadata(package_path)
+    packages << "#{package.source} #{package.version(:long)}"
+  end
+end
+
+Dir["#{Rip.envdir}/*/**"].each do |file|
+  rm_rf file
+end
+
+packages.each do |package|
+  rip :install, '-f', package
+end

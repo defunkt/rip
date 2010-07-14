@@ -20,6 +20,7 @@ ARGV.options do |o|
   o.on('-l', '--list')   { exec "rip-envs" }
   o.on('-d', '--delete') { delete = true }
   o.on('-b', '--branch') { branch = true }
+  o.on('-r', '--reload') { exec "rip-reload" }
   o.on('-h', '--help')   { exec "grep ^## < #$0 | cut -c4-" }
   o.parse!
 end
