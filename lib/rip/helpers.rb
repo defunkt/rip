@@ -118,16 +118,26 @@ module Rip
 
     # Obtain a mutually exclusive lock to operate on a path safely
     def synchronize(path)
-      require 'tempfile'
-      path = File.join(Dir.tmpdir, "#{Rip.md5(path)}.lock")
-      file = File.new(path, 'w+')
-      file.flock(File::LOCK_EX)
-      yield
+      lockfile = "#{path}.lock"
+      file = nil
+
+      loop do
+        file = File.new(lockfile, 'a')
+        file.flock(File::LOCK_EX)
+
+        # Restat the file and make sure its the same one
+        stat = file.stat
+        cur_stat = File.stat(lockfile) rescue nil
+        if cur_stat &&
+            stat.dev == cur_stat.dev &&
+            stat.ino == cur_stat.ino
+          yield
+          break
+        end
+      end
     ensure
-      file.flock(File::LOCK_UN)
+      File.unlink(lockfile) rescue nil
       file.close
-      # We can't safely cleanup the lock file. This litters tmp with
-      # lock files. Not a big deal but we could do better.
     end
   end
 end
