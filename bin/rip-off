@@ -2,4 +2,8 @@
 # usage: rip-off
 #
 # Disable shell-wide rip.
+if [ ! -e "$RIPDIR/active" ]; then
+  echo "rip is already off";
+  exit 1;
+fi
 mv "$RIPDIR/active" "$RIPDIR/inactive"

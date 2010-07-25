@@ -2,4 +2,8 @@
 # usage: rip-on
 #
 # Re-enable shell-wide ripenv.
+if [ ! -e "$RIPDIR/inactive" ]; then
+  echo "rip is already on";
+  exit 1;
+fi
 mv "$RIPDIR/inactive" "$RIPDIR/active"
