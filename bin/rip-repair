@@ -1,0 +1,106 @@
+#!/usr/bin/env ruby
+# usage: rip-repair PACKAGE_PATH
+#
+# Patch package to work around RPS incompatibly
+
+require 'rip/script'
+
+module Patches
+  extend self
+
+  def patch(package_path)
+    File.basename(package_path)[/(.+)-([a-zA-Z0-9]{32})$/]
+    name, md5 = $1, $2
+
+    method = "patch_#{name.downcase.gsub('-', '_')}".to_sym
+
+    if respond_to?(method)
+      patched_package_name = "#{name}-#{Rip.md5("#{md5}-patched")}"
+      patched_package_path = "#{Rip.packages}/#{patched_package_name}"
+
+      if !File.exist?(patched_package_path)
+        info "repairing #{name}"
+        cp_r package_path, patched_package_path
+
+        cd(patched_package_path) do
+          send(method)
+        end
+      end
+
+      patched_package_path
+    else
+      package_path
+    end
+  end
+
+  def open(file)
+    contents = yield File.read(file)
+    File.open(file, 'w') { |f| f.write contents }
+  end
+
+  def read_version
+    File.read('VERSION').chomp
+  end
+
+  def unrequire_rubygems(source)
+    source.sub!(/^(\s*)require 'rubygems'$/, '')
+    source.gsub!(/^(\s*)gem .+$/, '')
+    source
+  end
+
+  # aws-s3 bin scripts rely on files outside the load path
+  def patch_aws_s3
+    Dir['bin/*'].each do |bin|
+      rm bin
+    end
+  end
+
+  def patch_capistrano
+    open 'lib/capistrano/version.rb' do |file|
+      file.sub /CURRENT = .+$/, "CURRENT = '#{read_version}'"
+    end
+
+    open 'lib/capistrano/ssh.rb' do |file|
+      unrequire_rubygems file
+    end
+  end
+
+  # Nokogiri's deps.rip for dev deps and installs incompatible deps
+  def patch_nokogiri
+    rm_rf "deps.rip"
+  end
+
+  def patch_ruby_debug
+    open 'bin/rdebug' do |file|
+      unrequire_rubygems file
+    end
+
+    mv 'cli', 'lib'
+
+    mkdir_p 'man/man1'
+    cp 'doc/rdebug.1', 'man/man1/rdebug.1'
+  end
+
+  def patch_ruby_debug_base
+    rm 'lib/ChangeLog'
+
+    open 'lib/ruby-debug-base.rb' do |file|
+      unrequire_rubygems file
+    end
+  end
+
+  # Accesses all sorts of assets outside lib/
+  def patch_showoff
+    open 'bin/showoff' do |file|
+      file = file.sub(/\$LOAD_PATH\.unshift(.+)$/, '')
+      unrequire_rubygems file
+    end
+
+    open 'lib/showoff.rb' do |file|
+      file = file.gsub("File.dirname(__FILE__)", "#{Dir.pwd}/lib".inspect)
+      unrequire_rubygems file
+    end
+  end
+end
+
+puts Patches.patch(ARGV[0])
