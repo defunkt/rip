@@ -65,6 +65,13 @@ module Patches
     end
   end
 
+  # Facets doesn't use the default lib, but lib/core and lib/more
+  # Flatten it on install
+  def patch_facets
+    cp_r Dir.glob('lib/{core,more}/*'), 'lib'
+    rm_r Dir.glob('lib/{core,more}')
+  end
+
   # Nokogiri's deps.rip for dev deps and installs incompatible deps
   def patch_nokogiri
     rm_rf "deps.rip"
