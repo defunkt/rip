@@ -1,0 +1,98 @@
+rip(1)
+======
+
+## Rip Commands
+
+### Environment commands
+
+Higher level commands that operate on the current environment.
+
+  rip-create(1)
+
+  rip-diff(1)
+
+  rip-env(1)
+
+  rip-envs(1)
+
+  rip-exec(1)
+
+  rip-import(1)
+
+  rip-info(1)
+
+  rip-install(1)
+
+  rip-installed(1)
+
+  rip-list(1)
+
+  rip-list-minimal(1)
+
+  rip-off(1)
+
+  rip-on(1)
+
+  rip-only(1)
+
+  rip-readme(1)
+
+  rip-reload(1)
+
+  rip-uninstall(1)
+
+### Shell commands
+
+Output sh(1) code to be eval'd.
+
+  rip-check(1)
+
+  rip-commands(1)
+
+  rip-completion(1)
+
+  rip-config(1)
+
+  rip-setup(1)
+
+  rip-sh-pop(1)
+
+  rip-sh-push(1)
+
+  rip-sh-use(1)
+
+### Package commands
+
+Low commands for fetching and building packages.
+
+  rip-build(1)
+
+  rip-detect-conflicts(1)
+
+  rip-fetch-dependencies(1)
+
+  rip-fsck(1)
+
+  rip-gc(1)
+
+  rip-metadata(1)
+
+  rip-package(1)
+
+  rip-package-file(1)
+
+  rip-package-gem(1)
+
+  rip-package-git(1)
+
+  rip-package-ripfile(1)
+
+  rip-package-sub(1)
+
+  rip-parse(1)
+
+  rip-recursive-link(1)
+
+  rip-repackage(1)
+
+  rip-repair(1)
