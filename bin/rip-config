@@ -8,8 +8,6 @@
 
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
-push = ARGV.delete('--push')
-pop = ARGV.delete('--pop')
 
 def clean_env_path(name, subdir)
   if ENV[name] =~ /:?#{RIPDIR}\/(\w+)\/#{subdir}/ && $1 != RIPENV
@@ -20,51 +18,17 @@ def clean_env_path(name, subdir)
   end
 end
 
-RUBYLIB = pop ? ENV['RUBYLIB'] : clean_env_path('RUBYLIB', 'lib')
-PATH    = pop ? ENV['PATH']    : clean_env_path('PATH', 'bin')
-MANPATH = pop ? ENV['MANPATH'] : clean_env_path('MANPATH', 'man')
-
-if push || pop
-  ripenv = ARGV[0]
-  abort "I need a ripenv." if ripenv.to_s.empty?
-  require 'rip'
-  abort "Can't find ripenv `#{ripenv}'" if !Rip.envs.include?(ripenv)
-  HAS_STACKED_ENV = /:#{RIPDIR}\/#{ripenv}\/lib/
-
-  if push
-    if ENV['RUBYLIB'][HAS_STACKED_ENV]
-      abort "ripenv `#{ripenv}' has already been pushed"
-    end
-
-    puts <<-PUSH
-export PATH="#{PATH}:$RIPDIR/#{ripenv}/bin";
-export RUBYLIB="#{RUBYLIB}:$RIPDIR/#{ripenv}/lib";
-export MANPATH="#{MANPATH}:$RIPDIR/#{ripenv}/man";
-    PUSH
-  elsif pop
-    unless ENV['RUBYLIB'][HAS_STACKED_ENV]
-      abort "ripenv `#{ripenv}' hasn't been pushed yet"
-    end
-
-    path = PATH.sub(/:#{RIPDIR}\/#{ripenv}\/bin/, '')
-    rubylib = RUBYLIB.sub(/:#{RIPDIR}\/#{ripenv}\/lib/, '')
-    manpath = MANPATH.sub(/:#{RIPDIR}\/#{ripenv}\/man/, '')
-    puts <<-POP
-export PATH="#{path}";
-export RUBYLIB="#{rubylib}";
-export MANPATH="#{manpath}";
-    POP
-  end
-  exit
-end
+RUBYLIB = clean_env_path('RUBYLIB', 'lib')
+PATH    = clean_env_path('PATH', 'bin')
+MANPATH = clean_env_path('MANPATH', 'man')
 
 if ENV['RIPHELPERS'] != '0'
   puts <<-end_functions
 function rip-push() {
-  eval `rip-config --push $1`;
+  eval `rip-sh-push $1`;
 };
 function rip-pop() {
-  eval `rip-config --pop $1`;
+  eval `rip-sh-pop $1`;
 };
 function rip-use {
   export RIPENV=$1;

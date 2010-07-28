@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# usage: rip-sh-push RIPENV
+#
+# Prints sh(1) code to add RIPENV to RIPENVSTACK
+
+require 'rip/script'
+
+ripenv = ARGV[0]
+
+if ripenv.to_s.empty?
+  abort "I need a ripenv."
+elsif !Rip.envs.include?(ripenv)
+  abort "Can't find ripenv `#{ripenv}'"
+end
+
+if ENV['RUBYLIB'] =~ /:#{Rip.dir}\/#{ripenv}\/lib/
+  abort "ripenv `#{ripenv}' has already been pushed"
+end
+
+puts <<-PUSH
+export PATH="$PATH:$RIPDIR/#{ripenv}/bin";
+export RUBYLIB="$RUBYLIB:$RIPDIR/#{ripenv}/lib";
+export MANPATH="$MANPATH:$RIPDIR/#{ripenv}/man";
+PUSH

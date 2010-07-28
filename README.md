@@ -34,10 +34,10 @@ run `rip-config` by hand:
 
     $ rip-config
     function rip-push() {
-      eval `rip-config --push $1`;
+      eval `rip-sh-push $1`;
     };
     function rip-pop() {
-      eval `rip-config --pop $1`;
+      eval `rip-sh-pop $1`;
     };
     function rip-use {
       export RIPENV=$1;

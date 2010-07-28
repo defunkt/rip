@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# usage: rip-sh-pop RIPENV
+#
+# Prints sh(1) code to remove RIPENV to RIPENVSTACK
+
+require 'rip/script'
+
+ripenv = ARGV[0]
+
+if ripenv.to_s.empty?
+  abort "I need a ripenv."
+elsif !Rip.envs.include?(ripenv)
+  abort "Can't find ripenv `#{ripenv}'"
+end
+
+unless ENV['RUBYLIB'] =~ /:#{Rip.dir}\/#{ripenv}\/lib/
+  abort "ripenv `#{ripenv}' hasn't been pushed yet"
+end
+
+path    = ENV['PATH'].sub(/:#{Rip.dir}\/#{ripenv}\/bin/, '')
+rubylib = ENV['RUBYLIB'].sub(/:#{Rip.dir}\/#{ripenv}\/lib/, '')
+manpath = ENV['MANPATH'].sub(/:#{Rip.dir}\/#{ripenv}\/man/, '')
+
+puts <<-POP
+export PATH="#{path}";
+export RUBYLIB="#{rubylib}";
+export MANPATH="#{manpath}";
+POP

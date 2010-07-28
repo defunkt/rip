@@ -35,19 +35,19 @@ class ShellTest < Rip::Test
     assert_includes 'base', output
   end
 
-  test "shell --push given no env prints error" do
-    output = rip "shell --push"
+  test "shell push given no env prints error" do
+    output = rip "sh-push"
     assert_equal "I need a ripenv.", output.chomp
   end
 
-  test "shell --push given an invalid env prints error" do
-    output = rip "shell --push blah"
+  test "shell push given an invalid env prints error" do
+    output = rip "sh-push blah"
     assert_equal "Can't find ripenv `blah'", output.chomp
   end
 
-  test "shell --push prints function" do
+  test "shell push prints function" do
     rip "create extra"
-    output = rip "shell --push extra"
+    output = rip "sh-push extra"
     assert_equal <<-expected, output
 export PATH="$PATH:$RIPDIR/extra/bin";
 export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
@@ -55,27 +55,27 @@ export MANPATH="$MANPATH:$RIPDIR/extra/man";
     expected
   end
 
-  test "shell --push for already pushed env prints error" do
+  test "shell push for already pushed env prints error" do
     rip "create extra"
-    output = rip "shell --push extra" do
+    output = rip "sh-push extra" do
       rip_push('extra')
     end
     assert_equal "ripenv `extra' has already been pushed", output.chomp
   end
 
-  test "shell --pop given no env prints error" do
-    output = rip "shell --pop"
+  test "sh-pop given no env prints error" do
+    output = rip "sh-pop"
     assert_equal "I need a ripenv.", output.chomp
   end
 
-  test "shell --pop given an invalid env prints error" do
-    output = rip "shell --pop blah"
+  test "shell pop given an invalid env prints error" do
+    output = rip "sh-pop blah"
     assert_equal "Can't find ripenv `blah'", output.chomp
   end
 
-  test "shell --pop prints function" do
+  test "shell pop prints function" do
     rip "create extra"
-    output = rip "shell --pop extra" do
+    output = rip "sh-pop extra" do
       rip_push('extra')
     end
     assert_doesnt_include "extra", output
@@ -84,9 +84,9 @@ export MANPATH="$MANPATH:$RIPDIR/extra/man";
     assert_includes "MANPATH=", output
   end
 
-  test "shell --pop for non-pushed env prints error" do
+  test "shell pop for non-pushed env prints error" do
     rip "create extra"
-    output = rip "shell --pop extra"
+    output = rip "sh-pop extra"
     assert_equal "ripenv `extra' hasn't been pushed yet", output.chomp
   end
 end
