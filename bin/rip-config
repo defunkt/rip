@@ -31,8 +31,7 @@ function rip-pop() {
   eval `rip-sh-pop $1`;
 };
 function rip-use {
-  export RIPENV=$1;
-  eval `rip-config`;
+  eval `rip-sh-use $1`;
 };
   end_functions
 end

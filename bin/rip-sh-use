@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# usage: rip-sh-use RIPENV
+#
+# Prints sh(1) code to switch to RIPENV
+
+require 'rip/script'
+
+ripenv = ARGV[0]
+
+if ripenv.to_s.empty?
+  abort "I need a ripenv."
+elsif !Rip.envs.include?(ripenv)
+  abort "Can't find ripenv `#{ripenv}'"
+end
+
+ENV['RIPENV'] = ripenv
+puts rip(:config)
