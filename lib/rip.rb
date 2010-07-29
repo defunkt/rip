@@ -23,23 +23,23 @@ module Rip
   end
 
   def packages
-    "#{dir}/.packages"
+    @packages ||= "#{dir}/.packages"
   end
 
   def cache
-    "#{dir}/.cache"
+    @cache ||= "#{dir}/.cache"
   end
 
   def active
-    "#{dir}/active"
+    @active ||= "#{dir}/active"
   end
 
   def envdir
-    "#{dir}/#{env}"
+    @envdir ||= "#{dir}/#{env}"
   end
 
   def envs
-    Dir["#{dir}/*"].map { |f| File.basename(f) }.reject do |ripenv|
+    @envs ||= Dir["#{dir}/*"].map { |f| File.basename(f) }.reject do |ripenv|
       ripenv == 'active' || ripenv[0].chr == '.'
     end
   end
