@@ -19,9 +19,6 @@ if Rip.dir.to_s.empty? || Rip.env.to_s.empty?
   end
 end
 
-# Clear out GIT_DIR incase we are running from a git subprocess
-ENV.delete('GIT_DIR')
-
 # ARGV.args vs ARGV.flags
 def ARGV.flags
   select { |arg| arg =~ /^-/ }

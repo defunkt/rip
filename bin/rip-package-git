@@ -14,6 +14,9 @@ unless source =~ %r{^file://|^git://|\.git$} ||
 end
 
 
+# Clear out GIT_DIR incase we are running from a git subprocess
+ENV.delete('GIT_DIR')
+
 def lookup_git_rev(path, rev)
   ref = git "--git-dir=#{path} rev-list -n1 #{rev} 2> /dev/null"
   $?.success? ? ref : nil
