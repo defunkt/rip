@@ -79,8 +79,6 @@ Low commands for fetching and building packages.
 
   rip-package(1)
 
-  rip-package-file(1)
-
   rip-package-gem(1)
 
   rip-package-git(1)
