@@ -16,7 +16,7 @@ class BuildTest < Rip::Test
     path = out.chomp
 
     out = rip "build #{path}"
-    target = "#{@ripdir}/.packages/yajl-ruby-28ab3e9b3b6983fc7e4209b4935dc84a"
+    target = "#{@ripdir}/.packages/yajl-ruby-#{Rip.md5("afaf2451eb6ee54b2eebba1910ab0cbb#{Rip.ruby}")}"
     assert_equal target, out.chomp
 
     assert File.exist?("#{target}/ext/Makefile")
@@ -24,5 +24,16 @@ class BuildTest < Rip::Test
 
     assert File.exist?("#{target}/lib/yajl.rb")
     assert Dir["#{target}/lib/yajl_ext.*"].any?
+  end
+
+  test "writes build.rip" do
+    out = rip "package-git git://localhost/yajl-ruby"
+    assert_exited_successfully out
+
+    path = out.chomp
+    target = rip("build #{path}").chomp
+
+    assert File.exist?("#{target}/build.rip")
+    assert_equal Rip.ruby, File.read("#{target}/build.rip").chomp
   end
 end

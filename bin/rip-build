@@ -25,24 +25,28 @@ if Dir["#{package_path}/**/extconf.rb"].empty?
   exit 0
 end
 
-# Bake ruby platform info into the package hash
-platform_package_name = "#{name}-#{Rip.md5("#{md5}#{Rip.platform_hash}")}"
-platform_package_path = "#{Rip.packages}/#{platform_package_name}"
+# Bake ruby binary info into the package hash
+built_package_name = "#{name}-#{Rip.md5("#{md5}#{Rip.ruby}")}"
+built_package_path = "#{Rip.packages}/#{built_package_name}"
 
-synchronize(platform_package_path) do
-  if File.directory?(platform_package_path)
-    puts platform_package_path
+synchronize(built_package_path) do
+  if File.directory?(built_package_path)
+    puts built_package_path
   else
-    cp_r package_path, platform_package_path
+    cp_r package_path, built_package_path
 
-    Dir["#{platform_package_path}/**/extconf.rb"].each do |build_file|
+    Dir["#{built_package_path}/**/extconf.rb"].each do |build_file|
       build_dir = File.dirname(build_file)
       Dir.chdir(build_dir) do
         sh "#{Rip.ruby} extconf.rb"
-        sh "make install sitearchdir=#{platform_package_path}/lib 2> /dev/null"
+        sh "make install sitearchdir=#{built_package_path}/lib 2> /dev/null"
       end
     end
 
-    puts platform_package_path
+    File.open("#{built_package_path}/build.rip", "w") do |f|
+      f.puts Rip.ruby
+    end
+
+    puts built_package_path
   end
 end

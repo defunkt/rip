@@ -26,7 +26,6 @@ class Rip::Test
   def setup
     @ripdir = File.expand_path(File.dirname(__FILE__) + "/ripdir")
     rm_rf @ripdir
-    ENV['RIPPLATFORM'] = 'test'
     ENV['RIPVERBOSE'] = nil
     ENV['RIPDEBUG'] = nil
     ENV['RIPPROCESSES'] = nil

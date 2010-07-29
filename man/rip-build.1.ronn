@@ -20,9 +20,9 @@ Compile nokogiri.
 
   rip-build ~/.rip/.packages/nokogiri-10d01f872db2d4f88ce5bd9472d21509
 
-Manually set the Ruby platform string.
+Manually set the Ruby binary for compilation.
 
-  RIPPLATFORM="osx" rip-build ./nokogiri-10d01f872db2d4f88ce5bd9472d21509
+  RIPRUBY="/usr/local/bin/ruby19" rip-build ./nokogiri-10d01f872db2d4f88ce5bd9472d21509
 
 ## COMPILATION
 
