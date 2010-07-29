@@ -3,7 +3,6 @@ require 'helper'
 class CreateTest < Rip::Test
   test "create ripenv" do
     assert_exited_successfully rip("create blah")
-    assert_equal "#{@ripdir}/blah", File.readlink("#{@ripdir}/active")
     assert File.exists?("#{@ripdir}/blah")
   end
 

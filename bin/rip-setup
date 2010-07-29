@@ -20,4 +20,16 @@
 #
 # exits 0 if successfuly, 1 if unsuccessful
 
-exec "#{File.dirname(__FILE__)}/rip-create base"
+require 'fileutils'
+include FileUtils
+
+RIPENV = 'base'
+RIPDIR = ENV['RIPDIR']
+
+system "rip-create", RIPENV
+
+if File.exists?(symlink = "#{RIPDIR}/active")
+  rm symlink
+end
+
+ln_s "#{RIPDIR}/#{RIPENV}", symlink

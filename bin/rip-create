@@ -32,9 +32,3 @@ mkdir_p "#{RIPDIR}/.packages"
 mkdir_p "#{RIPDIR}/#{RIPENV}/bin"
 mkdir_p "#{RIPDIR}/#{RIPENV}/lib"
 mkdir_p "#{RIPDIR}/#{RIPENV}/man"
-
-if File.exists?(symlink = "#{RIPDIR}/active")
-  rm symlink
-end
-
-ln_s "#{RIPDIR}/#{RIPENV}", symlink

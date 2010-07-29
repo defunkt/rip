@@ -26,6 +26,8 @@ installed
 
   test "is ripenv specific" do
     rip "env -c newguy"
+    rip "env newguy"
+
     rip "install git://localhost/rack"
     assert_equal <<installed, rip("list")
 ripenv: newguy

@@ -8,12 +8,14 @@ class EnvTest < Rip::Test
 
   test "creates a RIPENV" do
     rip "env -c newthing"
+    rip "env newthing"
     assert_equal "  base\n* newthing\n", rip("envs")
   end
 
   test "branches a RIPENV" do
     rip "install repl 0.1.0"
     rip "env -b base-with-repl"
+    rip "env base-with-repl"
     assert_equal "ripenv: base-with-repl\n\nrepl (0.1.0)\n", rip("list")
   end
 
@@ -69,6 +71,7 @@ class EnvTest < Rip::Test
   test "envs prints an indicator for pushed envs" do
     rip "env -c stacked"
     rip "env -c newthing"
+    rip "env newthing"
     out = rip("envs") do
       rip_push('stacked')
     end
