@@ -34,7 +34,7 @@ case $1 in
 function _rip_completion () {
   reply=(`rip commands`);
 };
-compctl -K _rip_completion rip
+compctl -x 'p[1]' -K _rip_completion - 'p[2,-1]' -f -- rip
 completer
     ;;
   * )
