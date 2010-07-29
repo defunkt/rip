@@ -18,7 +18,7 @@ end
 
 parse = ARGV.delete('-p')
 
-puts "ripenv: #{RIPENV}", "" unless parse
+puts "ripenv: #{Rip.env}", "" unless parse
 
 rip("installed") do |package_path|
   if package = metadata(package_path)

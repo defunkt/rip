@@ -29,13 +29,6 @@ def ARGV.args
 end
 
 
-RIPDIR     = Rip.dir
-RIPENV     = Rip.env
-RIPENVS    = Rip.envs
-CACHEDIR   = Rip.cache
-PACKAGEDIR = Rip.packages
-ACTIVEDIR  = Rip.active
-
 require 'fileutils'
 include FileUtils
 include Rip::Helpers

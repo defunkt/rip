@@ -7,7 +7,7 @@ require 'rip/script'
 require 'optparse'
 
 if ARGV.empty? || path = ARGV.delete('-p') || ARGV.delete('--path')
-  puts path ? File.readlink("#{RIPDIR}/active") : RIPENV
+  puts path ? File.readlink("#{Rip.dir}/active") : Rip.env
   exit
 end
 
@@ -30,22 +30,22 @@ if ripenv.to_s.empty?
 end
 
 if branch
-  if RIPENVS.include?(ripenv)
+  if Rip.envs.include?(ripenv)
     abort "#{ripenv} already exists. Gimmie a new name."
   end
 
-  cp_r "#{RIPDIR}/#{RIPENV}", "#{RIPDIR}/#{ripenv}"
+  cp_r Rip.envdir, "#{Rip.dir}/#{ripenv}"
   rip :create, ripenv
 
   exit
 end
 
-if !RIPENVS.include?(ripenv) && !ripenv.include?('/')
+if !Rip.envs.include?(ripenv) && !ripenv.include?('/')
   abort "Can't find ripenv `#{ripenv}'"
 end
 
-if delete && RIPENVS.size > 1
-  if ripenv == RIPENV
+if delete && Rip.envs.size > 1
+  if ripenv == Rip.env
     abort "Can't delete current ripenv."
   end
 
@@ -55,6 +55,6 @@ elsif delete
 end
 
 rm Rip.active rescue nil
-target = ripenv.include?('/') ? File.expand_path(ripenv) : "#{RIPDIR}/#{ripenv}"
+target = ripenv.include?('/') ? File.expand_path(ripenv) : "#{Rip.dir}/#{ripenv}"
 ln_s target, Rip.active
 puts ripenv
