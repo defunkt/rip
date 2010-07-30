@@ -72,6 +72,10 @@ module Patches
     rm_r Dir.glob('lib/{core,more}')
   end
 
+  def patch_kicker
+    cp_r Dir.glob('vendor/*'), 'lib'
+  end
+
   # Nokogiri's deps.rip for dev deps and installs incompatible deps
   def patch_nokogiri
     rm_rf "deps.rip"
