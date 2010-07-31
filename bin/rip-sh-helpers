@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+# usage: rip-sh-helpers
+#
+# Prints sh(1) code to install shell helper functions
+
+commands = ENV['PATH'].split(':').map do |path|
+  Dir[path + '/rip-sh-*'].map { |f| File.basename(f).sub('rip-sh-', '') }
+end
+
+helpers = commands.flatten.uniq.sort
+
+helpers.each do |command|
+  puts <<-end_function
+function rip-#{command} () {
+  eval `rip-sh-#{command} $@`;
+};
+end_function
+end
+
+puts <<-end_functions
+function rip () {
+  command=$1;
+  shift;
+  case $command in
+  #{helpers.join('|')})
+    eval `rip-sh-$command $@`;;
+  *)
+    command rip $command $@;;
+  esac;
+};
+end_functions

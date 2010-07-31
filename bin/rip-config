@@ -22,19 +22,8 @@ RUBYLIB = clean_env_path('RUBYLIB', 'lib')
 PATH    = clean_env_path('PATH', 'bin')
 MANPATH = clean_env_path('MANPATH', 'man')
 
-# TODO: Automatically define helper functions that map to rip-sh-*
 if ENV['RIPHELPERS'] != '0'
-  puts <<-end_functions
-function rip-push() {
-  eval `rip-sh-push $1`;
-};
-function rip-pop() {
-  eval `rip-sh-pop $1`;
-};
-function rip-use {
-  eval `rip-sh-use $1`;
-};
-  end_functions
+  system "rip-sh-helpers"
 end
 
 puts "export RIPENV=#{RIPENV}" if RIPENV != 'active'
