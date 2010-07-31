@@ -1,0 +1,15 @@
+rip-metadata(1) -- package metadata
+===================================
+
+## SYNOPSIS
+
+`rip-metadata` PACKAGE_PATH
+
+## DESCRIPTION
+
+`rip-metadata` prints out packages `metadata.rip` file.
+
+## SEE ALSO
+
+rip(1), rip-package(1),
+<http://hellorip.com/>
