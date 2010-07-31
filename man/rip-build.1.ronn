@@ -9,7 +9,9 @@ rip-build(1) -- build ruby extensions
 
 `rip-build` compiles rip packages which include Ruby extensions. It
 determines whether or not a package requires compilation by checking
-for the presence of any `extconf.rb` files.
+for the presence of any `extconf.rb` files. A new package path will
+be printed if it was compiled, otherwise the input package will be
+printed.
 
 You should not use `rip-build` directly. Use `rip-install` which
 creates, compiles, and imports packages for you.
@@ -26,7 +28,7 @@ Manually set the Ruby binary for compilation.
 
 ## COMPILATION
 
-Compilation is performed by executing the `extconf.rb` files then
+Compilation is performed by executing the `extconf.rb` file then
 running `make install`. If successful, the process will create a new,
 platform-specific rip package and print the path.
 
@@ -34,8 +36,11 @@ In this way a single install of rip may contain packages compiled for
 many different versions of Ruby. However, rip environments are
 currently unaware of platforms.
 
+Upon completion, a `build.rip` file is written to the packages root with
+the `RIPRUBY` used to compile the package.
+
 ## SEE ALSO
 
-rip(1), rip-install(1), rip-env(1),
+rip(1), rip-install(1), rip-package(1),
 <http://hellorip.com/>
 
