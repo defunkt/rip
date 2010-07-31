@@ -63,7 +63,7 @@ Output sh(1) code to be eval'd.
 
 ### Package commands
 
-Low commands for fetching and building packages.
+Low level commands for fetching and building packages.
 
   rip-build(1)
 
