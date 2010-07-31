@@ -1,0 +1,25 @@
+rip-fetch-dependencies(1) -- fetch packages dependencies
+========================================================
+
+## SYNOPSIS
+
+`rip-fetch-dependencies` PACKAGE_PATH [PACKAGE_PATH] ...
+
+## DESCRIPTION
+
+Given a list of rip packages, `rip-fetch-dependencies` fetches and
+prints the package paths to stdout. Nested dependencies are fetch
+too. Packages may be supplied via command line arguments
+or from stdin.
+
+The output of the packages is unsort and may differ if they are
+fetched in parallel.
+
+You should not use this script directly. Instead use rip-install(1) to
+install your packages.
+
+## SEE ALSO
+
+rip(1), rip-install(1), rip-package(1),
+<http://hellorip.com/>
+
