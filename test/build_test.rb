@@ -1,6 +1,16 @@
 require 'helper'
 
 class BuildTest < Rip::Test
+  test "fails if package path is missing" do
+    out = rip "build"
+    assert_exited_with_error out
+  end
+
+  test "fails if path is not a rip package" do
+    out = rip "build #{fixture(:cijoe)}"
+    assert_exited_with_error out
+  end
+
   test "build returns original path if the package has no extensions" do
     out = rip "package-git git://localhost/cijoe"
     assert_exited_successfully out
@@ -24,6 +34,18 @@ class BuildTest < Rip::Test
 
     assert File.exist?("#{target}/lib/yajl.rb")
     assert Dir["#{target}/lib/yajl_ext.*"].any?
+  end
+
+  test "rebuild extconf package" do
+    out = rip "package-git git://localhost/yajl-ruby"
+    assert_exited_successfully out
+    path = out.chomp
+
+    out = rip "build #{path}"
+    target = out.chomp
+
+    out = rip "build #{path}"
+    assert_equal target, out.chomp
   end
 
   test "writes build.rip" do
