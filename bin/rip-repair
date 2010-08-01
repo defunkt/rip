@@ -18,12 +18,14 @@ module Patches
       patched_package_name = "#{name}-#{Rip.md5("#{md5}-patched")}"
       patched_package_path = "#{Rip.packages}/#{patched_package_name}"
 
-      if !File.exist?(patched_package_path)
-        info "repairing #{name}"
-        cp_r package_path, patched_package_path
+      synchronize(patched_package_path) do
+        if !File.exist?(patched_package_path)
+          info "repairing #{name}"
+          rip :'cp-package', package_path, patched_package_path
 
-        cd(patched_package_path) do
-          send(method)
+          cd(patched_package_path) do
+            send(method)
+          end
         end
       end
 

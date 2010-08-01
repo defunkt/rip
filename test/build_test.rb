@@ -48,6 +48,17 @@ class BuildTest < Rip::Test
     assert_equal target, out.chomp
   end
 
+  test "writes .ripparent symlink" do
+    out = rip "package-git git://localhost/yajl-ruby"
+    assert_exited_successfully out
+
+    path = out.chomp
+    target = rip("build #{path}").chomp
+
+    assert File.symlink?("#{target}/.ripparent")
+    assert_equal "#{@ripdir}/.packages/yajl-ruby-afaf2451eb6ee54b2eebba1910ab0cbb", File.readlink("#{target}/.ripparent")
+  end
+
   test "writes build.rip" do
     out = rip "package-git git://localhost/yajl-ruby"
     assert_exited_successfully out

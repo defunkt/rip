@@ -33,7 +33,7 @@ synchronize(built_package_path) do
   if File.directory?(built_package_path)
     puts built_package_path
   else
-    cp_r package_path, built_package_path
+    rip :'cp-package', package_path, built_package_path
 
     Dir["#{built_package_path}/**/extconf.rb"].each do |build_file|
       build_dir = File.dirname(build_file)

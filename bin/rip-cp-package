@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# usage: rip-cp-package OLD_PACKAGE_PATH NEW_PACKAGE_PATH
+#
+# Builds a rip package's Ruby extension(s).
+
+src, dest = ARGV[0], ARGV[1]
+
+if src.nil? || !File.directory?(src)
+  abort "#{src} is not a directory"
+end
+
+if dest.nil? || File.exist?(dest)
+  abort "#{dest} already exists"
+end
+
+require 'rip/script'
+
+cp_r src, dest
+rm_f "#{dest}/.ripparent"
+ln_s src, "#{dest}/.ripparent"
