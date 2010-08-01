@@ -3,11 +3,20 @@
 #
 # Prints sh(1) code to install shell helper functions
 
-commands = ENV['PATH'].split(':').map do |path|
-  Dir[path + '/rip-sh-*'].map { |f| File.basename(f).sub('rip-sh-', '') }
+require 'rip/script'
+
+helpers = []
+commands.each do |command|
+ if command =~ /^sh-/
+   helpers << $'
+ end
 end
 
-helpers = commands.flatten.uniq.sort
+helpers.each do |command|
+  if commands.include?(command)
+    warn "overriding rip-#{command} command"
+  end
+end
 
 helpers.each do |command|
   puts <<-end_function

@@ -38,6 +38,10 @@ module Rip
     end
 
     def commands
+      @commands ||= lookup_command_cache.split("\n")
+    end
+
+    def lookup_command_cache
       ENV['RIPCOMMANDSCACHE'] ||= rip(:commands)
     end
 
