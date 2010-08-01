@@ -11,16 +11,27 @@ Dir["#{Rip.packages}/*"].each do |package|
   metadata = "#{package}/metadata.rip"
   if !File.exists?(metadata)
     status = 1
-    puts "#{package} is missing metadata"
+    warn "#{package} is missing metadata"
   elsif !File.readable?(metadata)
     status = 1
-    puts "#{package} metadata is not readable"
+    warn "#{package} metadata is not readable"
   end
 
   deps = "#{package}/deps.rip"
   if File.exist?(deps) && !File.readable?(deps)
     status = 1
-    puts "#{package} deps is not readable"
+    warn "#{package} deps is not readable"
+  end
+
+  parent = "#{package}/.ripparent"
+  if File.symlink?(parent) && dir = File.readlink(parent)
+    if !File.exist?(dir)
+      status = 1
+      warn "#{package} parent does not exist"
+    end
+  elsif File.exist?(parent)
+    status = 1
+    warn "#{package} parent pointer is not a symlink"
   end
 end
 
