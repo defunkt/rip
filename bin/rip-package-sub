@@ -19,18 +19,16 @@ subpath = path.split("/").join("-")
 
 package_path = "#{Rip.packages}/#{name}#{subpath}-#{Rip.md5("#{hash}#{path}")}"
 
-if !File.exist?(package_path)
-  ln_s "#{base_package}#{path}", package_path
-end
+synchronize(package_path) do
+  if !File.exist?(package_path)
+    rip :'cp-package', base_package, package_path, path
 
-package_metadata = "#{package_path}/metadata.rip"
+    base_metadata = rip "metadata", base_package
+    base_source, base_version = base_metadata.split(' ')
 
-if !File.exist?(package_metadata)
-  base_metadata = rip "metadata", base_package
-  base_source, base_version = base_metadata.split(' ')
-
-  write(package_metadata) do
-    "#{base_source} #{path} #{base_version}"
+    write "#{package_path}/metadata.rip" do
+      "#{base_source} #{path} #{base_version}"
+    end
   end
 end
 
