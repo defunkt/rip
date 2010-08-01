@@ -5,20 +5,35 @@
 
 require 'rip/script'
 
-packages = ''
+packages = []
 
 debug "finding all installed packages"
 
 rip(:envs) do |ripenv|
   ENV['RIPENV'] = ripenv[2..-1].chomp
-  packages << "\n" << rip('installed').to_s
+  rip('installed').each do |package|
+    packages << package.chomp
+  end
 end
 
-packages = packages.split("\n").uniq
+debug "finding installed package parents"
+
+queue = packages.dup
+while queue.any?
+  package = queue.shift
+  if File.symlink?(parent = "#{package}/.ripparent")
+    package = File.readlink(parent)
+    queue << package
+    packages << package
+  end
+end
+
+packages = packages.uniq
 removed  = 0
 
 (Dir[Rip.packages + '/*'] - packages).each do |unused|
   removed += 1
+  debug "removing #{unused}"
   rm_rf unused
 end
 
