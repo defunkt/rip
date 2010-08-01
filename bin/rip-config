@@ -24,6 +24,7 @@ MANPATH = clean_env_path('MANPATH', 'man')
 
 if ENV['RIPHELPERS'] != '0'
   system "rip-sh-helpers"
+  puts "export RIPHELPERS=0"
 end
 
 puts "export RIPENV=#{RIPENV}" if RIPENV != 'active'

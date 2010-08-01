@@ -3,6 +3,6 @@
 #
 # Executes Unix command in a ripenv.
 
-eval `RIPHELPERS=0 RIPENV=$1 rip-config`
+eval `RIPENV=$1 rip-config`
 shift
 exec "$@"
