@@ -26,16 +26,16 @@ module Gem
   end
 
   class Dependency < Faker
-    def tweedle
+    def requirements
       if respond_to?(:version_requirements)
-        version_requirements.requirements[0].first
+        requirements = version_requirements.requirements
       elsif respond_to?(:requirement)
-        requirement.requirements[0].first
+        requirements = requirement.requirements
       end
-    end
 
-    def version
-      version_requirements.requirements[0].last.version
+      Rip::Requirement.new(*requirements.map { |tweedle, version|
+        "#{tweedle}#{version.version}"
+      })
     end
 
     def type
@@ -66,17 +66,12 @@ class Fetcher
     deps = deps.select { |dep| dep.type == :runtime }
 
     deps.map do |dep|
-      dep_line(dep.name, dep.tweedle, dep.version)
-    end
-  end
-
-  def dep_line(name, tweedle, version)
-    if version == '0'
-      name
-    elsif tweedle == '='
-      "#{name} #{version}"
-    else
-      "#{name} #{tweedle}#{version}"
+      req = dep.requirements
+      if req.any?
+        "#{dep.name} #{req}"
+      else
+        dep.name
+      end
     end
   end
 end
