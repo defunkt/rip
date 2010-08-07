@@ -10,6 +10,7 @@ module Rip
   autoload :Package,     'rip/environment'
   autoload :Environment, 'rip/environment'
   autoload :Helpers,     'rip/helpers'
+  autoload :Requirement, 'rip/requirement'
 
   extend self
   attr_accessor :dir, :env
