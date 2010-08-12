@@ -13,7 +13,7 @@ module Rip
     end
 
     def metadata(package)
-      if data = rip("metadata #{package}")
+      if data = rip("package-metadata #{package}")
         Package.parse(data)
       end
     end

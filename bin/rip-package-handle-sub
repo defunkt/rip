@@ -23,7 +23,7 @@ synchronize(package_path) do
   if !File.exist?(package_path)
     rip :'cp-package', base_package, package_path, path
 
-    base_metadata = rip "metadata", base_package
+    base_metadata = rip "package-metadata", base_package
     base_source, base_version = base_metadata.split(' ')
 
     write "#{package_path}/metadata.rip" do

@@ -63,7 +63,7 @@ class PackageGitTest < Rip::Test
 
     assert File.exist?("#{target}/metadata.rip")
     assert_equal "git://localhost/rack 0.9.1", File.read("#{target}/metadata.rip").chomp
-    assert_equal "git://localhost/rack 0.9.1", rip("metadata #{out}").chomp
+    assert_equal "git://localhost/rack 0.9.1", rip("package-metadata #{out}").chomp
 
     rip "install git://localhost/rack 0.9.1"
     assert_equal <<list, rip("list")

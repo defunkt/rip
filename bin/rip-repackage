@@ -8,7 +8,7 @@ $-e = true
 require 'rip/script'
 
 package_path = ARGV[0]
-metadata = rip(:metadata, package_path)
+metadata = rip(:'package-metadata', package_path)
 
 mv package_path, "#{package_path}.original"
 

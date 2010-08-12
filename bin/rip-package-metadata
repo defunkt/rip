@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-metadata PATH
+# Usage: rip-package-metadata PATH
 #
 # Reads package metadata
 

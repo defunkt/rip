@@ -31,7 +31,7 @@ end
 exit 1 if installed.nil?
 
 installed = installed.chomp
-source, version = rip(:metadata, installed).split(' ')
+source, version = rip(:'package-metadata', installed).split(' ')
 
 puts "source: #{source}"
 puts "version: #{version}"

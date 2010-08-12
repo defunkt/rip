@@ -73,8 +73,6 @@ Low level commands for fetching and building packages.
 
   rip-gc(1)
 
-  rip-metadata(1)
-
   rip-package(1)
 
   rip-package-build(1)
@@ -86,6 +84,8 @@ Low level commands for fetching and building packages.
   rip-package-handle-ripfile(1)
 
   rip-package-handle-sub(1)
+
+  rip-package-metadata(1)
 
   rip-parse(1)
 
