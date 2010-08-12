@@ -1,13 +1,13 @@
-rip-fetch-dependencies(1) -- fetch packages dependencies
-========================================================
+rip-package-fetch-dependencies(1) -- fetch packages dependencies
+================================================================
 
 ## SYNOPSIS
 
-`rip-fetch-dependencies` PACKAGE_PATH [PACKAGE_PATH] ...
+`rip-package-fetch-dependencies` PACKAGE_PATH [PACKAGE_PATH] ...
 
 ## DESCRIPTION
 
-Given a list of rip packages, `rip-fetch-dependencies` fetches and
+Given a list of rip packages, `rip-package-fetch-dependencies` fetches and
 prints the package paths to stdout. Nested dependencies are fetch
 too. Packages may be supplied via command line arguments
 or from stdin.

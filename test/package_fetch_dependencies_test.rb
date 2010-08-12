@@ -1,10 +1,10 @@
 require 'helper'
 
-class FetchDependenciesTest < Rip::Test
+class PackageFetchDependenciesTest < Rip::Test
   test "fetch dependencies from package path" do
     package = rip "package git://localhost/cijoe"
 
-    out = rip("fetch-dependencies #{package.chomp}")
+    out = rip("package-fetch-dependencies #{package.chomp}")
     packages = [
       "#{@ripdir}/.packages/tinder-822af7a6b7df6bafdb3795983a46add1",
       "#{@ripdir}/.packages/sinatra-3712e6dc36199a4033913b0c08f1b0ce",

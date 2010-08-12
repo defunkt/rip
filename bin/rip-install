@@ -23,7 +23,7 @@ if only
   end
 else
   # Grab package and all dependencies
-  rip_io("fetch-dependencies", "r+") do |f|
+  rip_io("package-fetch-dependencies", "r+") do |f|
     rip("package", *ARGV) do |path|
       paths << path
       f.puts(path)

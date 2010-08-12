@@ -67,8 +67,6 @@ Low level commands for fetching and building packages.
 
   rip-detect-conflicts(1)
 
-  rip-fetch-dependencies(1)
-
   rip-fsck(1)
 
   rip-gc(1)
@@ -76,6 +74,8 @@ Low level commands for fetching and building packages.
   rip-package(1)
 
   rip-package-build(1)
+
+  rip-package-fetch-dependencies(1)
 
   rip-package-handle-gem(1)
 

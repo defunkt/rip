@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-fetch-dependencies PACKAGE
+# Usage: rip-package-fetch-dependencies PACKAGE_PATH
 # Fetch dependencies with a breadth-first traversal
 
 $-e = true
