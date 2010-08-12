@@ -1,6 +1,6 @@
 require 'helper'
 
-class PackageRipfileTest < Rip::Test
+class HandlePackageRipfileTest < Rip::Test
   test "can't urls" do
     out = rip "package-handle-ripfile git://localhost/rails"
     assert_exited_with_error out

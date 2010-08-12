@@ -1,6 +1,6 @@
 require 'helper'
 
-class PackageGemTest < Rip::Test
+class PackageHandleGemTest < Rip::Test
   def setup
     ENV['RIPRPG'] = '0'
     super
@@ -87,7 +87,7 @@ class PackageGemTest < Rip::Test
 end
 
 if `which rpg` && $?.success?
-  class RpgPackageGemTest < PackageGemTest
+  class PackageHandleRpgGemTest < PackageHandleGemTest
     def setup
       super
       ENV['RIPRPG'] = '1'

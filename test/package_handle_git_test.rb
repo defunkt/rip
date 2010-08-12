@@ -1,6 +1,6 @@
 require 'helper'
 
-class PackageGitTest < Rip::Test
+class HandlePackageGitTest < Rip::Test
   test "can't handle unknown protocol" do
     out = rip "package-handle-git rack"
     assert_exited_with_error out

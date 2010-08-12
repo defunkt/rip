@@ -1,6 +1,6 @@
 require 'helper'
 
-class PackageGitTest < Rip::Test
+class HandlePackageSubTest < Rip::Test
   test "can't handle base paths" do
     out = rip "package-handle-sub git://localhost/rails"
     assert_exited_with_error out
