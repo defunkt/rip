@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# Usage: rip-outdated
+#
+# Lists outdated packages in env
+
+$-e = true
+
+require 'rip/script'
+
+def silence
+  old_verbose, ENV['RIPVERBOSE'] = ENV['RIPVERBOSE'], nil
+  yield
+ensure
+  ENV['RIPVERBOSE'] = old_verbose
+end
+
+rip(:installed).each do |old_package|
+  old_metadata = rip(:'package-metadata', old_package.chomp)
+
+  name = old_metadata.split(' ').first
+
+  new_package  = silence { rip(:package, name) }
+  new_metadata = rip(:'package-metadata', new_package)
+
+  if old_metadata != new_metadata
+    puts new_metadata
+  end
+end
