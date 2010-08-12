@@ -84,15 +84,7 @@ module Rip
 
     def gem(command, *args)
       args = escape(args)
-
-      if ENV["GEM_SERVER"]
-        # fetch doesn't like --clear-sources flag
-        if %w( specification list ).include?(command.to_s)
-          args << " --clear-sources"
-        end
-        args << " --source #{ENV["GEM_SERVER"]}"
-      end
-
+      args << " --source #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
       args << " 2> /dev/null"
 
       debug "gem #{command} #{args}"
