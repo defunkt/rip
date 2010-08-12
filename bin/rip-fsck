@@ -33,6 +33,13 @@ Dir["#{Rip.packages}/*"].each do |package|
     status = 1
     warn "#{package} parent pointer is not a symlink"
   end
+
+  Dir["#{package}/bin/*"].each do |bin|
+    if !File.executable?(bin)
+      status = 1
+      warn "#{bin} is not executable"
+    end
+  end
 end
 
 exit status
