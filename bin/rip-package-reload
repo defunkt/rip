@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# usage: rip-repackage PACKAGE_PATH
+# usage: rip-package-reload PACKAGE_PATH
 #
 # Refetches package
 
@@ -33,7 +33,7 @@ end
 if new_package_path == package_path
   puts new_package_path
 else
-  warn "failed to repackaged '#{metadata}'"
+  warn "failed to reload '#{metadata}'"
   warn "expected: #{package_path}"
   warn "got:      #{new_package_path}"
   exit 1

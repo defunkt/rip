@@ -43,14 +43,14 @@ class HandlePackageSubTest < Rip::Test
       File.readlink("#{target}/.ripparent")
   end
 
-  test "repackage" do
+  test "reload" do
     out = rip "package-handle-sub git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-activerecord-06e3a14fe30bceac347f56b5e2a4d398"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
 
-    out = rip "repackage #{target}"
+    out = rip "package-reload #{target}"
 
     assert_equal target, out.chomp
     assert File.directory?(target)

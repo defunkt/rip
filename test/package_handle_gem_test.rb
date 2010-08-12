@@ -72,14 +72,14 @@ class PackageHandleGemTest < Rip::Test
     assert !File.exist?("#{target}/deps.rip")
   end
 
-  test "repackage" do
+  test "reload" do
     out = rip "package-handle-gem repl"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
 
-    out = rip "repackage #{target}"
+    out = rip "package-reload #{target}"
 
     assert_equal target, out.chomp
     assert File.directory?(target)

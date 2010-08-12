@@ -87,10 +87,10 @@ Low level commands for fetching and building packages.
 
   rip-package-metadata(1)
 
+  rip-package-reload(1)
+
   rip-parse(1)
 
   rip-recursive-link(1)
-
-  rip-repackage(1)
 
   rip-repair(1)

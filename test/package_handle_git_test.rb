@@ -141,14 +141,14 @@ list
       File.read("#{target}/metadata.rip")
   end
 
-  test "repackage" do
+  test "reload" do
     out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
 
-    out = rip "repackage #{target}"
+    out = rip "package-reload #{target}"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
