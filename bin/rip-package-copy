@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# usage: rip-cp-package OLD_PACKAGE_PATH NEW_PACKAGE_PATH [SUBPATH]
+# usage: rip-package-copy OLD_PACKAGE_PATH NEW_PACKAGE_PATH [SUBPATH]
 #
 # Builds a rip package's Ruby extension(s).
 

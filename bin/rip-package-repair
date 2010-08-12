@@ -21,7 +21,7 @@ module Patches
       synchronize(patched_package_path) do
         if !File.exist?(patched_package_path)
           info "repairing #{name}"
-          rip :'cp-package', package_path, patched_package_path
+          rip :'package-copy', package_path, patched_package_path
 
           cd(patched_package_path) do
             send(method)

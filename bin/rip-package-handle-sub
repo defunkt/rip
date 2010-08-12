@@ -21,7 +21,7 @@ package_path = "#{Rip.packages}/#{name}#{subpath}-#{Rip.md5("#{hash}#{path}")}"
 
 synchronize(package_path) do
   if !File.exist?(package_path)
-    rip :'cp-package', base_package, package_path, path
+    rip :'package-copy', base_package, package_path, path
 
     base_metadata = rip "package-metadata", base_package
     base_source, base_version = base_metadata.split(' ')
