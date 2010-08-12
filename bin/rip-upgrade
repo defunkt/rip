@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# Usage: rip-upgrade PACKAGE [VERSION]
+#
+# Upgrades package to the latest version
+
+$-e = true
+
+require 'rip/script'
+
+rip :uninstall, ARGV[0]
+rip :install, *ARGV
