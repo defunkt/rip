@@ -83,22 +83,9 @@ end
 
 class GemFetcher < Fetcher
   def list(name)
-    gems = gem("list #{name} --remote").split("\n")
-    if gems.detect { |f| f =~ /^#{name} \((.+)\)/ }
-      version = $1
-
-      if version.include?(',')
-        platform_versions = version.split(/\s*,\s*/).inject({}) {|acc, str|
-          ver, *platforms = str.split(/\s+/)
-          acc[ver] = platforms
-          acc
-        }
-
-        if found = platform_versions.find {|k,v| !(v & ['ruby', RUBY_VERSION]).empty? }
-          version = found[0]
-        end
-      end
-      version
+    gems = gem("list", name, "--remote").split("\n")
+    if gems.detect { |f| f =~ /^#{name} \(([^\s,]+).*\)/ }
+      $1
     end
   end
 
