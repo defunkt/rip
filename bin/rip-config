@@ -2,25 +2,66 @@
 # usage: rip-config
 #
 # Prints sh(1) code which can be used to activate rip for the shell.
-#
-# TODO: Right now it's actually bash code. I plan to convert it once I
-#       get done reading dash(1).
 
 RIPDIR = ENV['RIPDIR']
 RIPENV = ENV['RIPENV'] || 'active'
 
-def clean_env_path(name, subdir)
-  if ENV[name] =~ /:?#{RIPDIR}\/(\w+)\/#{subdir}/ && $1 != RIPENV
-    re = $&.sub(/#{RIPDIR}/, "$RIPDIR").gsub('/', '\/')
-    "${#{name}/#{re}}"
-  else
-    "$#{name}"
+class EnvPath
+  def initialize(name, subdir)
+    @name   = name
+    @subdir = subdir
+    @value  = expand.split(':')
+  end
+
+  attr_reader :name, :subdir, :value
+
+  def expand
+    ENV[name] || ''
+  end
+
+  def to_s
+    value.join(':')
+  end
+
+  def unshift(path)
+    value.unshift(path)
+  end
+
+  def reject!(path)
+    value.reject! { |p| p == path }
+  end
+
+  def match_env
+    @_match_env ||= begin
+      to_s =~ /#{RIPDIR}\/(\w+)\/#{subdir}/
+      [$1, $&]
+    end
+  end
+
+  def env
+    match_env[0]
+  end
+
+  def env_path
+    match_env[1]
+  end
+
+  def change_env!(new_env)
+    if env != new_env
+      reject! env_path
+      unshift "$RIPDIR/#{new_env}/#{subdir}"
+    end
   end
 end
 
-RUBYLIB = clean_env_path('RUBYLIB', 'lib')
-PATH    = clean_env_path('PATH', 'bin')
-MANPATH = clean_env_path('MANPATH', 'man')
+
+RUBYLIB = EnvPath.new('RUBYLIB', 'lib')
+PATH    = EnvPath.new('PATH', 'bin')
+MANPATH = EnvPath.new('MANPATH', 'man')
+
+RUBYLIB.change_env! RIPENV
+PATH.change_env! RIPENV
+MANPATH.change_env! RIPENV
 
 if ENV['RIPHELPERS'] != '0'
   system "rip-sh-helpers"
@@ -32,8 +73,8 @@ puts "export RIPENV=#{RIPENV}" if RIPENV != 'active'
 puts <<-end_shellcode
 RIPVERBOSE=1
 RIPDIR=${RIPDIR:-"$HOME/.rip"}
-RUBYLIB="$RIPDIR/#{RIPENV}/lib:#{RUBYLIB}"
-PATH="$RIPDIR/#{RIPENV}/bin:#{PATH}"
-MANPATH="$RIPDIR/#{RIPENV}/man:#{MANPATH}"
+RUBYLIB="#{RUBYLIB}"
+PATH="#{PATH}"
+MANPATH="#{MANPATH}"
 export RIPVERBOSE RIPDIR RUBYLIB PATH MANPATH
 end_shellcode

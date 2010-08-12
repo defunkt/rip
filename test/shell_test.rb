@@ -30,8 +30,8 @@ class ShellTest < Rip::Test
       ENV['RIPENV'] = 'base'
     end
 
-    assert_includes '$RIPDIR\/old\/bin', output
-    assert_includes '$RIPDIR\/old\/lib', output
+    assert_not_includes 'old/bin', output
+    assert_not_includes 'old/lib', output
     assert_includes 'base', output
   end
 
