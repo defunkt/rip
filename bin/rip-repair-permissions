@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# usage: rip-repair-permissions PACKAGE_PATH
+#
+# Set correct permissions on bin/ and lib/ files
+
+require 'rip/script'
+
+package_path = ARGV[0]
+
+if package_path.nil? || !File.directory?(package_path)
+  abort "usage: rip-repair-permissions PACKAGE_PATH"
+end
+
+Dir["#{package_path}/bin/**/*"].each do |file|
+  next if File.directory?(file)
+  chmod 0755, file
+end
+
+Dir["#{package_path}/lib/**/*"].each do |file|
+  next if File.directory?(file)
+  chmod 0644, file
+end
+
+puts package_path
