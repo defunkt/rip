@@ -1,3 +1,4 @@
+require 'rake/clean'
 require 'rake/testtask'
 
 
@@ -61,18 +62,17 @@ multitask :daemons => %w( daemon:git daemon:gem )
 #
 
 if command? :ronn
+  CLOBBER.include('man/*.{1,5}')
+  CLOBBER.include('man/*.{1,5}.html')
+
   desc "Show the manual"
   task :man => "man:build" do
-    exec "man man/man1/rip.1"
+    exec "man man/rip.1"
   end
 
   desc "Build the manual"
   task "man:build" do
     sh "ronn -br5 --organization=DEFUNKT --manual='rip manual' man/*.ronn"
-    sh "mv man/*.1 man/man1/"
-    sh "mv man/*.1.html man/man1/"
-    sh "mv man/*.5 man/man5/"
-    sh "mv man/*.5.html man/man5/"
   end
 end
 
