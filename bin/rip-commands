@@ -3,8 +3,17 @@
 #
 # Prints a list of rip commands (rip-*) to stdout.
 
-commands = ENV['PATH'].split(':').map do |path|
-  Dir[path + '/rip-*'].map { |f| File.basename(f).sub('rip-', '') }
+commands = []
+
+ENV['PATH'].split(':').each do |path|
+  Dir[path + '/rip-*'].each do |f|
+    filename = File.basename(f)
+    commands << filename.sub('rip-', '')
+
+    if filename =~ /rip-sh-/
+      commands << filename.sub('rip-sh-', '')
+    end
+  end
 end
 
-puts commands.flatten.uniq.sort
+puts commands.uniq.sort

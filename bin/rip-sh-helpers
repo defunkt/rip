@@ -13,12 +13,6 @@ commands.each do |command|
 end
 
 helpers.each do |command|
-  if commands.include?(command)
-    warn "overriding rip-#{command} command"
-  end
-end
-
-helpers.each do |command|
   puts <<-end_function
 function rip-#{command} () {
   eval `rip-sh-#{command} $@`;
