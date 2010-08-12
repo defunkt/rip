@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-package-ripfile FILE
+# Usage: rip-package-handle-ripfile FILE
 
 $-e = true
 

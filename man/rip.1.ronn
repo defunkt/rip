@@ -79,13 +79,13 @@ Low level commands for fetching and building packages.
 
   rip-package(1)
 
-  rip-package-gem(1)
+  rip-package-handle-gem(1)
 
-  rip-package-git(1)
+  rip-package-handle-git(1)
 
-  rip-package-ripfile(1)
+  rip-package-handle-ripfile(1)
 
-  rip-package-sub(1)
+  rip-package-handle-sub(1)
 
   rip-parse(1)
 

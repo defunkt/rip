@@ -7,12 +7,12 @@ class PackageGemTest < Rip::Test
   end
 
   test "can't handle unknown protocol" do
-    out = rip "package-gem git://localhost/cijoe"
+    out = rip "package-handle-gem git://localhost/cijoe"
     assert_exited_with_error out
   end
 
   test "fetch gem with no version" do
-    out = rip "package-gem repl"
+    out = rip "package-handle-gem repl"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp
@@ -21,7 +21,7 @@ class PackageGemTest < Rip::Test
   end
 
   test "fetch gem with version" do
-    out = rip "package-gem repl 0.1.0"
+    out = rip "package-handle-gem repl 0.1.0"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp
@@ -30,22 +30,22 @@ class PackageGemTest < Rip::Test
   end
 
   test "fetch gem with unknown version" do
-    out = rip "package-gem repl 3.0.0"
+    out = rip "package-handle-gem repl 3.0.0"
     assert_exited_with_error out
 
     assert_equal "repl 3.0.0 not found", out.chomp
   end
 
   test "fetch same gem twice" do
-    out = rip "package-gem repl"
+    out = rip "package-handle-gem repl"
     assert_exited_successfully out
 
-    out = rip "package-gem repl"
+    out = rip "package-handle-gem repl"
     assert_exited_successfully out
   end
 
   test "writes package.rip" do
-    out = rip "package-gem repl '>=0.0.1'"
+    out = rip "package-handle-gem repl '>=0.0.1'"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp
@@ -55,7 +55,7 @@ class PackageGemTest < Rip::Test
   end
 
   test "writes deps.rip if it needs to" do
-    out = rip "package-gem ambition"
+    out = rip "package-handle-gem ambition"
     target = "#{@ripdir}/.packages/ambition-23537c5d0c31d3a0b0e3bcfa225a2dca"
 
     assert_equal target, out.chomp
@@ -65,7 +65,7 @@ class PackageGemTest < Rip::Test
   end
 
   test "doesn't write deps.rip if it doesn't need to" do
-    out = rip "package-gem repl"
+    out = rip "package-handle-gem repl"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp
@@ -73,7 +73,7 @@ class PackageGemTest < Rip::Test
   end
 
   test "repackage" do
-    out = rip "package-gem repl"
+    out = rip "package-handle-gem repl"
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out.chomp

@@ -12,7 +12,7 @@ class BuildTest < Rip::Test
   end
 
   test "build returns original path if the package has no extensions" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     assert_exited_successfully out
     path = out.chomp
 
@@ -21,7 +21,7 @@ class BuildTest < Rip::Test
   end
 
   test "build extconf" do
-    out = rip "package-git git://localhost/yajl-ruby"
+    out = rip "package-handle-git git://localhost/yajl-ruby"
     assert_exited_successfully out
     path = out.chomp
 
@@ -37,7 +37,7 @@ class BuildTest < Rip::Test
   end
 
   test "rebuild extconf package" do
-    out = rip "package-git git://localhost/yajl-ruby"
+    out = rip "package-handle-git git://localhost/yajl-ruby"
     assert_exited_successfully out
     path = out.chomp
 
@@ -49,7 +49,7 @@ class BuildTest < Rip::Test
   end
 
   test "writes .ripparent symlink" do
-    out = rip "package-git git://localhost/yajl-ruby"
+    out = rip "package-handle-git git://localhost/yajl-ruby"
     assert_exited_successfully out
 
     path = out.chomp
@@ -60,7 +60,7 @@ class BuildTest < Rip::Test
   end
 
   test "writes build.rip" do
-    out = rip "package-git git://localhost/yajl-ruby"
+    out = rip "package-handle-git git://localhost/yajl-ruby"
     assert_exited_successfully out
 
     path = out.chomp

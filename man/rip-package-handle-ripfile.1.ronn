@@ -1,14 +1,14 @@
-rip-package-ripfile(1) -- create packages from a ripfile
-========================================================
+rip-package-handle-ripfile(1) -- create packages from a ripfile
+===============================================================
 
 ## SYNOPSIS
 
-`rip-package-ripfile` deps.rip
-`rip-package-ripfile` package
+`rip-package-handle-ripfile` deps.rip
+`rip-package-handle-ripfile` package
 
 ## DESCRIPTION
 
-`rip-package-ripfile` downloads all dependencies for the passed
+`rip-package-handle-ripfile` downloads all dependencies for the passed
 package or packages (if it's a ripfile).
 
 Each dependency's dependencies are downloaded, and so forth. An

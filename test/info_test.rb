@@ -2,7 +2,7 @@ require 'helper'
 
 class InfoTest < Rip::Test
   test "info" do
-    path = rip "package-gem repl 0.1.0"
+    path = rip "package-handle-gem repl 0.1.0"
     rip "import #{path}"
     write(path.chomp + '/deps.rip') { "ambition ~> 0.5.4" }
 
@@ -20,7 +20,7 @@ info
   end
 
   test "info key" do
-    path = rip "package-gem repl 0.1.0"
+    path = rip "package-handle-gem repl 0.1.0"
     rip "import #{path}"
     write(path.chomp + '/deps.rip') { "ambition ~> 0.5.4" }
 

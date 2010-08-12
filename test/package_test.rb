@@ -8,7 +8,7 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
@@ -17,7 +17,7 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package with ref" do
-    out = rip "package-git git://localhost/cijoe 28e583afc7c3153860e3b425fe4e4179f951835f"
+    out = rip "package-handle-git git://localhost/cijoe 28e583afc7c3153860e3b425fe4e4179f951835f"
     target = "#{@ripdir}/.packages/cijoe-5e096d4e73f7b9281514ccfb6667ec94"
 
     assert_equal target, out.chomp
@@ -26,20 +26,20 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package with floating ref" do
-    out = rip "package-git git://localhost/rack master"
+    out = rip "package-handle-git git://localhost/rack master"
     target = "#{@ripdir}/.packages/rack-c3d5bb01b7e8e3cf08139d8c997239ae"
 
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
-    out = rip "package-git git://localhost/rack rack-1.1"
+    out = rip "package-handle-git git://localhost/rack rack-1.1"
     target = "#{@ripdir}/.packages/rack-d09f0f92cbc9fd9445818a3f3677854e"
     assert_equal target, out.chomp
     assert File.directory?(target)
     assert File.exist?("#{target}/lib/rack/methodoverride.rb")
 
-    out = rip "package-git git://localhost/rack rack-0.4"
+    out = rip "package-handle-git git://localhost/rack rack-0.4"
     target = "#{@ripdir}/.packages/rack-30a09c76441ee7f3cc320aae57e9c99e"
     assert_equal target, out.chomp
     assert File.directory?(target)
@@ -47,11 +47,11 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package with explict root path" do
-    out = rip "package-git git://localhost/rails"
+    out = rip "package-handle-git git://localhost/rails"
     target = "#{@ripdir}/.packages/rails-ed4cb2c29c01dd09ac6ee2a4b1faa3e1"
     assert_equal target, out.chomp
 
-    out = rip "package-git git://localhost/rails /"
+    out = rip "package-handle-git git://localhost/rails /"
     target = "#{@ripdir}/.packages/rails-ed4cb2c29c01dd09ac6ee2a4b1faa3e1"
 
     assert_equal target, out.chomp
@@ -76,12 +76,12 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package with nonexistent ref" do
-    out = rip "package-git git://localhost/rails xyz"
+    out = rip "package-handle-git git://localhost/rails xyz"
     assert_equal "git://localhost/rails xyz could not be found", out.chomp
   end
 
   test "fetch git:// package clears remotes" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
@@ -90,7 +90,7 @@ class PackageTest < Rip::Test
   end
 
   test "fetch git:// package clears branches" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert_equal target, out.chomp
@@ -99,17 +99,17 @@ class PackageTest < Rip::Test
   end
 
   test "fetch package twice" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
     assert_equal target, out.chomp
 
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
     assert_equal target, out.chomp
   end
 
   test "fetch gem package" do
-    out = rip("package-gem repl 0.1.0").chomp
+    out = rip("package-handle-gem repl 0.1.0").chomp
     target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
 
     assert_equal target, out
@@ -145,7 +145,7 @@ class PackageTest < Rip::Test
   end
 
   test "fetch package with dependencies" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     assert_equal "cijoe", File.basename(out).split('-', 2)[0]
 
     out = rip "package #{out.chomp}/deps.rip"
@@ -154,7 +154,7 @@ class PackageTest < Rip::Test
   end
 
   test "writes package.rip" do
-    out = rip "package-git git://localhost/cijoe"
+    out = rip "package-handle-git git://localhost/cijoe"
     target = "#{@ripdir}/.packages/cijoe-98b937fa387d6b25fe3e114670d5ffc0"
 
     assert File.exist?("#{target}/metadata.rip")

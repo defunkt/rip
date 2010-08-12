@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-package-gem NAME VERSION
+# Usage: rip-package-handle-gem NAME VERSION
 
 require 'rip/script'
 

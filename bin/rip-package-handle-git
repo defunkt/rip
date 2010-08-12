@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-package-git URL VERSION
+# Usage: rip-package-handle-git URL VERSION
 
 require 'rip/script'
 

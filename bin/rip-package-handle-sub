@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Usage: rip-package-sub NAME PATH VERSION
+# Usage: rip-package-handle-sub NAME PATH VERSION
 
 require 'rip/script'
 

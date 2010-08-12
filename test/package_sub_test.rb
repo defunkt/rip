@@ -2,15 +2,15 @@ require 'helper'
 
 class PackageGitTest < Rip::Test
   test "can't handle base paths" do
-    out = rip "package-sub git://localhost/rails"
+    out = rip "package-handle-sub git://localhost/rails"
     assert_exited_with_error out
 
-    out = rip "package-sub git://localhost/rails /"
+    out = rip "package-handle-sub git://localhost/rails /"
     assert_exited_with_error out
   end
 
   test "fetch git:// package with path" do
-    out = rip "package-sub git://localhost/rails /activerecord"
+    out = rip "package-handle-sub git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-activerecord-06e3a14fe30bceac347f56b5e2a4d398"
 
     assert_equal target, out.chomp
@@ -19,12 +19,12 @@ class PackageGitTest < Rip::Test
   end
 
   test "fetch git:// package with nonexistent path" do
-    out = rip "package-sub git://localhost/rails /merb"
+    out = rip "package-handle-sub git://localhost/rails /merb"
     assert_equal "git://localhost/rails /merb does not exist", out.chomp
   end
 
   test "writes metadata.rip" do
-    out = rip "package-sub git://localhost/rails /activerecord"
+    out = rip "package-handle-sub git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-activerecord-06e3a14fe30bceac347f56b5e2a4d398"
 
     assert_equal target, out.chomp
@@ -34,7 +34,7 @@ class PackageGitTest < Rip::Test
   end
 
   test "writes .ripparent symlink" do
-    out = rip "package-sub git://localhost/rails /activerecord"
+    out = rip "package-handle-sub git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-activerecord-06e3a14fe30bceac347f56b5e2a4d398"
 
     assert_equal target, out.chomp
@@ -44,7 +44,7 @@ class PackageGitTest < Rip::Test
   end
 
   test "repackage" do
-    out = rip "package-sub git://localhost/rails /activerecord"
+    out = rip "package-handle-sub git://localhost/rails /activerecord"
     target = "#{@ripdir}/.packages/rails-activerecord-06e3a14fe30bceac347f56b5e2a4d398"
 
     assert_equal target, out.chomp

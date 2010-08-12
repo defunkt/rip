@@ -15,7 +15,7 @@ args = (ARGV * ' ').split(' ')
 
 debug "packaging #{args * ' '}"
 
-commands.grep(/^package-/).each do |handler|
+commands.grep(/^package-handle-/).each do |handler|
   out = rip(handler.chomp, args)
 
   if $?.exitstatus == 3

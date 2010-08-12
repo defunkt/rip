@@ -1,11 +1,11 @@
-rip-package(5) -- rip package handler convention
-================================================
+rip-package-handle(5) -- rip package handler convention
+=======================================================
 
-Package handlers must implement "rip-package-$type" that accepts
+Package handlers must implement "rip-package-handle-$type" that accepts
 "source", "path", "version" arguments.
 
 Handlers are discovered by grepping the load path for
-"rip-package-\w+".
+"rip-package-handle-\w+".
 
 Handlers are always tested in alphabetical order. If a handler can't
 handle a source, it must quickly exit with an error code of "3" so the
