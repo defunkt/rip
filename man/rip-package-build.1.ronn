@@ -1,30 +1,30 @@
-rip-build(1) -- build ruby extensions
-=====================================
+rip-package-build(1) -- build ruby extensions
+=============================================
 
 ## SYNOPSIS
 
-`rip-build` <rip package path>
+`rip-package-build` <rip package path>
 
 ## DESCRIPTION
 
-`rip-build` compiles rip packages which include Ruby extensions. It
+`rip-package-build` compiles rip packages which include Ruby extensions. It
 determines whether or not a package requires compilation by checking
 for the presence of any `extconf.rb` files. A new package path will
 be printed if it was compiled, otherwise the input package will be
 printed.
 
-You should not use `rip-build` directly. Use `rip-install` which
+You should not use `rip-package-build` directly. Use `rip-install` which
 creates, compiles, and imports packages for you.
 
 ## EXAMPLES
 
 Compile nokogiri.
 
-  rip-build ~/.rip/.packages/nokogiri-10d01f872db2d4f88ce5bd9472d21509
+  rip-package-build ~/.rip/.packages/nokogiri-10d01f872db2d4f88ce5bd9472d21509
 
 Manually set the Ruby binary for compilation.
 
-  RIPRUBY="/usr/local/bin/ruby19" rip-build ./nokogiri-10d01f872db2d4f88ce5bd9472d21509
+  RIPRUBY="/usr/local/bin/ruby19" rip-package-build ./nokogiri-10d01f872db2d4f88ce5bd9472d21509
 
 ## COMPILATION
 
@@ -43,4 +43,3 @@ the `RIPRUBY` used to compile the package.
 
 rip(1), rip-install(1), rip-package(1),
 <http://hellorip.com/>
-

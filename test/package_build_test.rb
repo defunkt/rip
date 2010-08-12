@@ -2,12 +2,12 @@ require 'helper'
 
 class BuildTest < Rip::Test
   test "fails if package path is missing" do
-    out = rip "build"
+    out = rip "package-build"
     assert_exited_with_error out
   end
 
   test "fails if path is not a rip package" do
-    out = rip "build #{fixture(:cijoe)}"
+    out = rip "package-build #{fixture(:cijoe)}"
     assert_exited_with_error out
   end
 
@@ -16,7 +16,7 @@ class BuildTest < Rip::Test
     assert_exited_successfully out
     path = out.chomp
 
-    out = rip "build #{path}"
+    out = rip "package-build #{path}"
     assert_equal path, out.chomp
   end
 
@@ -25,7 +25,7 @@ class BuildTest < Rip::Test
     assert_exited_successfully out
     path = out.chomp
 
-    out = rip "build #{path}"
+    out = rip "package-build #{path}"
     target = "#{@ripdir}/.packages/yajl-ruby-#{Rip.md5("afaf2451eb6ee54b2eebba1910ab0cbb#{Rip.ruby}")}"
     assert_equal target, out.chomp
 
@@ -41,10 +41,10 @@ class BuildTest < Rip::Test
     assert_exited_successfully out
     path = out.chomp
 
-    out = rip "build #{path}"
+    out = rip "package-build #{path}"
     target = out.chomp
 
-    out = rip "build #{path}"
+    out = rip "package-build #{path}"
     assert_equal target, out.chomp
   end
 
@@ -53,7 +53,7 @@ class BuildTest < Rip::Test
     assert_exited_successfully out
 
     path = out.chomp
-    target = rip("build #{path}").chomp
+    target = rip("package-build #{path}").chomp
 
     assert File.symlink?("#{target}/.ripparent")
     assert_equal "#{@ripdir}/.packages/yajl-ruby-afaf2451eb6ee54b2eebba1910ab0cbb", File.readlink("#{target}/.ripparent")
@@ -64,7 +64,7 @@ class BuildTest < Rip::Test
     assert_exited_successfully out
 
     path = out.chomp
-    target = rip("build #{path}").chomp
+    target = rip("package-build #{path}").chomp
 
     assert File.exist?("#{target}/build.rip")
     assert_equal Rip.ruby, File.read("#{target}/build.rip").chomp

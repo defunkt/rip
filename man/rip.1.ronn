@@ -65,8 +65,6 @@ Output sh(1) code to be eval'd.
 
 Low level commands for fetching and building packages.
 
-  rip-build(1)
-
   rip-detect-conflicts(1)
 
   rip-fetch-dependencies(1)
@@ -78,6 +76,8 @@ Low level commands for fetching and building packages.
   rip-metadata(1)
 
   rip-package(1)
+
+  rip-package-build(1)
 
   rip-package-handle-gem(1)
 

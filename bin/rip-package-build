@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
-# usage: rip-build PACKAGE_PATH
+# usage: rip-package-build PACKAGE_PATH
 #
 # Builds a rip package's Ruby extension(s).
 
 target = ARGV[0]
 if target.nil? || !File.directory?(target)
-  abort "usage: rip-build PACKAGE_PATH"
+  abort "usage: rip-package-build PACKAGE_PATH"
 end
 
 require 'rip/script'
