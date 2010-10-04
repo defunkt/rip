@@ -5,6 +5,37 @@
 
 require 'rip/script'
 
+class EnvPath
+  def initialize(name, subdir)
+    @name   = name
+    @subdir = subdir
+    @value  = expand.split(':')
+  end
+
+  attr_reader :name, :subdir, :value
+
+  def expand
+    ENV[name] || ''
+  end
+
+  def to_s
+    value.join(':')
+  end
+
+  def active_index
+    index = 0
+    value.each do |v|
+      break if v =~ /#{Rip.dir}/
+      index += 1
+    end
+    index
+  end
+
+  def push!(env)
+    value.insert active_index+1, "$RIPDIR/#{env}/#{subdir}"
+  end
+end
+
 ripenv = ARGV[0]
 
 if ripenv.to_s.empty?
@@ -17,8 +48,16 @@ if ENV['RUBYLIB'] =~ /:#{Rip.dir}\/#{ripenv}\/lib/
   abort "ripenv `#{ripenv}' has already been pushed"
 end
 
-puts <<-PUSH
-export PATH="$PATH:$RIPDIR/#{ripenv}/bin";
-export RUBYLIB="$RUBYLIB:$RIPDIR/#{ripenv}/lib";
-export MANPATH="$MANPATH:$RIPDIR/#{ripenv}/man";
-PUSH
+RUBYLIB = EnvPath.new('RUBYLIB', 'lib')
+PATH    = EnvPath.new('PATH', 'bin')
+MANPATH = EnvPath.new('MANPATH', 'man')
+
+RUBYLIB.push! ripenv
+PATH.push! ripenv
+MANPATH.push! ripenv
+
+puts <<-end_shellcode
+PATH="#{PATH}"
+RUBYLIB="#{RUBYLIB}"
+MANPATH="#{MANPATH}"
+end_shellcode

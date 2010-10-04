@@ -48,11 +48,9 @@ class ShellTest < Rip::Test
   test "shell push prints function" do
     rip "create extra"
     output = rip "sh-push extra"
-    assert_equal <<-expected, output
-export PATH="$PATH:$RIPDIR/extra/bin";
-export RUBYLIB="$RUBYLIB:$RIPDIR/extra/lib";
-export MANPATH="$MANPATH:$RIPDIR/extra/man";
-    expected
+    assert_match "$RIPDIR/extra/bin", output
+    assert_match "$RIPDIR/extra/lib", output
+    assert_match "$RIPDIR/extra/man", output
   end
 
   test "shell push for already pushed env prints error" do
