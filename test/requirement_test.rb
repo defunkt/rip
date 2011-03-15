@@ -19,7 +19,7 @@ class TestVersion < Test::Unit::TestCase
     assert_raise(ArgumentError) { Version.new('4fb27ff') < Version.new('35515b7') }
   end
 
-  test "spermy"do
+  test "spermy" do
     assert Version.new('1.9.0').send(:'~>', Version.new('1.9.0'))
     assert !Version.new('1.8.0').send(:'~>', Version.new('1.9.0'))
     assert !Version.new('2.0.0').send(:'~>', Version.new('1.9.0'))
@@ -79,6 +79,9 @@ class TestRequirement < Test::Unit::TestCase
     assert_equal '>=1.0', Requirement.new('>= 1.0').to_s
     assert_equal '<=1.0', Requirement.new('<=1.0').to_s
     assert_equal '~>1.0', Requirement.new('~>1.0').to_s
+
+    assert_equal '>=0.0.1', Requirement.new("'>=0.0.1'").to_s
+    assert_equal '>=0.0.1', Requirement.new('">=0.0.1"').to_s
 
     assert_equal '', Requirement.new('>=0').to_s
     assert_equal '', Requirement.new.to_s

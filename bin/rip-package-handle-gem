@@ -12,140 +12,29 @@ unless source =~ /\.gem$/ || source =~ /^(\w|-)+$/
   exit 3 # Can't handle source
 end
 
+def find_gem(source, version)
+  return @spec, @source_uri if @spec
 
-# Stubbed Gem class for YAML
-module Gem
-  class Faker
-    def respond_to?(ivar)
-      instance_variable_defined?("@#{ivar}") || super
-    end
+  require 'rubygems'
+  Gem.configuration.verbose = false
 
-    def method_missing(ivar, *args)
-      respond_to?(ivar) ? instance_variable_get("@#{ivar}") : super
-    end
+  if ENV['GEM_SERVER']
+    Gem.sources = [ENV['GEM_SERVER']]
   end
 
-  class Dependency < Faker
-    def requirements
-      if respond_to?(:version_requirements)
-        requirements = version_requirements.requirements
-      elsif respond_to?(:requirement)
-        requirements = requirement.requirements
-      end
-
-      Rip::Requirement.new(*requirements.map { |tweedle, version|
-        "#{tweedle}#{version.version}"
-      })
-    end
-
-    def type
-      @type || :runtime
-    end
-  end
-  class Specification < Faker; end
-  class Requirement   < Faker; end
-  class Version       < Faker; end
-
-  # Some older specs reference Version::Requirement
-  Version::Requirement = Requirement
+  require 'rubygems/dependency_installer'
+  @spec, @source_uri = Gem::DependencyInstaller.new.find_spec_by_name_and_version(source, version).first
+rescue Gem::GemNotFoundException => e
+  name = version ? "#{source} #{version}" : source
+  abort "#{name} not found"
 end
 
-
-class Fetcher
-  def unpack(name, version)
-  end
-
-  def dependencies(name, version)
-    io = specification(name, version)
-    return [] unless io
-
-    spec = YAML.load(io)
-
-    deps = spec.dependencies
-
-    deps = deps.select { |dep| dep.type == :runtime }
-
-    deps.map do |dep|
-      req = dep.requirements
-      if req.any?
-        "#{dep.name} #{req}"
-      else
-        dep.name
-      end
-    end
-  end
+if !version || version !~ /^(\d|.)+$/
+  spec, source_uri = find_gem(source, version)
+  source, version = spec.name, spec.version.to_s
 end
 
-class GemFetcher < Fetcher
-  def list(name)
-    gems = gem("list", name, "--remote").split("\n")
-    if gems.detect { |f| f =~ /^#{name} \(([^\s,]+).*\)/ }
-      $1
-    end
-  end
-
-  def unpack(name, version)
-    info "fetching #{name} #{version}"
-    path = gem_path = nil
-
-    cd Rip.cache do
-      begin
-        if gem("fetch", name, "-v #{version}") =~ /Downloaded (.+)/
-          gem_path = File.expand_path($1) + ".gem"
-        else
-          gem = name.dup
-          gem << " #{version}" if version
-          abort "#{gem} not found"
-        end
-
-        sh("gem unpack '#{gem_path}' --target='#{Rip.packages}'") =~
-          /^Unpacked gem: '(.+)'$/
-        path = $1
-      ensure
-        rm_rf gem_path if File.exist?(gem_path.to_s)
-      end
-    end
-
-    if path.nil?
-      abort "#{name} #{version} not found"
-    end
-
-    path
-  end
-
-  def specification(name, version)
-    spec = gem("specification -r #{name} -v #{version}")
-    $?.success? ? spec : nil
-  end
-end
-
-class RpgFetcher < Fetcher
-  def list(name)
-    if rpg("list -a #{name}") =~ /^#{name} (.+)$/
-      $1
-    end
-  end
-
-  def unpack(name, version)
-    info "fetching #{name} #{version}"
-    if path = rpg("unpack", name, version)
-      path.chomp
-    end
-  end
-
-  def specification(name, version)
-    spec = rpg("unpack", "-c", "-m", name, version)
-    $?.success? ? spec : nil
-  end
-end
-
-fetcher = rpg_available? ? RpgFetcher.new : GemFetcher.new
-
-
-version = fetcher.list(source) if version.nil?
-version = fetcher.list(source) unless version && version =~ /^\d/
-version = version.split(" ", 2).first if version && version =~ /\s/
-
+version = Rip::Requirement.new(version).to_s
 package_path = "#{Rip.packages}/#{source}-#{Rip.md5("#{source}#{version}")}"
 
 synchronize(package_path) do
@@ -153,6 +42,8 @@ synchronize(package_path) do
     puts package_path
     exit 0
   end
+
+  spec, source_uri = find_gem(source, version)
 
   at_exit do
     if !exited_successfully?
@@ -163,18 +54,25 @@ synchronize(package_path) do
 
   cd Rip.packages
 
-  path = fetcher.unpack(source, version)
+  info "fetching #{spec.name} #{spec.version}"
+  gem_path = Gem::RemoteFetcher.fetcher.download(spec, source_uri)
+  Gem::Installer.new(gem_path, :unpack => true).unpack(package_path)
 
-  if !File.exist?(path)
+  if !File.exist?(package_path)
     abort "#{source} #{version} not found"
   end
 
-  mv path, package_path
-
-  write("#{package_path}/metadata.rip") { "#{source} #{version}" }
+  write("#{package_path}/metadata.rip") { "#{spec.name} #{spec.version}" }
 
   if !File.exists?(deps_rip = "#{package_path}/deps.rip")
-    deps = fetcher.dependencies(source, version)
+    deps = spec.runtime_dependencies.map do |dep|
+      requirement = Rip::Requirement.new(*dep.requirement.as_list)
+      if requirement.any?
+        "#{dep.name} #{requirement}"
+      else
+        "#{dep.name}"
+      end
+    end
 
     if deps.any?
       write(deps_rip) { deps.sort }

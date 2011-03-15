@@ -76,29 +76,6 @@ module Rip
       end
     end
 
-    def rpg_available?
-      return false if ENV['RIPRPG'] == '0'
-      `which rpg`
-      $?.success?
-    end
-
-    def gem(command, *args)
-      args = escape(args)
-      args << " --source #{ENV["GEM_SERVER"]}" if ENV["GEM_SERVER"]
-      args << " 2> /dev/null"
-
-      debug "gem #{command} #{args}"
-      `gem #{command} #{args}`
-    end
-
-    def rpg(command, *args)
-      args = escape(args)
-      args << " 2> /dev/null"
-
-      debug "rpg #{command} #{args}"
-      `rpg #{command} #{args}`
-    end
-
     def git(command, *args)
       debug "git #{command} #{args * ' '}"
       sh :git, command, *args

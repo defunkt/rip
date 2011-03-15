@@ -1,11 +1,6 @@
 require 'helper'
 
 class PackageHandleGemTest < Rip::Test
-  def setup
-    ENV['RIPRPG'] = '0'
-    super
-  end
-
   test "can't handle unknown protocol" do
     out = rip "package-handle-gem git://localhost/cijoe"
     assert_exited_with_error out
@@ -46,7 +41,7 @@ class PackageHandleGemTest < Rip::Test
 
   test "writes package.rip" do
     out = rip "package-handle-gem repl '>=0.0.1'"
-    target = "#{@ripdir}/.packages/repl-21df4eaf07591b07688973bad525a215"
+    target = "#{@ripdir}/.packages/repl-e012d823a762683082e5b243fd0ac0dd"
 
     assert_equal target, out.chomp
     assert File.exist?("#{target}/metadata.rip")
@@ -83,14 +78,5 @@ class PackageHandleGemTest < Rip::Test
 
     assert_equal target, out.chomp
     assert File.directory?(target)
-  end
-end
-
-if `which rpg` && $?.success?
-  class PackageHandleRpgGemTest < PackageHandleGemTest
-    def setup
-      super
-      ENV['RIPRPG'] = '1'
-    end
   end
 end

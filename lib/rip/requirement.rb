@@ -76,7 +76,7 @@ module Rip
       @requirements = []
 
       requirements.each do |requirement|
-        (requirement || '').split(/,\s*/).each do |requirement|
+        requirement.to_s.tr("\"'", '').split(/,\s*/).each do |requirement|
           if requirement =~ /(~>|<=|>=|!=|<|>|=)?\s*(.+)/
             @requirements << [$1 || '=', Version.new($2)]
           else
