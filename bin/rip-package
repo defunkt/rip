@@ -24,7 +24,6 @@ commands.grep(/^package-handle-/).each do |handler|
     out.split("\n").each do |package_path|
       package_path = rip(:'package-repair-permissions', package_path)
       package_path = rip(:'package-build', package_path)
-      package_path = rip(:'package-repair', package_path)
       puts package_path
     end
 
