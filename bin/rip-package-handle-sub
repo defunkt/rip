@@ -10,7 +10,7 @@ exit 3 if path == '/'
 
 base_package = rip("package", source, version)
 
-if !File.exist?("#{base_package}#{path}")
+if !File.exist?(File.join(base_package, path))
   abort "#{source} #{path} does not exist"
 end
 
