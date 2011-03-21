@@ -26,6 +26,8 @@
 ##    $ rip exec RIPENV command_to_run_under_ripenv
 ##
 
+ARGV.replace(['--help']) if ARGV.empty? || ARGV[0] == "help"
+
 while ARGV[0] =~ /^-/
   case ARGV.shift
   when /--ripdir=(.+)/
@@ -45,7 +47,6 @@ while ARGV[0] =~ /^-/
   end
 end
 
-exec "rip --help" if ARGV.empty? || ARGV[0] == "help"
 begin
   exec "rip-#{ARGV.shift}", *ARGV
 rescue Errno::ENOENT
