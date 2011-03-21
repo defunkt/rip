@@ -22,8 +22,14 @@ commands.grep(/^package-handle-/).each do |handler|
     next
   elsif $?.success?
     out.split("\n").each do |package_path|
-      package_path = rip(:'package-init-repair-permissions', package_path)
+      commands.grep(/^package-init-/).each do |init|
+        # exception for build task, clean up later, maybe
+        next if init == 'package-init-build'
+        package_path = rip(init, package_path)
+      end
+
       package_path = rip(:'package-init-build', package_path)
+
       puts package_path
     end
 
