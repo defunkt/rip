@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# Usage: rip-package-handle-gemspec FILE
+
+$-e = true
+
+require 'rip/script'
+
+source = ARGV[0]
+
+unless source =~ %r{\.gemspec$} && File.file?(source)
+  exit 3 # Can't handle source
+end
+
+def load_gemspec(filename)
+  Dir.chdir(File.dirname(filename)) do
+    require 'rubygems'
+    eval(File.read(filename), TOPLEVEL_BINDING, filename)
+  end
+end
+
+rip_io(:package, "w+") do |f|
+  spec = load_gemspec(source)
+
+  spec.dependencies.each do |dep|
+    requirement = Rip::Requirement.new(*dep.requirement.as_list)
+    if requirement.any?
+      f.puts "#{dep.name} #{requirement}"
+    else
+      f.puts "#{dep.name}"
+    end
+  end
+  f.close_write
+
+  f.each_line { |line| print line }
+  f.close_read
+end
