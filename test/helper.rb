@@ -6,11 +6,11 @@ require 'stringio'
 
 # Ensure lib is in path for subcommands
 libdir = File.expand_path('../../lib', __FILE__)
-if ENV['RUBYLIB']
-  ENV['RUBYLIB'] += ":#{libdir}/"
-else
-  ENV['RUBYLIB'] = "#{libdir}/"
-end
+ENV['RUBYLIB'] = "#{libdir}:#{ENV['RUBYLIB']}"
+
+# Ensure bin is in path for subcommands
+bindir = File.expand_path('../../bin', __FILE__)
+ENV['PATH'] = "#{bindir}:#{ENV['PATH']}"
 
 require 'rip'
 
