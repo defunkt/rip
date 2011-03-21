@@ -26,9 +26,11 @@ commands.grep(/^package-handle-/).each do |handler|
         # exception for build task, clean up later, maybe
         next if init == 'package-init-build'
         package_path = rip(init, package_path)
+        exit $?.exitstatus unless $?.success?
       end
 
       package_path = rip(:'package-init-build', package_path)
+      exit $?.exitstatus unless $?.success?
 
       puts package_path
     end
