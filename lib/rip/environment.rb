@@ -19,7 +19,11 @@ module Rip
     end
 
     def to_s
-      "#{name} (#{version})"
+      if path.nil? || path == "/"
+        "#{name} (#{version})"
+      else
+        "#{name} #{path} (#{version})"
+      end
     end
 
     def inspect

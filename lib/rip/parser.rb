@@ -17,13 +17,19 @@ module Rip
 
       return nil if line.empty?
 
-      source, tweedle, version, *_ = line.split(' ')
+      args = line.split(' ')
 
       package = {}
-      package[:source] = source
 
-      if version || tweedle
-        package[:version] = version ? "#{tweedle} #{version}" : tweedle
+      package[:source] = args[0]
+
+      if args[1] && args[1] =~ /^\//
+        package[:path]    = args[1]
+        package[:version] = args[2] if args[2]
+      elsif args[1] && args[2]
+        package[:version] = "#{args[1]} #{args[2]}"
+      else
+        package[:version] = args[1] if args[1]
       end
 
       package
