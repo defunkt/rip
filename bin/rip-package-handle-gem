@@ -23,6 +23,7 @@ def find_gem(source, version)
   end
 
   require 'rubygems/dependency_installer'
+  version = version.split(',') if version
   @spec, @source_uri = Gem::DependencyInstaller.new.find_spec_by_name_and_version(source, version).first
 rescue Gem::GemNotFoundException => e
   name = version ? "#{source} #{version}" : source
